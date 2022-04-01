@@ -25,7 +25,16 @@ export default defineComponent({
     }
   },
   mounted(){
-    this.darkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const colorSchemeQueryList = window.matchMedia('(prefers-color-scheme: dark)');
+
+    const setColorScheme = (e: Event | MediaQueryList) => {
+      if ("matches" in e) {
+        this.darkMode = e.matches;
+      }
+    }
+
+    setColorScheme(colorSchemeQueryList);
+    colorSchemeQueryList.addEventListener('change', setColorScheme);
   }
 });
 </script>

@@ -21,6 +21,7 @@ export default{
 
 <style>
 @import "assets/base.css";
+@import "assets/formkit.css";
 
 #app {
   position: relative;
