@@ -1,18 +1,13 @@
-<script lang="ts">
+<script setup lang="ts">
 import Logo from "@/components/icons/Logo.vue";
+import Lock from "@/components/icons/Lock.vue";
+import Email from "@/components/icons/Email.vue";
 import {FormKit} from "@formkit/vue";
 
-export default {
-  components: {Logo, FormKit},
-  data() {
-    return {}
-  },
-  methods: {
-    login() {
+const login = () => {
+  alert('Login!');
+};
 
-    }
-  }
-}
 </script>
 
 <template>
@@ -21,44 +16,55 @@ export default {
       <div class="login-box__logo">
         <Logo/>
       </div>
-      <FormKit
-          type="form"
-          submit-label="Inloggen"
-          @submit="login"
-      >
-        <FormKit
-            name="email"
-            outer-class="email"
-            placeholder="E-mail adres"
-            validation="required|email"
+      <FormKit type="form" submit-label="Inloggen" @submit="login">
+        <FormKit name="email" outer-class="email" placeholder="E-mail adres" validation="required|email"
             :sections-schema="{
               prefix: {
                 $el: 'div',
-                children: [{$cmp: 'Logo'}],
+                attrs: {class: 'icon'},
+                children: [{$cmp: Email}],
               }
             }"
         />
-        <FormKit
-            type="password"
-            name="password"
-            placeholder="Wachtwoord"
-            validation="required"
+        <FormKit type="password" name="password" placeholder="Wachtwoord" validation="required" outer-class="password"
+            :sections-schema="{
+              prefix: {
+                $el: 'div',
+                attrs: {class: 'icon'},
+                children: [{$cmp: Lock}],
+              }
+            }"
         />
-        <FormKit
-            type="checkbox"
-            name="remeber"
-            label="Onthoud mij"
-        />
+        <FormKit type="checkbox" name="remeber" label="Onthoud mij"/>
       </FormKit>
       <a href="#">Wachtwoord vergeten?</a>
     </div>
   </div>
 </template>
 
-<style>
+<style lang="scss">
 body {
   background: url("../assets/login-background.jpg") no-repeat center center fixed;
   background-size: cover;
+}
+
+.email, .password {
+  .formkit-input {
+    margin-left: 42px;
+    padding-left: 8px;
+  }
+}
+
+.formkit-inner .icon{
+  width: 50px;
+  height: 100%;
+  position: absolute;
+  padding: 13px 0 12px 0;
+  text-align: center;
+}
+
+.formkit-inner .icon svg{
+  height: 100%;
 }
 </style>
 
@@ -98,11 +104,6 @@ body {
 .login-box__intro h2 {
   margin-top: 0;
 }
-
-/*.login-box__logo svg{*/
-/*  display: inline-block;*/
-/*  margin: 0 auto;*/
-/*}*/
 
 h1 {
   font-weight: 500;
