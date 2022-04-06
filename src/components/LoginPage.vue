@@ -37,7 +37,7 @@ const login = () => {
         />
         <FormKit type="checkbox" name="remeber" label="Onthoud mij"/>
       </FormKit>
-      <a href="#">Wachtwoord vergeten?</a>
+      <router-link to="/login/password-lost">Wachtwoord vergeten?</router-link>
     </div>
   </div>
 </template>

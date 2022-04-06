@@ -1,9 +1,6 @@
 <script setup lang="ts">
-import LoginPage from "@/components/LoginPage.vue";
 </script>
 
 <template>
-  <main>
-    <LoginPage />
-  </main>
+Todo: Check inbouwen of gebruiker is ingelogd of niet. Naar login: <router-link to="/login">Login</router-link>
 </template>

@@ -1,9 +1,8 @@
 <script>
 import LoginPage from "@/components/LoginPage.vue";
-import DarkModeToggle from "@/components/DarkModeToggle.vue";
 
 export default{
-  components: {DarkModeToggle, LoginPage},
+  components: {LoginPage},
   mounted() {
     this.$nextTick(() => {
       setTimeout(() => {
@@ -14,21 +13,11 @@ export default{
 }
 </script>
 
-<template id="app">
-  <DarkModeToggle />
-  <LoginPage />
+<template>
+  <router-view/>
 </template>
 
 <style>
 @import "assets/base.css";
 @import "assets/formkit.css";
-
-#app {
-  position: relative;
-  margin: 0;
-  padding: 0;
-
-  font-weight: normal;
-  min-height: 100vh;
-}
 </style>
