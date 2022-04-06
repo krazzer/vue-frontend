@@ -1,8 +1,8 @@
 <script>
-import LoginPage from "@/components/LoginPage.vue";
+import DarkModeToggle from "@/components/DarkModeToggle.vue";
 
 export default{
-  components: {LoginPage},
+  components: {DarkModeToggle},
   mounted() {
     this.$nextTick(() => {
       setTimeout(() => {
@@ -14,6 +14,7 @@ export default{
 </script>
 
 <template>
+  <DarkModeToggle />
   <router-view/>
 </template>
 

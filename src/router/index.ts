@@ -9,11 +9,11 @@ const router = createRouter({
     }, {
         path: "/login",
         name: "login",
-        component: () => import("../views/LoginView.vue"),
+        component: () => import("../components/login/Index.vue"),
     }, {
         path: "/login/password-lost",
         name: "password-lost",
-        component: () => import("../views/PasswordLostView.vue"),
+        component: () => import("../components/login/Reset.vue"),
     }],
 });
 

@@ -1,61 +1,20 @@
-<script setup lang="ts">
+<script setup>
 import Logo from "@/components/icons/Logo.vue";
-import Lock from "@/components/icons/Lock.vue";
-import Email from "@/components/icons/Email.vue";
-import {FormKit} from "@formkit/vue";
-
-const login = () => {
-  alert('Login!');
-};
-
 </script>
-
 <template>
   <div class="login">
     <div class="login-box">
       <div class="login-box__logo">
         <Logo/>
       </div>
-      <FormKit type="form" submit-label="Inloggen" @submit="login">
-        <FormKit name="email" outer-class="email" placeholder="E-mail adres" validation="required|email"
-            :sections-schema="{
-              prefix: {
-                $el: 'div',
-                attrs: {class: 'icon'},
-                children: [{$cmp: Email}],
-              }
-            }"
-        />
-        <FormKit type="password" name="password" placeholder="Wachtwoord" validation="required" outer-class="password"
-            :sections-schema="{
-              prefix: {
-                $el: 'div',
-                attrs: {class: 'icon'},
-                children: [{$cmp: Lock}],
-              }
-            }"
-        />
-        <FormKit type="checkbox" name="remeber" label="Onthoud mij"/>
-      </FormKit>
-      <router-link to="/login/password-lost">Wachtwoord vergeten?</router-link>
+      <slot/>
     </div>
   </div>
 </template>
 
 <style lang="scss">
-body {
-  background: url("../assets/login-background.jpg") no-repeat center center fixed;
-  background-size: cover;
-}
 
-.email, .password {
-  .formkit-input {
-    margin-left: 42px;
-    padding-left: 8px;
-  }
-}
-
-.formkit-inner .icon{
+.formkit-inner .icon {
   width: 50px;
   height: 100%;
   position: absolute;
@@ -63,14 +22,26 @@ body {
   text-align: center;
 }
 
-.formkit-inner .icon svg{
+.formkit-inner .icon svg {
   height: 100%;
 }
+
 </style>
 
-<style scoped>
+<style lang="scss" scoped>
+
+:deep {
+  .email, .password {
+    .formkit-input {
+      margin-left: 42px;
+      padding-left: 8px;
+    }
+  }
+}
 
 .login {
+  background: url("../../assets/login-background.jpg") no-repeat center center fixed;
+  background-size: cover;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -99,25 +70,6 @@ body {
   width: 200px;
   display: block;
   margin: 0 auto;
-}
-
-.login-box__intro h2 {
-  margin-top: 0;
-}
-
-h1 {
-  font-weight: 500;
-  font-size: 2.6rem;
-  top: -10px;
-}
-
-h3 {
-  font-size: 1.2rem;
-}
-
-.greetings h1,
-.greetings h3 {
-  text-align: center;
 }
 
 @media (min-width: 1024px) {
