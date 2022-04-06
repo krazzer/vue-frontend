@@ -12,8 +12,12 @@ const router = createRouter({
         component: () => import("../components/login/Index.vue"),
     }, {
         path: "/login/password-lost",
-        name: "password-lost",
+        name: "passwordLost",
         component: () => import("../components/login/Reset.vue"),
+    }, {
+        path: '/:pathMatch(.*)*',
+        name: "pageNotFound",
+        component: () => import("../views/NotFoundView.vue"),
     }],
 });
 

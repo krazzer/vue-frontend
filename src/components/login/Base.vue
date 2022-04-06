@@ -12,22 +12,6 @@ import Logo from "@/components/icons/Logo.vue";
   </div>
 </template>
 
-<style lang="scss">
-
-.formkit-inner .icon {
-  width: 50px;
-  height: 100%;
-  position: absolute;
-  padding: 13px 0 12px 0;
-  text-align: center;
-}
-
-.formkit-inner .icon svg {
-  height: 100%;
-}
-
-</style>
-
 <style lang="scss" scoped>
 
 :deep {
@@ -35,6 +19,18 @@ import Logo from "@/components/icons/Logo.vue";
     .formkit-input {
       margin-left: 42px;
       padding-left: 8px;
+    }
+  }
+
+  .formkit-inner .icon {
+    width: 50px;
+    height: 100%;
+    position: absolute;
+    padding: 13px 0 12px 0;
+    text-align: center;
+
+    svg {
+      height: 100%;
     }
   }
 }
@@ -48,6 +44,15 @@ import Logo from "@/components/icons/Logo.vue";
   text-align: center;
   min-height: 100vh;
   width: 100%;
+
+  &:before {
+    content: '';
+    background-color: white;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: .5;
+  }
 }
 
 .login-box {
@@ -60,32 +65,29 @@ import Logo from "@/components/icons/Logo.vue";
   rgba(0, 0, 0, 0.1) 0 0 0.8rem;
   width: 450px;
   text-align: left;
-}
 
-.login-box__logo {
-  margin-bottom: 2rem;
-}
+  &__logo {
+    margin-bottom: 2rem;
 
-.login-box__logo svg {
-  width: 200px;
-  display: block;
-  margin: 0 auto;
-}
-
-@media (min-width: 1024px) {
-  .greetings h1,
-  .greetings h3 {
-    text-align: left;
+    svg {
+      width: 200px;
+      display: block;
+      margin: 0 auto;
+    }
   }
-}
 
-.login:before {
-  content: '';
-  background-color: white;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  opacity: .5;
+  @media (max-width: 500px) {
+    width: 100%;
+    padding: 2rem;
+
+    &__logo {
+      margin-bottom: 2rem;
+
+      svg {
+        width: 175px;
+      }
+    }
+  }
 }
 
 body.transition .login:before {
@@ -95,20 +97,5 @@ body.transition .login:before {
 body.darkmode .login:before {
   background-color: black;
   opacity: .6;
-}
-
-@media (max-width: 500px) {
-  .login-box {
-    width: 100%;
-    padding: 2rem;
-  }
-
-  .login-box__logo {
-    margin-bottom: 2rem;
-  }
-
-  .login-box__logo svg {
-    width: 175px;
-  }
 }
 </style>
