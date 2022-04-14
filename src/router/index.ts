@@ -1,10 +1,10 @@
-import {createRouter, createWebHistory} from "vue-router";
+import * as VueRouter from 'vue-router'
 
-const router = createRouter({
-    history: createWebHistory(import.meta.env.BASE_URL),
+const router = VueRouter.createRouter({
+    history: VueRouter.createWebHistory(import.meta.env.BASE_URL),
     routes: [{
         path: "/",
-        name: "cms",
+        name: "home",
         component: () => import("../views/HomeView.vue"),
     }, {
         path: "/login",

@@ -14,24 +14,22 @@ import Logo from "@/components/icons/Logo.vue";
 
 <style lang="scss" scoped>
 
-:deep {
-  .email, .password {
-    .formkit-input {
-      margin-left: 42px;
-      padding-left: 8px;
-    }
+:deep(.email), :deep(.password) {
+  .formkit-input {
+    margin-left: 42px;
+    padding-left: 8px;
   }
+}
 
-  .formkit-inner .icon {
-    width: 50px;
+:deep(.formkit-inner .icon) {
+  width: 50px;
+  height: 100%;
+  position: absolute;
+  padding: 13px 0 12px 0;
+  text-align: center;
+
+  svg {
     height: 100%;
-    position: absolute;
-    padding: 13px 0 12px 0;
-    text-align: center;
-
-    svg {
-      height: 100%;
-    }
   }
 }
 

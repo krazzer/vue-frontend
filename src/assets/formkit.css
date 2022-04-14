@@ -1,3 +1,15 @@
 #app .formkit-input{
     width: 100%;
 }
+
+#app [data-type="submit"] .formkit-input{
+    transition: background-color 0s;
+}
+
+#app [data-type="submit"] .formkit-input::before{
+    transition-delay: 0s;
+}
+
+#app [data-loading] [data-type="submit"] .formkit-input, #app [data-loading] [data-type="submit"] .formkit-input::before{
+    transition-delay: 0.25s;
+}

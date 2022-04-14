@@ -1,12 +1,14 @@
-import { createApp } from "vue/dist/vue.esm-bundler";
+import * as Vue from 'vue'
 import App from "./App.vue";
+import axios from 'axios'
+import VueAxios from 'vue-axios'
 import router from "./router";
 import { plugin, defaultConfig } from '@formkit/vue'
 import '@formkit/themes/genesis'
 
-const app = createApp(App);
+const app = Vue.createApp(App);
 
-app.use(router);
+app.use(router, VueAxios, axios);
 app.use(plugin, defaultConfig);
 
 app.mount("#app");
