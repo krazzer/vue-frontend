@@ -2,6 +2,7 @@
     width: 100%;
 }
 
+/* Delay showing loaders bu 250ms */
 #app [data-type="submit"] .formkit-input{
     transition: background-color 0s;
 }
@@ -11,5 +12,15 @@
 }
 
 #app [data-loading] [data-type="submit"] .formkit-input, #app [data-loading] [data-type="submit"] .formkit-input::before{
+    transition-delay: 0.25s;
+}
+
+/* [data-type="checkbox"] [data-disabled], [data-type="radio"] [data-disabled]*/
+#app [data-type="checkbox"] [data-disabled], #app [data-type="radio"] [data-disabled]{
+    transition: opacity 0s;
+    transition-delay: 0s;
+}
+
+#app [data-loading] [data-type="checkbox"] [data-disabled], #app [data-loading] [data-type="radio"] [data-disabled]{
     transition-delay: 0.25s;
 }

@@ -4,33 +4,58 @@ import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
 import router from "@/router";
 
-if(import.meta.env.DEV) {
-  let mock = new MockAdapter(axios, {delayResponse: 0});
+if (import.meta.env.DEV) {
+  let mock = new MockAdapter(axios, {delayResponse: 50});
 
   mock.onGet("/api/login").reply((request) => {
     let params = request.params;
 
+    if (params.password == 'networkerror') {
+      return axios.get("mock-network-error");
+    }
+
+    if (params.password == 'timeout') {
+      return axios.get("mock-network-timeout");
+    }
+
+    if (params.password == 'error') {
+      return [503];
+    }
+
     return [200, {success: params.password == 'test'}];
   });
+
+  mock.onGet("mock-network-error").networkError();
+  mock.onGet("mock-network-timeout").timeout();
 }
 
 interface LoginStatus {
-  success: boolean;
+  success?: boolean;
 }
 
 export default defineComponent({
   data() {
     return {
-      loginStatus: <LoginStatus> {},
+      loginStatus: <LoginStatus>{},
     }
   },
   methods: {
-    async login(params?: object) {
-      this.loginStatus = (await axios.get('/api/login', {params: params})).data;
+    async login(params: object, node: any) {
+      this.loginStatus = {};
 
-      if(this.loginStatus.success){
-        await router.push({ name: 'home' });
-      }
+      node.setErrors([]);
+
+      await axios
+          .get('/api/login', {params: params})
+          .then(response => {
+            this.loginStatus = response.data;
+
+            if (this.loginStatus.success) {
+              router.push({name: 'home'});
+            }
+          }).catch(error => {
+            node.setErrors([error.message]);
+          });
     }
   },
 });
@@ -56,7 +81,7 @@ import {FormKit} from "@formkit/vue";
             }"
       />
       <FormKit type="password" name="password" placeholder="Wachtwoord" validation="required" outer-class="password"
-               :sections-schema="{
+              :errors="loginStatus.success === false ? ['Wrong e-mail or password'] : []" :sections-schema="{
               prefix: {
                 $el: 'div',
                 attrs: {class: 'icon'},
