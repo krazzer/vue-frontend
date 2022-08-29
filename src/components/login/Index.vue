@@ -1,7 +1,6 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
 import axios from "axios";
-import router from "@/router";
 import loginMock from "./classes/mock";
 
 loginMock.mock();
@@ -28,7 +27,7 @@ export default defineComponent({
             this.loginStatus = response.data;
 
             if (this.loginStatus.success) {
-              router.push({name: 'home'});
+              this.$router.push({name: 'home'});
             }
           }).catch(error => {
             node.setErrors([error.message]);
