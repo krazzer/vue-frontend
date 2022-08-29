@@ -67,6 +67,6 @@ import {FormKit} from "@formkit/vue";
       />
       <FormKit type="checkbox" name="remember" label="Onthoud mij"/>
     </FormKit>
-    <router-link to="/login/password-lost">Wachtwoord vergeten?</router-link>
+    <router-link :to="{ name: 'passwordLost' }">Wachtwoord vergeten?</router-link>
   </Base>
 </template>
