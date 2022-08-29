@@ -22,7 +22,7 @@ class LoginMock extends Mocker
                 return [503];
             }
 
-            return [200, {success: params.password === 'test'}];
+            return [200, {success: params.password === 'test' && params.email === 'test@test.com'}];
         });
 
         mock.onGet("mock-network-error").networkError();
