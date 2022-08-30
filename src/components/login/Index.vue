@@ -34,6 +34,11 @@ export default defineComponent({
           });
     }
   },
+  watch: {
+    loginStatus(status) {
+      localStorage.loggedIn = JSON.stringify(status.success);
+    }
+  }
 });
 </script>
 

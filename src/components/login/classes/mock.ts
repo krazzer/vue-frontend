@@ -8,7 +8,12 @@ class LoginMock extends Mocker
 
     constructor() {
         super();
-        this.loggedIn = false;
+
+        if(localStorage.loggedIn) {
+            this.loggedIn = JSON.parse(localStorage.loggedIn);
+        } else {
+            this.loggedIn = false;
+        }
     }
 
     addMock(){
