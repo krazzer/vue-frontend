@@ -4,6 +4,13 @@ import axios from "axios";
 
 class LoginMock extends Mocker
 {
+    loggedIn: boolean;
+
+    constructor() {
+        super();
+        this.loggedIn = false;
+    }
+
     addMock(){
         let mock = new MockAdapter(axios, {delayResponse: 50});
 
@@ -21,6 +28,8 @@ class LoginMock extends Mocker
             if (params.password === 'error') {
                 return [503];
             }
+
+            this.loggedIn = true;
 
             return [200, {success: params.password === 'test' && params.email === 'test@test.com'}];
         });
