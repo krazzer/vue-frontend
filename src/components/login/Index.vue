@@ -3,8 +3,6 @@ import {defineComponent} from 'vue'
 import axios from "axios";
 import loginMock from "./classes/mock";
 
-loginMock.mock();
-
 interface LoginStatus {
   success?: boolean;
 }
@@ -33,6 +31,9 @@ export default defineComponent({
             node.setErrors([error.message]);
           });
     }
+  },
+  mounted() {
+    loginMock.mock();
   }
 });
 </script>

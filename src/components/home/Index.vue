@@ -3,10 +3,9 @@ import {defineComponent} from 'vue'
 import axios from "axios";
 import homeMock from "./classes/mock";
 
-homeMock.mock();
-
 export default defineComponent({
   mounted() {
+    homeMock.mock();
     this.checkLogin();
   },
   methods: {
