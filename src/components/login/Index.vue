@@ -33,11 +33,6 @@ export default defineComponent({
             node.setErrors([error.message]);
           });
     }
-  },
-  watch: {
-    loginStatus(status) {
-      localStorage.loggedIn = JSON.stringify(status.success);
-    }
   }
 });
 </script>

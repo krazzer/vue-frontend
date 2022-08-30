@@ -35,6 +35,7 @@ class LoginMock extends Mocker
             }
 
             this.loggedIn = true;
+            localStorage.loggedIn = JSON.stringify(true);
 
             return [200, {success: params.password === 'test' && params.email === 'test@test.com'}];
         });

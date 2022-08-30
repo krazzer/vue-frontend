@@ -11,6 +11,12 @@ class HomeMock extends Mocker
         mock.onGet("/api/home").reply(() => {
             return [200, {loggedIn : loginMock.loggedIn}];
         });
+
+        mock.onGet("/api/logout").reply(() => {
+            localStorage.loggedIn = JSON.stringify(false);
+            loginMock.loggedIn = false;
+            return [200];
+        });
     }
 }
 

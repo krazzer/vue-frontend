@@ -1,28 +1,43 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
 import axios from "axios";
-import loginMock from "./classes/mock";
+import homeMock from "./classes/mock";
 
-loginMock.mock();
+homeMock.mock();
 
 export default defineComponent({
   mounted() {
-    axios
-        .get('/api/home', {params: {}})
-        .then(response => {
-          if (!response.data.loggedIn) {
-            this.$router.push({name: 'login'});
+    this.checkLogin();
+  },
+  methods: {
+    logout() {
+      axios
+          .get('/api/logout', {params: {}})
+          .then(() => {
+            this.checkLogin();
+          }).catch(error => {
+            console.error(error);
           }
-        }).catch(error => {
-      if (error.response.status !== 404) {
-        console.error(error.response.status);
-      }
-    });
+      );
+    },
+
+    checkLogin(){
+      axios
+          .get('/api/home', {params: {}})
+          .then(response => {
+            if (!response.data.loggedIn) {
+              this.$router.push({name: 'login'});
+            }
+          }).catch(error => {
+            console.error(error);
+          }
+      );
+    }
   }
 });
 
 </script>
 
 <template>
-  Welkom in het CMS.
+  Welkom in het CMS. <a href="javascript:void(0)" @click="logout">Uitloggen</a>
 </template>
