@@ -12,6 +12,10 @@
 </template>
 
 <style scoped>
+  .kik, .cms{
+    transition: fill 0.5s;
+  }
+
   .kik{
     fill: var(--main-color);
   }
