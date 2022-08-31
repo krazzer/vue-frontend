@@ -23,19 +23,19 @@ class HomeMock extends Mocker {
                 media: {label: "Media"},
                 clients: {
                     label: "Clients",
-                    icon: '<svg height="100" width="100"><circle cx="50" cy="50" r="40" stroke="black" stroke-width="3" /></svg>'
+                    icon: 'users'
                 },
                 invoices: {
                     label: "Facturen",
-                    icon: '<svg height="100" width="100"><circle cx="50" cy="50" r="40" stroke="black" stroke-width="3" /></svg>',
+                    icon: '<svg width="80" height="80"><rect width="80" height="80" fill="red" /></svg>',
                     submenu: {
                         invoices: {
                             label: "Facturen",
-                            icon: '<svg height="100" width="100"><circle cx="50" cy="50" r="40" stroke="black" stroke-width="3" /></svg>',
+                            icon: '<svg width="80" height="80"><rect width="80" height="80" fill="red" /></svg>',
                         },
                         revenue: {
                             label: "Omzet",
-                            icon: '<svg height="100" width="100"><circle cx="50" cy="50" r="40" stroke="black" stroke-width="3" /></svg>',
+                            icon: '<svg height="80" width="80"><circle cx="80" cy="80" r="80" fill="red" /></svg>',
                         },
                     }
                 },
