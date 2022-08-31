@@ -26,7 +26,20 @@ export default defineComponent({
           .then(response => {
             if (!response.data.loggedIn) {
               this.$router.push({name: 'login'});
+            } else {
+              this.showMenu();
             }
+          }).catch(error => {
+            console.error(error);
+          }
+      );
+    },
+
+    showMenu(){
+      axios
+          .get('/api/menu', {params: {}})
+          .then(response => {
+            console.log(response.data);
           }).catch(error => {
             console.error(error);
           }
@@ -34,7 +47,6 @@ export default defineComponent({
     }
   }
 });
-
 </script>
 
 <script setup lang="ts">
