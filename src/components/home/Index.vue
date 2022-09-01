@@ -4,6 +4,12 @@ import axios from "axios";
 import homeMock from "./classes/mock";
 
 export default defineComponent({
+  data() {
+    return {
+      menu: {},
+      selectedMenuItem: '',
+    }
+  },
   mounted() {
     homeMock.mock();
     this.checkLogin();
@@ -27,7 +33,8 @@ export default defineComponent({
             if (!response.data.loggedIn) {
               this.$router.push({name: 'login'});
             } else {
-              this.showMenu();
+              this.menu = response.data.menu;
+              this.selectedMenuItem = 'pages';
             }
           }).catch(error => {
             console.error(error);
@@ -35,15 +42,16 @@ export default defineComponent({
       );
     },
 
-    showMenu(){
-      axios
-          .get('/api/menu', {params: {}})
-          .then(response => {
-            console.log(response.data);
-          }).catch(error => {
-            console.error(error);
-          }
-      );
+    getIcon(item: any){
+      return 'src/assets/icons/' + (item.icon ? item.icon : 'default') + '.svg';
+    },
+
+    isSvg(item: any){
+      if( ! item.icon){
+        return false;
+      }
+
+      return item.icon.substring(0, 1) == '<';
     }
   }
 });
@@ -51,6 +59,7 @@ export default defineComponent({
 
 <script setup lang="ts">
   import Logo from "@/components/icons/Logo.vue";
+  import InlineSvg from 'vue-inline-svg';
 </script>
 
 <template>
@@ -59,11 +68,32 @@ export default defineComponent({
       <Logo />
     </div>
     <div class="sidebar__menu">
-      <a href="javascript:void(0)" @click="logout">Uitloggen</a>
+      <ul>
+        <li v-for="(item, key) in menu" :class="selectedMenuItem === key ? 'selected' : ''">
+          <a href="javascript:void(0)">
+            <span v-if="isSvg(item)" v-html="item.icon"></span>
+            <span v-else><inline-svg :src="getIcon(item)"/></span>
+            {{ item.label }}
+          </a>
+          <ul v-if="item.submenu">
+            <li v-for="(subitem, subkey) in item.submenu" :class="selectedMenuItem === subkey ? 'selected' : ''">
+              <a href="javascript:void(0)">
+                <span v-if="isSvg(subitem)" v-html="subitem.icon"></span>
+                <span v-else><inline-svg :src="getIcon(subitem)"/></span>
+                {{ subitem.label }}
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="javascript:void(0)" @click="logout">
+            <span><inline-svg :src="'src/assets/icons/logout.svg'"/></span> Uitloggen
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
   <div class="main">
-    Main
   </div>
 </template>
 
@@ -87,6 +117,65 @@ export default defineComponent({
 
     &__menu{
       position: relative;
+
+      ul{
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        li{
+          margin-bottom: 3px;
+
+          a{
+            color: var(--color-text);
+            display: block;
+            padding: 9px 10px 11px 35px;
+            border-radius: var(--border-radius);
+            line-height: 19px;
+
+            :deep(svg){
+              width: 18px;
+              height: 18px;
+              fill: var(--color-text);
+              position: absolute;
+              top: 0;
+              left: -25px;
+              margin-right: 2px;
+
+              * {
+                fill: var(--color-text);
+              }
+            }
+
+            &:hover{
+              background-color: var(--main-color);
+              color: var(--color-text-in-main-bg);
+
+              :deep(svg), :deep(svg) *{
+                fill: var(--color-text-in-main-bg);
+              }
+            }
+          }
+
+          &.selected a{
+            background-color: var(--main-color);
+            color: var(--color-text-in-main-bg);
+
+            :deep(svg), :deep(svg) *{
+              fill: var(--color-text-in-main-bg);
+            }
+          }
+
+          ul{
+            margin-left: 20px;
+
+            a{
+              font-size: small;
+              line-height: 18px;
+            }
+          }
+        }
+      }
     }
   }
 

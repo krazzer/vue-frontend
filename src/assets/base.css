@@ -17,6 +17,8 @@
     --text-dark-1: var(--color-white);
 
     --vt-c-text-light-1: var(--color-indigo);
+
+    --border-radius: 3px;
 }
 
 /* semantic color variables for this project */
@@ -26,6 +28,7 @@
     --color-border: var(--line-light-1);
     --color-text: var(--text-light-1);
     --color-line: var(--line-light-1);
+    --color-text-in-main-bg: var(--color-white);
 }
 
 /* change variables for dark mode */
@@ -35,6 +38,7 @@ body.darkmode {
     --color-border: var(--line-dark-1);
     --color-text: var(--text-dark-1);
     --color-line: var(--line-dark-1);
+    --color-text-in-main-bg: var(--color-white);
 }
 
 /* override vendor variables */
