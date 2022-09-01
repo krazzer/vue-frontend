@@ -138,7 +138,7 @@ export default defineComponent({
               height: 18px;
               fill: var(--color-text);
               position: absolute;
-              top: 0;
+              top: 1px;
               left: -25px;
               margin-right: 2px;
 
@@ -172,6 +172,10 @@ export default defineComponent({
             a{
               font-size: small;
               line-height: 18px;
+
+              :deep(svg){
+                top: 0;
+              }
             }
           }
         }

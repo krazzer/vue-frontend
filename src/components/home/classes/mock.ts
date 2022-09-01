@@ -11,29 +11,29 @@ class HomeMock extends Mocker {
             return [200, {
                 loggedIn: loginMock.loggedIn,
                 menu: {
-                    pages: {label: "Pagina's", icon: 'pages'},
+                    pages: {label: "Pages", icon: 'pages'},
                     media: {label: "Media", icon: 'media'},
                     clients: {
                         label: "Clients",
                         icon: 'users'
                     },
                     invoices: {
-                        label: "Facturen",
+                        label: "Invoices",
                         icon: '<svg width="80" height="80"><rect width="80" height="80" fill="red" /></svg>',
                         submenu: {
                             invoices: {
-                                label: "Facturen",
+                                label: "Invoices",
                                 icon: '<svg width="80" height="80"><rect width="80" height="80" fill="red" /></svg>',
                             },
                             revenue: {
-                                label: "Omzet",
+                                label: "Revenue",
                                 icon: '<svg height="80" width="80"><circle cx="50%" cy="50%" r="50%" fill="red"></circle></svg>',
                             },
                         }
                     },
-                    visitors: {label: "Bezoekers", icon: 'stats'},
-                    users: {label: "Gebruikers", icon: 'users'},
-                    settings: {label: "Instellingen"},
+                    visitors: {label: "Visitors", icon: 'stats'},
+                    users: {label: "Users", icon: 'users'},
+                    settings: {label: "Settings"},
                 }
             }];
         });
