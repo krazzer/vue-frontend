@@ -90,7 +90,7 @@ export default defineComponent({
           </router-link>
           <ul v-if="item.submenu">
             <li v-for="(subitem, subkey) in item.submenu" :class="selectedMenuItem === subkey ? 'selected' : ''">
-              <router-link :to="key">
+              <router-link :to="subkey">
                 <span v-if="isSvg(subitem)" v-html="subitem.icon"></span>
                 <span v-else><inline-svg :src="getIcon(subitem)"/></span>
                 {{ subitem.label }}
@@ -170,7 +170,7 @@ export default defineComponent({
             }
           }
 
-          &.selected a{
+          &.selected > a{
             background-color: var(--main-color);
             color: var(--color-text-in-main-bg);
 
@@ -181,6 +181,7 @@ export default defineComponent({
 
           ul{
             margin-left: 20px;
+            margin-top: 3px;
 
             a{
               font-size: small;
