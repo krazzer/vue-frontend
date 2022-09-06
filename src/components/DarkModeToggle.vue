@@ -11,12 +11,7 @@ export default defineComponent({
   methods: {
     toggle() {
       this.darkMode = !this.darkMode;
-    },
-    setDark() {
-      this.darkMode = true;
-    },
-    setLight() {
-      this.darkMode = false;
+      localStorage.darkMode = JSON.stringify(this.darkMode);
     }
   },
   watch:{
@@ -25,6 +20,11 @@ export default defineComponent({
     }
   },
   mounted(){
+    if(localStorage.darkMode){
+      this.darkMode = JSON.parse(localStorage.darkMode);
+      return;
+    }
+
     const colorSchemeQueryList = window.matchMedia('(prefers-color-scheme: dark)');
 
     const setColorScheme = (e: Event | MediaQueryList) => {
