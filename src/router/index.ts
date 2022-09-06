@@ -15,9 +15,9 @@ const router = VueRouter.createRouter({
         name: "passwordLost",
         component: () => import("../components/login/Reset.vue"),
     }, {
-        path: '/:pathMatch(.*)*',
-        name: "pageNotFound",
-        component: () => import("../views/NotFoundView.vue"),
+        path: '/:module',
+        name: "module",
+        component: () => import("../components/home/Index.vue"),
     }],
 });
 

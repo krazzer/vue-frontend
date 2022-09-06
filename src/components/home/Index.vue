@@ -4,6 +4,11 @@ import axios from "axios";
 import homeMock from "./classes/mock";
 
 export default defineComponent({
+  watch: {
+    $route(to) {
+      this.loadModule(to.params.module);
+    }
+  },
   data() {
     return {
       menu: {},
@@ -13,8 +18,13 @@ export default defineComponent({
   mounted() {
     homeMock.mock();
     this.checkLogin();
+
+    this.loadModule(String(this.$route.params.module));
   },
   methods: {
+    loadModule(module: string) {
+      this.selectedMenuItem = module;
+    },
     logout() {
       axios
           .get('/api/logout', {params: {}})
@@ -34,7 +44,10 @@ export default defineComponent({
               this.$router.push({name: 'login'});
             } else {
               this.menu = response.data.menu;
-              this.selectedMenuItem = 'pages';
+
+              if( ! this.selectedMenuItem) {
+                this.selectedMenuItem = 'pages';
+              }
             }
           }).catch(error => {
             console.error(error);
@@ -70,18 +83,18 @@ export default defineComponent({
     <div class="sidebar__menu">
       <ul>
         <li v-for="(item, key) in menu" :class="selectedMenuItem === key ? 'selected' : ''">
-          <a href="javascript:void(0)">
+          <router-link :to="key">
             <span v-if="isSvg(item)" v-html="item.icon"></span>
             <span v-else><inline-svg :src="getIcon(item)"/></span>
             {{ item.label }}
-          </a>
+          </router-link>
           <ul v-if="item.submenu">
             <li v-for="(subitem, subkey) in item.submenu" :class="selectedMenuItem === subkey ? 'selected' : ''">
-              <a href="javascript:void(0)">
+              <router-link :to="key">
                 <span v-if="isSvg(subitem)" v-html="subitem.icon"></span>
                 <span v-else><inline-svg :src="getIcon(subitem)"/></span>
                 {{ subitem.label }}
-              </a>
+              </router-link>
             </li>
           </ul>
         </li>

@@ -1,3 +1,3 @@
 <template>
-Pagina niet gevonden! Naar login: <router-link to="/login">Login</router-link>
+Pagina niet gevonden! <router-link to="/">Terug naar home</router-link>
 </template>
