@@ -34,8 +34,23 @@ class HomeMock extends Mocker {
                     visitors: {label: "Visitors", icon: 'stats'},
                     users: {label: "Users", icon: 'users'},
                     settings: {label: "Settings"},
-                }
+                },
+                html: 'pages',
+                selectedMenuItem: 'pages',
             }];
+        });
+
+        let moduleRegExp = new RegExp('/api/module/*');
+
+        mock.onGet(moduleRegExp).reply((requestConfig) => {
+            let module = String(requestConfig.url).split('/').pop();
+            let params = {html: module, selectedMenuItem: ''};
+
+            if(module == ''){
+                params.selectedMenuItem = 'pages';
+            }
+
+            return [200, params];
         });
 
         mock.onGet("/api/logout").reply(() => {

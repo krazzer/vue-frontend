@@ -13,17 +13,34 @@ export default defineComponent({
     return {
       menu: {},
       selectedMenuItem: '',
+      html: '',
     }
   },
   mounted() {
     homeMock.mock();
     this.checkLogin();
 
-    this.loadModule(String(this.$route.params.module));
+    let module = this.$route.params.module;
+
+    if(module) {
+      this.loadModule(String(module));
+    }
   },
   methods: {
     loadModule(module: string) {
+      console.log(module);
       this.selectedMenuItem = module;
+
+      axios
+          .get('/api/module/' + module, {params: {}})
+          .then(response => {
+            if(response.data.html){
+              this.html = response.data.html;
+            }
+          }).catch(error => {
+            console.error(error);
+          }
+      );
     },
     logout() {
       axios
@@ -44,9 +61,10 @@ export default defineComponent({
               this.$router.push({name: 'login'});
             } else {
               this.menu = response.data.menu;
+              this.selectedMenuItem = response.data.selectedMenuItem;
 
-              if( ! this.selectedMenuItem) {
-                this.selectedMenuItem = 'pages';
+              if(response.data.html){
+                this.html = response.data.html;
               }
             }
           }).catch(error => {
@@ -107,6 +125,7 @@ export default defineComponent({
     </div>
   </div>
   <div class="main">
+    <span v-html="html"></span>
   </div>
 </template>
 
