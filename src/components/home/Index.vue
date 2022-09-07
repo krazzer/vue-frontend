@@ -21,10 +21,12 @@ export default defineComponent({
     homeMock.mock();
     this.checkLogin();
 
-    let module = this.$route.params.module;
+    if(this.$route) {
+      let module = this.$route.params.module;
 
-    if(module) {
-      this.loadModule(String(module));
+      if (module) {
+        this.loadModule(String(module));
+      }
     }
   },
   methods: {
@@ -61,7 +63,10 @@ export default defineComponent({
               this.$router.push({name: 'login'});
             } else {
               this.menu = response.data.menu;
-              this.selectedMenuItem = response.data.selectedMenuItem;
+
+              if( ! this.selectedMenuItem) {
+                this.selectedMenuItem = response.data.selectedMenuItem;
+              }
 
               if(response.data.html){
                 this.html = response.data.html;
