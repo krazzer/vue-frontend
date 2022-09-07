@@ -43,7 +43,7 @@ class HomeMock extends Mocker {
         let moduleRegExp = new RegExp('/api/module/*');
 
         mock.onGet(moduleRegExp).reply((requestConfig) => {
-            let module = String(requestConfig.url).split('/').pop();
+            let module = this.getModuleName(requestConfig.url);
             let params = {html: module, selectedMenuItem: ''};
 
             if(module == ''){
@@ -58,6 +58,14 @@ class HomeMock extends Mocker {
             loginMock.loggedIn = false;
             return [200];
         });
+    }
+
+    /**
+     * @param url
+     */
+    getModuleName(url: any)
+    {
+        return String(url).split('/').pop();
     }
 }
 
