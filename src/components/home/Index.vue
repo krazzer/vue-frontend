@@ -14,6 +14,7 @@ export default defineComponent({
       menu: {},
       selectedMenuItem: '',
       html: '',
+      assets: this.assets,
     }
   },
   mounted() {
@@ -28,7 +29,6 @@ export default defineComponent({
   },
   methods: {
     loadModule(module: string) {
-      console.log(module);
       this.selectedMenuItem = module;
 
       axios
@@ -118,7 +118,7 @@ export default defineComponent({
         </li>
         <li>
           <a href="javascript:void(0)" @click="logout">
-            <span><inline-svg :src="'src/assets/icons/logout.svg'"/></span> Uitloggen
+            <span><inline-svg :src="assets + 'icons/logout.svg'"/></span> Uitloggen
           </a>
         </li>
       </ul>

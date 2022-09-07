@@ -34,7 +34,7 @@ import Logo from "@/components/icons/Logo.vue";
 }
 
 .login {
-  background: url("../../assets/login-background.jpg") no-repeat center center fixed;
+  background: url("@/assets/login-background.jpg") no-repeat center center fixed;
   background-size: cover;
   display: flex;
   justify-content: center;
