@@ -43,6 +43,7 @@ import Base from "@/components/login/Base.vue";
 import Lock from "@/components/icons/Lock.vue";
 import Email from "@/components/icons/Email.vue";
 import {FormKit} from "@formkit/vue";
+import {markRaw} from "vue"
 </script>
 
 <template>
@@ -53,7 +54,7 @@ import {FormKit} from "@formkit/vue";
               prefix: {
                 $el: 'div',
                 attrs: {class: 'icon'},
-                children: [{$cmp: Email}],
+                children: [{$cmp: markRaw(Email)}],
               }
             }"
       />
@@ -62,7 +63,7 @@ import {FormKit} from "@formkit/vue";
               prefix: {
                 $el: 'div',
                 attrs: {class: 'icon'},
-                children: [{$cmp: Lock}],
+                children: [{$cmp: markRaw(Lock)}],
               }
             }"
       />
