@@ -12,6 +12,7 @@ export default defineComponent({
   data() {
     return {
       menu: {},
+      dataTable: {},
       selectedMenuItem: '',
       html: '',
       assets: this.assets,
@@ -21,7 +22,7 @@ export default defineComponent({
     homeMock.mock();
     this.checkLogin();
 
-    if(this.$route) {
+    if (this.$route) {
       let module = this.$route.params.module;
 
       if (module) {
@@ -36,9 +37,7 @@ export default defineComponent({
       axios
           .get('/api/module/' + module, {params: {}})
           .then(response => {
-            if(response.data.html){
-              this.html = response.data.html;
-            }
+            this.setContentByResponseData(response.data);
           }).catch(error => {
             console.error(error);
           }
@@ -55,7 +54,7 @@ export default defineComponent({
       );
     },
 
-    checkLogin(){
+    checkLogin() {
       axios
           .get('/api/home', {params: {}})
           .then(response => {
@@ -64,67 +63,76 @@ export default defineComponent({
             } else {
               this.menu = response.data.menu;
 
-              if( ! this.selectedMenuItem) {
+              if (!this.selectedMenuItem) {
                 this.selectedMenuItem = response.data.selectedMenuItem;
               }
 
-              if(response.data.html){
-                this.html = response.data.html;
-              }
+              this.setContentByResponseData(response.data);
             }
           }).catch(error => {
             console.error(error);
           }
       );
+    },
+
+    /**
+     * @param data
+     */
+    setContentByResponseData(data: any)
+    {
+      this.html = data.html;
+      this.dataTable = data.dataTable;
     }
   }
 });
 </script>
 
 <script setup lang="ts">
-  import Logo from "@/components/icons/Logo.vue";
-  import Menu from "@/components/menu/Menu.vue";
+import Logo from "@/components/icons/Logo.vue";
+import Menu from "@/components/menu/Menu.vue";
+import DataTable from "@/components/datatable/DataTable.vue";
 </script>
 
 <template>
   <div class="sidebar">
     <div class="sidebar__logo">
-      <Logo />
+      <Logo/>
     </div>
     <div class="sidebar__menu">
 
-      <Menu :test="menu" :menu="menu" :selectedItem="selectedMenuItem" :logout="logout" />
+      <Menu :menu="menu" :selectedItem="selectedMenuItem" :logout="logout"/>
     </div>
   </div>
   <div class="main">
-    <span v-html="html"></span>
+    <span v-if="html" v-html="html"></span>
+    <DataTable v-if="dataTable" :settings="dataTable" />
   </div>
 </template>
 
 <style lang="scss" scoped>
-  $sideBarWidth: 250px;
-  $mainPadding: 40px;
+$sideBarWidth: 250px;
+$mainPadding: 40px;
 
-  .sidebar{
-    width: $sideBarWidth;
-    padding: $mainPadding;
-    position: fixed;
-    background-color: var(--color-background-shade1);
-    height: 100%;
-    overflow: auto;
-    z-index: 1;
-    transition: background-color .5s;
+.sidebar {
+  width: $sideBarWidth;
+  padding: $mainPadding;
+  position: fixed;
+  background-color: var(--color-background-shade1);
+  height: 100%;
+  overflow: auto;
+  z-index: 1;
+  transition: background-color .5s;
 
-    &__logo{
-      margin-bottom: $mainPadding;
-    }
-
-    &__menu{
-      position: relative;
-    }
+  &__logo {
+    margin-bottom: $mainPadding;
   }
 
-  .main{
-    padding: $mainPadding $mainPadding $mainPadding $mainPadding + $sideBarWidth;
+  &__menu {
+    position: relative;
   }
+}
+
+.main {
+  padding: $mainPadding $mainPadding $mainPadding $mainPadding + $sideBarWidth;
+}
 </style>

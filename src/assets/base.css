@@ -19,6 +19,8 @@
     --vt-c-text-light-1: var(--color-indigo);
 
     --border-radius: 3px;
+
+    --color-scheme-transition-speed: .5s;
 }
 
 /* semantic color variables for this project */
@@ -89,6 +91,18 @@ a {
 
 a:hover {
     color: var(--main-color-darker);
+}
+
+.btn {
+    padding: 10px 15px;
+    line-height: 13px;
+    border: 1px solid var(--color-line);
+    color: var(--color-text);
+    border-radius: var(--border-radius);
+    display: inline-block;
+    cursor: pointer;
+    transition: border-color var(--color-scheme-transition-speed),
+    background-color var(--color-scheme-transition-speed), color var(--color-scheme-transition-speed);
 }
 
 body.transition {

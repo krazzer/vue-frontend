@@ -42,11 +42,29 @@ class HomeMock extends Mocker {
 
         let moduleRegExp = new RegExp('/api/module/*');
 
+        let clientsDataTable = {
+            addButtonLabel: 'New client',
+            headers: ['id', 'name', 'address', 'zip'],
+            data: [
+                [1, 'Peter', 'Peterstreet 17', '12345'],
+                [2, 'John', 'Johnstreet 17', '23456'],
+                [3, 'Susan', 'Susanstreet 17', '34567'],
+                [4, 'Henry', 'Henrystreet 17', '45678'],
+                [5, 'Naomi', 'Naomistreet 17', '56789'],
+            ],
+        };
+
         mock.onGet(moduleRegExp).reply((requestConfig) => {
             let module = this.getModuleName(requestConfig.url);
-            let params = {html: module, selectedMenuItem: ''};
+            let params;
 
-            if(module == ''){
+            if (module == 'clients') {
+                params = {html: '', selectedMenuItem: '', dataTable: clientsDataTable};
+            } else {
+                params = {html: module, selectedMenuItem: ''};
+            }
+
+            if (module == '') {
                 params.selectedMenuItem = 'pages';
             }
 
@@ -63,8 +81,7 @@ class HomeMock extends Mocker {
     /**
      * @param url
      */
-    getModuleName(url: any)
-    {
+    getModuleName(url: any) {
         return String(url).split('/').pop();
     }
 }
