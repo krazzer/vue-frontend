@@ -1,12 +1,17 @@
 <script lang="ts">
-export default {
+import {defineComponent} from "vue";
+
+export default defineComponent({
   name: "DataTable",
-  props: ['settings']
-}
+  props: ['settings'],
+  mounted(){
+  }
+});
+
 </script>
 
 <template>
-  <div class="datatable">
+  <div class="datatable" v-if="settings">
     <div class="datatable__toolbar">
       <a class="btn">{{ settings.addButtonLabel }}</a>
     </div>

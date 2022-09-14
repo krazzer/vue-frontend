@@ -13,5 +13,8 @@ export default defineConfig({
       "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
   },
-  base: '/cms/'
+  root: 'src/components/datatable',
+  build: {
+    outDir: '../../../dist/datatable'
+  }
 });
