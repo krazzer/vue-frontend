@@ -1,3 +1,4 @@
+// noinspection JSUnusedGlobalSymbols
 // <reference types="vite/client" />
 import MockAdapter from "axios-mock-adapter";
 
