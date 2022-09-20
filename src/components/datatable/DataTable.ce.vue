@@ -1,31 +1,31 @@
 <script lang="ts">
 import {defineComponent} from "vue";
 import axios from "axios";
+import MockAdapter from "axios-mock-adapter";
 import dataTableMock from "./classes/mock";
 
 export default defineComponent({
   name: "DataTable",
-  props: ['settings'],
+  props: ['settings', 'mocker', 'instance'],
   data() {
     return {
       addButtonLabel: null,
       headers: [],
       data: [],
-      instance: null,
       error: '',
     };
   },
   mounted() {
-    dataTableMock.mock(this.$mocker);
-
-    let instance = this.$el.parentElement.getAttribute('data-instance');
+    if( ! this.mocker){
+      let mocker = new MockAdapter(axios, {delayResponse: 50});
+      dataTableMock.mock(mocker);
+    } else {
+      dataTableMock.mock(this.mocker);
+    }
 
     if (this.settings) {
       this.convertSettings(this.settings);
-    }
-
-    if (!this.settings && instance) {
-      this.instance = instance;
+    } else if (this.instance) {
       this.init();
     }
   },
@@ -34,7 +34,6 @@ export default defineComponent({
       this.addButtonLabel = settings.addButtonLabel;
       this.headers        = settings.headers;
       this.data           = settings.data;
-      this.instance       = settings.instance;
     },
 
     init(){

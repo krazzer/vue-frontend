@@ -89,7 +89,6 @@ export default defineComponent({
 <script setup lang="ts">
 import Logo from "@/components/icons/Logo.vue";
 import Menu from "@/components/menu/Menu.vue";
-import DataTable from "@/components/datatable/DataTable.vue";
 </script>
 
 <template>
@@ -104,7 +103,7 @@ import DataTable from "@/components/datatable/DataTable.vue";
   </div>
   <div class="main">
     <span v-if="html" v-html="html"></span>
-    <DataTable v-if="dataTable" :settings="dataTable" />
+    <kikcms-datatable v-if="dataTable" :settings.prop="dataTable" :mocker.prop="$mocker" :instance="dataTable.instance" />
   </div>
 </template>
 

@@ -12,12 +12,13 @@
     "typecheck": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "dev:datatable": "vite --config vite.datatable.config.ts",
-    "build:datatable": "vue-tsc --noEmit && vite --config vite.datatable.config.ts build",
+    "build:datatable": "vue-tsc --noEmit && vite --config vite.datatable.config.ts build --emptyOutDir -- --target wc --name kikcms-datatable",
     "preview:datatable": "vite --config vite.datatable.config.ts preview --port 5051"
   },
   "dependencies": {
     "@formkit/themes": "^1.0.0-beta.6",
     "@formkit/vue": "^1.0.0-beta.6",
+    "@vue/web-component-wrapper": "^1.3.0",
     "axios": "^0.26.1",
     "vue": "^3.2.31",
     "vue-axios": "^3.4.1",

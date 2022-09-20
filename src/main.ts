@@ -6,6 +6,8 @@ import router from "./router";
 import { plugin, defaultConfig } from '@formkit/vue'
 import '@formkit/themes/genesis'
 import MockAdapter from "axios-mock-adapter";
+import { defineCustomElement } from 'vue'
+import DataTable from "@/components/datatable/DataTable.ce.vue";
 
 const app = Vue.createApp(App);
 
@@ -17,5 +19,7 @@ if(import.meta.env.DEV) {
 
 app.use(router, VueAxios, axios);
 app.use(plugin, defaultConfig);
+
+customElements.define('kikcms-datatable', defineCustomElement(DataTable));
 
 app.mount("#app");
