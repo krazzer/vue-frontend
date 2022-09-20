@@ -1,12 +1,14 @@
+import type MockAdapter from "axios-mock-adapter";
+
 export abstract class Mocker {
     constructor() {
     }
 
-    mock(){
+    mock(mocker: MockAdapter) {
         if (import.meta.env.DEV) {
-            this.addMock();
+            this.addMock(mocker);
         }
     }
 
-    abstract addMock(): void;
+    abstract addMock(mocker: MockAdapter): void;
 }

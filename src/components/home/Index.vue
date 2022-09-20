@@ -14,12 +14,11 @@ export default defineComponent({
       menu: {},
       dataTable: {},
       selectedMenuItem: '',
-      html: '',
-      assets: this.assets,
+      html: ''
     }
   },
   mounted() {
-    homeMock.mock();
+    homeMock.mock(this.$mocker);
     this.checkLogin();
 
     if (this.$route) {

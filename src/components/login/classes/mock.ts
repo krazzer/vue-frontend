@@ -1,6 +1,6 @@
 import {Mocker} from "@/classes/mocker";
-import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
+import type MockAdapter from "axios-mock-adapter";
 
 class LoginMock extends Mocker
 {
@@ -16,10 +16,8 @@ class LoginMock extends Mocker
         }
     }
 
-    addMock(){
-        let mock = new MockAdapter(axios, {delayResponse: 50});
-
-        mock.onGet("/api/login").reply((request) => {
+    addMock(mocker: MockAdapter){
+        mocker.onGet("/api/login").reply((request) => {
             let params = request.params;
 
             if (params.password === 'networkerror') {
@@ -40,8 +38,8 @@ class LoginMock extends Mocker
             return [200, {success: params.password === 'test' && params.email === 'test@test.com'}];
         });
 
-        mock.onGet("mock-network-error").networkError();
-        mock.onGet("mock-network-timeout").timeout();
+        mocker.onGet("mock-network-error").networkError();
+        mocker.onGet("mock-network-timeout").timeout();
     }
 }
 

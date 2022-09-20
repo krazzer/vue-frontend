@@ -33,7 +33,7 @@ export default defineComponent({
     }
   },
   mounted() {
-    loginMock.mock();
+    loginMock.mock(this.$mocker);
   }
 });
 </script>

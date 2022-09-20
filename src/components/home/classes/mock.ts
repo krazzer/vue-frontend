@@ -1,13 +1,10 @@
 import {Mocker} from "@/classes/mocker";
-import MockAdapter from "axios-mock-adapter";
-import axios from "axios";
 import loginMock from "@/components/login/classes/mock";
+import type MockAdapter from "axios-mock-adapter";
 
 class HomeMock extends Mocker {
-    addMock() {
-        let mock = new MockAdapter(axios, {delayResponse: 50});
-
-        mock.onGet("/api/home").reply(() => {
+    addMock(mocker: MockAdapter) {
+        mocker.onGet("/api/home").reply(() => {
             return [200, {
                 loggedIn: loginMock.loggedIn,
                 menu: {
@@ -52,9 +49,10 @@ class HomeMock extends Mocker {
                 [4, 'Henry', 'Henrystreet 17', '45678'],
                 [5, 'Naomi', 'Naomistreet 17', '56789'],
             ],
+            instance: 'test',
         };
 
-        mock.onGet(moduleRegExp).reply((requestConfig) => {
+        mocker.onGet(moduleRegExp).reply((requestConfig) => {
             let module = this.getModuleName(requestConfig.url);
             let params;
 
@@ -71,7 +69,7 @@ class HomeMock extends Mocker {
             return [200, params];
         });
 
-        mock.onGet("/api/logout").reply(() => {
+        mocker.onGet("/api/logout").reply(() => {
             localStorage.loggedIn = JSON.stringify(false);
             loginMock.loggedIn = false;
             return [200];
