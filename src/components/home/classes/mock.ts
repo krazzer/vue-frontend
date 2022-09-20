@@ -1,5 +1,6 @@
 import {Mocker} from "@/classes/mocker";
 import loginMock from "@/components/login/classes/mock";
+import dataTableMock from "@/components/datatable/classes/mock";
 import type MockAdapter from "axios-mock-adapter";
 
 class HomeMock extends Mocker {
@@ -39,18 +40,7 @@ class HomeMock extends Mocker {
 
         let moduleRegExp = new RegExp('/api/module/*');
 
-        let clientsDataTable = {
-            addButtonLabel: 'New client',
-            headers: ['id', 'name', 'address', 'zip'],
-            data: [
-                [1, 'Peter', 'Peterstreet 17', '12345'],
-                [2, 'John', 'Johnstreet 17', '23456'],
-                [3, 'Susan', 'Susanstreet 17', '34567'],
-                [4, 'Henry', 'Henrystreet 17', '45678'],
-                [5, 'Naomi', 'Naomistreet 17', '56789'],
-            ],
-            instance: 'test',
-        };
+        let clientsDataTable = dataTableMock.getDefaultData();
 
         mocker.onGet(moduleRegExp).reply((requestConfig) => {
             let module = this.getModuleName(requestConfig.url);

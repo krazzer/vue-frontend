@@ -3,7 +3,16 @@ import type MockAdapter from "axios-mock-adapter";
 
 class DataTableMock extends Mocker {
     addMock(mocker: MockAdapter) {
-        let clientsDataTable = {
+        let clientsDataTable = this.getDefaultData();
+
+        mocker.onGet("/api/datatable").reply(() => {
+            let params = {settings: clientsDataTable};
+            return [200, params];
+        });
+    }
+
+    getDefaultData() {
+        return  {
             addButtonLabel: 'New client',
             headers: ['id', 'name', 'address', 'zip'],
             data: [
@@ -15,11 +24,6 @@ class DataTableMock extends Mocker {
             ],
             instance: 'test',
         };
-
-        mocker.onGet("/api/datatable").reply(() => {
-            let params = {settings: clientsDataTable};
-            return [200, params];
-        });
     }
 }
 
