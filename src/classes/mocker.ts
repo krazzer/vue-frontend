@@ -1,4 +1,4 @@
-export class Mocker {
+export abstract class Mocker {
     constructor() {
     }
 
@@ -8,7 +8,5 @@ export class Mocker {
         }
     }
 
-    addMock() {
-
-    }
+    abstract addMock(): void;
 }
