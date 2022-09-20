@@ -4,11 +4,6 @@ import {defineComponent} from "vue";
 export default defineComponent({
   name: "Menu",
   props: ['menu', 'selectedItem', 'logout'],
-  data() {
-    return {
-      assets: this.assets,
-    }
-  },
   methods: {
     getIcon(item: any){
       return 'src/assets/icons/' + (item.icon ? item.icon : 'default') + '.svg';
@@ -49,7 +44,7 @@ import InlineSvg from 'vue-inline-svg';
     </li>
     <li>
       <a href="javascript:void(0)" @click="logout">
-        <span><inline-svg :src="assets + 'icons/logout.svg'"/></span> Uitloggen
+        <span><inline-svg :src="$assets + 'icons/logout.svg'"/></span> Uitloggen
       </a>
     </li>
   </ul>

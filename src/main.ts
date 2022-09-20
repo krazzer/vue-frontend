@@ -9,7 +9,7 @@ import MockAdapter from "axios-mock-adapter";
 
 const app = Vue.createApp(App);
 
-app.config.globalProperties.assets = 'src/assets/';
+app.config.globalProperties.$assets = 'src/assets/';
 
 if(import.meta.env.DEV) {
     app.config.globalProperties.$mocker = new MockAdapter(axios, {delayResponse: 50});

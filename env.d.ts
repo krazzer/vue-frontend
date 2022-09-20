@@ -1,5 +1,5 @@
-// noinspection JSUnusedGlobalSymbols
-// <reference types="vite/client" />
+// noinspection JSUnusedGlobalSymbols, JSFileReferences
+/// <reference types="vite/client" />
 import MockAdapter from "axios-mock-adapter";
 
 declare module 'vue/dist/vue.esm-bundler'
