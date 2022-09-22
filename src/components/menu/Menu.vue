@@ -5,17 +5,20 @@ export default defineComponent({
   name: "Menu",
   props: ['menu', 'selectedItem', 'logout'],
   methods: {
-    getIcon(item: any){
+    getIcon(item: any) {
       return 'src/assets/icons/' + (item.icon ? item.icon : 'default') + '.svg';
     },
 
-    isSvg(item: any){
-      if( ! item.icon){
+    isSvg(item: any) {
+      if (!item.icon) {
         return false;
       }
 
       return item.icon.substring(0, 1) == '<';
     },
+    isSelected(item: any, key: any): boolean{
+      return this.selectedItem === key || (item.submenu && this.selectedItem in item.submenu);
+    }
   }
 });
 </script>
@@ -26,7 +29,7 @@ import InlineSvg from 'vue-inline-svg';
 
 <template>
   <ul>
-    <li v-for="(item, key) in menu" :class="selectedItem === key ? 'selected' : ''">
+    <li v-for="(item, key) in menu" :class="isSelected(item, key) ? 'selected' : ''">
       <router-link :to="key">
         <span v-if="isSvg(item)" v-html="item.icon"></span>
         <span v-else><inline-svg :src="getIcon(item)"/></span>
@@ -79,39 +82,49 @@ ul {
           fill: var(--color-text);
         }
       }
-
-      &:hover {
-        background-color: var(--main-color);
-        color: var(--color-text-in-main-bg);
-
-        :deep(svg), :deep(svg) * {
-          fill: var(--color-text-in-main-bg);
-        }
-      }
-    }
-
-    &.selected > a {
-      background-color: var(--main-color);
-      color: var(--color-text-in-main-bg);
-
-      :deep(svg), :deep(svg) * {
-        fill: var(--color-text-in-main-bg);
-      }
     }
 
     ul {
-      margin-left: 20px;
-      margin-top: 3px;
+      display: none;
+      background-color: var(--color-background-shade2);
+      margin-top: 2px;
+      border-radius: var(--border-radius);
+
+      li{
+        margin-bottom: 2px;
+
+        &.selected > a, > a:hover {
+          background-color: var(--color-background-shade3);
+        }
+      }
 
       a {
         font-size: small;
         line-height: 18px;
 
         :deep(svg) {
-          top: 0;
+          top: 1px;
+          left: -23px;
+          width: 15px;
+          height: 15px;
         }
       }
     }
+  }
+}
+
+ul:first-child > li {
+  &.selected > a, > a:hover {
+    background-color: var(--main-color);
+    color: var(--color-text-in-main-bg);
+
+    :deep(svg), :deep(svg) * {
+      fill: var(--color-text-in-main-bg);
+    }
+  }
+
+  &.selected ul{
+    display: block;
   }
 }
 </style>
