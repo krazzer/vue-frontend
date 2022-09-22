@@ -1,7 +1,6 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
 import axios from "axios";
-import loginMock from "./classes/mock";
 
 interface LoginStatus {
   success?: boolean;
@@ -32,9 +31,6 @@ export default defineComponent({
           });
     }
   },
-  mounted() {
-    loginMock.mock(this.$mocker);
-  }
 });
 </script>
 

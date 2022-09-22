@@ -1,8 +1,7 @@
-import {Mocker} from "@/classes/mocker";
 import type MockAdapter from "axios-mock-adapter";
 
-class DataTableMock extends Mocker {
-    addMock(mocker: MockAdapter) {
+class DataTableMock {
+    mock(mocker: MockAdapter) {
         let clientsDataTable = this.getDefaultData();
 
         mocker.onGet("/api/datatable").reply(() => {

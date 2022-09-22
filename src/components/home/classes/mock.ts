@@ -1,10 +1,9 @@
-import {Mocker} from "@/classes/mocker";
 import loginMock from "@/components/login/classes/mock";
 import dataTableMock from "@/components/datatable/classes/mock";
 import type MockAdapter from "axios-mock-adapter";
 
-class HomeMock extends Mocker {
-    addMock(mocker: MockAdapter) {
+class HomeMock {
+    mock(mocker: MockAdapter) {
         mocker.onGet("/api/home").reply(() => {
             return [200, {
                 loggedIn: loginMock.loggedIn,
@@ -61,7 +60,7 @@ class HomeMock extends Mocker {
 
         mocker.onGet("/api/logout").reply(() => {
             localStorage.loggedIn = JSON.stringify(false);
-            loginMock.loggedIn = false;
+            loginMock.loggedIn    = false;
             return [200];
         });
     }

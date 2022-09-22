@@ -1,7 +1,6 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
 import axios from "axios";
-import homeMock from "./classes/mock";
 
 export default defineComponent({
   watch: {
@@ -18,7 +17,6 @@ export default defineComponent({
     }
   },
   mounted() {
-    homeMock.mock(this.$mocker);
     this.checkLogin();
 
     if (this.$route) {
@@ -103,7 +101,7 @@ import Menu from "@/components/menu/Menu.vue";
   </div>
   <div class="main">
     <span v-if="html" v-html="html"></span>
-    <kikcms-datatable v-if="dataTable" :settings.prop="dataTable" :mocker.prop="$mocker" :instance="dataTable.instance" />
+    <kikcms-datatable v-if="dataTable" :settings.prop="dataTable" :instance="dataTable.instance" />
   </div>
 </template>
 

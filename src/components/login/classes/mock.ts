@@ -1,14 +1,11 @@
-import {Mocker} from "@/classes/mocker";
 import axios from "axios";
 import type MockAdapter from "axios-mock-adapter";
 
-class LoginMock extends Mocker
+class LoginMock
 {
     loggedIn: boolean;
 
     constructor() {
-        super();
-
         if(localStorage.loggedIn) {
             this.loggedIn = JSON.parse(localStorage.loggedIn);
         } else {
@@ -16,7 +13,7 @@ class LoginMock extends Mocker
         }
     }
 
-    addMock(mocker: MockAdapter){
+    mock(mocker: MockAdapter){
         mocker.onGet("/api/login").reply((request) => {
             let params = request.params;
 
