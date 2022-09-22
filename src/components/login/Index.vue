@@ -10,6 +10,10 @@ export default defineComponent({
   data() {
     return {
       loginStatus: <LoginStatus>{},
+      email: '',
+      password: '',
+      remember: false,
+      form: null,
     }
   },
   methods: {
@@ -26,7 +30,8 @@ export default defineComponent({
             if (this.loginStatus.success) {
               this.$router.push({name: 'home'});
             }
-          }).catch(error => {
+          })
+          .catch(error => {
             node.setErrors([error.message]);
           });
     }
@@ -36,35 +41,43 @@ export default defineComponent({
 
 <script setup lang="ts">
 import Base from "@/components/login/Base.vue";
-import Lock from "@/components/icons/Lock.vue";
-import Email from "@/components/icons/Email.vue";
+import LockIcon from "@/components/icons/Lock.vue";
+import EmailIcon from "@/components/icons/Email.vue";
 import {FormKit} from "@formkit/vue";
 import {markRaw} from "vue"
 </script>
 
 <template>
   <Base>
-    <FormKit type="form" submit-label="Inloggen" @submit="login">
-      <FormKit name="email" outer-class="email" placeholder="E-mail adres" validation="required|email"
+    <FormKit type="form" submit-label="Inloggen" id="loginform" @submit="login" v-model="form">
+      <FormKit outer-class="email" label="e-mail" placeholder="E-mail adres" validation="required|email" v-model="email"
                :sections-schema="{
               prefix: {
                 $el: 'div',
                 attrs: {class: 'icon'},
-                children: [{$cmp: markRaw(Email)}],
+                children: [{$cmp: markRaw(EmailIcon)}],
               }
-            }"
+            }" name="email"
       />
-      <FormKit type="password" name="password" placeholder="Wachtwoord" validation="required" outer-class="password"
-              :errors="loginStatus.success === false ? ['Wrong e-mail or password'] : []" :sections-schema="{
+      <FormKit type="password" placeholder="Wachtwoord" validation="required" outer-class="password" v-model="password"
+               :errors="loginStatus.success === false ? ['Wrong e-mail or password'] : []" :sections-schema="{
               prefix: {
                 $el: 'div',
                 attrs: {class: 'icon'},
-                children: [{$cmp: markRaw(Lock)}],
+                children: [{$cmp: markRaw(LockIcon)}],
               }
-            }"
+            }" label="password" name="password"
       />
-      <FormKit type="checkbox" name="remember" label="Onthoud mij"/>
+      <FormKit type="checkbox" label="Onthoud mij" v-model="remember"/>
     </FormKit>
     <router-link :to="{ name: 'passwordLost' }">Wachtwoord vergeten?</router-link>
   </Base>
 </template>
+
+<style lang="scss">
+.email, .password {
+  .formkit-label {
+    display: none;
+  }
+}
+</style>
