@@ -10,9 +10,10 @@ export default defineConfig({
   plugins: [vue({
     template: {
       compilerOptions: {
-        isCustomElement: (tag) => tag.includes('kikcms-')
-      }
-    }
+        isCustomElement: (tag) => tag.includes('kikcms-'),
+      },
+    },
+    customElement:true, // possibly need regex in future to prevent all components from being webcomponents (styling)
   }), vueJsx()],
   resolve: {
     alias: {
@@ -22,5 +23,5 @@ export default defineConfig({
   root: 'src/components/datatable',
   build: {
     outDir: '../../../dist/datatable'
-  }
+  },
 });

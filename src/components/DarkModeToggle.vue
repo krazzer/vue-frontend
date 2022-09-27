@@ -10,17 +10,24 @@ export default defineComponent({
   },
   methods: {
     toggle() {
-      this.darkMode = !this.darkMode;
+      this.darkMode         = !this.darkMode;
       localStorage.darkMode = JSON.stringify(this.darkMode);
     }
   },
-  watch:{
-    darkMode(val){
-      document.body.classList.toggle('darkmode', val)
+  watch: {
+    darkMode(val) {
+      let body = document.body;
+
+      body.classList.add('transitioning');
+      body.classList.toggle('darkmode', val);
+
+      body.addEventListener('transitionend', () => {
+        body.classList.remove('transitioning');
+      });
     }
   },
-  mounted(){
-    if(localStorage.darkMode){
+  mounted() {
+    if (localStorage.darkMode) {
       this.darkMode = JSON.parse(localStorage.darkMode);
       return;
     }

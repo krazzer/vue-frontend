@@ -6,7 +6,7 @@ import '@formkit/themes/genesis'
 import type {Component} from "vue";
 import {Mocker} from "@/classes/mocker";
 import {defineCustomElement} from "vue";
-import DataTable from "@/components/datatable/DataTable.ce.vue";
+import DataTable from "@/components/datatable/DataTable.vue";
 
 class Wrapper
 {

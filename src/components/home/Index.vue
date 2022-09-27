@@ -87,6 +87,7 @@ export default defineComponent({
 <script setup lang="ts">
 import Logo from "@/components/icons/Logo.vue";
 import Menu from "@/components/menu/Menu.vue";
+import DataTable from "@/components/datatable/DataTable.vue";
 </script>
 
 <template>
@@ -101,7 +102,7 @@ import Menu from "@/components/menu/Menu.vue";
   </div>
   <div class="main">
     <span v-if="html" v-html="html"></span>
-    <kikcms-datatable v-if="dataTable" :settings.prop="dataTable" :instance="dataTable.instance" />
+    <DataTable v-if="dataTable" :settings.prop="dataTable" :instance="dataTable.instance" />
   </div>
 </template>
 
@@ -117,7 +118,7 @@ $mainPadding: 40px;
   height: 100%;
   overflow: auto;
   z-index: 1;
-  transition: background-color .5s;
+  transition: background-color var(--color-scheme-transition-speed);
 
   &__logo {
     margin-bottom: $mainPadding;

@@ -64,6 +64,8 @@ export default defineComponent({
 </template>
 
 <style lang="scss" scoped>
+@import "@/assets/base.scss";
+
 .datatable {
 
   &__toolbar {

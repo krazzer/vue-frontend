@@ -13,7 +13,7 @@
 
 <style scoped>
   .kik, .cms{
-    transition: fill 0.5s;
+    transition: fill var(--color-scheme-transition-speed);
   }
 
   .kik{

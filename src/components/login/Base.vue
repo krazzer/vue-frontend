@@ -89,7 +89,7 @@ import Logo from "@/components/icons/Logo.vue";
 }
 
 body.transition .login:before {
-  transition: background-color .5s, opacity .5s;
+  transition: background-color var(--color-scheme-transition-speed), opacity var(--color-scheme-transition-speed);
 }
 
 body.darkmode .login:before {

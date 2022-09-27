@@ -18,7 +18,7 @@ export default{
   <router-view/>
 </template>
 
-<style>
-@import "assets/base.css";
-@import "assets/formkit.css";
+<style lang="scss">
+@import "assets/base.scss";
+@import "assets/formkit.scss";
 </style>
