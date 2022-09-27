@@ -19,5 +19,8 @@ export default defineConfig({
       "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
   },
-  base: '/cms/'
+  base: '/cms/',
+  test: {
+    environment: 'jsdom'
+  },
 });

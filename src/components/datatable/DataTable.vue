@@ -27,13 +27,15 @@ export default defineComponent({
       this.data           = settings.data;
     },
 
-    init(){
-      axios
+    async init() {
+      this.error = '';
+
+      await axios
           .get('/api/datatable', {params: {instance: this.instance}})
           .then(response => {
             this.convertSettings(response.data.settings);
           }).catch(error => {
-            console.error(error);
+            this.error = error;
           });
     }
   }
@@ -43,23 +45,28 @@ export default defineComponent({
 
 <template>
   <div class="datatable" v-if="instance">
-    <div class="datatable__toolbar">
-      <a class="btn">{{ addButtonLabel }}</a>
+    <div class="datatable__error" v-if="error">
+      {{ this.error }}
     </div>
-    <div class="datatable__table">
-      <table>
-        <thead>
-        <tr>
-          <th v-for="header in headers">{{ header }}</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="row in data">
-          <td v-for="cell in row">{{ cell }}</td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
+    <template v-else>
+      <div class="datatable__toolbar">
+        <a class="btn">{{ addButtonLabel }}</a>
+      </div>
+      <div class="datatable__table">
+        <table>
+          <thead>
+          <tr>
+            <th v-for="header in headers">{{ header }}</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr v-for="row in data">
+            <td v-for="cell in row">{{ cell }}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </template>
   </div>
 </template>
 

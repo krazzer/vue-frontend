@@ -7,8 +7,8 @@ import homeMock from "@/components/home/classes/mock";
 export class Mocker {
     mocker: MockAdapter;
 
-    constructor() {
-        this.mocker = new MockAdapter(axios, {delayResponse: 50});
+    constructor(delay: number = 50) {
+        this.mocker = new MockAdapter(axios, {delayResponse: delay});
     }
 
     mock() {
