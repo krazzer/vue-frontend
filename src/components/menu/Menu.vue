@@ -35,7 +35,7 @@ import InlineSvg from 'vue-inline-svg';
         <span v-else><inline-svg :src="getIcon(item)"/></span>
         {{ item.label }}
       </router-link>
-      <ul v-if="item.submenu">
+      <ul v-if="item.submenu" :data-count="Object.keys(item.submenu).length">
         <li v-for="(subitem, subkey) in item.submenu" :class="selectedItem === subkey ? 'selected' : ''">
           <router-link :to="subkey">
             <span v-if="isSvg(subitem)" v-html="subitem.icon"></span>
@@ -129,7 +129,11 @@ ul:first-child > li {
   }
 
   &.selected ul{
-    max-height: 100px;
+    @for $i from 1 through 20 {
+      &[data-count="#{$i}"] {
+        max-height: $i * 40px;
+      }
+    }
   }
 }
 </style>
