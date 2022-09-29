@@ -6,7 +6,7 @@ export default defineComponent({
   props: ['menu', 'selectedItem', 'logout'],
   methods: {
     getIcon(item: any) {
-      return 'src/assets/icons/' + (item.icon ? item.icon : 'default') + '.svg';
+      return this.$assets + 'icons/' + (item.icon ? item.icon : 'default') + '.svg';
     },
 
     isSvg(item: any) {

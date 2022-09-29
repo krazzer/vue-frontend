@@ -14,13 +14,14 @@ export default defineComponent({
       password: '',
       remember: false,
       form: null,
+      errors: <Array<string>>[],
     }
   },
   methods: {
-    async login(params: object, node: any) {
-      this.loginStatus = {};
+    async login(params: object) {
 
-      node.setErrors([]);
+      this.loginStatus = {};
+      this.errors      = [];
 
       await axios
           .get('/api/login', {params: params})
@@ -29,10 +30,12 @@ export default defineComponent({
 
             if (this.loginStatus.success) {
               this.$router.push({name: 'home'});
+            } else {
+              this.errors.push('Wrong e-mail or password');
             }
           })
           .catch(error => {
-            node.setErrors([error.message]);
+            this.errors.push(error.message);
           });
     }
   },
@@ -41,10 +44,9 @@ export default defineComponent({
 
 <script setup lang="ts">
 import Base from "@/components/login/Base.vue";
-import LockIcon from "@/components/icons/Lock.vue";
-import EmailIcon from "@/components/icons/Email.vue";
 import {FormKit} from "@formkit/vue";
 import {markRaw} from "vue"
+import InlineSvg from 'vue-inline-svg';
 </script>
 
 <template>
@@ -55,16 +57,16 @@ import {markRaw} from "vue"
               prefix: {
                 $el: 'div',
                 attrs: {class: 'icon'},
-                children: [{$cmp: markRaw(EmailIcon)}],
+                children: [{$cmp: markRaw(InlineSvg), props: {src: this.$assets + 'icons/email.svg'}}],
               }
             }" name="email"
       />
       <FormKit type="password" placeholder="Wachtwoord" validation="required" outer-class="password" v-model="password"
-               :errors="loginStatus.success === false ? ['Wrong e-mail or password'] : []" :sections-schema="{
+               :errors="errors" :sections-schema="{
               prefix: {
                 $el: 'div',
                 attrs: {class: 'icon'},
-                children: [{$cmp: markRaw(LockIcon)}],
+                children: [{$cmp: markRaw(InlineSvg), props: {src: this.$assets + 'icons/lock.svg'}}],
               }
             }" label="password" name="password"
       />
