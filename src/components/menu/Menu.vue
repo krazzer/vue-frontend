@@ -85,16 +85,21 @@ ul {
     }
 
     ul {
-      display: none;
+      max-height: 0;
       background-color: var(--color-background-shade2);
-      margin-top: 2px;
       border-radius: var(--border-radius);
+      transition: max-height .5s;
+      overflow: hidden;
 
       li{
         margin-bottom: 2px;
 
         &.selected > a, > a:hover {
           background-color: var(--color-background-shade3);
+        }
+
+        &:first-child{
+          margin-top: 2px;
         }
       }
 
@@ -124,7 +129,7 @@ ul:first-child > li {
   }
 
   &.selected ul{
-    display: block;
+    max-height: 100px;
   }
 }
 </style>
