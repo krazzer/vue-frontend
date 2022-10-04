@@ -6,8 +6,8 @@ class LoginMock
     loggedIn: boolean;
 
     constructor() {
-        if(localStorage.loggedIn) {
-            this.loggedIn = JSON.parse(localStorage.loggedIn);
+        if(localStorage.getItem('loggedIn')) {
+            this.loggedIn = JSON.parse(String(localStorage.getItem('loggedIn')));
         } else {
             this.loggedIn = false;
         }

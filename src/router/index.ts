@@ -5,7 +5,7 @@ const router = VueRouter.createRouter({
     routes: [{
         path: "/",
         name: "home",
-        component: () => import("../components/home/Index.vue"),
+        component: () => import("../components/home/Home.vue"),
     }, {
         path: "/login",
         name: "login",
@@ -17,7 +17,7 @@ const router = VueRouter.createRouter({
     }, {
         path: '/:module',
         name: "module",
-        component: () => import("../components/home/Index.vue"),
+        component: () => import("../components/home/Home.vue"),
     }],
 });
 

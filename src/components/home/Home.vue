@@ -4,8 +4,9 @@ import axios from "axios";
 
 export default defineComponent({
   watch: {
-    $route(to) {
-      this.loadModule(to.params.module);
+    $route() {
+      let module = String(this.$route.params.module);
+      this.loadModule(module);
     }
   },
   data() {
