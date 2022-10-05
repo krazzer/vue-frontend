@@ -5,8 +5,11 @@ import axios from "axios";
 export default defineComponent({
   watch: {
     $route() {
-      let module = String(this.$route.params.module);
-      this.loadModule(module);
+      let module = this.$route.params.module;
+
+      if (module && typeof module != undefined) {
+        this.loadModule(String(module));
+      }
     }
   },
   data() {
@@ -23,7 +26,7 @@ export default defineComponent({
     if (this.$route) {
       let module = this.$route.params.module;
 
-      if (module) {
+      if (module && typeof module != undefined) {
         this.loadModule(String(module));
       }
     }
@@ -97,7 +100,6 @@ import DataTable from "@/components/datatable/DataTable.vue";
       <Logo/>
     </div>
     <div class="sidebar__menu">
-
       <Menu :menu="menu" :selectedItem="selectedMenuItem" :logout="logout"/>
     </div>
   </div>

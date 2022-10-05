@@ -47,6 +47,8 @@ import Base from "@/components/login/Base.vue";
 import {FormKit} from "@formkit/vue";
 import {markRaw} from "vue"
 import InlineSvg from 'vue-inline-svg';
+import emailSvg from '@/assets/icons/email.svg';
+import lockSvg from '@/assets/icons/lock.svg';
 </script>
 
 <template>
@@ -57,7 +59,7 @@ import InlineSvg from 'vue-inline-svg';
               prefix: {
                 $el: 'div',
                 attrs: {class: 'icon'},
-                children: [{$cmp: markRaw(InlineSvg), props: {src: this.$assets + 'icons/email.svg'}}],
+                children: [{$cmp: markRaw(InlineSvg), props: {src: emailSvg}}],
               }
             }" name="email"
       />
@@ -66,7 +68,7 @@ import InlineSvg from 'vue-inline-svg';
               prefix: {
                 $el: 'div',
                 attrs: {class: 'icon'},
-                children: [{$cmp: markRaw(InlineSvg), props: {src: this.$assets + 'icons/lock.svg'}}],
+                children: [{$cmp: markRaw(InlineSvg), props: {src: lockSvg}}],
               }
             }" label="password" name="password"
       />

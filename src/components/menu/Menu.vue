@@ -1,12 +1,28 @@
 <script lang="ts">
 import {defineComponent} from "vue";
 
+const modules = import.meta.glob('@/assets/icons/*.svg', {as: 'raw'});
+
 export default defineComponent({
   name: "Menu",
   props: ['menu', 'selectedItem', 'logout'],
   methods: {
     getIcon(item: any) {
-      return this.$assets + 'icons/' + (item.icon ? item.icon : 'default') + '.svg';
+      let defaultIcon = '';
+
+      for (const key in modules) {
+        const name = key.split('/').reverse()[0].split('.')[0];
+
+        if(name == item.icon){
+          return modules[key];
+        }
+
+        if(name == 'default'){
+          defaultIcon = String(modules[key]);
+        }
+      }
+
+      return defaultIcon;
     },
 
     isSvg(item: any) {
@@ -16,15 +32,11 @@ export default defineComponent({
 
       return item.icon.substring(0, 1) == '<';
     },
-    isSelected(item: any, key: any): boolean{
+    isSelected(item: any, key: any): boolean {
       return this.selectedItem === key || (item.submenu && this.selectedItem in item.submenu);
     }
   }
 });
-</script>
-
-<script setup lang="ts">
-import InlineSvg from 'vue-inline-svg';
 </script>
 
 <template>
@@ -32,14 +44,14 @@ import InlineSvg from 'vue-inline-svg';
     <li v-for="(item, key) in menu" :class="isSelected(item, key) ? 'selected' : ''">
       <router-link :to="key">
         <span v-if="isSvg(item)" v-html="item.icon"></span>
-        <span v-else><inline-svg :src="getIcon(item)"/></span>
+        <span v-else v-html="getIcon(item)"></span>
         {{ item.label }}
       </router-link>
       <ul v-if="item.submenu" :data-count="Object.keys(item.submenu).length">
         <li v-for="(subitem, subkey) in item.submenu" :class="selectedItem === subkey ? 'selected' : ''">
           <router-link :to="subkey">
             <span v-if="isSvg(subitem)" v-html="subitem.icon"></span>
-            <span v-else><inline-svg :src="getIcon(subitem)"/></span>
+            <span v-else v-html="getIcon(subitem)"></span>
             {{ subitem.label }}
           </router-link>
         </li>
@@ -47,7 +59,7 @@ import InlineSvg from 'vue-inline-svg';
     </li>
     <li>
       <a href="javascript:void(0)" @click="logout">
-        <span><inline-svg :src="$assets + 'icons/logout.svg'"/></span> Uitloggen
+        <span v-html="getIcon({icon: 'logout'})"></span> Uitloggen
       </a>
     </li>
   </ul>
@@ -91,14 +103,14 @@ ul {
       transition: max-height .5s;
       overflow: hidden;
 
-      li{
+      li {
         margin-bottom: 2px;
 
         &.selected > a, > a:hover {
           background-color: var(--color-background-shade3);
         }
 
-        &:first-child{
+        &:first-child {
           margin-top: 2px;
         }
       }
@@ -128,7 +140,7 @@ ul:first-child > li {
     }
   }
 
-  &.selected ul{
+  &.selected ul {
     @for $i from 1 through 20 {
       &[data-count="#{$i}"] {
         max-height: $i * 40px;

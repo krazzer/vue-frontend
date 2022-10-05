@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import Base from "@/components/login/Base.vue";
-import Email from "@/components/icons/Email.vue";
+import InlineSvg from 'vue-inline-svg';
+import {markRaw} from "vue"
 import {FormKit} from "@formkit/vue";
+import emailSvg from '@/assets/icons/email.svg';
 
 const sendPasswordResetLink = () => {
   alert('Send password reset link!');
@@ -17,7 +19,7 @@ const sendPasswordResetLink = () => {
               prefix: {
                 $el: 'div',
                 attrs: {class: 'icon'},
-                children: [{$cmp: Email}],
+                children: [{$cmp: markRaw(InlineSvg), props: {src: emailSvg}}],
               }
             }"
       />
