@@ -11,7 +11,9 @@ export default defineComponent({
 <template>
   <div class="media">
     <div class="media__toolbar">
-      <input type="file" name="Uploaden" class="btn" multiple />
+      <label class="btn upload" title="Upload bestanden vanaf uw computer">
+        Uploaden <input type="file" name="files[]" multiple="multiple" />
+      </label>
     </div>
     <div class="media__files">
 
@@ -24,6 +26,12 @@ export default defineComponent({
 
   &__toolbar{
     margin-bottom: 45px;
+
+    .upload{
+      input{
+        display: none;
+      }
+    }
   }
 
   &__files{
