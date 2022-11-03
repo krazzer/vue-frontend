@@ -76,7 +76,7 @@ export default defineComponent({
 .datatable {
 
   &__toolbar {
-    margin-bottom: 36px;
+    margin-bottom: 50px;
   }
 
   &__table {

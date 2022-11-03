@@ -16,6 +16,7 @@ export default defineComponent({
     return {
       menu: {},
       dataTable: {},
+      media: {},
       selectedMenuItem: '',
       html: ''
     }
@@ -83,6 +84,7 @@ export default defineComponent({
     {
       this.html = data.html;
       this.dataTable = data.dataTable;
+      this.media = data.media;
     }
   }
 });
@@ -92,6 +94,7 @@ export default defineComponent({
 import Logo from "@/components/icons/Logo.vue";
 import Menu from "@/components/menu/Menu.vue";
 import DataTable from "@/components/datatable/DataTable.vue";
+import Media from "@/components/media/Media.vue";
 </script>
 
 <template>
@@ -105,6 +108,7 @@ import DataTable from "@/components/datatable/DataTable.vue";
   </div>
   <div class="main">
     <span v-if="html" v-html="html"></span>
+    <Media v-if="media" />
     <DataTable v-if="dataTable" :settings.prop="dataTable" :instance="dataTable.instance" />
   </div>
 </template>

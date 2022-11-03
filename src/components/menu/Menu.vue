@@ -72,12 +72,12 @@ ul {
   margin: 0;
 
   li {
-    margin-bottom: 3px;
+    padding: 1px 0;
 
     a {
       color: var(--color-text);
       display: block;
-      padding: 9px 10px 11px 35px;
+      padding: 9px 10px 10px 35px;
       border-radius: var(--border-radius);
       line-height: 19px;
 
@@ -104,14 +104,12 @@ ul {
       overflow: hidden;
 
       li {
-        margin-bottom: 2px;
-
         &.selected > a, > a:hover {
           background-color: var(--color-background-shade3);
         }
 
         &:first-child {
-          margin-top: 2px;
+          margin-top: 1px;
         }
       }
 

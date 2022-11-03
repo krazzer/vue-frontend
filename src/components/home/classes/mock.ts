@@ -8,8 +8,8 @@ class HomeMock {
             return [200, {
                 loggedIn: loginMock.loggedIn,
                 menu: {
-                    pages: {label: "Pages", icon: 'pages'},
                     media: {label: "Media", icon: 'media'},
+                    pages: {label: "Pages", icon: 'pages'},
                     clients: {
                         label: "Clients",
                         icon: 'users'
@@ -47,6 +47,8 @@ class HomeMock {
 
             if (module == 'clients') {
                 params = {html: '', selectedMenuItem: '', dataTable: clientsDataTable};
+            } else if (module == 'media') {
+                params = {html: '', selectedMenuItem: '', media: {}};
             } else {
                 params = {html: module, selectedMenuItem: ''};
             }
