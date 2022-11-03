@@ -8,8 +8,8 @@ class HomeMock {
             return [200, {
                 loggedIn: loginMock.loggedIn,
                 menu: {
-                    media: {label: "Media", icon: 'media'},
                     pages: {label: "Pages", icon: 'pages'},
+                    media: {label: "Media", icon: 'media'},
                     clients: {
                         label: "Clients",
                         icon: 'users'
@@ -41,6 +41,13 @@ class HomeMock {
 
         let clientsDataTable = dataTableMock.getDefaultData();
 
+        let mediaFiles = [
+            {name: 'Folder', isDir: true}, {name: 'Folder', isDir: true}, {name: 'Folder', isDir: true},
+            {name: 'Folder', isDir: true}, {name: 'Folder', isDir: true}, {name: 'Folder', isDir: true},
+            {name: 'Folder', isDir: true}, {name: 'Folder', isDir: true}, {name: 'Folder', isDir: true},
+            {name: 'Folder', isDir: true}, {name: 'Folder', isDir: true}, {name: 'Folder', isDir: true},
+        ];
+
         mocker.onGet(moduleRegExp).reply((requestConfig) => {
             let module = this.getModuleName(requestConfig.url);
             let params;
@@ -48,7 +55,7 @@ class HomeMock {
             if (module == 'clients') {
                 params = {html: '', selectedMenuItem: '', dataTable: clientsDataTable};
             } else if (module == 'media') {
-                params = {html: '', selectedMenuItem: '', media: {}};
+                params = {html: '', selectedMenuItem: '', media: {files: mediaFiles}};
             } else {
                 params = {html: module, selectedMenuItem: ''};
             }

@@ -108,7 +108,7 @@ import Media from "@/components/media/Media.vue";
   </div>
   <div class="main">
     <span v-if="html" v-html="html"></span>
-    <Media v-if="media" />
+    <Media v-if="media" :settings="media" />
     <DataTable v-if="dataTable" :settings.prop="dataTable" :instance="dataTable.instance" />
   </div>
 </template>
