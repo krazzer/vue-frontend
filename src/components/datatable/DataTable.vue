@@ -13,6 +13,11 @@ export default defineComponent({
       error: '',
     };
   },
+  watch: {
+    settings(){
+      this.convertSettings(this.settings);
+    }
+  },
   mounted() {
     if (this.settings) {
       this.convertSettings(this.settings);
