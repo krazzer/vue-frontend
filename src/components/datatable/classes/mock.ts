@@ -12,7 +12,7 @@ class DataTableMock {
 
     getDefaultData() {
         return  {
-            addButtonLabel: 'New client',
+            addButtonLabel: 'Add client',
             headers: ['id', 'name', 'address', 'zip'],
             data: [
                 [1, 'Peter', 'Peterstreet 17', '12345'],
@@ -22,6 +22,21 @@ class DataTableMock {
                 [5, 'Naomi', 'Naomistreet 17', '56789'],
             ],
             instance: 'test',
+        };
+    }
+
+    getPagesData(){
+        return  {
+            addButtonLabel: 'Add page',
+            headers: ['id', 'name', 'template', 'slug'],
+            data: [
+                [1, 'Home', 'home', 'home'],
+                [2, 'About', 'default', 'about'],
+                [4, 'Prices', 'default', 'prices'],
+                [5, 'Projects', 'projects', 'projects'],
+                [3, 'Contact', 'contact', 'contact'],
+            ],
+            instance: 'pagesTest',
         };
     }
 }

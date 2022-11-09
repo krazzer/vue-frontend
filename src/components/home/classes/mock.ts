@@ -40,6 +40,7 @@ class HomeMock {
         let moduleRegExp = new RegExp('/api/module/*');
 
         let clientsDataTable = dataTableMock.getDefaultData();
+        let pagesDataTable   = dataTableMock.getPagesData();
 
         let mediaFiles = [
             {name: 'Folder', isDir: true}, {name: 'Folder', isDir: true}, {name: 'Folder', isDir: true},
@@ -54,6 +55,8 @@ class HomeMock {
 
             if (module == 'clients') {
                 params = {html: '', selectedMenuItem: '', dataTable: clientsDataTable};
+            } else if (module == 'pages') {
+                params = {html: '', selectedMenuItem: '', dataTable: pagesDataTable};
             } else if (module == 'media') {
                 params = {html: '', selectedMenuItem: '', media: {files: mediaFiles}};
             } else {
