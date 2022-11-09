@@ -23,4 +23,9 @@ export default defineConfig({
   test: {
     environment: 'jsdom'
   },
+  css: {
+    preprocessorOptions: {
+      scss: { additionalData: `@import "./src/assets/media-query-sizes";` },
+    },
+  },
 });
