@@ -53,6 +53,10 @@ class HomeMock {
             let module = this.getModuleName(requestConfig.url);
             let params;
 
+            if (module == 'error') {
+                return [400];
+            }
+
             if (module == 'clients') {
                 params = {html: '', selectedMenuItem: '', dataTable: clientsDataTable};
             } else if (module == 'pages') {
