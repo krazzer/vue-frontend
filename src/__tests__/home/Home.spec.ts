@@ -110,4 +110,14 @@ describe("HomeIndex", () => {
 
         expect(console.error).toHaveBeenCalled();
     });
+
+    it("toggles menu properly", async () => {
+        let wrapper = mount(HomeIndex, {props: {}, global: {plugins: plugins}});
+
+        expect(wrapper.find('#cms').classes()).toEqual([])
+
+        await wrapper.find('.sidebar-close-button').trigger('click');
+
+        expect(wrapper.find('#cms').classes()[0]).equals('open');
+    });
 });
