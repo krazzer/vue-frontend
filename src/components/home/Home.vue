@@ -87,7 +87,7 @@ export default defineComponent({
       this.media     = data.media;
     },
 
-    toggleMenu(){
+    toggleMenu() {
       this.mobileMenuOpen = !this.mobileMenuOpen;
     }
   }
@@ -102,23 +102,26 @@ import Media from "@/components/media/Media.vue";
 </script>
 
 <template>
-  <div class="sidebar" :class="{ open: mobileMenuOpen }">
-    <div class="sidebar__logo">
-      <Logo/>
+  <div id="cms" :class="{ open: mobileMenuOpen }">
+    <div class="sidebar-close-button" @click="toggleMenu">╳</div>
+    <div class="sidebar">
+      <div class="sidebar__logo">
+        <Logo/>
+      </div>
+      <div class="sidebar__menu">
+        <Menu :menu="menu" :selectedItem="selectedMenuItem" :logout="logout" />
+      </div>
     </div>
-    <div class="sidebar__menu">
-      <Menu :menu="menu" :selectedItem="selectedMenuItem" :logout="logout"/>
+    <div class="main">
+      <div class="menu-button" @click="toggleMenu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <span v-if="html" v-html="html"></span>
+      <Media v-if="media" :settings="media"/>
+      <DataTable v-if="dataTable" :settings="dataTable" :instance="dataTable.instance"/>
     </div>
-  </div>
-  <div class="main" @click="toggleMenu">
-    <div class="menu-button">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-    <span v-if="html" v-html="html"></span>
-    <Media v-if="media" :settings="media"/>
-    <DataTable v-if="dataTable" :settings="dataTable" :instance="dataTable.instance"/>
   </div>
 </template>
 
@@ -127,6 +130,26 @@ import Media from "@/components/media/Media.vue";
 
 $sideBarWidth: 250px;
 $mainPadding: 40px;
+
+#cms.open{
+  .sidebar{
+    margin-left: 0;
+  }
+
+  .sidebar-close-button{
+    margin-left: 0;
+  }
+}
+
+.sidebar-close-button{
+  position: fixed;
+  left: calc($sideBarWidth - 25px);
+  margin-left: -$sideBarWidth;
+  top: 3px;
+  z-index: 2;
+  cursor: pointer;
+  transition: margin-left .3s;
+}
 
 .sidebar {
   width: $sideBarWidth;
@@ -149,10 +172,6 @@ $mainPadding: 40px;
   @media (max-width: $screen-sm-max) {
     margin-left: -$sideBarWidth;
 
-    &.open{
-      margin-left: 0;
-    }
-
     .sidebar__logo {
       display: none;
     }
@@ -169,11 +188,10 @@ $mainPadding: 40px;
 
 .menu-button {
   position: relative;
-  z-index: 2;
   width: 36px;
   height: 20px;
   transform: rotate(0deg);
-  transition: .5s ease-in-out;
+  transition: margin-left .3s;
   cursor: pointer;
   margin-bottom: 40px;
   display: none;
@@ -206,26 +224,7 @@ $mainPadding: 40px;
   }
 
   @media (max-width: $screen-sm-max) {
-      display: block;
-  }
-}
-
-body.menu-open .header__nav__mobile-button span{
-  &:nth-child(1) {
-    transform: rotate(45deg);
-    top: -1px;
-    left: 6px;
-  }
-
-  &:nth-child(2) {
-    width: 0;
-    opacity: 0;
-  }
-
-  &:nth-child(3) {
-    transform: rotate(-45deg);
-    top: 27px;
-    left: 6px;
+    display: block;
   }
 }
 </style>
