@@ -5,7 +5,7 @@ const modules = import.meta.glob('@/assets/icons/*.svg', {as: 'raw'});
 
 export default defineComponent({
   name: "Menu",
-  props: ['menu', 'selectedItem', 'logout'],
+  props: ['menu', 'selectedItem', 'logout', 'home'],
   methods: {
     getIcon(item: any) {
       let defaultIcon = '';
@@ -13,11 +13,11 @@ export default defineComponent({
       for (const key in modules) {
         const name = key.split('/').reverse()[0].split('.')[0];
 
-        if(name == item.icon){
+        if (name == item.icon) {
           return modules[key];
         }
 
-        if(name == 'default'){
+        if (name == 'default') {
           defaultIcon = String(modules[key]);
         }
       }
@@ -32,8 +32,25 @@ export default defineComponent({
 
       return item.icon.substring(0, 1) == '<';
     },
+
     isSelected(item: any, key: any): boolean {
       return this.selectedItem === key || (item.submenu && this.selectedItem in item.submenu);
+    },
+
+    openLink(key: string, hasSubItems: boolean = false) {
+      if( ! this.home.mobileMenuOpen || ! hasSubItems){
+        this.home.closeMenu();
+      }
+
+      this.$router.push(key);
+    },
+
+    hasSubItems(item: any): boolean {
+      if( ! item.submenu){
+        return false;
+      }
+
+      return Object.keys(item.submenu).length > 0;
     }
   }
 });
@@ -42,18 +59,18 @@ export default defineComponent({
 <template>
   <ul>
     <li v-for="(item, key) in menu" :class="isSelected(item, key) ? 'selected' : ''">
-      <router-link :to="key">
+      <a @click="openLink(key, hasSubItems(item))">
         <span v-if="isSvg(item)" v-html="item.icon"></span>
         <span v-else v-html="getIcon(item)"></span>
         {{ item.label }}
-      </router-link>
+      </a>
       <ul v-if="item.submenu" :data-count="Object.keys(item.submenu).length">
         <li v-for="(subitem, subkey) in item.submenu" :class="selectedItem === subkey ? 'selected' : ''">
-          <router-link :to="subkey">
+          <a @click="openLink(subkey)">
             <span v-if="isSvg(subitem)" v-html="subitem.icon"></span>
             <span v-else v-html="getIcon(subitem)"></span>
             {{ subitem.label }}
-          </router-link>
+          </a>
         </li>
       </ul>
     </li>
@@ -75,6 +92,7 @@ ul {
     padding: 1px 0;
 
     a {
+      cursor: pointer;
       color: var(--color-text);
       display: block;
       padding: 9px 10px 10px 35px;

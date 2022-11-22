@@ -89,6 +89,10 @@ export default defineComponent({
 
     toggleMenu() {
       this.mobileMenuOpen = !this.mobileMenuOpen;
+    },
+
+    closeMenu() {
+      this.mobileMenuOpen = false;
     }
   }
 });
@@ -109,7 +113,7 @@ import Media from "@/components/media/Media.vue";
         <Logo/>
       </div>
       <div class="sidebar__menu">
-        <Menu :menu="menu" :selectedItem="selectedMenuItem" :logout="logout" />
+        <Menu :menu="menu" :home="this" :selectedItem="selectedMenuItem" :logout="logout" />
       </div>
     </div>
     <div class="main">
