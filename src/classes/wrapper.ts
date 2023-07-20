@@ -8,10 +8,21 @@ import {Mocker} from "@/classes/mocker";
 import {defineCustomElement} from "vue";
 import DataTable from "@/components/datatable/DataTable.vue";
 
+// Vuetify
+import 'vuetify/styles'
+import { createVuetify } from 'vuetify'
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
+
 class Wrapper
 {
     getApp(Component: Component){
-        const app = Vue.createApp(Component);
+        const vuetify = createVuetify({
+            components,
+            directives,
+        })
+
+        const app = Vue.createApp(Component).use(vuetify);
 
         app.config.globalProperties.$assets = 'src/assets/';
 

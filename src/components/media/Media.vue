@@ -37,7 +37,7 @@ export default defineComponent({
 .media {
 
   &__toolbar {
-    margin-bottom: 45px;
+    margin-bottom: 50px;
 
     .upload {
       input {

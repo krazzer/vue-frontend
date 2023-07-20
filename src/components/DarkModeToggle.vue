@@ -1,11 +1,13 @@
 <script lang="ts">
 
 import {defineComponent} from "vue";
+import { useTheme } from 'vuetify'
 
 export default defineComponent({
   data() {
     return {
-      darkMode: false
+      darkMode: false,
+      theme: useTheme()
     }
   },
   methods: {
@@ -17,6 +19,8 @@ export default defineComponent({
   watch: {
     darkMode(val) {
       let body = document.body;
+
+      this.theme.global.name = val ? 'dark' : 'light';
 
       body.classList.add('transitioning');
       body.classList.toggle('darkmode', val);

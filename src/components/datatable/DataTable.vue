@@ -58,7 +58,7 @@ export default defineComponent({
         <a class="btn">{{ addButtonLabel }}</a>
       </div>
       <div class="datatable__table">
-        <table>
+        <v-table>
           <thead>
           <tr>
             <th v-for="header in headers">{{ header }}</th>
@@ -69,7 +69,7 @@ export default defineComponent({
             <td v-for="cell in row">{{ cell }}</td>
           </tr>
           </tbody>
-        </table>
+        </v-table>
       </div>
     </template>
   </div>
@@ -82,30 +82,6 @@ export default defineComponent({
 
   &__toolbar {
     margin-bottom: 50px;
-  }
-
-  &__table {
-    table {
-      border-spacing: 0;
-      border-collapse: separate;
-      width: 100%;
-
-      td, th {
-        padding: 8px 15px;
-      }
-
-      thead th {
-        text-align: left;
-        font-weight: bold;
-      }
-
-      tbody {
-        tr:nth-child(odd) {
-          transition: background-color var(--color-scheme-transition-speed);
-          background-color: var(--color-background-shade1);
-        }
-      }
-    }
   }
 }
 </style>
