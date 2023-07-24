@@ -51,14 +51,14 @@ export default defineComponent({
 <template>
   <div class="datatable" v-if="instance">
     <div class="datatable__error" v-if="error">
-      {{ this.error }}
+      {{ error }}
     </div>
     <template v-else>
       <div class="datatable__toolbar">
         <a class="btn">{{ addButtonLabel }}</a>
       </div>
       <div class="datatable__table">
-        <v-table>
+        <table>
           <thead>
           <tr>
             <th v-for="header in headers">{{ header }}</th>
@@ -69,7 +69,7 @@ export default defineComponent({
             <td v-for="cell in row">{{ cell }}</td>
           </tr>
           </tbody>
-        </v-table>
+        </table>
       </div>
     </template>
   </div>
@@ -82,6 +82,30 @@ export default defineComponent({
 
   &__toolbar {
     margin-bottom: 50px;
+  }
+
+  &__table {
+    table {
+      border-spacing: 0;
+      border-collapse: separate;
+      width: 100%;
+
+      td, th {
+        padding: 8px 15px;
+      }
+
+      thead th {
+        text-align: left;
+        font-weight: bold;
+      }
+
+      tbody {
+        tr:nth-child(odd) {
+          transition: background-color var(--color-scheme-transition-speed);
+          background-color: var(--color-background-shade1);
+        }
+      }
+    }
   }
 }
 </style>
