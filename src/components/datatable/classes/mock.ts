@@ -65,14 +65,18 @@ class DataTableMock {
         return  {
             addButtonLabel: 'Add page',
             headers: ['id', 'name', 'template', 'slug'],
+            cells: {
+                'name': {'type': 'page'}
+            },
             data: [
-                [1, 'Home', 'home', 'home'],
+                [1, {'label': 'Home', 'icons': ['lock']}, 'home', 'home'],
                 [2, 'About', 'default', 'about'],
                 [4, 'Prices', 'default', 'prices'],
                 [5, 'Projects', 'projects', 'projects'],
                 [3, 'Contact', 'contact', 'contact'],
             ],
             instance: 'pagesTest',
+            class: 'pages',
         };
     }
 }

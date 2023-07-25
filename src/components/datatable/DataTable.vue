@@ -2,10 +2,11 @@
 import {defineComponent} from "vue";
 import axios from "axios";
 import EditDialog from "./subcomponents/EditDialog.vue";
+import Svg from "@/components/svg/Svg.vue";
 
 export default defineComponent({
   name: "DataTable",
-  components: {EditDialog},
+  components: {Svg, EditDialog},
   props: ['settings', 'instance'],
   data() {
     return {
@@ -17,7 +18,7 @@ export default defineComponent({
     };
   },
   watch: {
-    settings(){
+    settings() {
       this.convertSettings(this.settings);
     }
   },
@@ -45,14 +46,40 @@ export default defineComponent({
           }).catch(error => {
             this.error = error;
           });
-    }
+    },
+
+    /**
+     * @param index
+     */
+    getCellSettings(index: number): any | null {
+      let cellSettings = this.settings.cells;
+
+      if (!cellSettings) {
+        return null;
+      }
+
+      return cellSettings[this.settings.headers[index]];
+    },
+
+    /**
+     * @param index
+     */
+    getCellType(index: number): string | null {
+      let cellSettings = this.getCellSettings(index);
+
+      if (cellSettings && cellSettings.type) {
+        return cellSettings.type;
+      }
+
+      return null;
+    },
   }
 });
 
 </script>
 
 <template>
-  <div class="datatable" v-if="instance">
+  <div class="datatable" :class="settings.class" v-if="instance">
     <div class="datatable__error" v-if="error">
       {{ error }}
     </div>
@@ -69,7 +96,19 @@ export default defineComponent({
           </thead>
           <tbody>
           <tr v-for="row in data">
-            <td v-for="cell in row">{{ cell }}</td>
+            <td v-for="(cell, i) in row" :data-column="headers[i]">
+              <template v-if="getCellType(i) == 'page'">
+                <span class="arrow"></span>
+                <span class="name">
+                  <template v-if="typeof cell === 'object'">
+                    <template v-for="icon in cell['icons']"><Svg :svg="icon"/></template>
+                    {{ cell['label'] }}
+                  </template>
+                  <template v-else>{{ cell }}</template>
+                </span>
+              </template>
+              <template v-else>{{ cell }}</template>
+            </td>
           </tr>
           </tbody>
         </table>
@@ -77,11 +116,12 @@ export default defineComponent({
     </template>
   </div>
 
-  <EditDialog :dialog="dialog" @clickClose="dialog = false" @clickSave="dialog = false" />
+  <EditDialog :dialog="dialog" @clickClose="dialog = false" @clickSave="dialog = false"/>
 </template>
 
 <style lang="scss" scoped>
 @import "@/assets/base.scss";
+@import "./styles/pages";
 
 .datatable {
 

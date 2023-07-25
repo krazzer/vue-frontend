@@ -1,0 +1,33 @@
+.datatable.pages{
+    [data-column="name"]{
+        .name{
+            border: 1px solid var(--color-background-shade3);
+            width: 200px;
+            border-radius: var(--border-radius);
+            display: block;
+            padding: 4px 10px 6px;
+            cursor: move;
+            background-color: var(--color-background-shade1);
+
+            .icon{
+                display: block;
+                fill: var(--color-text);
+                float: left;
+                margin-right: 5px;
+
+                :deep(svg) {
+                    height: 20px;
+                    width: 20px;
+                    position: relative;
+                }
+            }
+
+            .icon--lock:deep(svg){
+                width: 16px;
+                height: 22px;
+                top: 1px;
+                margin-left: -1px;
+            }
+        }
+    }
+}

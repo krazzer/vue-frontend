@@ -1,45 +1,19 @@
 <script lang="ts">
 import {defineComponent} from "vue";
-
-const modules = import.meta.glob('@/assets/icons/*.svg', {as: 'raw'});
+import Svg from "@/components/svg/Svg.vue";
 
 export default defineComponent({
   name: "Menu",
-  props: ['menu', 'selectedItem', 'logout', 'home'],
+  components: {Svg},
+  props: ['menu', 'selectedItem', 'logout', 'mobileMenuOpen'],
   methods: {
-    getIcon(item: any) {
-      let defaultIcon = '';
-
-      for (const key in modules) {
-        const name = key.split('/').reverse()[0].split('.')[0];
-
-        if (name == item.icon) {
-          return modules[key];
-        }
-
-        if (name == 'default') {
-          defaultIcon = String(modules[key]);
-        }
-      }
-
-      return defaultIcon;
-    },
-
-    isSvg(item: any) {
-      if (!item.icon) {
-        return false;
-      }
-
-      return item.icon.substring(0, 1) == '<';
-    },
-
     isSelected(item: any, key: any): boolean {
       return this.selectedItem === key || (item.submenu && this.selectedItem in item.submenu);
     },
 
     openLink(key: string, hasSubItems: boolean = false) {
-      if( ! this.home.mobileMenuOpen || ! hasSubItems){
-        this.home.closeMenu();
+      if( ! this.mobileMenuOpen || ! hasSubItems){
+        this.$emit('select')
       }
 
       this.$router.push(key);
@@ -59,24 +33,20 @@ export default defineComponent({
 <template>
   <ul>
     <li v-for="(item, key) in menu" :class="isSelected(item, key) ? 'selected' : ''">
-      <a @click="openLink(key, hasSubItems(item))">
-        <span v-if="isSvg(item)" v-html="item.icon"></span>
-        <span v-else v-html="getIcon(item)"></span>
-        {{ item.label }}
+      <a @click="openLink(key.toString(), hasSubItems(item))">
+        <Svg :svg="item.icon" /> {{ item.label }}
       </a>
       <ul v-if="item.submenu" :data-count="Object.keys(item.submenu).length">
         <li v-for="(subitem, subkey) in item.submenu" :class="selectedItem === subkey ? 'selected' : ''">
-          <a @click="openLink(subkey)">
-            <span v-if="isSvg(subitem)" v-html="subitem.icon"></span>
-            <span v-else v-html="getIcon(subitem)"></span>
-            {{ subitem.label }}
+          <a @click="openLink(subkey.toString())">
+            <Svg :svg="subitem.icon" /> {{ subitem.label }}
           </a>
         </li>
       </ul>
     </li>
     <li>
       <a href="javascript:void(0)" @click="logout">
-        <span v-html="getIcon({icon: 'logout'})"></span> Uitloggen
+        <Svg svg="logout" /> Uitloggen
       </a>
     </li>
   </ul>

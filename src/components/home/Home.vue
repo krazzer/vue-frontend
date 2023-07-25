@@ -15,7 +15,7 @@ export default defineComponent({
   data() {
     return {
       menu: {},
-      dataTable: {},
+      dataTable: <any> {},
       media: {},
       selectedMenuItem: '',
       html: '',
@@ -113,7 +113,7 @@ import Media from "@/components/media/Media.vue";
         <Logo/>
       </div>
       <div class="sidebar__menu">
-        <Menu :menu="menu" :home="this" :selectedItem="selectedMenuItem" :logout="logout" />
+        <Menu :menu="menu" :mobileMenuOpen="mobileMenuOpen" :selectedItem="selectedMenuItem" :logout="logout" @select="closeMenu" />
       </div>
     </div>
     <div class="main">
