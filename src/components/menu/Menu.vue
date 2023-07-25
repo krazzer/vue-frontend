@@ -99,6 +99,10 @@ ul {
       border-radius: var(--border-radius);
       line-height: 19px;
 
+      span{
+        position: relative;
+      }
+
       :deep(svg) {
         width: 18px;
         height: 18px;
