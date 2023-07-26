@@ -10,7 +10,7 @@ mocker.mock();
 
 config.global.mocks = {$assets: ''};
 
-let plugins = [[plugin, defaultConfig], router];
+let plugins: any = [[plugin, defaultConfig], router];
 
 describe("Login", () => {
     it("Renders properly", () => {
@@ -20,7 +20,7 @@ describe("Login", () => {
 
     it("Logins properly", async () => {
         const mockRouter = ['push'];
-        const spy        = vi.spyOn(mockRouter, 'push')
+        const spy        = vi.spyOn(mockRouter, 'push' as any)
 
         const wrapper = mount(Login, {global: {plugins: plugins, mocks: {$router: mockRouter}}});
 

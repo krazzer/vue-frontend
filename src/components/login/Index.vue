@@ -1,12 +1,17 @@
 <script lang="ts">
-import {defineComponent} from 'vue'
+import {defineComponent, markRaw} from 'vue'
 import axios from "axios";
+import Base from "./Base.vue";
+import {FormKit} from "@formkit/vue";
+import InlineSvg from 'vue-inline-svg';
+import Svg from "@/components/svg/Svg.vue";
 
 interface LoginStatus {
   success?: boolean;
 }
 
 export default defineComponent({
+  components: {Base, FormKit, InlineSvg, Svg},
   data() {
     return {
       loginStatus: <LoginStatus>{},
@@ -37,18 +42,13 @@ export default defineComponent({
           .catch(error => {
             this.errors.push(error.message);
           });
-    }
+    },
+
+    getRawInlineSvgCmp(): any{
+      return markRaw(Svg);
+    },
   },
 });
-</script>
-
-<script setup lang="ts">
-import Base from "@/components/login/Base.vue";
-import {FormKit} from "@formkit/vue";
-import {markRaw} from "vue"
-import InlineSvg from 'vue-inline-svg';
-import emailSvg from '@/assets/icons/email.svg';
-import lockSvg from '@/assets/icons/lock.svg';
 </script>
 
 <template>
@@ -59,7 +59,7 @@ import lockSvg from '@/assets/icons/lock.svg';
               prefix: {
                 $el: 'div',
                 attrs: {class: 'icon'},
-                children: [{$cmp: markRaw(InlineSvg), props: {src: emailSvg}}],
+                children: [{$cmp: getRawInlineSvgCmp(), props: {svg: 'email'}}],
               }
             }" name="email"
       />
@@ -68,7 +68,7 @@ import lockSvg from '@/assets/icons/lock.svg';
               prefix: {
                 $el: 'div',
                 attrs: {class: 'icon'},
-                children: [{$cmp: markRaw(InlineSvg), props: {src: lockSvg}}],
+                children: [{$cmp: getRawInlineSvgCmp(), props: {svg: 'lock'}}],
               }
             }" label="password" name="password"
       />

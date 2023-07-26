@@ -5,15 +5,22 @@ import loginMock from "@/components/login/classes/mock";
 import homeMock from "@/components/home/classes/mock";
 
 export class Mocker {
-    mocker: MockAdapter;
+    mocker;
+    public dataTableMock;
+    public loginMock;
+    public homeMock;
 
     constructor(delay: number = 50) {
         this.mocker = new MockAdapter(axios, {delayResponse: delay});
+
+        this.dataTableMock = dataTableMock;
+        this.loginMock = loginMock;
+        this.homeMock = homeMock;
     }
 
     mock() {
-        dataTableMock.mock(this.mocker);
-        loginMock.mock(this.mocker);
-        homeMock.mock(this.mocker);
+        this.dataTableMock.mock(this.mocker);
+        this.loginMock.mock(this.mocker);
+        this.homeMock.mock(this.mocker);
     }
 }

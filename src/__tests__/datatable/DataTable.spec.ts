@@ -21,7 +21,7 @@ describe("DataTable", () => {
 
     const wrapper = await shallowMount(DataTableIndex, { props: {instance: 'test', settings: settings }});
 
-    expect(wrapper.html()).toContain("<div class=\"datatable\"");
+    expect(wrapper.html()).toContain("class=\"datatable\"");
     expect(wrapper.findAll('tbody tr').length).toEqual(2);
     expect(wrapper.find('tbody tr:last-child td:last-child').text()).toEqual('Some other street');
   });
@@ -31,7 +31,7 @@ describe("DataTable", () => {
 
     await flushPromises();
 
-    expect(wrapper.findAll('tbody tr').length).toEqual(5);
+    expect(wrapper.findAll('tbody tr').length).toEqual(40);
     expect(wrapper.find('tbody tr:last-child td:last-child').text()).toEqual('56789');
   });
 

@@ -52,7 +52,7 @@ export default defineComponent({
      * @param index
      */
     getCellSettings(index: number): any | null {
-      let cellSettings = this.settings.cells;
+      let cellSettings = this.settings ? this.settings.cells : null;
 
       if (!cellSettings) {
         return null;
@@ -79,7 +79,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="datatable" :class="settings.class" v-if="instance">
+  <div class="datatable" :class="settings ? settings.class : null" v-if="instance">
     <div class="datatable__error" v-if="error">
       {{ error }}
     </div>

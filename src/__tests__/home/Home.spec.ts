@@ -3,32 +3,21 @@ import {mount, config} from "@vue/test-utils";
 import HomeIndex from "@/components/home/Home.vue";
 import {defaultConfig, plugin} from "@formkit/vue";
 import router from "@/router";
-
 import flushPromises from "flush-promises";
-
-let localStorageGetItem = global.Storage.prototype.getItem;
-
-// set localstorage to return true, so user is logged in
-global.Storage.prototype.getItem = () => {
-    return true;
-};
-
 import {Mocker} from "@/classes/mocker";
 
 const mocker = new Mocker(0)
+mocker.loginMock.loggedIn = true;
 mocker.mock();
 
-// reset localstorage functionality
-global.Storage.prototype.getItem = localStorageGetItem;
-
-let plugins = [[plugin, defaultConfig], router];
+let plugins: any = [[plugin, defaultConfig], router];
 
 config.global.mocks = {$assets: ''};
 
 describe("HomeIndex", () => {
     it("renders properly", async () => {
         const $route  = {params: {module: 'pages'}};
-        const wrapper = mount(HomeIndex, {props: {}, global: {plugins: plugins, mocks: {$route}}});
+        const wrapper: any = mount(HomeIndex, {props: {}, global: {plugins: plugins, mocks: {$route}}});
 
         await flushPromises();
 
@@ -45,7 +34,7 @@ describe("HomeIndex", () => {
     });
 
     it("errors properly", async () => {
-        console = {error: vi.fn()}
+        let console = {error: vi.fn()}
         vi.spyOn(console, 'error');
 
         const $route = {params: {module: 'error'}};
@@ -59,7 +48,7 @@ describe("HomeIndex", () => {
 
     it("logs out properly", async () => {
         const mockRouter = ['push'];
-        const spy        = vi.spyOn(mockRouter, 'push')
+        const spy        = vi.spyOn(mockRouter, 'push' as any)
 
         const $route  = {params: {module: 'pages'}};
         const wrapper = mount(HomeIndex, {props: {}, global: {plugins: plugins, mocks: {$route, $router: mockRouter}}});
@@ -82,7 +71,7 @@ describe("HomeIndex", () => {
             return [200, {loggedIn: true}];
         });
 
-        console = {error: vi.fn()}
+        let console = {error: vi.fn()}
         vi.spyOn(console, 'error');
 
         const wrapper = mount(HomeIndex, {props: {}, global: {plugins: plugins, mocks: {}}});
@@ -101,7 +90,7 @@ describe("HomeIndex", () => {
             return [400];
         });
 
-        console = {error: vi.fn()}
+        let console = {error: vi.fn()}
         vi.spyOn(console, 'error');
 
         mount(HomeIndex, {props: {}, global: {plugins: plugins}});

@@ -10,7 +10,7 @@ export default defineConfig({
   plugins: [vue({
     template: {
       compilerOptions: {
-        isCustomElement: (tag) => tag.includes('kikcms-')
+        isCustomElement: (tag) => tag.includes('kikcms-') || (process.env.VITEST ? tag.includes('v-') : false)
       }
     }
   }), vueJsx()],

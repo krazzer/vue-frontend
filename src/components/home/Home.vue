@@ -1,8 +1,13 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
 import axios from "axios";
+import Logo from "@/components/icons/Logo.vue";
+import Menu from "@/components/menu/Menu.vue";
+import DataTable from "@/components/datatable/DataTable.vue";
+import Media from "@/components/media/Media.vue";
 
 export default defineComponent({
+  components: {Logo, Menu, DataTable, Media},
   watch: {
     $route() {
       let module = this.$route.params.module;
@@ -15,7 +20,7 @@ export default defineComponent({
   data() {
     return {
       menu: {},
-      dataTable: <any> {},
+      dataTable: <any>{},
       media: {},
       selectedMenuItem: '',
       html: '',
@@ -98,13 +103,6 @@ export default defineComponent({
 });
 </script>
 
-<script setup lang="ts">
-import Logo from "@/components/icons/Logo.vue";
-import Menu from "@/components/menu/Menu.vue";
-import DataTable from "@/components/datatable/DataTable.vue";
-import Media from "@/components/media/Media.vue";
-</script>
-
 <template>
   <div id="cms" :class="{ open: mobileMenuOpen }">
     <div class="sidebar-close-button" @click="toggleMenu">╳</div>
@@ -113,7 +111,7 @@ import Media from "@/components/media/Media.vue";
         <Logo/>
       </div>
       <div class="sidebar__menu">
-        <Menu :menu="menu" :mobileMenuOpen="mobileMenuOpen" :selectedItem="selectedMenuItem" :logout="logout" @select="closeMenu" />
+        <Menu :menu="menu" :mobileMenuOpen="mobileMenuOpen" :selectedItem="selectedMenuItem" :logout="logout" @select="closeMenu"/>
       </div>
     </div>
     <div class="main">
@@ -135,17 +133,17 @@ import Media from "@/components/media/Media.vue";
 $sideBarWidth: 250px;
 $mainPadding: 40px;
 
-#cms.open{
-  .sidebar{
+#cms.open {
+  .sidebar {
     margin-left: 0;
   }
 
-  .sidebar-close-button{
+  .sidebar-close-button {
     margin-left: 0;
   }
 }
 
-.sidebar-close-button{
+.sidebar-close-button {
   position: fixed;
   left: calc($sideBarWidth - 25px);
   margin-left: -$sideBarWidth;

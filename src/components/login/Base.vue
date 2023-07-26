@@ -22,11 +22,12 @@ import Logo from "@/components/icons/Logo.vue";
 }
 
 :deep(.formkit-inner .icon) {
-  width: 50px;
-  height: 100%;
+  width: 16px;
+  height: 16px;
   position: absolute;
-  padding: 13px 0 12px 0;
+  padding: 0;
   text-align: center;
+  left: 7px;
 
   svg {
     height: 100%;
