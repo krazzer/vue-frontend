@@ -6,19 +6,24 @@ const modules = import.meta.glob('@/assets/icons/*.svg', {as: 'raw'});
 export default defineComponent({
   name: "Svg",
   props: ['svg'],
+  data() {
+    return {
+      icon: '',
+    };
+  },
   methods: {
-    getIcon() {
+    async getIcon() {
       let defaultIcon = '';
 
       for (const key in modules) {
         const name = key.split('/').reverse()[0].split('.')[0];
 
         if (name == this.svg) {
-          return modules[key];
+          return await modules[key]();
         }
 
         if (name == 'default') {
-          defaultIcon = String(modules[key]);
+          defaultIcon = String(await modules[key]());
         }
       }
 
@@ -32,11 +37,19 @@ export default defineComponent({
 
       return this.svg.substring(0, 1) == '<';
     },
+
+    async loadIconString() {
+      this.icon = await this.getIcon();
+    },
+  },
+
+  mounted() {
+    this.loadIconString();
   },
 })
 </script>
 
 <template>
   <span class="icon" v-if="isSvg()" v-html="svg"></span>
-  <span class="icon" :class="'icon--' + svg" v-else v-html="getIcon()"></span>
+  <span class="icon" :class="'icon--' + svg" v-else v-html="icon"></span>
 </template>
