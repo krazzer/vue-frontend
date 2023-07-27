@@ -17,24 +17,27 @@ class HomeMock {
             {name: 'Folder', isDir: true}, {name: 'Folder', isDir: true}, {name: 'Folder', isDir: true},
             {name: 'Folder', isDir: true}, {name: 'Folder', isDir: true}, {name: 'Folder', isDir: true},
         ];
-        
+
         mocker.onGet(moduleRegExp).reply((requestConfig) => {
             let module = this.getModuleName(requestConfig.url);
-            let params;
+            let params = {html: module, selectedMenuItem: ''};
 
             if (module == 'error') {
                 return [400];
             }
 
-            if (module == 'clients') {
-                params = {html: '', selectedMenuItem: '', dataTable: clientsDataTable};
-            } else if (module == 'pages' || module == '') {
-                params = {html: '', selectedMenuItem: '', dataTable: pagesDataTable};
-            } else if (module == 'media') {
-                params = {html: '', selectedMenuItem: '', media: {files: mediaFiles}};
-            } else {
-                params = {html: module, selectedMenuItem: ''};
-            }
+            let paramsFor: any = {
+                'clients': {html: '', selectedMenuItem: '', dataTable: clientsDataTable},
+                'pages': {html: '', selectedMenuItem: '', dataTable: pagesDataTable},
+                '': {html: '', selectedMenuItem: '', dataTable: pagesDataTable},
+                'media': {html: '', selectedMenuItem: '', media: {files: mediaFiles}},
+            };
+
+            Object.keys(paramsFor).forEach(key => {
+                if(module == key){
+                    params = paramsFor[key];
+                }
+            });
 
             return [200, params];
         });

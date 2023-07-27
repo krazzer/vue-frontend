@@ -1,5 +1,5 @@
 import {describe, it, expect, vi} from "vitest";
-import {mount, config, shallowMount} from "@vue/test-utils";
+import {mount, config} from "@vue/test-utils";
 import HomeIndex from "@/components/home/Home.vue";
 import {defaultConfig, plugin} from "@formkit/vue";
 import router from "@/router";
@@ -104,7 +104,7 @@ describe("HomeIndex", () => {
     });
 
     it("toggle and closes menu properly", async () => {
-        let wrapper = shallowMount(HomeIndex, {props: {}, global: {plugins: plugins}});
+        let wrapper = mount(HomeIndex, {props: {}, global: {plugins: plugins}});
 
         expect(wrapper.find('#cms').classes()).toEqual([])
 
@@ -115,5 +115,14 @@ describe("HomeIndex", () => {
         await wrapper.vm.closeMenu();
 
         expect(wrapper.find('#cms').classes()[0]).equals(undefined);
+    });
+
+    it("test all mocked pages", async () => {
+        const $route  = {params: {module: 'clients'}};
+        const wrapper = mount(HomeIndex, {props: {}, global: {plugins: plugins, mocks: {$route}}});
+
+        await flushPromises();
+
+        expect(wrapper.find('.main').text()).contain('Add client');
     });
 });
