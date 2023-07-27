@@ -1,5 +1,5 @@
 import {describe, it, expect, vi} from "vitest";
-import {mount, config} from "@vue/test-utils";
+import {mount, config, shallowMount} from "@vue/test-utils";
 import HomeIndex from "@/components/home/Home.vue";
 import {defaultConfig, plugin} from "@formkit/vue";
 import router from "@/router";
@@ -34,8 +34,7 @@ describe("HomeIndex", () => {
     });
 
     it("errors properly", async () => {
-        let console = {error: vi.fn()}
-        vi.spyOn(console, 'error');
+        let consoleErrorSpy = vi.spyOn(global.console, 'error').mockImplementation(() => { });
 
         const $route = {params: {module: 'error'}};
 
@@ -43,7 +42,8 @@ describe("HomeIndex", () => {
 
         await flushPromises();
 
-        expect(console.error).toHaveBeenCalled();
+        expect(consoleErrorSpy).toHaveBeenCalled();
+        consoleErrorSpy.mockRestore();
     });
 
     it("logs out properly", async () => {
@@ -71,8 +71,7 @@ describe("HomeIndex", () => {
             return [200, {loggedIn: true}];
         });
 
-        let console = {error: vi.fn()}
-        vi.spyOn(console, 'error');
+        let consoleErrorSpy = vi.spyOn(global.console, 'error').mockImplementation(() => { });
 
         const wrapper = mount(HomeIndex, {props: {}, global: {plugins: plugins, mocks: {}}});
 
@@ -82,7 +81,8 @@ describe("HomeIndex", () => {
 
         await flushPromises();
 
-        expect(console.error).toHaveBeenCalled();
+        expect(consoleErrorSpy).toHaveBeenCalled();
+        consoleErrorSpy.mockRestore();
     });
 
     it("loading home errors properly", async () => {
@@ -90,23 +90,30 @@ describe("HomeIndex", () => {
             return [400];
         });
 
-        let console = {error: vi.fn()}
-        vi.spyOn(console, 'error');
+        let consoleErrorSpy = vi.spyOn(global.console, 'error').mockImplementation(() => { });
 
         mount(HomeIndex, {props: {}, global: {plugins: plugins}});
 
         await flushPromises();
 
-        expect(console.error).toHaveBeenCalled();
+        expect(consoleErrorSpy).toHaveBeenCalled();
+        consoleErrorSpy.mockRestore();
+
+        // reset mocker
+        mocker.homeMock.mockHomeReply(mocker.mocker);
     });
 
-    it("toggles menu properly", async () => {
-        let wrapper = mount(HomeIndex, {props: {}, global: {plugins: plugins}});
+    it("toggle and closes menu properly", async () => {
+        let wrapper = shallowMount(HomeIndex, {props: {}, global: {plugins: plugins}});
 
         expect(wrapper.find('#cms').classes()).toEqual([])
 
         await wrapper.find('.sidebar-close-button').trigger('click');
 
         expect(wrapper.find('#cms').classes()[0]).equals('open');
+
+        await wrapper.vm.closeMenu();
+
+        expect(wrapper.find('#cms').classes()[0]).equals(undefined);
     });
 });

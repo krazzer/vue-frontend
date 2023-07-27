@@ -4,6 +4,56 @@ import type MockAdapter from "axios-mock-adapter";
 
 class HomeMock {
     mock(mocker: MockAdapter) {
+        this.mockHomeReply(mocker);
+
+        let moduleRegExp = new RegExp('/api/module/*');
+
+        let clientsDataTable = dataTableMock.getDefaultData();
+        let pagesDataTable   = dataTableMock.getPagesData();
+
+        let mediaFiles = [
+            {name: 'Folder', isDir: true}, {name: 'Folder', isDir: true}, {name: 'Folder', isDir: true},
+            {name: 'Folder', isDir: true}, {name: 'Folder', isDir: true}, {name: 'Folder', isDir: true},
+            {name: 'Folder', isDir: true}, {name: 'Folder', isDir: true}, {name: 'Folder', isDir: true},
+            {name: 'Folder', isDir: true}, {name: 'Folder', isDir: true}, {name: 'Folder', isDir: true},
+        ];
+        
+        mocker.onGet(moduleRegExp).reply((requestConfig) => {
+            let module = this.getModuleName(requestConfig.url);
+            let params;
+
+            if (module == 'error') {
+                return [400];
+            }
+
+            if (module == 'clients') {
+                params = {html: '', selectedMenuItem: '', dataTable: clientsDataTable};
+            } else if (module == 'pages' || module == '') {
+                params = {html: '', selectedMenuItem: '', dataTable: pagesDataTable};
+            } else if (module == 'media') {
+                params = {html: '', selectedMenuItem: '', media: {files: mediaFiles}};
+            } else {
+                params = {html: module, selectedMenuItem: ''};
+            }
+
+            return [200, params];
+        });
+
+        mocker.onGet("/api/logout").reply(() => {
+            localStorage.loggedIn = JSON.stringify(false);
+            loginMock.loggedIn    = false;
+            return [200];
+        });
+    }
+
+    /**
+     * @param url
+     */
+    getModuleName(url: any) {
+        return String(url).split('/').pop();
+    }
+
+    mockHomeReply(mocker: MockAdapter) {
         mocker.onGet("/api/home").reply(() => {
             return [200, {
                 loggedIn: loginMock.loggedIn,
@@ -36,56 +86,6 @@ class HomeMock {
                 selectedMenuItem: 'pages',
             }];
         });
-
-        let moduleRegExp = new RegExp('/api/module/*');
-
-        let clientsDataTable = dataTableMock.getDefaultData();
-        let pagesDataTable   = dataTableMock.getPagesData();
-
-        let mediaFiles = [
-            {name: 'Folder', isDir: true}, {name: 'Folder', isDir: true}, {name: 'Folder', isDir: true},
-            {name: 'Folder', isDir: true}, {name: 'Folder', isDir: true}, {name: 'Folder', isDir: true},
-            {name: 'Folder', isDir: true}, {name: 'Folder', isDir: true}, {name: 'Folder', isDir: true},
-            {name: 'Folder', isDir: true}, {name: 'Folder', isDir: true}, {name: 'Folder', isDir: true},
-        ];
-
-        mocker.onGet(moduleRegExp).reply((requestConfig) => {
-            let module = this.getModuleName(requestConfig.url);
-            let params;
-
-            if (module == 'error') {
-                return [400];
-            }
-
-            if (module == 'clients') {
-                params = {html: '', selectedMenuItem: '', dataTable: clientsDataTable};
-            } else if (module == 'pages') {
-                params = {html: '', selectedMenuItem: '', dataTable: pagesDataTable};
-            } else if (module == 'media') {
-                params = {html: '', selectedMenuItem: '', media: {files: mediaFiles}};
-            } else {
-                params = {html: module, selectedMenuItem: ''};
-            }
-
-            if (module == '') {
-                params.selectedMenuItem = 'pages';
-            }
-
-            return [200, params];
-        });
-
-        mocker.onGet("/api/logout").reply(() => {
-            localStorage.loggedIn = JSON.stringify(false);
-            loginMock.loggedIn    = false;
-            return [200];
-        });
-    }
-
-    /**
-     * @param url
-     */
-    getModuleName(url: any) {
-        return String(url).split('/').pop();
     }
 }
 
