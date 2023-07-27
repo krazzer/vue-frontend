@@ -34,7 +34,7 @@ class HomeMock {
             };
 
             Object.keys(paramsFor).forEach(key => {
-                if(module == key){
+                if (module == key) {
                     params = paramsFor[key];
                 }
             });
@@ -58,37 +58,44 @@ class HomeMock {
 
     mockHomeReply(mocker: MockAdapter) {
         mocker.onGet("/api/home").reply(() => {
-            return [200, {
-                loggedIn: loginMock.loggedIn,
-                menu: {
-                    pages: {label: "Pages", icon: 'pages'},
-                    media: {label: "Media", icon: 'media'},
-                    clients: {
-                        label: "Clients",
-                        icon: 'users'
-                    },
-                    invoices: {
-                        label: "Invoices",
-                        icon: '<svg width="80" height="80"><rect width="80" height="80" fill="red" /></svg>',
-                        submenu: {
-                            invoices: {
-                                label: "Invoices",
-                                icon: '<svg width="80" height="80"><rect width="80" height="80" fill="red" /></svg>',
-                            },
-                            revenue: {
-                                label: "Revenue",
-                                icon: '<svg height="80" width="80"><circle cx="50%" cy="50%" r="50%" fill="red"></circle></svg>',
-                            },
-                        }
-                    },
-                    visitors: {label: "Visitors", icon: 'stats'},
-                    users: {label: "Users", icon: 'users'},
-                    settings: {label: "Settings"},
-                },
-                html: 'pages',
-                selectedMenuItem: 'pages',
-            }];
+            return [200, this.getDefaultHomeResponse(loginMock.loggedIn)];
         });
+    }
+
+    /**
+     * @param loggedIn
+     */
+    getDefaultHomeResponse(loggedIn: boolean): any {
+        return {
+            loggedIn: loggedIn,
+            menu: {
+                pages: {label: "Pages", icon: 'pages'},
+                media: {label: "Media", icon: 'media'},
+                clients: {
+                    label: "Clients",
+                    icon: 'users'
+                },
+                invoices: {
+                    label: "Invoices",
+                    icon: '<svg width="80" height="80"><rect width="80" height="80" fill="red" /></svg>',
+                    submenu: {
+                        invoices: {
+                            label: "Invoices",
+                            icon: '<svg width="80" height="80"><rect width="80" height="80" fill="red" /></svg>',
+                        },
+                        revenue: {
+                            label: "Revenue",
+                            icon: '<svg height="80" width="80"><circle cx="50%" cy="50%" r="50%" fill="red"></circle></svg>',
+                        },
+                    }
+                },
+                visitors: {label: "Visitors", icon: 'stats'},
+                users: {label: "Users", icon: 'users'},
+                settings: {label: "Settings"},
+            },
+            html: 'pages',
+            selectedMenuItem: 'pages',
+        }
     }
 }
 

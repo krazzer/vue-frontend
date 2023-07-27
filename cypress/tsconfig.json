@@ -1,10 +1,14 @@
 {
-  "extends": "@vue/tsconfig/tsconfig.web.json",
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
   "include": ["./e2e/**/*", "./support/**/*"],
   "compilerOptions": {
     "isolatedModules": false,
     "target": "es5",
     "lib": ["es5", "dom"],
-    "types": ["cypress"]
+    "types": ["cypress"],
+    "baseUrl": "./../",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   }
 }

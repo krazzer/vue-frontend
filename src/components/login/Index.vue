@@ -29,7 +29,7 @@ export default defineComponent({
       this.errors      = [];
 
       await axios
-          .get('/api/login', {params: params})
+          .post('/api/login', {params: params})
           .then(response => {
             this.loginStatus = response.data;
 
