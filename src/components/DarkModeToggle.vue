@@ -19,8 +19,9 @@ export default defineComponent({
   watch: {
     darkMode(val) {
       let body = document.body;
+      let globalTheme: any = this.theme.global;
 
-      this.theme.global.name = val ? 'dark' : 'light';
+      globalTheme.name = val ? 'dark' : 'light';
 
       body.classList.add('transitioning');
       body.classList.toggle('darkmode', val);
@@ -51,9 +52,9 @@ export default defineComponent({
 </script>
 
 <template>
-  <button class="darkmode-toggle" @click="toggle()">
-    Switch to {{ darkMode ? 'light' : 'dark' }}
-  </button>
+  <v-btn class="darkmode-toggle" @click="toggle()">
+    {{ darkMode ? '☀️' : '🌙' }}
+  </v-btn>
 </template>
 
 <style scoped>

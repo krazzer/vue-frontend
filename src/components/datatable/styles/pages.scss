@@ -1,11 +1,14 @@
 .datatable.pages{
     [data-column="name"]{
+        padding-top: 4px;
+        padding-bottom: 4px;
+
         .name{
             border: 1px solid var(--color-background-shade3);
             width: 200px;
             border-radius: var(--border-radius);
             display: block;
-            padding: 4px 10px 6px;
+            padding: 2px 10px 4px;
             cursor: move;
             background-color: var(--color-background-shade1);
 

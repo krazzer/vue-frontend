@@ -85,7 +85,7 @@ export default defineComponent({
     </div>
     <template v-else>
       <div class="datatable__toolbar">
-        <v-btn class="btn" @click="dialog = true">{{ addButtonLabel }}</v-btn>
+        <v-btn @click="dialog = true">{{ addButtonLabel }}</v-btn>
       </div>
       <div class="datatable__table">
         <table>

@@ -5,7 +5,9 @@ export default defineComponent({
   props: ['settings'],
   data() {
     return {
-      files: [],
+      files: <any>[],
+      isSelecting: false,
+      selectedFile: null
     };
   },
   mounted() {
@@ -13,16 +15,23 @@ export default defineComponent({
       this.files = this.settings.files;
     }
   },
-  methods: {}
+  methods: {
+    handleFileImport() {
+      let mediaComponent: any = this;
+      mediaComponent.$refs.uploader.click();
+    },
+    onFileChanged(e: any) {
+      console.log(e.target.files);
+    },
+  }
 });
 </script>
 
 <template>
   <div class="media">
     <div class="media__toolbar">
-      <label class="btn upload" title="Upload bestanden vanaf uw computer">
-        Uploaden <input type="file" name="files[]" multiple="multiple"/>
-      </label>
+      <v-btn @click="handleFileImport">Uploaden</v-btn>
+      <input ref="uploader" class="d-none" type="file" multiple @change="onFileChanged"/>
     </div>
     <div class="media__files">
       <div class="media__file" v-for="file in files">

@@ -24,6 +24,7 @@ export default defineComponent({
       media: {},
       selectedMenuItem: '',
       html: '',
+      component: '',
       mobileMenuOpen: false,
     }
   },
@@ -90,6 +91,7 @@ export default defineComponent({
       this.html      = data.html;
       this.dataTable = data.dataTable;
       this.media     = data.media;
+      this.component = data.component;
     },
 
     toggleMenu() {
@@ -111,7 +113,8 @@ export default defineComponent({
         <Logo/>
       </div>
       <div class="sidebar__menu">
-        <Menu :menu="menu" :mobileMenuOpen="mobileMenuOpen" :selectedItem="selectedMenuItem" :logout="logout" @select="closeMenu"/>
+        <Menu :menu="menu" :mobileMenuOpen="mobileMenuOpen" :selectedItem="selectedMenuItem" :logout="logout"
+              @select="closeMenu"/>
       </div>
     </div>
     <div class="main">
@@ -164,7 +167,8 @@ $mainPadding: 40px;
   transition: background-color var(--color-scheme-transition-speed), margin-left .3s;
 
   &__logo {
-    margin-bottom: $mainPadding;
+    margin-top: -3px;
+    margin-bottom: $mainPadding + 3px;
   }
 
   &__menu {
