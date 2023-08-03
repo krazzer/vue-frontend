@@ -7,6 +7,7 @@ import type {Component} from "vue";
 import {Mocker} from "@/classes/mocker";
 import {defineCustomElement} from "vue";
 import DataTable from "@/components/datatable/DataTable.vue";
+import '@mdi/font/css/materialdesignicons.css'
 
 // Vuetify
 import 'vuetify/styles'
@@ -18,6 +19,7 @@ class Wrapper
 {
     getApp(Component: Component){
         const vuetify = createVuetify({
+            ssr: true,
             components,
             directives,
         })

@@ -1,5 +1,5 @@
 <script lang="ts">
-import {defineComponent, markRaw} from 'vue'
+import {defineComponent} from 'vue'
 import axios from "axios";
 import Base from "./Base.vue";
 import {FormKit} from "@formkit/vue";
@@ -20,13 +20,26 @@ export default defineComponent({
       remember: false,
       form: null,
       errors: <Array<string>>[],
+      emailRules: [
+        (value: any) => {
+          return value ? true : 'E-mail is required.'
+        },
+        (value: any) => {
+          return (/.+@.+\..+/.test(value)) ? true : 'E-mail must be valid.';
+        },
+      ]
     }
   },
   methods: {
-    async login(params: object) {
-
+    async login() {
       this.loginStatus = {};
       this.errors      = [];
+
+      if (!this.form) {
+        return;
+      }
+
+      let params = {email: this.email, password: this.password, remember: this.remember};
 
       await axios
           .post('/api/login', {params: params})
@@ -42,38 +55,24 @@ export default defineComponent({
           .catch(error => {
             this.errors.push(error.message);
           });
-    },
-
-    getRawInlineSvgCmp(): any{
-      return markRaw(Svg);
-    },
-  },
+    }
+  }
 });
 </script>
 
 <template>
   <Base>
-    <FormKit type="form" submit-label="Inloggen" id="loginform" @submit="login" v-model="form">
-      <FormKit outer-class="email" label="e-mail" placeholder="E-mail adres" validation="required|email" v-model="email"
-               :sections-schema="{
-              prefix: {
-                $el: 'div',
-                attrs: {class: 'icon'},
-                children: [{$cmp: getRawInlineSvgCmp(), props: {svg: 'email'}}],
-              }
-            }" name="email"
-      />
-      <FormKit type="password" placeholder="Wachtwoord" validation="required" outer-class="password" v-model="password"
-               :errors="errors" :sections-schema="{
-              prefix: {
-                $el: 'div',
-                attrs: {class: 'icon'},
-                children: [{$cmp: getRawInlineSvgCmp(), props: {svg: 'lock'}}],
-              }
-            }" label="password" name="password"
-      />
-      <FormKit type="checkbox" label="Onthoud mij" v-model="remember"/>
-    </FormKit>
+    <v-form autocomplete="off" @submit="login" @submit.prevent v-model="form">
+      <v-text-field
+          prepend-inner-icon="mdi-email" v-model="email" label="E-mail adres" :rules="emailRules" required
+          id="email"
+      ></v-text-field>
+      <v-text-field prepend-inner-icon="mdi-lock" v-model="password" type="password" label="Wachtwoord" required
+      ></v-text-field>
+      <v-checkbox v-model="remember" label="Onthoud mij"></v-checkbox>
+      <v-btn type="submit" :disabled="!form" block>Inloggen</v-btn>
+      <v-alert v-if="errors.length" type="error" :text="errors.join(', ')"></v-alert>
+    </v-form>
     <router-link :to="{ name: 'passwordLost' }">Wachtwoord vergeten?</router-link>
   </Base>
 </template>
@@ -84,4 +83,14 @@ export default defineComponent({
     display: none;
   }
 }
+
+.v-checkbox {
+  margin-top: -20px;
+  margin-bottom: -20px;
+}
+
+.v-alert {
+  margin-top: 10px;
+}
+
 </style>

@@ -14,6 +14,10 @@ import Logo from "@/components/icons/Logo.vue";
 
 <style lang="scss" scoped>
 
+:deep(.v-form) {
+  margin-bottom: 10px;
+}
+
 :deep(.email), :deep(.password) {
   .formkit-input {
     margin-left: 42px;
@@ -51,6 +55,7 @@ import Logo from "@/components/icons/Logo.vue";
     width: 100%;
     height: 100%;
     opacity: .5;
+    z-index: 0;
   }
 }
 
@@ -64,6 +69,7 @@ import Logo from "@/components/icons/Logo.vue";
   rgba(0, 0, 0, 0.1) 0 0 0.8rem;
   width: 450px;
   text-align: left;
+  z-index: 1;
 
   &__logo {
     margin-bottom: 2rem;
