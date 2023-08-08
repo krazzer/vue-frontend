@@ -65,9 +65,10 @@ export default defineComponent({
     <v-form autocomplete="off" @submit="login" @submit.prevent v-model="form">
       <v-text-field
           prepend-inner-icon="mdi-email" v-model="email" label="E-mail adres" :rules="emailRules" required
-          id="email"
+          id="email" name="email"
       ></v-text-field>
-      <v-text-field prepend-inner-icon="mdi-lock" v-model="password" type="password" label="Wachtwoord" required
+      <v-text-field
+          prepend-inner-icon="mdi-lock" v-model="password" type="password" label="Wachtwoord" required name="password"
       ></v-text-field>
       <v-checkbox v-model="remember" label="Onthoud mij"></v-checkbox>
       <v-btn type="submit" :disabled="!form" block>Inloggen</v-btn>

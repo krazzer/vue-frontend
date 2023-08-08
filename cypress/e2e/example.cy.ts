@@ -12,7 +12,7 @@ describe("My First Test", () => {
 
     it("Logs in", () => {
         cy.intercept({method: 'GET', url: '/api/home',}, {loggedIn:false}).as('NotLoggedIn')
-        cy.intercept({method: 'GET', url: '/api/login?email=test%40test.com&password=test&checkbox_2=false',}, {success:true}).as('LoggedIn')
+        cy.intercept({method: 'POST', url: '/api/login',}, {success:true}).as('LoggedIn')
 
         cy.visit("/cms");
         cy.get('form [name=email]').type('test@test.com', {delay: 0});
