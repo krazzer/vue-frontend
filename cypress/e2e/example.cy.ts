@@ -2,17 +2,22 @@ import {Mocker} from "@/classes/mocker";
 
 const mocker = new Mocker();
 
+let notLoggedInInterception = () => {
+    cy.intercept({method: 'GET', url: '/api/home',}, {loggedIn:false});
+}
+
 describe("My First Test", () => {
     it("Visits the app root url", () => {
-        cy.intercept({method: 'GET', url: '/api/home',}, {loggedIn:false}).as('NotLoggedIn')
+        notLoggedInInterception();
 
         cy.visit("/cms");
         cy.get(".login").should('be.visible');
     });
 
     it("Logs in", () => {
-        cy.intercept({method: 'GET', url: '/api/home',}, {loggedIn:false}).as('NotLoggedIn')
-        cy.intercept({method: 'POST', url: '/api/login',}, {success:true}).as('LoggedIn')
+        notLoggedInInterception();
+
+        cy.intercept({method: 'POST', url: '/api/login'}, {success:true});
 
         cy.visit("/cms");
         cy.get('form [name=email]').type('test@test.com', {delay: 0});
