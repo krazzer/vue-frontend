@@ -2,7 +2,6 @@
 import {defineComponent} from 'vue'
 import axios from "axios";
 import Base from "./Base.vue";
-import {FormKit} from "@formkit/vue";
 import InlineSvg from 'vue-inline-svg';
 import Svg from "@/components/svg/Svg.vue";
 
@@ -11,7 +10,7 @@ interface LoginStatus {
 }
 
 export default defineComponent({
-  components: {Base, FormKit, InlineSvg, Svg},
+  components: {Base, InlineSvg, Svg},
   data() {
     return {
       loginStatus: <LoginStatus>{},
@@ -65,10 +64,11 @@ export default defineComponent({
     <v-form autocomplete="off" @submit="login" @submit.prevent v-model="form">
       <v-text-field
           prepend-inner-icon="mdi-email" v-model="email" label="E-mail adres" :rules="emailRules" required
-          id="email" name="email"
+          id="email" name="email" data-testid="email"
       ></v-text-field>
       <v-text-field
           prepend-inner-icon="mdi-lock" v-model="password" type="password" label="Wachtwoord" required name="password"
+          data-testid="password"
       ></v-text-field>
       <v-checkbox v-model="remember" label="Onthoud mij"></v-checkbox>
       <v-btn type="submit" :disabled="!form" block>Inloggen</v-btn>
@@ -79,11 +79,6 @@ export default defineComponent({
 </template>
 
 <style lang="scss">
-.email, .password {
-  .formkit-label {
-    display: none;
-  }
-}
 
 .v-checkbox {
   margin-top: -20px;

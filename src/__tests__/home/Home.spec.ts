@@ -1,7 +1,6 @@
 import {describe, it, expect, vi} from "vitest";
 import {mount, config} from "@vue/test-utils";
 import HomeIndex from "@/components/home/Home.vue";
-import {defaultConfig, plugin} from "@formkit/vue";
 import router from "@/router";
 import flushPromises from "flush-promises";
 import {Mocker} from "@/classes/mocker";
@@ -10,7 +9,7 @@ const mocker = new Mocker(0)
 mocker.loginMock.loggedIn = true;
 mocker.mock();
 
-let plugins: any = [[plugin, defaultConfig], router];
+let plugins: any = [router];
 
 config.global.mocks = {$assets: ''};
 

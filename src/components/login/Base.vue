@@ -18,26 +18,6 @@ import Logo from "@/components/icons/Logo.vue";
   margin-bottom: 10px;
 }
 
-:deep(.email), :deep(.password) {
-  .formkit-input {
-    margin-left: 42px;
-    padding-left: 8px;
-  }
-}
-
-:deep(.formkit-inner .icon) {
-  width: 16px;
-  height: 16px;
-  position: absolute;
-  padding: 0;
-  text-align: center;
-  left: 7px;
-
-  svg {
-    height: 100%;
-  }
-}
-
 .login {
   background: url("@/assets/login-background.jpg") no-repeat center center fixed;
   background-size: cover;

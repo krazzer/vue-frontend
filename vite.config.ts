@@ -21,7 +21,12 @@ export default defineConfig({
   },
   base: '/cms/',
   test: {
-    environment: 'jsdom'
+    environment: 'jsdom',
+    setupFiles: "vuetify.config.js",
+    deps: {
+      inline: ["vuetify"],
+    },
+    globals: true,
   },
   css: {
     preprocessorOptions: {
