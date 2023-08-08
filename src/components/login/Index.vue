@@ -2,6 +2,7 @@
 import {defineComponent} from 'vue'
 import axios from "axios";
 import Base from "./Base.vue";
+import validator from "@/classes/validator";
 import InlineSvg from 'vue-inline-svg';
 import Svg from "@/components/svg/Svg.vue";
 
@@ -19,14 +20,7 @@ export default defineComponent({
       remember: false,
       form: null,
       errors: <Array<string>>[],
-      emailRules: [
-        (value: any) => {
-          return value ? true : 'E-mail is required.'
-        },
-        (value: any) => {
-          return (/.+@.+\..+/.test(value)) ? true : 'E-mail must be valid.';
-        },
-      ]
+      emailRules: validator.getEmailRules()
     }
   },
   methods: {
