@@ -1,9 +1,15 @@
 <script lang="ts">
 import {defineComponent} from "vue";
+import validator from "@/classes/validator";
 
 export default defineComponent({
   name: "EditDialog",
-  props: ['dialog'],
+  props: ['dialog', 'form'],
+  data() {
+    return {
+      validator: validator,
+    };
+  },
 });
 </script>
 <template>
@@ -11,36 +17,21 @@ export default defineComponent({
     <v-dialog v-model="dialog" persistent width="1200">
       <v-card>
         <v-card-title>
-          <span class="text-h5">User Profile</span>
+          <span class="text-h5">Add</span>
         </v-card-title>
         <v-card-text>
           <v-container>
             <v-row>
-              <v-col cols="12" sm="6" md="4">
-                <v-text-field label="Legal first name*" required></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6" md="4">
-                <v-text-field label="Legal middle name" hint="example of helper text only on focus"></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6" md="4">
+              <v-col v-for="field in form.fields ?? {}" cols="12" :md="field.size ? field.size.md : 0"
+                     :sm="field.size ? field.size.sm : 0">
                 <v-text-field
-                    label="Legal last name*" hint="example of persistent helper text" persistent-hint required
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field label="Email*" required></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field label="Password*" type="password" required></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6">
-                <v-select :items="['0-17', '18-29', '30-54', '54+']" label="Age*" required></v-select>
-              </v-col>
-              <v-col cols="12" sm="6">
-                <v-autocomplete
-                    :items="['Skiing', 'Ice hockey', 'Soccer', 'Basketball', 'Hockey', 'Reading', 'Writing', 'Coding', 'Basejump']"
-                    label="Interests" multiple
-                ></v-autocomplete>
+                    v-if="field.type == 'text'" :label="field.label" :hint="field.hint" required
+                    :rules="field.validator ? validator.get(field.validator.name, field.validator.parameters) : []"/>
+                <v-text-field v-if="field.type == 'password'" type="password" :label="field.label" required/>
+                <v-select v-if="field.type == 'select'" item-value="key" item-title="value" :items="field.items"
+                          :label="field.label" required/>
+                <v-autocomplete v-if="field.type == 'autocomplete'" item-value="key" item-title="value"
+                                :items="field.items" :label="field.label" required :multiple="field.multiple"/>
               </v-col>
             </v-row>
           </v-container>

@@ -60,7 +60,7 @@ export default defineComponent({
 <style scoped>
 .darkmode-toggle {
   position: absolute;
-  z-index: 1;
+  z-index: 2500;
   top: 10px;
   right: 10px;
 }

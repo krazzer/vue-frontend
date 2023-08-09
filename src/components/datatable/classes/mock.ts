@@ -11,9 +11,75 @@ class DataTableMock {
     }
 
     getDefaultData() {
-        return  {
+        return {
             addButtonLabel: 'Add client',
             headers: ['id', 'name', 'address', 'zip'],
+            form: {
+                fields: [
+                    {
+                        key: 'firstname',
+                        type: 'text',
+                        label: 'Legal first name',
+                        size: {sm: 6, md: 4},
+                        hint: 'example of helper text only on focus'
+                    },
+                    {
+                        key: 'middlename',
+                        type: 'text',
+                        label: 'Legal middle name',
+                        size: {sm: 6, md: 4},
+                        hint: 'example of helper text only on focus 2'
+                    },
+                    {
+                        key: 'lastname',
+                        type: 'text',
+                        label: 'Legal last name',
+                        size: {sm: 6, md: 4},
+                        hint: 'example of helper text only on focus 3'
+                    },
+                    {
+                        key: 'email',
+                        type: 'text',
+                        label: 'E-mail address',
+                        validator: {name: 'email', parameters: [true]}
+                    },
+                    {
+                        key: 'password',
+                        type: 'password',
+                        label: 'Password',
+                    },
+                    {
+                        key: 'age',
+                        type: 'select',
+                        label: 'Age',
+                        items: [
+                            {key: '0-17', value: '0-17'},
+                            {key: '18-29', value: '18-29'},
+                            {key: '30-54', value: '30-54'},
+                            {key: '54+', value: '54+'}
+                        ],
+                        size: {sm: 6},
+                    },
+                    {
+                        key: 'interests',
+                        type: 'autocomplete',
+                        multiple: true,
+                        label: 'Interests',
+                        items: [
+                            {key: '1', value: 'Skiing'},
+                            {key: '2', value: 'Ice hockey'},
+                            {key: '3', value: 'Soccer'},
+                            {key: '4', value: 'Basketball'},
+                            {key: '5', value: 'Hockey'},
+                            {key: '6', value: 'Reading'},
+                            {key: '7', value: 'Writing'},
+                            {key: '8', value: 'Coding'},
+                            {key: '9', value: 'Basejump'},
+                        ],
+                        size: {sm: 6},
+                    },
+                ],
+            },
             data: [
                 [1, 'Peter', 'Peterstreet 17', '12345'],
                 [2, 'John', 'Johnstreet 17', '23456'],
@@ -61,8 +127,8 @@ class DataTableMock {
         };
     }
 
-    getPagesData(){
-        return  {
+    getPagesData() {
+        return {
             addButtonLabel: 'Add page',
             headers: ['id', 'name', 'template', 'slug'],
             cells: {

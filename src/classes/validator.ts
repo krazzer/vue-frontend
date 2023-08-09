@@ -1,4 +1,6 @@
 class Validator {
+    readonly EMAIL = 'email';
+
     /**
      * @param required
      */
@@ -18,6 +20,17 @@ class Validator {
         }
 
         return rules;
+    }
+
+    /**
+     * @param type
+     * @param parameters
+     */
+    get(type: string, parameters: Array<any>){
+        switch (type){
+            case this.EMAIL:
+                return this.getEmailRules(...parameters);
+        }
     }
 }
 

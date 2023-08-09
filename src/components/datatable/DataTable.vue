@@ -115,8 +115,7 @@ export default defineComponent({
       </div>
     </template>
   </div>
-
-  <EditDialog :dialog="dialog" @clickClose="dialog = false" @clickSave="dialog = false"/>
+  <EditDialog :dialog="dialog" :form="settings.form ?? {}" @clickClose="dialog = false" @clickSave="dialog = false"/>
 </template>
 
 <style lang="scss" scoped>
