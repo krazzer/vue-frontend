@@ -1,5 +1,6 @@
 class Validator {
-    readonly EMAIL = 'email';
+    readonly EMAIL    = 'email';
+    readonly PRESENCE = 'presence';
 
     /**
      * @param required
@@ -11,7 +12,7 @@ class Validator {
             },
         ]
 
-        if(required){
+        if (required) {
             let requiredRule: any = (value: any) => {
                 return value ? true : 'E-mail is required.'
             };
@@ -26,10 +27,17 @@ class Validator {
      * @param type
      * @param parameters
      */
-    get(type: string, parameters: Array<any>){
-        switch (type){
+    get(type: string, parameters: Array<any>) {
+        switch (type) {
             case this.EMAIL:
                 return this.getEmailRules(...parameters);
+
+            case this.PRESENCE:
+                return [
+                    (value: any) => {
+                        return value ? true : 'Input is required.';
+                    },
+                ];
         }
     }
 }

@@ -21,7 +21,8 @@ class DataTableMock {
                         type: 'text',
                         label: 'Legal first name',
                         size: {sm: 6, md: 4},
-                        hint: 'example of helper text only on focus'
+                        hint: 'example of helper text only on focus',
+                        validator: {name: 'presence', parameters: []}
                     },
                     {
                         key: 'middlename',
