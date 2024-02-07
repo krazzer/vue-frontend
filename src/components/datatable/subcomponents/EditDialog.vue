@@ -10,6 +10,18 @@ export default defineComponent({
       validator: validator,
     };
   },
+  methods: {
+    async clickSave() {
+      let isValid = await this.$refs.form.validate();
+
+      if(isValid.valid){
+        this.$emit('clickSave');
+      }
+    },
+    reset() {
+      this.$refs.form.reset()
+    },
+  }
 });
 </script>
 <template>
@@ -21,25 +33,27 @@ export default defineComponent({
         </v-card-title>
         <v-card-text>
           <v-container>
-            <v-row>
-              <v-col v-for="field in form.fields ?? {}" cols="12" :md="field.size ? field.size.md : 0"
-                     :sm="field.size ? field.size.sm : 0">
-                <v-text-field
-                    v-if="field.type == 'text'" :label="field.label" :hint="field.hint" required
-                    :rules="field.validator ? validator.get(field.validator.name, field.validator.parameters) : []"/>
-                <v-text-field v-if="field.type == 'password'" type="password" :label="field.label" required/>
-                <v-select v-if="field.type == 'select'" item-value="key" item-title="value" :items="field.items"
-                          :label="field.label" required/>
-                <v-autocomplete v-if="field.type == 'autocomplete'" item-value="key" item-title="value"
-                                :items="field.items" :label="field.label" required :multiple="field.multiple"/>
-              </v-col>
-            </v-row>
+            <v-form ref="form">
+              <v-row>
+                <v-col v-for="field in form.fields ?? {}" cols="12" :md="field.size ? field.size.md : 0"
+                       :sm="field.size ? field.size.sm : 0">
+                  <v-text-field
+                      v-if="field.type == 'text'" :label="field.label" :hint="field.hint" required
+                      :rules="field.validator ? validator.get(field.validator.name, field.validator.parameters) : []"/>
+                  <v-text-field v-if="field.type == 'password'" type="password" :label="field.label" required/>
+                  <v-select v-if="field.type == 'select'" item-value="key" item-title="value" :items="field.items"
+                            :label="field.label" required/>
+                  <v-autocomplete v-if="field.type == 'autocomplete'" item-value="key" item-title="value"
+                                  :items="field.items" :label="field.label" required :multiple="field.multiple"/>
+                </v-col>
+              </v-row>
+            </v-form>
           </v-container>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue-darken-1" variant="text" @click="$emit('clickClose')">Close</v-btn>
-          <v-btn color="blue-darken-1" variant="text" @click="$emit('clickSave')">Save</v-btn>
+          <v-btn color="blue-darken-1" variant="text" @click="clickSave">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
