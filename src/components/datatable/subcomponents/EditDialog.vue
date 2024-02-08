@@ -12,15 +12,20 @@ export default defineComponent({
   },
   methods: {
     async clickSave() {
-      let isValid = await this.$refs.form.validate();
+      let isValid = await this.getForm().validate();
 
       if(isValid.valid){
         this.$emit('clickSave');
       }
     },
     reset() {
-      this.$refs.form.reset()
+      this.getForm().reset()
     },
+
+    getForm(){
+      let thisComponent: any = this;
+      return thisComponent.$refs.form;
+    }
   }
 });
 </script>
