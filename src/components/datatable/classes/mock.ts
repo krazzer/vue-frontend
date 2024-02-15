@@ -9,8 +9,15 @@ class DataTableMock {
             return [200, params];
         });
 
-        mocker.onPost("/api/datatable/validate").reply(() => {
-            return [200, 'Invalid, sorry'];
+        mocker.onPost("/api/datatable/validate").reply((request) => {
+            let params = JSON.parse(request.data).params;
+            let validated: any = 'Invalid';
+
+            if (params.name === 'postalcode') {
+                validated = (/^[1-9][0-9]{3} ?(?!sa|sd|ss)[a-z]{2}$/i.test(params.value)) ? true : 'Invalid postal code';
+            }
+
+            return [200, validated];
         });
     }
 
@@ -57,7 +64,7 @@ class DataTableMock {
                         key: 'zip',
                         type: 'text',
                         label: 'Zip code',
-                        validator: {name: 'server', parameters: {name: 'zip'}}
+                        validator: {name: 'server', parameters: {name: 'postalcode'}}
                     },
                     {
                         key: 'age',
