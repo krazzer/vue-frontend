@@ -1,4 +1,5 @@
 import axios from "axios";
+import {ValidationParameters} from "./ValidationParameters";
 
 class Validator {
     readonly EMAIL      = 'email';
@@ -30,7 +31,7 @@ class Validator {
      * @param type
      * @param parameters
      */
-    get(type: string, parameters: Object) {
+    get(type: string, parameters: ValidationParameters) {
         switch (type) {
             case this.EMAIL:
                 return this.getEmailRules(parameters.required);
