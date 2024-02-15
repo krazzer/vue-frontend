@@ -8,6 +8,10 @@ class DataTableMock {
             let params = {settings: clientsDataTable};
             return [200, params];
         });
+
+        mocker.onPost("/api/datatable/validate").reply(() => {
+            return [200, 'Invalid, sorry'];
+        });
     }
 
     getDefaultData() {
@@ -22,7 +26,7 @@ class DataTableMock {
                         label: 'Legal first name',
                         size: {sm: 6, md: 4},
                         hint: 'example of helper text only on focus',
-                        validator: {name: 'presence', parameters: []}
+                        validator: {name: 'presence', parameters: {}}
                     },
                     {
                         key: 'middlename',
@@ -42,12 +46,18 @@ class DataTableMock {
                         key: 'email',
                         type: 'text',
                         label: 'E-mail address',
-                        validator: {name: 'email', parameters: [true]}
+                        validator: {name: 'email', parameters: {required: true}}
                     },
                     {
                         key: 'password',
                         type: 'password',
                         label: 'Password',
+                    },
+                    {
+                        key: 'zip',
+                        type: 'text',
+                        label: 'Zip code',
+                        validator: {name: 'server', parameters: {name: 'zip'}}
                     },
                     {
                         key: 'age',
