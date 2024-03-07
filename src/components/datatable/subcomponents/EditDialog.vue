@@ -43,7 +43,7 @@ export default defineComponent({
                 <v-col v-for="field in form.fields ?? {}" cols="12" :md="field.size ? field.size.md : 0"
                        :sm="field.size ? field.size.sm : 0">
                   <v-text-field
-                      v-if="field.type == 'text'" :label="field.label" :hint="field.hint" required
+                      v-if="field.type == 'text'" :label="field.label" :hint="field.hint" required validate-on="blur"
                       :rules="field.validator ? validator.get(field.validator.name, field.validator.parameters) : []"/>
                   <v-text-field v-if="field.type == 'password'" type="password" :label="field.label" required/>
                   <v-select v-if="field.type == 'select'" item-value="key" item-title="value" :items="field.items"
