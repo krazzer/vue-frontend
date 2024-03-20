@@ -12,7 +12,7 @@ export default defineComponent({
     return {
       addButtonLabel: null,
       headers: [],
-      data: [],
+      data: <any> [],
       error: '',
       dialog: false,
     };
@@ -108,6 +108,9 @@ export default defineComponent({
                 </span>
               </template>
               <template v-else>{{ cell }}</template>
+              <template v-if="i == row.length - 1">
+                <Svg :svg="'edit'" />
+              </template>
             </td>
           </tr>
           </tbody>
@@ -136,11 +139,30 @@ export default defineComponent({
 
       td, th {
         padding: 8px 15px;
+        position: relative;
       }
 
       thead th {
         text-align: left;
         font-weight: bold;
+      }
+
+      td .icon{
+        width: 20px;
+        display: inline-block;
+        position: absolute;
+        right: 15px;
+        cursor: pointer;
+
+        :deep(svg) {
+          path{
+            fill: var(--color-text);
+          }
+        }
+
+        &--edit{
+          margin-top: 2px;
+        }
       }
 
       tbody {
