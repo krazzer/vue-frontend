@@ -110,7 +110,9 @@ export default defineComponent({
               </template>
               <template v-else>{{ cell }}</template>
               <template v-if="i == row.length - 1">
-                <span @click="dialog = true; dialogEditId = i"><Svg :svg="'edit'"/></span>
+                <div class="buttons">
+                  <span @click="dialog = true; dialogEditId = i"><Svg :svg="'edit'"/></span>
+                </div>
               </template>
             </td>
           </tr>
@@ -139,6 +141,10 @@ export default defineComponent({
       border-collapse: separate;
       width: 100%;
 
+      tr:hover td .buttons{
+        display: inline-block;
+      }
+
       td, th {
         padding: 8px 15px;
         position: relative;
@@ -149,11 +155,15 @@ export default defineComponent({
         font-weight: bold;
       }
 
+      td .buttons{
+        display: none;
+        position: absolute;
+        right: 15px;
+      }
+
       td .icon {
         width: 20px;
         display: inline-block;
-        position: absolute;
-        right: 15px;
         cursor: pointer;
 
         :deep(svg) {
@@ -171,6 +181,10 @@ export default defineComponent({
         tr:nth-child(odd) {
           transition: background-color var(--color-scheme-transition-speed);
           background-color: var(--color-background-shade1);
+        }
+
+        tr:hover{
+          background-color: var(--color-background-shade2);
         }
       }
     }
