@@ -4,7 +4,7 @@ import validator from "@/classes/validator";
 
 export default defineComponent({
   name: "EditDialog",
-  props: ['dialog', 'form'],
+  props: ['dialog', 'form', 'dialogEditId'],
   data() {
     return {
       validator: validator,
@@ -34,7 +34,7 @@ export default defineComponent({
     <v-dialog v-model="dialog" persistent width="1200">
       <v-card>
         <v-card-title>
-          <span class="text-h5">Add</span>
+          <span class="text-h5">{{ dialogEditId ? 'Edit ' + dialogEditId : 'Add' }}</span>
         </v-card-title>
         <v-card-text>
           <v-container>

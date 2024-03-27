@@ -12,9 +12,10 @@ export default defineComponent({
     return {
       addButtonLabel: null,
       headers: [],
-      data: <any> [],
+      data: <any>[],
       error: '',
       dialog: false,
+      dialogEditId: <any>null,
     };
   },
   watch: {
@@ -85,7 +86,7 @@ export default defineComponent({
     </div>
     <template v-else>
       <div class="datatable__toolbar">
-        <v-btn @click="dialog = true">{{ addButtonLabel }}</v-btn>
+        <v-btn @click="dialog = true; dialogEditId = null;">{{ addButtonLabel }}</v-btn>
       </div>
       <div class="datatable__table">
         <table>
@@ -109,7 +110,7 @@ export default defineComponent({
               </template>
               <template v-else>{{ cell }}</template>
               <template v-if="i == row.length - 1">
-                <Svg :svg="'edit'" />
+                <span @click="dialog = true; dialogEditId = i"><Svg :svg="'edit'"/></span>
               </template>
             </td>
           </tr>
@@ -118,7 +119,8 @@ export default defineComponent({
       </div>
     </template>
   </div>
-  <EditDialog :dialog="dialog" :form="settings.form ?? {}" @clickClose="dialog = false" @clickSave="dialog = false"/>
+  <EditDialog :dialog="dialog" :dialogEditId="dialogEditId" :form="settings.form ?? {}" @clickClose="dialog = false"
+              @clickSave="dialog = false"/>
 </template>
 
 <style lang="scss" scoped>
@@ -147,7 +149,7 @@ export default defineComponent({
         font-weight: bold;
       }
 
-      td .icon{
+      td .icon {
         width: 20px;
         display: inline-block;
         position: absolute;
@@ -155,12 +157,12 @@ export default defineComponent({
         cursor: pointer;
 
         :deep(svg) {
-          path{
+          path {
             fill: var(--color-text);
           }
         }
 
-        &--edit{
+        &--edit {
           margin-top: 2px;
         }
       }
