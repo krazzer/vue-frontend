@@ -47,7 +47,7 @@ export default defineComponent({
                       :rules="field.validator ? validator.get(field.validator.name, field.validator.parameters) : []"
                       :model-value="data[field.key]"/>
                   <v-text-field v-if="field.type == 'password'" type="password" :label="field.label" required
-                                :model-value="data[field.key]"/>
+                                :model-value="data[field.key]" autocomplete="new-password" />
                   <v-select v-if="field.type == 'select'" item-value="key" item-title="value" :items="field.items"
                             :label="field.label" required :model-value="data[field.key]"/>
                   <v-autocomplete v-if="field.type == 'autocomplete'" item-value="key" item-title="value"
