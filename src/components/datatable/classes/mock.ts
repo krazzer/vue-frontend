@@ -9,6 +9,10 @@ class DataTableMock {
             return [200, params];
         });
 
+        mocker.onGet("/api/datatable/edit").reply(() => {
+            return [200, this.getEditData()];
+        });
+
         mocker.onPost("/api/datatable/validate").reply((request) => {
             let params = JSON.parse(request.data).params;
             let validated: any = 'Invalid';
@@ -161,6 +165,13 @@ class DataTableMock {
             ],
             instance: 'pagesTest',
             class: 'pages',
+        };
+    }
+
+    getEditData() {
+        return {
+            'field1' : 'value1',
+            'field2' : 'value2',
         };
     }
 }

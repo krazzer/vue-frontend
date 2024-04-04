@@ -74,6 +74,21 @@ export default defineComponent({
 
       return null;
     },
+
+    /**
+     * @param id
+     */
+    async edit(id: number) {
+      await axios
+          .get('/api/datatable/edit', {params: {instance: this.instance}})
+          .then(response => {
+            this.dialog = true;
+            this.dialogEditId = id;
+            console.log(response.data);
+          }).catch(error => {
+            this.error = error;
+          });
+    },
   }
 });
 
@@ -111,7 +126,7 @@ export default defineComponent({
               <template v-else>{{ cell }}</template>
               <template v-if="i == row.length - 1">
                 <div class="buttons">
-                  <span @click="dialog = true; dialogEditId = i"><Svg :svg="'edit'"/></span>
+                  <span @click="edit(i)"><Svg :svg="'edit'"/></span>
                 </div>
               </template>
             </td>
