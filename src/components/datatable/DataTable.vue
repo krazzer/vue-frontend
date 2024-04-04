@@ -194,7 +194,6 @@ export default defineComponent({
 
       tbody {
         tr:nth-child(odd) {
-          transition: background-color var(--color-scheme-transition-speed);
           background-color: var(--color-background-shade1);
         }
 
@@ -205,4 +204,11 @@ export default defineComponent({
     }
   }
 }
+
+body.transitioning{
+  table tbody tr{
+    transition: background-color var(--color-scheme-transition-speed);
+  }
+}
+
 </style>
