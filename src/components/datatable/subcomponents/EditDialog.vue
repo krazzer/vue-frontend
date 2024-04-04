@@ -4,7 +4,7 @@ import validator from "@/classes/validator";
 
 export default defineComponent({
   name: "EditDialog",
-  props: ['dialog', 'form', 'dialogEditId'],
+  props: ['dialog', 'form', 'dialogEditId', 'data'],
   data() {
     return {
       validator: validator,
@@ -14,7 +14,7 @@ export default defineComponent({
     async clickSave() {
       let isValid = await this.getForm().validate();
 
-      if(isValid.valid){
+      if (isValid.valid) {
         this.$emit('clickSave');
       }
     },
@@ -22,7 +22,7 @@ export default defineComponent({
       this.getForm().reset()
     },
 
-    getForm(){
+    getForm() {
       let thisComponent: any = this;
       return thisComponent.$refs.form;
     }
@@ -44,12 +44,15 @@ export default defineComponent({
                        :sm="field.size ? field.size.sm : 0">
                   <v-text-field
                       v-if="field.type == 'text'" :label="field.label" :hint="field.hint" required validate-on="blur"
-                      :rules="field.validator ? validator.get(field.validator.name, field.validator.parameters) : []"/>
-                  <v-text-field v-if="field.type == 'password'" type="password" :label="field.label" required/>
+                      :rules="field.validator ? validator.get(field.validator.name, field.validator.parameters) : []"
+                      :model-value="data[field.key]"/>
+                  <v-text-field v-if="field.type == 'password'" type="password" :label="field.label" required
+                                :model-value="data[field.key]"/>
                   <v-select v-if="field.type == 'select'" item-value="key" item-title="value" :items="field.items"
-                            :label="field.label" required/>
+                            :label="field.label" required :model-value="data[field.key]"/>
                   <v-autocomplete v-if="field.type == 'autocomplete'" item-value="key" item-title="value"
-                                  :items="field.items" :label="field.label" required :multiple="field.multiple"/>
+                                  :items="field.items" :label="field.label" required :multiple="field.multiple"
+                                  :model-value="data[field.key]"/>
                 </v-col>
               </v-row>
             </v-form>

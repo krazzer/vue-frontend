@@ -13,6 +13,7 @@ export default defineComponent({
       addButtonLabel: null,
       headers: [],
       data: <any>[],
+      editData: <any>[],
       error: '',
       dialog: false,
       dialogEditId: <any>null,
@@ -84,7 +85,7 @@ export default defineComponent({
           .then(response => {
             this.dialog = true;
             this.dialogEditId = id;
-            console.log(response.data);
+            this.editData = response.data;
           }).catch(error => {
             this.error = error;
           });
@@ -101,7 +102,7 @@ export default defineComponent({
     </div>
     <template v-else>
       <div class="datatable__toolbar">
-        <v-btn @click="dialog = true; dialogEditId = null;">{{ addButtonLabel }}</v-btn>
+        <v-btn @click="dialog = true; dialogEditId = null; editData = {};">{{ addButtonLabel }}</v-btn>
       </div>
       <div class="datatable__table">
         <table>
@@ -137,7 +138,7 @@ export default defineComponent({
     </template>
   </div>
   <EditDialog :dialog="dialog" :dialogEditId="dialogEditId" :form="settings.form ?? {}" @clickClose="dialog = false"
-              @clickSave="dialog = false"/>
+              @clickSave="dialog = false" :data="editData"/>
 </template>
 
 <style lang="scss" scoped>

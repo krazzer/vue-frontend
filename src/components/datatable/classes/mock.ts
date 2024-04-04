@@ -14,7 +14,7 @@ class DataTableMock {
         });
 
         mocker.onPost("/api/datatable/validate").reply((request) => {
-            let params = JSON.parse(request.data).params;
+            let params         = JSON.parse(request.data).params;
             let validated: any = 'Invalid';
 
             if (params.name === 'postalcode') {
@@ -170,8 +170,14 @@ class DataTableMock {
 
     getEditData() {
         return {
-            'field1' : 'value1',
-            'field2' : 'value2',
+            'firstname': 'Peter',
+            'lastname': 'Peterson',
+            'middlename': 'von',
+            'email': 'peter@peter.com',
+            'password': 'somepass',
+            'zip': '12345',
+            'age': '18-29',
+            'interests': ["1", "2"],
         };
     }
 }
