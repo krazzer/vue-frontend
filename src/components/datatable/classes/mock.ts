@@ -100,6 +100,11 @@ class DataTableMock {
                         ],
                         size: {sm: 6},
                     },
+                    {
+                        key: 'hobbies',
+                        type: 'datatable',
+                        label: 'Hobbies',
+                    },
                 ],
             },
             data: [

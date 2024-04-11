@@ -29,6 +29,10 @@ export default defineComponent({
   }
 });
 </script>
+<script lang="ts" setup>
+  import {defineAsyncComponent} from "vue";
+  const DataTable = defineAsyncComponent(() => import('../DataTable.vue'));
+</script>
 <template>
   <v-row justify="center">
     <v-dialog v-model="dialog" persistent width="1200">
@@ -53,6 +57,7 @@ export default defineComponent({
                   <v-autocomplete v-if="field.type == 'autocomplete'" item-value="key" item-title="value"
                                   :items="field.items" :label="field.label" required :multiple="field.multiple"
                                   :model-value="data[field.key]"/>
+                  <DataTable v-if="field.type == 'datatable'" :settings="{}" :instance="'test'"/>
                 </v-col>
               </v-row>
             </v-form>
