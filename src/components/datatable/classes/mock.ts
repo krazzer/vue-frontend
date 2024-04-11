@@ -104,6 +104,7 @@ class DataTableMock {
                         key: 'hobbies',
                         type: 'datatable',
                         label: 'Hobbies',
+                        instance: 'test',
                     },
                 ],
             },

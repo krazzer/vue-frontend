@@ -7,7 +7,15 @@ import Svg from "@/components/svg/Svg.vue";
 export default defineComponent({
   name: "DataTable",
   components: {Svg, EditDialog},
-  props: ['settings', 'instance'],
+  props: {
+    settings: {
+      type: Object,
+      default() {
+        return {}
+      }
+    },
+    instance: String,
+  },
   data() {
     return {
       addButtonLabel: null,
@@ -25,7 +33,7 @@ export default defineComponent({
     }
   },
   mounted() {
-    if (this.settings) {
+    if (Object.keys(this.settings).length !== 0) {
       this.convertSettings(this.settings);
     } else if (this.instance) {
       this.init();
@@ -157,7 +165,7 @@ export default defineComponent({
       border-collapse: separate;
       width: 100%;
 
-      tr:hover td .buttons{
+      tr:hover td .buttons {
         display: inline-block;
       }
 
@@ -171,7 +179,7 @@ export default defineComponent({
         font-weight: bold;
       }
 
-      td .buttons{
+      td .buttons {
         display: none;
         position: absolute;
         right: 15px;
@@ -198,7 +206,7 @@ export default defineComponent({
           background-color: var(--color-background-shade1);
         }
 
-        tr:hover{
+        tr:hover {
           background-color: var(--color-background-shade2);
         }
       }
@@ -206,8 +214,8 @@ export default defineComponent({
   }
 }
 
-body.transitioning{
-  table tbody tr{
+body.transitioning {
+  table tbody tr {
     transition: background-color var(--color-scheme-transition-speed);
   }
 }
