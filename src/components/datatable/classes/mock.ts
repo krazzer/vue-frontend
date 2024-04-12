@@ -2,10 +2,20 @@ import type MockAdapter from "axios-mock-adapter";
 
 class DataTableMock {
     mock(mocker: MockAdapter) {
-        let clientsDataTable = this.getDefaultData();
+        mocker.onGet("/api/datatable").reply((request) => {
 
-        mocker.onGet("/api/datatable").reply(() => {
-            let params = {settings: clientsDataTable};
+            let dataTableSettings = {};
+
+            if (request.params.instance == 'clients') {
+                dataTableSettings = this.getDefaultData();
+            }
+
+            if (request.params.instance == 'hobbies') {
+                dataTableSettings = this.getSubDataTableData();
+            }
+
+            let params = {settings: dataTableSettings};
+
             return [200, params];
         });
 
@@ -104,7 +114,7 @@ class DataTableMock {
                         key: 'hobbies',
                         type: 'datatable',
                         label: 'Hobbies',
-                        instance: 'test',
+                        instance: 'hobbies',
                     },
                 ],
             },
@@ -151,6 +161,24 @@ class DataTableMock {
                 [40, 'Naomi', 'Naomistreet 17', '56789'],
 
             ],
+            instance: 'clients',
+        };
+    }
+
+    getSubDataTableData() {
+        return {
+            addButtonLabel: 'Add hobby',
+            headers: ['id', 'name'],
+            form: {
+                fields: [
+                    {
+                        key: 'name',
+                        type: 'text',
+                        label: 'Name of hobby',
+                    },
+                ],
+            },
+            data: [[1, 'Fitness'], [2, 'Gaming'], [3, 'Sup']],
             instance: 'test',
         };
     }
