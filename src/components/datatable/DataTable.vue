@@ -21,6 +21,7 @@ export default defineComponent({
       addButtonLabel: null,
       headers: [],
       data: <any>[],
+      form: <any>[],
       editData: <any>[],
       error: '',
       dialog: false,
@@ -44,6 +45,7 @@ export default defineComponent({
       this.addButtonLabel = settings.addButtonLabel;
       this.headers        = settings.headers;
       this.data           = settings.data;
+      this.form           = settings.form;
     },
 
     async init() {
@@ -145,7 +147,7 @@ export default defineComponent({
       </div>
     </template>
   </div>
-  <EditDialog :dialog="dialog" :dialogEditId="dialogEditId" :form="settings.form ?? {}" @clickClose="dialog = false"
+  <EditDialog :dialog="dialog" :dialogEditId="dialogEditId" :form="form ?? {}" @clickClose="dialog = false"
               @clickSave="dialog = false" :data="editData"/>
 </template>
 
