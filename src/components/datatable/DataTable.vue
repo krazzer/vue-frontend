@@ -100,6 +100,17 @@ export default defineComponent({
             this.error = error;
           });
     },
+
+    async save(data: any) {
+      await axios
+          .get('/api/datatable/save', {params: {instance: this.instance, data: data}})
+          .then(response => {
+            console.log("ok, saved");
+            this.dialog = false;
+          }).catch(error => {
+            alert(error);
+          });
+    },
   }
 });
 
@@ -148,7 +159,7 @@ export default defineComponent({
     </template>
   </div>
   <EditDialog :dialog="dialog" :dialogEditId="dialogEditId" :form="form ?? {}" @clickClose="dialog = false"
-              @clickSave="dialog = false" :data="editData"/>
+              @clickSave="save" :data="editData"/>
 </template>
 
 <style lang="scss" scoped>

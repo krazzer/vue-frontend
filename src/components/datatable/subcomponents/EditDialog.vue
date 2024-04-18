@@ -4,7 +4,7 @@ import validator from "@/classes/validator";
 
 export default defineComponent({
   name: "EditDialog",
-  props: ['dialog', 'form', 'dialogEditId', 'data'],
+  props: ['dialog', 'form', 'dialogEditId', 'data', 'values'],
   data() {
     return {
       validator: validator,
@@ -15,7 +15,7 @@ export default defineComponent({
       let isValid = await this.getForm().validate();
 
       if (isValid.valid) {
-        this.$emit('clickSave');
+        this.$emit('clickSave', this.data);
       }
     },
     reset() {
@@ -49,14 +49,14 @@ export default defineComponent({
                   <v-text-field
                       v-if="field.type == 'text'" :label="field.label" :hint="field.hint" required validate-on="blur"
                       :rules="field.validator ? validator.get(field.validator.name, field.validator.parameters) : []"
-                      :model-value="data[field.key]"/>
+                      :value="data[field.key]" v-model="data[field.key]"/>
                   <v-text-field v-if="field.type == 'password'" type="password" :label="field.label" required
-                                :model-value="data[field.key]" autocomplete="new-password" />
+                                :value="data[field.key]" v-model="data[field.key]" autocomplete="new-password" />
                   <v-select v-if="field.type == 'select'" item-value="key" item-title="value" :items="field.items"
-                            :label="field.label" required :model-value="data[field.key]"/>
+                            :label="field.label" required :value="data[field.key]" v-model="data[field.key]"/>
                   <v-autocomplete v-if="field.type == 'autocomplete'" item-value="key" item-title="value"
                                   :items="field.items" :label="field.label" required :multiple="field.multiple"
-                                  :model-value="data[field.key]"/>
+                                  :value="data[field.key]" v-model="data[field.key]"/>
                   <DataTable v-if="field.type == 'datatable'" :instance="field.instance"/>
                 </v-col>
               </v-row>

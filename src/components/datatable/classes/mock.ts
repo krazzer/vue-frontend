@@ -23,6 +23,11 @@ class DataTableMock {
             return [200, this.getEditData()];
         });
 
+        mocker.onGet("/api/datatable/save").reply((request) => {
+            console.log(request.params.data);
+            return [200];
+        });
+
         mocker.onPost("/api/datatable/validate").reply((request) => {
             let params         = JSON.parse(request.data).params;
             let validated: any = 'Invalid';
@@ -71,7 +76,7 @@ class DataTableMock {
                     },
                     {
                         key: 'password',
-                        type: 'password',
+                        type: 'text',
                         label: 'Password',
                     },
                     {
