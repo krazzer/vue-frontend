@@ -4,15 +4,7 @@ class DataTableMock {
     mock(mocker: MockAdapter) {
         mocker.onGet("/api/datatable").reply((request) => {
 
-            let dataTableSettings = {};
-
-            if (request.params.instance == 'clients') {
-                dataTableSettings = this.getDefaultData();
-            }
-
-            if (request.params.instance == 'hobbies') {
-                dataTableSettings = this.getSubDataTableData();
-            }
+            let dataTableSettings = this.getDataForInstance(request.params.instance);
 
             let params = {settings: dataTableSettings};
 
@@ -27,9 +19,16 @@ class DataTableMock {
             let newData = request.params.data;
             let id      = request.params.id;
 
-            let editData = <any>this.getDefaultData().data;
+            let editData = this.getDataForInstance(request.params.instance).data;
 
-            editData[id] = [id, newData.firstname, newData.address, newData.zip];
+            switch (request.params.instance){
+                case 'hobbies':
+                    editData[id] = [id, newData.name];
+                break;
+                case 'clients':
+                    editData[id] = [id, newData.firstname, newData.address, newData.zip];
+                break;
+            }
 
             return [200, editData];
         });
@@ -44,6 +43,15 @@ class DataTableMock {
 
             return [200, validated];
         });
+    }
+
+    getDataForInstance(instance: string): any {
+        switch (instance){
+            case 'hobbies':
+                return this.getSubDataTableData();
+            case 'clients':
+                return this.getDefaultData();
+        }
     }
 
     getDefaultData() {

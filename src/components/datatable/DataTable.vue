@@ -134,7 +134,7 @@ export default defineComponent({
           </tr>
           </thead>
           <tbody>
-          <tr v-for="row in data">
+          <tr v-for="(row, id) in data">
             <td v-for="(cell, i) in row" :data-column="headers[i]">
               <template v-if="getCellType(i) == 'page'">
                 <span class="arrow"></span>
@@ -149,7 +149,7 @@ export default defineComponent({
               <template v-else>{{ cell }}</template>
               <template v-if="i == row.length - 1">
                 <div class="buttons">
-                  <span @click="edit(i)"><Svg :svg="'edit'"/></span>
+                  <span @click="edit(id)"><Svg :svg="'edit'"/></span>
                 </div>
               </template>
             </td>
