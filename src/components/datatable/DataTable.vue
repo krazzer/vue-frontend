@@ -93,19 +93,20 @@ export default defineComponent({
       await axios
           .get('/api/datatable/edit', {params: {instance: this.instance}})
           .then(response => {
-            this.dialog = true;
+            this.dialog       = true;
             this.dialogEditId = id;
-            this.editData = response.data;
+            this.editData     = response.data;
           }).catch(error => {
             this.error = error;
           });
     },
 
-    async save(data: any) {
+    async save(dialogEditId: any, data: any) {
       await axios
-          .get('/api/datatable/save', {params: {instance: this.instance, data: data}})
+          .get('/api/datatable/save', {params: {instance: this.instance, data: data, id: dialogEditId}})
           .then(response => {
-            console.log("ok, saved");
+            console.log(response.data);
+            this.data   = response.data;
             this.dialog = false;
           }).catch(error => {
             alert(error);

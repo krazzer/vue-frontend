@@ -24,8 +24,14 @@ class DataTableMock {
         });
 
         mocker.onGet("/api/datatable/save").reply((request) => {
-            console.log(request.params.data);
-            return [200];
+            let newData = request.params.data;
+            let id      = request.params.id;
+
+            let editData = <any>this.getDefaultData().data;
+
+            editData[id] = [id, newData.firstname, newData.address, newData.zip];
+
+            return [200, editData];
         });
 
         mocker.onPost("/api/datatable/validate").reply((request) => {
@@ -123,49 +129,48 @@ class DataTableMock {
                     },
                 ],
             },
-            data: [
-                [1, 'Peter', 'Peterstreet 17', '12345'],
-                [2, 'John', 'Johnstreet 17', '23456'],
-                [3, 'Susan', 'Susanstreet 17', '34567'],
-                [4, 'Henry', 'Henrystreet 17', '45678'],
-                [5, 'Naomi', 'Naomistreet 17', '56789'],
-                [6, 'Peter', 'Peterstreet 17', '12345'],
-                [7, 'John', 'Johnstreet 17', '23456'],
-                [8, 'Susan', 'Susanstreet 17', '34567'],
-                [9, 'Henry', 'Henrystreet 17', '45678'],
-                [10, 'Naomi', 'Naomistreet 17', '56789'],
-                [11, 'Peter', 'Peterstreet 17', '12345'],
-                [12, 'John', 'Johnstreet 17', '23456'],
-                [13, 'Susan', 'Susanstreet 17', '34567'],
-                [14, 'Henry', 'Henrystreet 17', '45678'],
-                [15, 'Naomi', 'Naomistreet 17', '56789'],
-                [16, 'Peter', 'Peterstreet 17', '12345'],
-                [17, 'John', 'Johnstreet 17', '23456'],
-                [18, 'Susan', 'Susanstreet 17', '34567'],
-                [19, 'Henry', 'Henrystreet 17', '45678'],
-                [20, 'Naomi', 'Naomistreet 17', '56789'],
-                [21, 'Peter', 'Peterstreet 17', '12345'],
-                [22, 'John', 'Johnstreet 17', '23456'],
-                [23, 'Susan', 'Susanstreet 17', '34567'],
-                [24, 'Henry', 'Henrystreet 17', '45678'],
-                [25, 'Naomi', 'Naomistreet 17', '56789'],
-                [26, 'Peter', 'Peterstreet 17', '12345'],
-                [27, 'John', 'Johnstreet 17', '23456'],
-                [28, 'Susan', 'Susanstreet 17', '34567'],
-                [29, 'Henry', 'Henrystreet 17', '45678'],
-                [30, 'Naomi', 'Naomistreet 17', '56789'],
-                [31, 'Peter', 'Peterstreet 17', '12345'],
-                [32, 'John', 'Johnstreet 17', '23456'],
-                [33, 'Susan', 'Susanstreet 17', '34567'],
-                [34, 'Henry', 'Henrystreet 17', '45678'],
-                [35, 'Naomi', 'Naomistreet 17', '56789'],
-                [36, 'Peter', 'Peterstreet 17', '12345'],
-                [37, 'John', 'Johnstreet 17', '23456'],
-                [38, 'Susan', 'Susanstreet 17', '34567'],
-                [39, 'Henry', 'Henrystreet 17', '45678'],
-                [40, 'Naomi', 'Naomistreet 17', '56789'],
-
-            ],
+            data: {
+                1: [1, 'Peter', 'Peterstreet 17', '12345'],
+                2: [2, 'John', 'Johnstreet 17', '23456'],
+                3: [3, 'Susan', 'Susanstreet 17', '34567'],
+                4: [4, 'Henry', 'Henrystreet 17', '45678'],
+                5: [5, 'Naomi', 'Naomistreet 17', '56789'],
+                6: [6, 'Peter', 'Peterstreet 17', '12345'],
+                7: [7, 'John', 'Johnstreet 17', '23456'],
+                8: [8, 'Susan', 'Susanstreet 17', '34567'],
+                9: [9, 'Henry', 'Henrystreet 17', '45678'],
+                10: [10, 'Naomi', 'Naomistreet 17', '56789'],
+                11: [11, 'Peter', 'Peterstreet 17', '12345'],
+                12: [12, 'John', 'Johnstreet 17', '23456'],
+                13: [13, 'Susan', 'Susanstreet 17', '34567'],
+                14: [14, 'Henry', 'Henrystreet 17', '45678'],
+                15: [15, 'Naomi', 'Naomistreet 17', '56789'],
+                16: [16, 'Peter', 'Peterstreet 17', '12345'],
+                17: [17, 'John', 'Johnstreet 17', '23456'],
+                18: [18, 'Susan', 'Susanstreet 17', '34567'],
+                19: [19, 'Henry', 'Henrystreet 17', '45678'],
+                20: [20, 'Naomi', 'Naomistreet 17', '56789'],
+                21: [21, 'Peter', 'Peterstreet 17', '12345'],
+                22: [22, 'John', 'Johnstreet 17', '23456'],
+                23: [23, 'Susan', 'Susanstreet 17', '34567'],
+                24: [24, 'Henry', 'Henrystreet 17', '45678'],
+                25: [25, 'Naomi', 'Naomistreet 17', '56789'],
+                26: [26, 'Peter', 'Peterstreet 17', '12345'],
+                27: [27, 'John', 'Johnstreet 17', '23456'],
+                28: [28, 'Susan', 'Susanstreet 17', '34567'],
+                29: [29, 'Henry', 'Henrystreet 17', '45678'],
+                30: [30, 'Naomi', 'Naomistreet 17', '56789'],
+                31: [31, 'Peter', 'Peterstreet 17', '12345'],
+                32: [32, 'John', 'Johnstreet 17', '23456'],
+                33: [33, 'Susan', 'Susanstreet 17', '34567'],
+                34: [34, 'Henry', 'Henrystreet 17', '45678'],
+                35: [35, 'Naomi', 'Naomistreet 17', '56789'],
+                36: [36, 'Peter', 'Peterstreet 17', '12345'],
+                37: [37, 'John', 'Johnstreet 17', '23456'],
+                38: [38, 'Susan', 'Susanstreet 17', '34567'],
+                39: [39, 'Henry', 'Henrystreet 17', '45678'],
+                40: [40, 'Naomi', 'Naomistreet 17', '56789'],
+            },
             instance: 'clients',
         };
     }
@@ -207,16 +212,17 @@ class DataTableMock {
         };
     }
 
-    getEditData() {
+    getEditData(): any {
         return {
-            'firstname': 'Peter',
-            'lastname': 'Peterson',
-            'middlename': 'von',
-            'email': 'peter@peter.com',
-            'password': 'somepass',
-            'zip': '12345',
-            'age': '18-29',
-            'interests': ["1", "2"],
+            firstname: 'Peter',
+            lastname: 'Peterson',
+            middlename: 'von',
+            email: 'peter@peter.com',
+            password: 'somepass',
+            zip: '12345',
+            age: '18-29',
+            interests: ["1", "2"],
+            address: 'Peterstreet 17',
         };
     }
 }

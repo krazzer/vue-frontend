@@ -15,7 +15,7 @@ export default defineComponent({
       let isValid = await this.getForm().validate();
 
       if (isValid.valid) {
-        this.$emit('clickSave', this.data);
+        this.$emit('clickSave', this.dialogEditId, this.data);
       }
     },
     reset() {
