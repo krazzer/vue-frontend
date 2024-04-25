@@ -21,6 +21,10 @@ class DataTableMock {
 
             let editData = this.getDataForInstance(request.params.instance).data;
 
+            if( ! id){
+                id = parseInt(Object.keys(editData)[Object.keys(editData).length - 1]) + 1;
+            }
+
             switch (request.params.instance){
                 case 'hobbies':
                     editData[id] = [id, newData.name];
@@ -193,10 +197,15 @@ class DataTableMock {
                         key: 'name',
                         type: 'text',
                         label: 'Name of hobby',
+                        validator: {name: 'presence', parameters: {}}
                     },
                 ],
             },
-            data: [[1, 'Fitness'], [2, 'Gaming'], [3, 'Sup']],
+            data: {
+                1: [1, 'Fitness'],
+                2: [2, 'Gaming'],
+                3: [3, 'Sup']
+            },
             instance: 'test',
         };
     }

@@ -42,7 +42,7 @@ export default defineComponent({
         </v-card-title>
         <v-card-text>
           <v-container>
-            <v-form ref="form">
+            <v-form ref="form" v-on:submit.prevent v-on:submit="clickSave">
               <v-row>
                 <v-col v-for="field in form.fields ?? {}" cols="12" :md="field.size ? field.size.md : 0"
                        :sm="field.size ? field.size.sm : 0">
