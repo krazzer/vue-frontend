@@ -42,6 +42,12 @@ class HomeMock {
             return [200, params];
         });
 
+        mocker.onGet("/api/default-module").reply(() => {
+            let params = {html: '', selectedMenuItem: '', dataTable: pagesDataTable};
+
+            return [200, params];
+        });
+
         mocker.onGet("/api/logout").reply(() => {
             localStorage.loggedIn = JSON.stringify(false);
             loginMock.loggedIn    = false;

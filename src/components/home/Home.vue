@@ -36,10 +36,24 @@ export default defineComponent({
 
       if (module && typeof module != undefined) {
         this.loadModule(String(module));
+      } else {
+        this.loadDefaultModule();
       }
     }
   },
   methods: {
+    loadDefaultModule() {
+      axios
+          .get('/api/default-module', {params: {}})
+          .then(response => {
+            console.log(response);
+            // this.selectedMenuItem = response.module;
+            this.setContentByResponseData(response.data);
+          }).catch(error => {
+            console.error(error);
+          }
+      );
+    },
     loadModule(module: string) {
       this.selectedMenuItem = module;
 
