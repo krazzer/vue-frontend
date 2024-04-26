@@ -223,13 +223,13 @@ class DataTableMock {
             cells: {
                 'name': {'type': 'page'}
             },
-            data: [
-                [1, {'label': 'Home', 'icons': ['lock']}, 'home', 'home'],
-                [2, 'About', 'default', 'about'],
-                [4, 'Prices', 'default', 'prices'],
-                [5, 'Projects', 'projects', 'projects'],
-                [3, 'Contact', 'contact', 'contact'],
-            ],
+            data: {
+                1: [1, {'label': 'Home', 'icons': ['lock']}, 'home', 'home'],
+                2: [2, 'About', 'default', 'about'],
+                4: [4, 'Prices', 'default', 'prices'],
+                5: [5, 'Projects', 'projects', 'projects'],
+                3: [3, 'Contact', 'contact', 'contact'],
+            },
             instance: 'pagesTest',
             class: 'pages',
         };

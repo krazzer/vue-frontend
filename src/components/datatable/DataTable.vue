@@ -3,6 +3,7 @@ import {defineComponent} from "vue";
 import axios from "axios";
 import EditDialog from "./subcomponents/EditDialog.vue";
 import Svg from "@/components/svg/Svg.vue";
+import DragAndDropPages from "./classes/dragAndDropPages";
 
 export default defineComponent({
   name: "DataTable",
@@ -26,6 +27,7 @@ export default defineComponent({
       error: '',
       dialog: false,
       dialogEditId: <any>null,
+      dragAndDropPages: DragAndDropPages,
     };
   },
   watch: {
@@ -39,6 +41,12 @@ export default defineComponent({
     } else if (this.instance) {
       this.init();
     }
+
+    this.dragAndDropPages = DragAndDropPages;
+    this.dragAndDropPages.init();
+  },
+  unmounted(){
+    this.dragAndDropPages.unload();
   },
   methods: {
     convertSettings(settings: any) {
@@ -111,7 +119,7 @@ export default defineComponent({
           }).catch(error => {
             alert(error);
           });
-    },
+    }
   }
 });
 
@@ -138,7 +146,7 @@ export default defineComponent({
             <td v-for="(cell, i) in row" :data-column="headers[i]">
               <template v-if="getCellType(i) == 'page'">
                 <span class="arrow"></span>
-                <span class="name">
+                <span class="name" @mousedown="dragAndDropPages.setMouseDown(id)">
                   <template v-if="typeof cell === 'object'">
                     <template v-for="icon in cell['icons']"><Svg :svg="icon"/></template>
                     {{ cell['label'] }}

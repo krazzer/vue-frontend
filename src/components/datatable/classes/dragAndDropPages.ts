@@ -1,0 +1,37 @@
+class DragAndDropPages {
+    itemIdMouseDown: number | string | null;
+
+    init() {
+        this.handleMouseUp = () => {
+            this.setMouseUp();
+        };
+
+        this.handleMouseMove = () => {
+            this.setMouseMove();
+        };
+
+        window.addEventListener('mouseup', this.handleMouseUp);
+        window.addEventListener('mousemove', this.handleMouseMove);
+    }
+
+    unload() {
+        window.removeEventListener('mouseup', this.handleMouseUp);
+        window.addEventListener('mousemove', this.handleMouseMove);
+    }
+
+    setMouseDown(id: string) {
+        this.itemIdMouseDown = id;
+    }
+
+    setMouseUp() {
+        this.itemIdMouseDown = null;
+    }
+
+    setMouseMove() {
+        if (this.itemIdMouseDown != null) {
+            console.log('moving ' + this.itemIdMouseDown);
+        }
+    }
+}
+
+export default new DragAndDropPages();
