@@ -138,7 +138,7 @@ export default defineComponent({
         <span></span>
       </div>
       <span v-if="html" v-html="html"></span>
-      <Media v-if="media" :settings="media"/>
+      <Media v-if="media && Object.keys(media).length" :settings="media"/>
       <DataTable v-if="dataTable" :settings="dataTable" :instance="dataTable.instance"/>
     </div>
   </div>

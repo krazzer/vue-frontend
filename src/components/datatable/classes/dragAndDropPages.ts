@@ -1,5 +1,7 @@
 class DragAndDropPages {
     itemIdMouseDown: number | string | null;
+    handleMouseUp: any;
+    handleMouseMove: any;
 
     init() {
         this.handleMouseUp = () => {

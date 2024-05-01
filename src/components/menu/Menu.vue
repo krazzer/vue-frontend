@@ -44,7 +44,7 @@ export default defineComponent({
         </li>
       </ul>
     </li>
-    <li>
+    <li v-if="Object.keys(menu).length">
       <a href="javascript:void(0)" @click="logout">
         <Svg svg="logout" /> Uitloggen
       </a>
