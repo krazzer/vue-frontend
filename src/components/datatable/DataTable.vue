@@ -2,12 +2,13 @@
 import {defineComponent} from "vue";
 import axios from "axios";
 import EditDialog from "./subcomponents/EditDialog.vue";
+import Page from "./subcomponents/Page.vue";
 import Svg from "@/components/svg/Svg.vue";
 import DragAndDropPages from "./classes/dragAndDropPages";
 
 export default defineComponent({
   name: "DataTable",
-  components: {Svg, EditDialog},
+  components: {Svg, EditDialog, Page},
   props: {
     settings: {
       type: Object,
@@ -35,7 +36,7 @@ export default defineComponent({
     settings() {
       this.convertSettings(this.settings);
     },
-    'dragAndDropPages.itemIdMouseDown'(){
+    'dragAndDropPages.itemIdMouseDown'() {
       this.cloned = this.dragAndDropPages.itemIdMouseDown;
     }
   },
@@ -149,21 +150,8 @@ export default defineComponent({
           <tr v-for="(row, id) in data">
             <td v-for="(cell, i) in row" :data-column="headers[i]">
               <template v-if="getCellType(i) == 'page'">
-                <span class="arrow"></span>
-                <span v-if="cloned == id" class="name cloned">
-                  <template v-if="typeof cell === 'object'">
-                    <template v-for="icon in cell['icons']"><Svg :svg="icon"/></template>
-                    {{ cell['label'] }}
-                  </template>
-                  <template v-else>{{ cell }}</template>
-                </span>
-                <span class="name" @mousedown="dragAndDropPages.setMouseDown(id)">
-                  <template v-if="typeof cell === 'object'">
-                    <template v-for="icon in cell['icons']"><Svg :svg="icon"/></template>
-                    {{ cell['label'] }}
-                  </template>
-                  <template v-else>{{ cell }}</template>
-                </span>
+                <Page v-if="cloned == id" :cell="cell" :cloned="true" @startDrag="dragAndDropPages.setMouseDown(id)"/>
+                <Page :cell="cell" @startDrag="dragAndDropPages.setMouseDown(id)"/>
               </template>
               <template v-else>{{ cell }}</template>
               <template v-if="i == row.length - 1">
