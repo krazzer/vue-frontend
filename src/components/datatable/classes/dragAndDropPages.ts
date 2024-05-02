@@ -1,5 +1,5 @@
 class DragAndDropPages {
-    itemIdMouseDown: number | string | null;
+    itemIdMouseDown: number | null;
     handleMouseUp: any;
     handleMouseMove: any;
 
@@ -21,7 +21,7 @@ class DragAndDropPages {
         window.addEventListener('mousemove', this.handleMouseMove);
     }
 
-    setMouseDown(id: string) {
+    setMouseDown(id: number) {
         this.itemIdMouseDown = id;
     }
 

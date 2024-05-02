@@ -28,11 +28,15 @@ export default defineComponent({
       dialog: false,
       dialogEditId: <any>null,
       dragAndDropPages: DragAndDropPages,
+      cloned: <number | null>null,
     };
   },
   watch: {
     settings() {
       this.convertSettings(this.settings);
+    },
+    'dragAndDropPages.itemIdMouseDown'(){
+      this.cloned = this.dragAndDropPages.itemIdMouseDown;
     }
   },
   mounted() {
@@ -45,7 +49,7 @@ export default defineComponent({
     this.dragAndDropPages = DragAndDropPages;
     this.dragAndDropPages.init();
   },
-  unmounted(){
+  unmounted() {
     this.dragAndDropPages.unload();
   },
   methods: {
@@ -146,6 +150,13 @@ export default defineComponent({
             <td v-for="(cell, i) in row" :data-column="headers[i]">
               <template v-if="getCellType(i) == 'page'">
                 <span class="arrow"></span>
+                <span v-if="cloned == id" class="name cloned">
+                  <template v-if="typeof cell === 'object'">
+                    <template v-for="icon in cell['icons']"><Svg :svg="icon"/></template>
+                    {{ cell['label'] }}
+                  </template>
+                  <template v-else>{{ cell }}</template>
+                </span>
                 <span class="name" @mousedown="dragAndDropPages.setMouseDown(id)">
                   <template v-if="typeof cell === 'object'">
                     <template v-for="icon in cell['icons']"><Svg :svg="icon"/></template>

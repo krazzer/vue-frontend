@@ -46,8 +46,6 @@ export default defineComponent({
       axios
           .get('/api/default-module', {params: {}})
           .then(response => {
-            console.log(response);
-            // this.selectedMenuItem = response.module;
             this.setContentByResponseData(response.data);
           }).catch(error => {
             console.error(error);
