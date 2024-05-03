@@ -4,6 +4,8 @@ class DragAndDropPages {
     handleMouseMove: any;
     itemX: number | null;
     itemY: number | null;
+    itemStartX: number;
+    itemStartY: number;
 
     init() {
         this.handleMouseUp = () => {
@@ -23,18 +25,23 @@ class DragAndDropPages {
         window.addEventListener('mousemove', this.handleMouseMove);
     }
 
-    setMouseDown(id: number) {
+    setMouseDown(id: number, event: MouseEvent) {
         this.itemIdMouseDown = id;
+
+        this.itemStartX = event.clientX;
+        this.itemStartY = event.clientY;
     }
 
     setMouseUp() {
         this.itemIdMouseDown = null;
+        this.itemX = null;
+        this.itemY = null;
     }
 
     setMouseMove(event: MouseEvent) {
         if (this.itemIdMouseDown != null) {
-            this.itemX = event.clientX;
-            this.itemY = event.clientY;
+            this.itemX = event.clientX - this.itemStartX;
+            this.itemY = event.clientY - this.itemStartY;
         }
     }
 }

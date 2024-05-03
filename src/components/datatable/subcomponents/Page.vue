@@ -17,7 +17,7 @@ export default defineComponent({
 
 <template>
   <span class="arrow"></span>
-  <span class="name" :class="cloned ? 'cloned' : ''" @mousedown="$emit('startDrag')" :style="pageStyle">
+  <span class="name" :class="cloned ? 'cloned' : ''" @mousedown="$emit('startDrag', $event)" :style="pageStyle">
     <template v-if="typeof cell === 'object'">
       <template v-for="icon in cell['icons']"><Svg :svg="icon"/></template>
       {{ cell['label'] }}

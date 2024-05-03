@@ -18,6 +18,15 @@ export default defineComponent({
     },
     instance: String,
   },
+  computed: {
+    dataTableStyle() {
+      return this.dragAndDropPages.itemIdMouseDown ? {
+        '-webkit-user-select': 'none',
+        '-ms-user-select': 'none',
+        'user-select': 'none',
+      } : {};
+    }
+  },
   data() {
     return {
       addButtonLabel: null,
@@ -131,7 +140,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="datatable" :class="settings ? settings.class : null" v-if="instance">
+  <div class="datatable" :class="settings ? settings.class : null" v-if="instance" :style="dataTableStyle">
     <div class="datatable__error" v-if="error">
       {{ error }}
     </div>
@@ -150,8 +159,9 @@ export default defineComponent({
           <tr v-for="(row, id) in data">
             <td v-for="(cell, i) in row" :data-column="headers[i]">
               <template v-if="getCellType(i) == 'page'">
-                <Page v-if="cloned == id" :cell="cell" :cloned="true" @startDrag="dragAndDropPages.setMouseDown(id)" :x="dragAndDropPages.itemX" :y="dragAndDropPages.itemY" />
-                <Page :cell="cell" @startDrag="dragAndDropPages.setMouseDown(id)" />
+                <Page v-if="cloned == id" :cell="cell" :cloned="true" @startDrag="dragAndDropPages.setMouseDown(id, $event)"
+                      :x="dragAndDropPages.itemX" :y="dragAndDropPages.itemY"/>
+                <Page :cell="cell" @startDrag="dragAndDropPages.setMouseDown(id, $event)"/>
               </template>
               <template v-else>{{ cell }}</template>
               <template v-if="i == row.length - 1">
