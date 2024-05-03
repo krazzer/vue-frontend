@@ -6,13 +6,18 @@ export default defineComponent({
   components: {Svg},
   emits: ['startDrag'],
   name: "Page",
-  props: ['cell', 'cloned']
+  props: ['cell', 'cloned', 'x', 'y'],
+  computed: {
+    pageStyle() {
+      return this.cloned ? { 'margin-left': this.x + 'px', 'margin-top': this.y + 'px' } : '';
+    }
+  }
 });
 </script>
 
 <template>
   <span class="arrow"></span>
-  <span class="name" :class="cloned ? 'cloned' : ''" @mousedown="$emit('startDrag')">
+  <span class="name" :class="cloned ? 'cloned' : ''" @mousedown="$emit('startDrag')" :style="pageStyle">
     <template v-if="typeof cell === 'object'">
       <template v-for="icon in cell['icons']"><Svg :svg="icon"/></template>
       {{ cell['label'] }}
@@ -53,8 +58,8 @@ export default defineComponent({
 
   &.cloned{
     position: absolute;
-    margin-left: 10px;
-    margin-top: 10px;
+    z-index: 1;
+    pointer-events: none;
   }
 }
 </style>

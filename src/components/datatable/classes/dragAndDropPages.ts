@@ -2,14 +2,16 @@ class DragAndDropPages {
     itemIdMouseDown: number | null;
     handleMouseUp: any;
     handleMouseMove: any;
+    itemX: number | null;
+    itemY: number | null;
 
     init() {
         this.handleMouseUp = () => {
             this.setMouseUp();
         };
 
-        this.handleMouseMove = () => {
-            this.setMouseMove();
+        this.handleMouseMove = (event: MouseEvent) => {
+            this.setMouseMove(event);
         };
 
         window.addEventListener('mouseup', this.handleMouseUp);
@@ -29,9 +31,10 @@ class DragAndDropPages {
         this.itemIdMouseDown = null;
     }
 
-    setMouseMove() {
+    setMouseMove(event: MouseEvent) {
         if (this.itemIdMouseDown != null) {
-            console.log('moving ' + this.itemIdMouseDown);
+            this.itemX = event.clientX;
+            this.itemY = event.clientY;
         }
     }
 }

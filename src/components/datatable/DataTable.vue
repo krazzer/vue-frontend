@@ -150,8 +150,8 @@ export default defineComponent({
           <tr v-for="(row, id) in data">
             <td v-for="(cell, i) in row" :data-column="headers[i]">
               <template v-if="getCellType(i) == 'page'">
-                <Page v-if="cloned == id" :cell="cell" :cloned="true" @startDrag="dragAndDropPages.setMouseDown(id)"/>
-                <Page :cell="cell" @startDrag="dragAndDropPages.setMouseDown(id)"/>
+                <Page v-if="cloned == id" :cell="cell" :cloned="true" @startDrag="dragAndDropPages.setMouseDown(id)" :x="dragAndDropPages.itemX" :y="dragAndDropPages.itemY" />
+                <Page :cell="cell" @startDrag="dragAndDropPages.setMouseDown(id)" />
               </template>
               <template v-else>{{ cell }}</template>
               <template v-if="i == row.length - 1">
