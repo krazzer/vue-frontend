@@ -161,7 +161,7 @@ export default defineComponent({
               <template v-if="getCellType(i) == 'page'">
                 <Page v-if="cloned == id" :cell="cell" :cloned="true" @startDrag="dragAndDropPages.setMouseDown(id, $event)"
                       :x="dragAndDropPages.itemX" :y="dragAndDropPages.itemY"/>
-                <Page :cell="cell" @startDrag="dragAndDropPages.setMouseDown(id, $event)"/>
+                <Page :cell="cell" :isDragged="dragAndDropPages.isDragged(id)" @startDrag="dragAndDropPages.setMouseDown(id, $event)"/>
               </template>
               <template v-else>{{ cell }}</template>
               <template v-if="i == row.length - 1">

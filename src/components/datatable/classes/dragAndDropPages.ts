@@ -22,6 +22,14 @@ class DragAndDropPages {
         window.addEventListener('mousemove', this.handleMouseMove);
     }
 
+    isDragged(id: number): boolean{
+        return this.movedEnoughToStart && this.itemIdMouseDown == id;
+    }
+
+    isDragging(): boolean{
+        return this.movedEnoughToStart && this.itemIdMouseDown !== null;
+    }
+
     unload() {
         window.removeEventListener('mouseup', this.handleMouseUp);
         window.addEventListener('mousemove', this.handleMouseMove);

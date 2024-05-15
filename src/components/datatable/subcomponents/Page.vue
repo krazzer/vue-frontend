@@ -6,10 +6,24 @@ export default defineComponent({
   components: {Svg},
   emits: ['startDrag'],
   name: "Page",
-  props: ['cell', 'cloned', 'x', 'y'],
+  props: ['cell', 'cloned', 'x', 'y', 'isDragged'],
   computed: {
     pageStyle() {
       return this.cloned ? { 'margin-left': this.x + 'px', 'margin-top': this.y + 'px' } : '';
+    },
+
+    getClasses(){
+      let classes = [];
+
+      if(this.cloned === true){
+        classes.push('cloned')
+      }
+
+      if(this.isDragged){
+        classes.push('dragged')
+      }
+
+      return classes;
     }
   }
 });
@@ -17,7 +31,7 @@ export default defineComponent({
 
 <template>
   <span class="arrow"></span>
-  <span class="name" :class="cloned ? 'cloned' : ''" @mousedown="$emit('startDrag', $event)" :style="pageStyle">
+  <span class="name" :class="getClasses" @mousedown="$emit('startDrag', $event)" :style="pageStyle">
     <template v-if="typeof cell === 'object'">
       <template v-for="icon in cell['icons']"><Svg :svg="icon"/></template>
       {{ cell['label'] }}
@@ -56,6 +70,10 @@ export default defineComponent({
     position: absolute;
     z-index: 1;
     pointer-events: none;
+  }
+
+  &.dragged{
+    opacity: .25;
   }
 }
 </style>
