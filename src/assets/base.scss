@@ -18,6 +18,7 @@
     --color-white: #ffffff;
     --color-black: #181818;
     --color-indigo: #2c3e50;
+    --color-blue: #3875d7;
 
     --text-light-1: var(--color-indigo);
     --text-dark-1: var(--color-white);
@@ -39,6 +40,7 @@
     --color-text: var(--text-light-1);
     --color-line: var(--line-light-1);
     --color-text-in-main-bg: var(--color-white);
+    --color-action: var(--color-blue);
 }
 
 /* change variables for dark mode */

@@ -1,5 +1,6 @@
 class DragAndDropPages {
     itemIdMouseDown: number | null;
+    itemIdMouseOver: number | null;
     pixelsRequiredForDrag: number = 3;
     movedEnoughToStart: boolean   = false;
     handleMouseUp: any;
@@ -28,6 +29,18 @@ class DragAndDropPages {
 
     isDragging(): boolean{
         return this.movedEnoughToStart && this.itemIdMouseDown !== null;
+    }
+
+    isHovering(id: number): boolean{
+        return this.itemIdMouseOver == id;
+    }
+
+    mouseEnter(id: number){
+        this.itemIdMouseOver = id;
+    }
+
+    mouseLeave(){
+        this.itemIdMouseOver = null;
     }
 
     unload() {

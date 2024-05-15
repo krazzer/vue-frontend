@@ -6,7 +6,7 @@ export default defineComponent({
   components: {Svg},
   emits: ['startDrag'],
   name: "Page",
-  props: ['cell', 'cloned', 'x', 'y', 'isDragged'],
+  props: ['cell', 'cloned', 'x', 'y', 'isDragged', 'dragAndDropPages', 'id'],
   computed: {
     pageStyle() {
       return this.cloned ? { 'margin-left': this.x + 'px', 'margin-top': this.y + 'px' } : '';
@@ -23,6 +23,12 @@ export default defineComponent({
         classes.push('dragged')
       }
 
+      if(this.dragAndDropPages !== undefined && this.dragAndDropPages.isDragging() && ! this.dragAndDropPages.isDragged(this.id)){
+        if(this.dragAndDropPages.isHovering(this.id)) {
+          classes.push('hovering');
+        }
+      }
+
       return classes;
     }
   }
@@ -31,7 +37,7 @@ export default defineComponent({
 
 <template>
   <span class="arrow"></span>
-  <span class="name" :class="getClasses" @mousedown="$emit('startDrag', $event)" :style="pageStyle">
+  <span class="name" :class="getClasses" @mousedown="$emit('startDrag', $event)" @mouseleave="dragAndDropPages.mouseLeave" @mouseenter="dragAndDropPages.mouseEnter(id)" :style="pageStyle">
     <template v-if="typeof cell === 'object'">
       <template v-for="icon in cell['icons']"><Svg :svg="icon"/></template>
       {{ cell['label'] }}
@@ -61,7 +67,7 @@ export default defineComponent({
   .icon--lock:deep(svg){
     width: 16px;
     height: 16px;
-    top: 2px;
+    top: 3px;
     margin-left: -1px;
     position: relative;
   }
@@ -74,6 +80,11 @@ export default defineComponent({
 
   &.dragged{
     opacity: .25;
+  }
+
+  &.hovering{
+    border: 3px solid var(--color-action);
+    padding: 0 8px 2px;
   }
 }
 </style>
