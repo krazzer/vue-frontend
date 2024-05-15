@@ -35,25 +35,21 @@ export default defineComponent({
   padding: 2px 10px 4px;
   cursor: move;
   background-color: var(--color-background-shade1);
+  position: relative;
 
   .icon{
     display: block;
     fill: var(--color-text);
     float: left;
     margin-right: 5px;
-
-    :deep(svg) {
-      height: 20px;
-      width: 20px;
-      position: relative;
-    }
   }
 
   .icon--lock:deep(svg){
     width: 16px;
-    height: 22px;
-    top: 1px;
+    height: 16px;
+    top: 2px;
     margin-left: -1px;
+    position: relative;
   }
 
   &.cloned{

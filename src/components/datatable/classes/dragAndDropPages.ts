@@ -1,5 +1,7 @@
 class DragAndDropPages {
     itemIdMouseDown: number | null;
+    pixelsRequiredForDrag: number = 3;
+    movedEnoughToStart: boolean   = false;
     handleMouseUp: any;
     handleMouseMove: any;
     itemX: number | null;
@@ -33,15 +35,23 @@ class DragAndDropPages {
     }
 
     setMouseUp() {
-        this.itemIdMouseDown = null;
-        this.itemX = null;
-        this.itemY = null;
+        this.itemIdMouseDown    = null;
+        this.movedEnoughToStart = false;
+        this.itemX              = null;
+        this.itemY              = null;
     }
 
     setMouseMove(event: MouseEvent) {
         if (this.itemIdMouseDown != null) {
-            this.itemX = event.clientX - this.itemStartX;
-            this.itemY = event.clientY - this.itemStartY;
+            if (this.movedEnoughToStart) {
+                this.itemX = event.clientX - this.itemStartX;
+                this.itemY = event.clientY - this.itemStartY;
+            } else {
+                if (Math.abs(event.clientX - this.itemStartX) > this.pixelsRequiredForDrag ||
+                    Math.abs(event.clientY - this.itemStartY) > this.pixelsRequiredForDrag) {
+                    this.movedEnoughToStart = true;
+                }
+            }
         }
     }
 }
