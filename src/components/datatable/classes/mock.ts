@@ -83,48 +83,48 @@ class DataTableMock {
                 },
             ],
         },
-        data: {
-            1: [1, 'Peter', 'Peterstreet 17', '12345'],
-            2: [2, 'John', 'Johnstreet 17', '23456'],
-            3: [3, 'Susan', 'Susanstreet 17', '34567'],
-            4: [4, 'Henry', 'Henrystreet 17', '45678'],
-            5: [5, 'Naomi', 'Naomistreet 17', '56789'],
-            6: [6, 'Peter', 'Peterstreet 17', '12345'],
-            7: [7, 'John', 'Johnstreet 17', '23456'],
-            8: [8, 'Susan', 'Susanstreet 17', '34567'],
-            9: [9, 'Henry', 'Henrystreet 17', '45678'],
-            10: [10, 'Naomi', 'Naomistreet 17', '56789'],
-            11: [11, 'Peter', 'Peterstreet 17', '12345'],
-            12: [12, 'John', 'Johnstreet 17', '23456'],
-            13: [13, 'Susan', 'Susanstreet 17', '34567'],
-            14: [14, 'Henry', 'Henrystreet 17', '45678'],
-            15: [15, 'Naomi', 'Naomistreet 17', '56789'],
-            16: [16, 'Peter', 'Peterstreet 17', '12345'],
-            17: [17, 'John', 'Johnstreet 17', '23456'],
-            18: [18, 'Susan', 'Susanstreet 17', '34567'],
-            19: [19, 'Henry', 'Henrystreet 17', '45678'],
-            20: [20, 'Naomi', 'Naomistreet 17', '56789'],
-            21: [21, 'Peter', 'Peterstreet 17', '12345'],
-            22: [22, 'John', 'Johnstreet 17', '23456'],
-            23: [23, 'Susan', 'Susanstreet 17', '34567'],
-            24: [24, 'Henry', 'Henrystreet 17', '45678'],
-            25: [25, 'Naomi', 'Naomistreet 17', '56789'],
-            26: [26, 'Peter', 'Peterstreet 17', '12345'],
-            27: [27, 'John', 'Johnstreet 17', '23456'],
-            28: [28, 'Susan', 'Susanstreet 17', '34567'],
-            29: [29, 'Henry', 'Henrystreet 17', '45678'],
-            30: [30, 'Naomi', 'Naomistreet 17', '56789'],
-            31: [31, 'Peter', 'Peterstreet 17', '12345'],
-            32: [32, 'John', 'Johnstreet 17', '23456'],
-            33: [33, 'Susan', 'Susanstreet 17', '34567'],
-            34: [34, 'Henry', 'Henrystreet 17', '45678'],
-            35: [35, 'Naomi', 'Naomistreet 17', '56789'],
-            36: [36, 'Peter', 'Peterstreet 17', '12345'],
-            37: [37, 'John', 'Johnstreet 17', '23456'],
-            38: [38, 'Susan', 'Susanstreet 17', '34567'],
-            39: [39, 'Henry', 'Henrystreet 17', '45678'],
-            40: [40, 'Naomi', 'Naomistreet 17', '56789'],
-        },
+        data: [
+            {id: 1, data: [1, 'Peter', 'Peterstreet 17', '12345']},
+            {id: 2, data: [2, 'John', 'Johnstreet 17', '23456']},
+            {id: 3, data: [3, 'Susan', 'Susanstreet 17', '34567']},
+            {id: 4, data: [4, 'Henry', 'Henrystreet 17', '45678']},
+            {id: 5, data: [5, 'Naomi', 'Naomistreet 17', '56789']},
+            {id: 6, data: [6, 'Peter', 'Peterstreet 17', '12345']},
+            {id: 7, data: [7, 'John', 'Johnstreet 17', '23456']},
+            {id: 8, data: [8, 'Susan', 'Susanstreet 17', '34567']},
+            {id: 9, data: [9, 'Henry', 'Henrystreet 17', '45678']},
+            {id: 10, data: [10, 'Naomi', 'Naomistreet 17', '56789']},
+            {id: 11, data: [11, 'Peter', 'Peterstreet 17', '12345']},
+            {id: 12, data: [12, 'John', 'Johnstreet 17', '23456']},
+            {id: 13, data: [13, 'Susan', 'Susanstreet 17', '34567']},
+            {id: 14, data: [14, 'Henry', 'Henrystreet 17', '45678']},
+            {id: 15, data: [15, 'Naomi', 'Naomistreet 17', '56789']},
+            {id: 16, data: [16, 'Peter', 'Peterstreet 17', '12345']},
+            {id: 17, data: [17, 'John', 'Johnstreet 17', '23456']},
+            {id: 18, data: [18, 'Susan', 'Susanstreet 17', '34567']},
+            {id: 19, data: [19, 'Henry', 'Henrystreet 17', '45678']},
+            {id: 20, data: [20, 'Naomi', 'Naomistreet 17', '56789']},
+            {id: 21, data: [21, 'Peter', 'Peterstreet 17', '12345']},
+            {id: 22, data: [22, 'John', 'Johnstreet 17', '23456']},
+            {id: 23, data: [23, 'Susan', 'Susanstreet 17', '34567']},
+            {id: 24, data: [24, 'Henry', 'Henrystreet 17', '45678']},
+            {id: 25, data: [25, 'Naomi', 'Naomistreet 17', '56789']},
+            {id: 26, data: [26, 'Peter', 'Peterstreet 17', '12345']},
+            {id: 27, data: [27, 'John', 'Johnstreet 17', '23456']},
+            {id: 28, data: [28, 'Susan', 'Susanstreet 17', '34567']},
+            {id: 29, data: [29, 'Henry', 'Henrystreet 17', '45678']},
+            {id: 30, data: [30, 'Naomi', 'Naomistreet 17', '56789']},
+            {id: 31, data: [31, 'Peter', 'Peterstreet 17', '12345']},
+            {id: 32, data: [32, 'John', 'Johnstreet 17', '23456']},
+            {id: 33, data: [33, 'Susan', 'Susanstreet 17', '34567']},
+            {id: 34, data: [34, 'Henry', 'Henrystreet 17', '45678']},
+            {id: 35, data: [35, 'Naomi', 'Naomistreet 17', '56789']},
+            {id: 36, data: [36, 'Peter', 'Peterstreet 17', '12345']},
+            {id: 37, data: [37, 'John', 'Johnstreet 17', '23456']},
+            {id: 38, data: [38, 'Susan', 'Susanstreet 17', '34567']},
+            {id: 39, data: [39, 'Henry', 'Henrystreet 17', '45678']},
+            {id: 40, data: [40, 'Naomi', 'Naomistreet 17', '56789']},
+        ],
         instance: 'clients',
     };
 
@@ -141,11 +141,11 @@ class DataTableMock {
                 },
             ],
         },
-        data: {
-            1: [1, 'Fitness'],
-            2: [2, 'Gaming'],
-            3: [3, 'Sup']
-        },
+        data: [
+            {id: 1, data: [1, 'Fitness']},
+            {id: 2, data: [2, 'Gaming']},
+            {id: 3, data: [3, 'Sup']},
+        ],
         instance: 'test',
     };
 
@@ -167,19 +167,23 @@ class DataTableMock {
             let newData = request.params.data;
             let id      = request.params.id;
 
+            let index;
+
             let editData = this.getDataForInstance(request.params.instance).data;
 
-            if( ! id){
-                id = parseInt(Object.keys(editData)[Object.keys(editData).length - 1]) + 1;
+            if (id) {
+                index = this.getIndexById(editData, id);
+            } else {
+                index = parseInt(Object.keys(editData)[Object.keys(editData).length - 1]) + 1;
             }
 
-            switch (request.params.instance){
+            switch (request.params.instance) {
                 case 'hobbies':
-                    editData[id] = [id, newData.name];
-                break;
+                    editData[index] = {id: id, data: [id, newData.name]};
+                    break;
                 case 'clients':
-                    editData[id] = [id, newData.firstname, newData.address, newData.zip];
-                break;
+                    editData[index] = {id: id, data: [id, newData.firstname, newData.address, newData.zip]};
+                    break;
             }
 
             this.getDataForInstance(request.params.instance).data = editData;
@@ -200,7 +204,7 @@ class DataTableMock {
     }
 
     getDataForInstance(instance: string): any {
-        switch (instance){
+        switch (instance) {
             case 'hobbies':
                 return this.getSubDataTableData();
             case 'clients':
@@ -217,19 +221,22 @@ class DataTableMock {
     }
 
     getPagesData() {
+        let data = [
+            {id: 1, data: [1, {'label': 'Home', 'icons': ['lock']}, 'home', 'home']},
+            {id: 2, data: [2, 'About', 'default', 'about']},
+            {id: 4, data: [4, 'Prices', 'default', 'prices']},
+            {id: 5, data: [5, 'Projects', 'projects', 'projects']},
+            {id: 6, data: [6, 'Project A', 'project', 'project-A']},
+            {id: 7, data: [7, 'Project B', 'project', 'project-B']},
+            {id: 8, data: [8, 'Project C', 'project', 'project-C']},
+            {id: 3, data: [3, 'Contact', 'contact', 'contact']},
+        ];
+
         return {
             addButtonLabel: 'Add page',
             headers: ['id', 'name', 'template', 'slug'],
-            cells: {
-                'name': {'type': 'page'}
-            },
-            data: {
-                1: [1, {'label': 'Home', 'icons': ['lock']}, 'home', 'home'],
-                2: [2, 'About', 'default', 'about'],
-                4: [4, 'Prices', 'default', 'prices'],
-                5: [5, 'Projects', 'projects', 'projects'],
-                3: [3, 'Contact', 'contact', 'contact'],
-            },
+            cells: {'name': {'type': 'page'}},
+            data: data,
             instance: 'pagesTest',
             class: 'pages',
         };
@@ -247,6 +254,21 @@ class DataTableMock {
             interests: ["1", "2"],
             address: 'Peterstreet 17',
         };
+    }
+
+    /**
+     * @param data
+     * @param id
+     */
+    getIndexById(data: any, id: number): number {
+        console.log(data);
+        data.forEach((row: any, index: number) => {
+            if(id == row.id){
+                return index;
+            }
+        });
+
+        return 0;
     }
 }
 

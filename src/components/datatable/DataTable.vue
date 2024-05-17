@@ -1,5 +1,5 @@
 <script lang="ts">
-import {defineComponent} from "vue";
+import {defineComponent, type StyleValue} from "vue";
 import axios from "axios";
 import EditDialog from "./subcomponents/EditDialog.vue";
 import Page from "./subcomponents/Page.vue";
@@ -19,7 +19,7 @@ export default defineComponent({
     instance: String,
   },
   computed: {
-    dataTableStyle() {
+    dataTableStyle(): StyleValue {
       return this.dragAndDropPages.itemIdMouseDown ? {
         '-webkit-user-select': 'none',
         '-ms-user-select': 'none',
@@ -155,19 +155,19 @@ export default defineComponent({
           </tr>
           </thead>
           <tbody>
-          <tr v-for="(row, id) in data">
-            <td v-for="(cell, i) in row" :data-column="headers[i]" @mouseleave="dragAndDropPages.mouseLeave"
-                @mouseenter="dragAndDropPages.mouseEnter(id, $event)" @mousemove="dragAndDropPages.mouseMoveContainer(id, $event)">
+          <tr v-for="row in data">
+            <td v-for="(cell, i) in row.data" :data-column="headers[i]" @mouseleave="dragAndDropPages.mouseLeave"
+                @mouseenter="dragAndDropPages.mouseEnter(row.id, $event)" @mousemove="dragAndDropPages.mouseMoveContainer(row.id, $event)">
               <template v-if="getCellType(i) == 'page'">
-                <Page v-if="cloned == id" :cell="cell" :cloned="true" @startDrag="dragAndDropPages.setMouseDown(id, $event)"
+                <Page v-if="cloned == row.id" :cell="cell" :cloned="true" @startDrag="dragAndDropPages.setMouseDown(row.id, $event)"
                       :x="dragAndDropPages.itemX" :y="dragAndDropPages.itemY"/>
-                <Page :cell="cell" :id="id" :key="id" :dragAndDropPages="dragAndDropPages" :isDragged="dragAndDropPages.isDragged(id)"
-                      @startDrag="dragAndDropPages.setMouseDown(id, $event)" ref="pages"/>
+                <Page :cell="cell" :id="row.id" :key="row.id" :dragAndDropPages="dragAndDropPages" :isDragged="dragAndDropPages.isDragged(row.id)"
+                      @startDrag="dragAndDropPages.setMouseDown(row.id, $event)" ref="pages"/>
               </template>
               <template v-else>{{ cell }}</template>
-              <template v-if="i == row.length - 1">
+              <template v-if="i == row.data.length - 1">
                 <div class="buttons">
-                  <span @click="edit(id)"><Svg :svg="'edit'"/></span>
+                  <span @click="edit(row.id)"><Svg :svg="'edit'"/></span>
                 </div>
               </template>
             </td>
