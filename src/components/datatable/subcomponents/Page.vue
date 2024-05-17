@@ -9,23 +9,35 @@ export default defineComponent({
   props: ['cell', 'cloned', 'x', 'y', 'isDragged', 'dragAndDropPages', 'id'],
   computed: {
     pageStyle() {
-      return this.cloned ? { 'margin-left': this.x + 'px', 'margin-top': this.y + 'px' } : '';
+      return this.cloned ? {'margin-left': this.x + 'px', 'margin-top': this.y + 'px'} : '';
     },
 
-    getClasses(){
+    getClasses() {
       let classes = [];
 
-      if(this.cloned === true){
+      if (this.cloned === true) {
         classes.push('cloned')
       }
 
-      if(this.isDragged){
+      if (this.isDragged) {
         classes.push('dragged')
       }
 
-      if(this.dragAndDropPages !== undefined && this.dragAndDropPages.isDragging() && ! this.dragAndDropPages.isDragged(this.id)){
-        if(this.dragAndDropPages.isHovering(this.id)) {
+      if (this.dragAndDropPages === undefined) {
+        return classes;
+      }
+
+      let isDragging = this.dragAndDropPages.isDragging();
+      let isDragged  = this.dragAndDropPages.isDragged(this.id);
+      let isHovering = this.dragAndDropPages.isHovering(this.id);
+
+      if (isDragging && !isDragged && isHovering) {
+        if(this.dragAndDropPages.draggedOverThird == this.dragAndDropPages.THIRD_MIDDLE) {
           classes.push('hovering');
+        } else if(this.dragAndDropPages.draggedOverThird == this.dragAndDropPages.THIRD_TOP){
+          classes.push('hovering-top');
+        } else if(this.dragAndDropPages.draggedOverThird == this.dragAndDropPages.THIRD_BOTTOM){
+          classes.push('hovering-bottom');
         }
       }
 
@@ -37,7 +49,7 @@ export default defineComponent({
 
 <template>
   <span class="arrow"></span>
-  <span class="name" :class="getClasses" @mousedown="$emit('startDrag', $event)" @mouseleave="dragAndDropPages.mouseLeave" @mouseenter="dragAndDropPages.mouseEnter(id)" :style="pageStyle">
+  <span class="name" :class="getClasses" @mousedown="$emit('startDrag', $event)" :style="pageStyle">
     <template v-if="typeof cell === 'object'">
       <template v-for="icon in cell['icons']"><Svg :svg="icon"/></template>
       {{ cell['label'] }}
@@ -47,7 +59,7 @@ export default defineComponent({
 </template>
 
 <style lang="scss" scoped>
-.name{
+.name {
   border: 1px solid var(--color-background-shade3);
   width: 200px;
   border-radius: var(--border-radius);
@@ -57,14 +69,14 @@ export default defineComponent({
   background-color: var(--color-background-shade1);
   position: relative;
 
-  .icon{
+  .icon {
     display: block;
     fill: var(--color-text);
     float: left;
     margin-right: 5px;
   }
 
-  .icon--lock:deep(svg){
+  .icon--lock:deep(svg) {
     width: 16px;
     height: 16px;
     top: 3px;
@@ -72,19 +84,29 @@ export default defineComponent({
     position: relative;
   }
 
-  &.cloned{
+  &.cloned {
     position: absolute;
     z-index: 1;
     pointer-events: none;
   }
 
-  &.dragged{
+  &.dragged {
     opacity: .25;
   }
 
-  &.hovering{
+  &.hovering {
     border: 3px solid var(--color-action);
     padding: 0 8px 2px;
+  }
+
+  &.hovering-top {
+    border-top: 3px solid var(--color-action);
+    padding-top: 0;
+  }
+
+  &.hovering-bottom {
+    border-bottom: 3px solid var(--color-action);
+    padding-bottom: 2px;
   }
 }
 </style>

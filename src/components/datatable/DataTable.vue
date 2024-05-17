@@ -127,7 +127,6 @@ export default defineComponent({
       await axios
           .get('/api/datatable/save', {params: {instance: this.instance, data: data, id: dialogEditId}})
           .then(response => {
-            console.log(response.data);
             this.data   = response.data;
             this.dialog = false;
           }).catch(error => {
@@ -140,7 +139,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="datatable" :class="settings ? settings.class : null" v-if="instance" :style="dataTableStyle">
+  <div ref="datatable" class="datatable" :class="settings ? settings.class : null" v-if="instance" :style="dataTableStyle">
     <div class="datatable__error" v-if="error">
       {{ error }}
     </div>
@@ -157,11 +156,13 @@ export default defineComponent({
           </thead>
           <tbody>
           <tr v-for="(row, id) in data">
-            <td v-for="(cell, i) in row" :data-column="headers[i]">
+            <td v-for="(cell, i) in row" :data-column="headers[i]" @mouseleave="dragAndDropPages.mouseLeave"
+                @mouseenter="dragAndDropPages.mouseEnter(id, $event)" @mousemove="dragAndDropPages.mouseMoveContainer(id, $event)">
               <template v-if="getCellType(i) == 'page'">
                 <Page v-if="cloned == id" :cell="cell" :cloned="true" @startDrag="dragAndDropPages.setMouseDown(id, $event)"
                       :x="dragAndDropPages.itemX" :y="dragAndDropPages.itemY"/>
-                <Page :cell="cell" :id="id" :dragAndDropPages="dragAndDropPages" :isDragged="dragAndDropPages.isDragged(id)" @startDrag="dragAndDropPages.setMouseDown(id, $event)"/>
+                <Page :cell="cell" :id="id" :key="id" :dragAndDropPages="dragAndDropPages" :isDragged="dragAndDropPages.isDragged(id)"
+                      @startDrag="dragAndDropPages.setMouseDown(id, $event)" ref="pages"/>
               </template>
               <template v-else>{{ cell }}</template>
               <template v-if="i == row.length - 1">

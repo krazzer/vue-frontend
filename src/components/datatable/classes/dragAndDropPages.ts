@@ -1,6 +1,16 @@
 class DragAndDropPages {
+    readonly HALF_TOP: number    = 0;
+    readonly HALF_BOTTOM: number = 1;
+
+    readonly THIRD_TOP: number    = 0;
+    readonly THIRD_MIDDLE: number = 1;
+    readonly THIRD_BOTTOM: number = 2;
+
     itemIdMouseDown: number | null;
     itemIdMouseOver: number | null;
+    itemMouseOverRect: DOMRect | null;
+    draggedOverHalf: number | null;
+    draggedOverThird: number | null;
     pixelsRequiredForDrag: number = 3;
     movedEnoughToStart: boolean   = false;
     handleMouseUp: any;
@@ -23,23 +33,28 @@ class DragAndDropPages {
         window.addEventListener('mousemove', this.handleMouseMove);
     }
 
-    isDragged(id: number): boolean{
+    isDragged(id: number): boolean {
         return this.movedEnoughToStart && this.itemIdMouseDown == id;
     }
 
-    isDragging(): boolean{
+    isDragging(): boolean {
         return this.movedEnoughToStart && this.itemIdMouseDown !== null;
     }
 
-    isHovering(id: number): boolean{
+    isHovering(id: number): boolean {
         return this.itemIdMouseOver == id;
     }
 
-    mouseEnter(id: number){
-        this.itemIdMouseOver = id;
+    /**
+     * @param id
+     * @param event
+     */
+    mouseEnter(id: number, event: MouseEvent) {
+        this.itemIdMouseOver   = id;
+        this.itemMouseOverRect = (event.target as HTMLInputElement).getBoundingClientRect();
     }
 
-    mouseLeave(){
+    mouseLeave() {
         this.itemIdMouseOver = null;
     }
 
@@ -72,6 +87,32 @@ class DragAndDropPages {
                     Math.abs(event.clientY - this.itemStartY) > this.pixelsRequiredForDrag) {
                     this.movedEnoughToStart = true;
                 }
+            }
+        }
+    }
+
+    /**
+     * Trigged when hovering the page's element container (td) to determine where the mouse is
+     * @param id
+     * @param event
+     */
+    mouseMoveContainer(id: number, event: MouseEvent) {
+        if (this.isDragging() && !this.isDragged(id) && this.itemMouseOverRect) {
+            let height  = this.itemMouseOverRect.height;
+            let clientY = event.clientY - this.itemMouseOverRect.y;
+
+            if(clientY < height / 2){
+                this.draggedOverHalf = this.HALF_TOP;
+            } else {
+                this.draggedOverHalf = this.HALF_BOTTOM;
+            }
+
+            if(clientY < height / 3){
+                this.draggedOverThird = this.THIRD_TOP;
+            } else if(clientY > height * (2/3)){
+                this.draggedOverThird = this.THIRD_BOTTOM;
+            } else {
+                this.draggedOverThird = this.THIRD_MIDDLE;
             }
         }
     }
