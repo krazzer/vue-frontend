@@ -109,8 +109,10 @@ export default defineComponent({
     padding-bottom: 2px;
   }
 
-  &[data-level="1"]{
-    margin-left: 40px;
+  @for $i from 1 through 10 {
+    &[data-level="#{$i}"]{
+      margin-left: 40px * $i;
+    }
   }
 }
 </style>

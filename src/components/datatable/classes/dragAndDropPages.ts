@@ -63,7 +63,15 @@ class DragAndDropPages {
         window.addEventListener('mousemove', this.handleMouseMove);
     }
 
+    /**
+     * @param id
+     * @param event
+     */
     setMouseDown(id: number, event: MouseEvent) {
+        if(event.button !== 0){
+            return;
+        }
+
         this.itemIdMouseDown = id;
 
         this.itemStartX = event.clientX;
@@ -77,6 +85,9 @@ class DragAndDropPages {
         this.itemY              = null;
     }
 
+    /**
+     * @param event
+     */
     setMouseMove(event: MouseEvent) {
         if (this.itemIdMouseDown != null) {
             if (this.movedEnoughToStart) {

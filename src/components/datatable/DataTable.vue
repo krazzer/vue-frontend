@@ -171,7 +171,7 @@ export default defineComponent({
           background-color: var(--color-background-shade1);
         }
 
-        tr:hover {
+        :deep(tr:hover) {
           background-color: var(--color-background-shade2);
         }
       }
@@ -180,7 +180,7 @@ export default defineComponent({
 }
 
 body.transitioning {
-  table tbody tr {
+  table tbody :deep(tr) {
     transition: background-color var(--color-scheme-transition-speed);
   }
 }
