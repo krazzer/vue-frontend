@@ -225,10 +225,11 @@ class DataTableMock {
             {id: 1, data: [1, {'label': 'Home', 'icons': ['lock']}, 'home', 'home']},
             {id: 2, data: [2, 'About', 'default', 'about']},
             {id: 4, data: [4, 'Prices', 'default', 'prices']},
-            {id: 5, data: [5, 'Projects', 'projects', 'projects']},
-            {id: 6, data: [6, 'Project A', 'project', 'project-A']},
-            {id: 7, data: [7, 'Project B', 'project', 'project-B']},
-            {id: 8, data: [8, 'Project C', 'project', 'project-C']},
+            {id: 5, data: [5, 'Projects', 'projects', 'projects'], children: [
+                {id: 6, data: [6, 'Project A', 'project', 'project-A']},
+                {id: 7, data: [7, 'Project B', 'project', 'project-B']},
+                {id: 8, data: [8, 'Project C', 'project', 'project-C']},
+            ]},
             {id: 3, data: [3, 'Contact', 'contact', 'contact']},
         ];
 

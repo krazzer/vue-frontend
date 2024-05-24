@@ -2,13 +2,13 @@
 import {defineComponent, type StyleValue} from "vue";
 import axios from "axios";
 import EditDialog from "./subcomponents/EditDialog.vue";
-import Page from "./subcomponents/Page.vue";
+import Row from "./subcomponents/Row.vue";
 import Svg from "@/components/svg/Svg.vue";
 import DragAndDropPages from "./classes/dragAndDropPages";
 
 export default defineComponent({
   name: "DataTable",
-  components: {Svg, EditDialog, Page},
+  components: {Svg, EditDialog, Row},
   props: {
     settings: {
       type: Object,
@@ -83,32 +83,6 @@ export default defineComponent({
     },
 
     /**
-     * @param index
-     */
-    getCellSettings(index: number): any | null {
-      let cellSettings = this.settings ? this.settings.cells : null;
-
-      if (!cellSettings) {
-        return null;
-      }
-
-      return cellSettings[this.settings.headers[index]];
-    },
-
-    /**
-     * @param index
-     */
-    getCellType(index: number): string | null {
-      let cellSettings = this.getCellSettings(index);
-
-      if (cellSettings && cellSettings.type) {
-        return cellSettings.type;
-      }
-
-      return null;
-    },
-
-    /**
      * @param id
      */
     async edit(id: number) {
@@ -122,6 +96,7 @@ export default defineComponent({
             this.error = error;
           });
     },
+
 
     async save(dialogEditId: any, data: any) {
       await axios
@@ -155,23 +130,8 @@ export default defineComponent({
           </tr>
           </thead>
           <tbody>
-          <tr v-for="row in data">
-            <td v-for="(cell, i) in row.data" :data-column="headers[i]" @mouseleave="dragAndDropPages.mouseLeave"
-                @mouseenter="dragAndDropPages.mouseEnter(row.id, $event)" @mousemove="dragAndDropPages.mouseMoveContainer(row.id, $event)">
-              <template v-if="getCellType(i) == 'page'">
-                <Page v-if="cloned == row.id" :cell="cell" :cloned="true" @startDrag="dragAndDropPages.setMouseDown(row.id, $event)"
-                      :x="dragAndDropPages.itemX" :y="dragAndDropPages.itemY"/>
-                <Page :cell="cell" :id="row.id" :key="row.id" :dragAndDropPages="dragAndDropPages" :isDragged="dragAndDropPages.isDragged(row.id)"
-                      @startDrag="dragAndDropPages.setMouseDown(row.id, $event)" ref="pages"/>
-              </template>
-              <template v-else>{{ cell }}</template>
-              <template v-if="i == row.data.length - 1">
-                <div class="buttons">
-                  <span @click="edit(row.id)"><Svg :svg="'edit'"/></span>
-                </div>
-              </template>
-            </td>
-          </tr>
+            <Row :row="row" :dragAndDropPages="dragAndDropPages" :headers="headers" :settings="settings"
+                 @edit="edit(row.id)" :id="row.id" v-for="row in data" />
           </tbody>
         </table>
       </div>
@@ -183,7 +143,6 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 @import "@/assets/base.scss";
-@import "./styles/pages";
 
 .datatable {
 
@@ -197,11 +156,7 @@ export default defineComponent({
       border-collapse: separate;
       width: 100%;
 
-      tr:hover td .buttons {
-        display: inline-block;
-      }
-
-      td, th {
+      :deep(td), th {
         padding: 8px 15px;
         position: relative;
       }
@@ -209,28 +164,6 @@ export default defineComponent({
       thead th {
         text-align: left;
         font-weight: bold;
-      }
-
-      td .buttons {
-        display: none;
-        position: absolute;
-        right: 15px;
-      }
-
-      td .icon {
-        width: 20px;
-        display: inline-block;
-        cursor: pointer;
-
-        :deep(svg) {
-          path {
-            fill: var(--color-text);
-          }
-        }
-
-        &--edit {
-          margin-top: 2px;
-        }
       }
 
       tbody {
