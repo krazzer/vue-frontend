@@ -19,6 +19,7 @@ class DragAndDropPages {
     itemY: number | null;
     itemStartX: number;
     itemStartY: number;
+    itemLeft: number;
 
     init() {
         this.handleMouseUp = () => {
@@ -74,6 +75,8 @@ class DragAndDropPages {
 
         this.itemIdMouseDown = id;
 
+        this.itemLeft = parseInt(window.getComputedStyle(event.target as HTMLInputElement).marginLeft);
+
         this.itemStartX = event.clientX;
         this.itemStartY = event.clientY;
     }
@@ -91,7 +94,7 @@ class DragAndDropPages {
     setMouseMove(event: MouseEvent) {
         if (this.itemIdMouseDown != null) {
             if (this.movedEnoughToStart) {
-                this.itemX = event.clientX - this.itemStartX;
+                this.itemX = event.clientX - this.itemStartX + this.itemLeft;
                 this.itemY = event.clientY - this.itemStartY;
             } else {
                 if (Math.abs(event.clientX - this.itemStartX) > this.pixelsRequiredForDrag ||
