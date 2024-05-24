@@ -131,7 +131,7 @@ export default defineComponent({
           </thead>
           <tbody>
             <Row :row="row" :dragAndDropPages="dragAndDropPages" :headers="headers" :settings="settings"
-                 @edit="edit(row.id)" :id="row.id" v-for="row in data" />
+                 @edit="edit(row.id)" :id="row.id" v-for="row in data" :level="0" />
           </tbody>
         </table>
       </div>
@@ -167,7 +167,7 @@ export default defineComponent({
       }
 
       tbody {
-        tr:nth-child(odd) {
+        :deep(tr:nth-child(odd)) {
           background-color: var(--color-background-shade1);
         }
 

@@ -6,7 +6,7 @@ export default defineComponent({
   components: {Svg},
   emits: ['startDrag'],
   name: "Page",
-  props: ['cell', 'cloned', 'x', 'y', 'isDragged', 'dragAndDropPages', 'id'],
+  props: ['cell', 'cloned', 'x', 'y', 'isDragged', 'dragAndDropPages', 'id', 'level'],
   computed: {
     pageStyle() {
       return this.cloned ? {'margin-left': this.x + 'px', 'margin-top': this.y + 'px'} : '';
@@ -49,7 +49,7 @@ export default defineComponent({
 
 <template>
   <span class="arrow"></span>
-  <span class="name" :class="getClasses" @mousedown="$emit('startDrag', $event)" :style="pageStyle">
+  <span class="name" :class="getClasses" @mousedown="$emit('startDrag', $event)" :style="pageStyle" :data-level="level">
     <template v-if="typeof cell === 'object'">
       <template v-for="icon in cell['icons']"><Svg :svg="icon"/></template>
       {{ cell['label'] }}
@@ -107,6 +107,10 @@ export default defineComponent({
   &.hovering-bottom {
     border-bottom: 3px solid var(--color-action);
     padding-bottom: 2px;
+  }
+
+  &[data-level="1"]{
+    margin-left: 40px;
   }
 }
 </style>

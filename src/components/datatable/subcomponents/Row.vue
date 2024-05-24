@@ -5,9 +5,9 @@ import {defineComponent} from "vue";
 
 export default defineComponent({
   components: {Page, Svg},
-  emits: ['startDrag'],
+  emits: ['edit'],
   name: "Row",
-  props: ['row', 'dragAndDropPages', 'headers', 'settings', 'id'],
+  props: ['row', 'dragAndDropPages', 'headers', 'settings', 'id', 'level'],
   methods: {
     /**
      * @param index
@@ -44,21 +44,24 @@ export default defineComponent({
         @mouseenter="dragAndDropPages.mouseEnter(row.id, $event)"
         @mousemove="dragAndDropPages.mouseMoveContainer(row.id, $event)">
       <template v-if="getCellType(i) == 'page'">
-        <Page v-if="dragAndDropPages.itemIdMouseDown == row.id" :cell="cell" :cloned="true"
-              @startDrag="dragAndDropPages.setMouseDown(row.id, $event)"
-              :x="dragAndDropPages.itemX" :y="dragAndDropPages.itemY"/>
+        <Page v-if="dragAndDropPages.itemIdMouseDown == row.id" :cell="cell" :cloned="true" :level="level"
+              @startDrag="dragAndDropPages.setMouseDown(row.id, $event)" :x="dragAndDropPages.itemX"
+              :y="dragAndDropPages.itemY"/>
         <Page :cell="cell" :id="row.id" :key="row.id" :dragAndDropPages="dragAndDropPages"
-              :isDragged="dragAndDropPages.isDragged(row.id)"
-              @startDrag="dragAndDropPages.setMouseDown(row.id, $event)" ref="pages"/>
+              :isDragged="dragAndDropPages.isDragged(row.id)" :level="level" ref="pages"
+              @startDrag="dragAndDropPages.setMouseDown(row.id, $event)"/>
       </template>
       <template v-else>{{ cell }}</template>
       <template v-if="i == row.data.length - 1">
         <div class="buttons">
-          <span @click="$emit('edit' as any, row.id)"><Svg :svg="'edit'"/></span>
+          <span @click="$emit('edit', row.id)"><Svg :svg="'edit'"/></span>
         </div>
       </template>
     </td>
   </tr>
+  <Row v-if="row.children" :dragAndDropPages="dragAndDropPages" :headers="headers" :settings="settings"
+       @edit="$emit('edit' as any, row.id)" :id="row.id" :row="childRow" v-for="childRow in row.children"
+       :level="level + 1"/>
 </template>
 
 <style lang="scss" scoped>
