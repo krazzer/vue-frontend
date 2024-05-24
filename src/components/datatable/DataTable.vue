@@ -57,7 +57,7 @@ export default defineComponent({
     }
 
     this.dragAndDropPages = DragAndDropPages;
-    this.dragAndDropPages.init();
+    this.dragAndDropPages.init(this);
   },
   unmounted() {
     this.dragAndDropPages.unload();
@@ -101,6 +101,22 @@ export default defineComponent({
     async save(dialogEditId: any, data: any) {
       await axios
           .get('/api/datatable/save', {params: {instance: this.instance, data: data, id: dialogEditId}})
+          .then(response => {
+            this.data   = response.data;
+            this.dialog = false;
+          }).catch(error => {
+            alert(error);
+          });
+    },
+
+    /**
+     * @param itemIdMouseDown
+     * @param itemIdMouseOver
+     * @param location
+     */
+    async rearrange(itemIdMouseDown: number, itemIdMouseOver: number, location: number){
+      await axios
+          .get('/api/datatable/rearrange', {params: {source: itemIdMouseDown, target: itemIdMouseOver, location: location}})
           .then(response => {
             this.data   = response.data;
             this.dialog = false;

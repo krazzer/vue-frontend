@@ -1,3 +1,5 @@
+import DataTable from "@/components/datatable/DataTable.vue";
+
 class DragAndDropPages {
     readonly HALF_TOP: number    = 0;
     readonly HALF_BOTTOM: number = 1;
@@ -20,8 +22,9 @@ class DragAndDropPages {
     itemStartX: number;
     itemStartY: number;
     itemLeft: number;
+    DataTable: typeof DataTable;
 
-    init() {
+    init(DataTable: any) {
         this.handleMouseUp = () => {
             this.setMouseUp();
         };
@@ -32,6 +35,8 @@ class DragAndDropPages {
 
         window.addEventListener('mouseup', this.handleMouseUp);
         window.addEventListener('mousemove', this.handleMouseMove);
+
+        this.DataTable = DataTable;
     }
 
     isDragged(id: number): boolean {
@@ -82,6 +87,10 @@ class DragAndDropPages {
     }
 
     setMouseUp() {
+        if(this.itemIdMouseOver !== this.itemIdMouseDown) {
+            this.DataTable.rearrange(this.itemIdMouseDown, this.itemIdMouseOver, this.draggedOverThird);
+        }
+
         this.itemIdMouseDown    = null;
         this.movedEnoughToStart = false;
         this.itemX              = null;
