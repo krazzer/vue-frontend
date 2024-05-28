@@ -87,7 +87,7 @@ class DragAndDropPages {
     }
 
     setMouseUp() {
-        if(this.itemIdMouseOver !== this.itemIdMouseDown) {
+        if(this.itemIdMouseOver !== this.itemIdMouseDown && this.isDragging()) {
             this.DataTable.rearrange(this.itemIdMouseDown, this.itemIdMouseOver, this.draggedOverThird);
         }
 
