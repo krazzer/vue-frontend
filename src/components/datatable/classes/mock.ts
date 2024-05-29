@@ -173,7 +173,6 @@ class DataTableMock {
 
             if (id) {
                 index = this.getIndexById(editData, id);
-                console.log(index);
             } else {
                 index = parseInt(Object.keys(editData)[Object.keys(editData).length - 1]) + 1;
             }
@@ -188,6 +187,18 @@ class DataTableMock {
             }
 
             this.getDataForInstance(request.params.instance).data = editData;
+
+            return [200, editData];
+        });
+
+        // will not calculate the actual rearrange, not worth coding for just a mock
+        mocker.onGet("/api/datatable/rearrange").reply((request) => {
+            let editData = this.getDataForInstance(request.params.instance).data;
+
+            let from = this.getIndexById(editData, request.params.source);
+            let to   = this.getIndexById(editData, request.params.target);
+
+            editData.splice(to, 0, editData.splice(from, 1)[0]);
 
             return [200, editData];
         });
@@ -210,6 +221,8 @@ class DataTableMock {
                 return this.getSubDataTableData();
             case 'clients':
                 return this.getDefaultData();
+            case 'pages':
+                return this.getPagesData();
         }
     }
 
@@ -241,7 +254,7 @@ class DataTableMock {
             headers: ['id', 'name', 'template', 'slug'],
             cells: {'name': {'type': 'page'}},
             data: data,
-            instance: 'pagesTest',
+            instance: 'pages',
             class: 'pages',
         };
     }

@@ -114,12 +114,13 @@ export default defineComponent({
      * @param itemIdMouseOver
      * @param location
      */
-    async rearrange(itemIdMouseDown: number, itemIdMouseOver: number, location: number){
+    async rearrange(itemIdMouseDown: number, itemIdMouseOver: number, location: number) {
       await axios
-          .get('/api/datatable/rearrange', {params: {source: itemIdMouseDown, target: itemIdMouseOver, location: location}})
+          .get('/api/datatable/rearrange', {
+            params: {instance: this.instance, source: itemIdMouseDown, target: itemIdMouseOver, location: location}
+          })
           .then(response => {
-            this.data   = response.data;
-            this.dialog = false;
+            this.data = response.data;
           }).catch(error => {
             alert(error);
           });
@@ -130,7 +131,8 @@ export default defineComponent({
 </script>
 
 <template>
-  <div ref="datatable" class="datatable" :class="settings ? settings.class : null" v-if="instance" :style="dataTableStyle">
+  <div ref="datatable" class="datatable" :class="settings ? settings.class : null" v-if="instance"
+       :style="dataTableStyle">
     <div class="datatable__error" v-if="error">
       {{ error }}
     </div>
@@ -146,8 +148,8 @@ export default defineComponent({
           </tr>
           </thead>
           <tbody>
-            <Row :row="row" :dragAndDropPages="dragAndDropPages" :headers="headers" :settings="settings"
-                 @edit="edit(row.id)" :id="row.id" v-for="row in data" :level="0" />
+          <Row :row="row" :dragAndDropPages="dragAndDropPages" :headers="headers" :settings="settings"
+               @edit="edit(row.id)" :id="row.id" v-for="row in data" :level="0"/>
           </tbody>
         </table>
       </div>
