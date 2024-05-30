@@ -236,17 +236,22 @@ class DataTableMock {
 
     getPagesData() {
         let data = [
-            {id: '1', data: [1, {'label': 'Home', 'icons': ['lock']}, 'home', 'home']},
-            {id: '2', data: [2, 'About', 'default', 'about']},
-            {id: '4', data: [4, 'Prices', 'default', 'prices']},
-            {
-                id: '5', data: [5, 'Projects', 'projects', 'projects'], children: [
-                    {id: '6', data: [6, 'Project A', 'project', 'project-A']},
-                    {id: '7', data: [7, 'Project B', 'project', 'project-B']},
-                    {id: '8', data: [8, 'Project C', 'project', 'project-C']},
-                ]
-            },
-            {id: '3', data: [3, 'Contact', 'contact', 'contact']},
+            {id: '1', data: [1, 'Hoofdmenu', '', ''], type: 'menu', children:[
+                    {id: '2', data: [1, {'label': 'Home', 'icons': ['lock']}, 'home', 'home']},
+                    {id: '3', data: [2, 'About', 'default', 'about']},
+                    {id: '4', data: [4, 'Prices', 'default', 'prices']},
+                    {
+                        id: '5', data: [5, 'Projects', 'projects', 'projects'], children: [
+                            {id: '6', data: [6, 'Project A', 'project', 'project-A']},
+                            {id: '7', data: [7, 'Project B', 'project', 'project-B']},
+                            {id: '8', data: [8, 'Project C', 'project', 'project-C']},
+                        ]
+                    },
+                    {id: '9', data: [3, 'Contact', 'contact', 'contact']},
+            ]},
+            {id: '10', data: [10, 'Other pages', '', ''], type: 'menu', children:[
+                {id: '11', data: [11, 'Other pagina', 'default', 'other-page']},
+            ]},
         ];
 
         return {

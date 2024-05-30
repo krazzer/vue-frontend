@@ -6,7 +6,7 @@ export default defineComponent({
   components: {Svg},
   emits: ['startDrag'],
   name: "Page",
-  props: ['cell', 'cloned', 'x', 'y', 'isDragged', 'dragAndDropPages', 'id', 'level'],
+  props: ['cell', 'cloned', 'x', 'y', 'isDragged', 'dragAndDropPages', 'id', 'level', 'type'],
   computed: {
     pageStyle() {
       return this.cloned ? {'margin-left': this.x + 'px', 'margin-top': this.y + 'px'} : '';
@@ -14,6 +14,12 @@ export default defineComponent({
 
     getClasses() {
       let classes = [];
+
+      classes.push('name');
+
+      if(this.type == 'menu') {
+        classes.push('menu');
+      }
 
       if (this.cloned === true) {
         classes.push('cloned')
@@ -49,7 +55,7 @@ export default defineComponent({
 
 <template>
   <span class="arrow"></span>
-  <span class="name" :class="getClasses" @mousedown="$emit('startDrag', $event)" :style="pageStyle" :data-level="level">
+  <span :class="getClasses" @mousedown="$emit('startDrag', $event)" :style="pageStyle" :data-level="level">
     <template v-if="typeof cell === 'object'">
       <template v-for="icon in cell['icons']"><Svg :svg="icon"/></template>
       {{ cell['label'] }}
@@ -111,8 +117,12 @@ export default defineComponent({
 
   @for $i from 1 through 10 {
     &[data-level="#{$i}"]{
-      margin-left: 40px * $i;
+      margin-left: 40px * ($i);
     }
+  }
+
+  &.menu{
+    background-color: var(--color-background-shade3);
   }
 }
 </style>
