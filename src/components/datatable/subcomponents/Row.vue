@@ -51,7 +51,7 @@ export default defineComponent({
               :isDragged="dragAndDropPages.isDragged(row.id)" :level="level" ref="pages"
               @startDrag="dragAndDropPages.setMouseDown(row.id, $event)" :type="row.type" />
       </template>
-      <template v-else>{{ cell }}</template>
+      <template v-else>{{ cell ? cell : '&nbsp;' }}</template>
       <template v-if="i == row.data.length - 1">
         <div class="buttons">
           <span @click="$emit('edit', row.id)"><Svg :svg="'edit'"/></span>
