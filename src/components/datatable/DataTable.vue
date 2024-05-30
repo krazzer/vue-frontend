@@ -114,13 +114,26 @@ export default defineComponent({
      * @param itemIdMouseOver
      * @param location
      */
-    async rearrange(itemIdMouseDown: number, itemIdMouseOver: number, location: number) {
+    async rearrange(itemIdMouseDown: string, itemIdMouseOver: string, location: number) {
       await axios
           .get('/api/datatable/rearrange', {
             params: {instance: this.instance, source: itemIdMouseDown, target: itemIdMouseOver, location: location}
           })
           .then(response => {
             this.data = response.data;
+          }).catch(error => {
+            alert(error);
+          });
+    },
+
+    /**
+     * @param id
+     * @param collapsed
+     */
+    async collapse(id: string, collapsed: boolean) {
+      await axios
+          .get('/api/datatable/collapse', {
+            params: {instance: this.instance, id: id, collapsed: collapsed}
           }).catch(error => {
             alert(error);
           });
@@ -149,8 +162,7 @@ export default defineComponent({
           </thead>
           <tbody>
           <Row v-for="row in data" :row="row" :dragAndDropPages="dragAndDropPages" :headers="headers"
-               :settings="settings"
-               @edit="edit(row.id)" :id="row.id" :level="0"/>
+               :settings="settings" @collapse="collapse" @edit="edit(row.id)" :id="row.id" :level="0"/>
           </tbody>
         </table>
       </div>

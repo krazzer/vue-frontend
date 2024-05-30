@@ -213,6 +213,10 @@ class DataTableMock {
 
             return [200, validated];
         });
+
+        mocker.onGet("/api/datatable/collapse").reply(() => {
+            return [200];
+        });
     }
 
     getDataForInstance(instance: string): any {
