@@ -46,10 +46,11 @@ export default defineComponent({
       <template v-if="getCellType(i) == 'page'">
         <Page v-if="dragAndDropPages.itemIdMouseDown == row.id" :cell="cell" :cloned="true" :level="level"
               @startDrag="dragAndDropPages.setMouseDown(row.id, $event)" :x="dragAndDropPages.itemX"
-              :y="dragAndDropPages.itemY" :type="row.type" />
+              :y="dragAndDropPages.itemY" :type="row.type" :hasCildren="row.children" :collapse="row.collapse" />
         <Page :cell="cell" :id="row.id" :key="row.id" :dragAndDropPages="dragAndDropPages"
               :isDragged="dragAndDropPages.isDragged(row.id)" :level="level" ref="pages"
-              @startDrag="dragAndDropPages.setMouseDown(row.id, $event)" :type="row.type" />
+              @startDrag="dragAndDropPages.setMouseDown(row.id, $event)" :type="row.type"
+              :hasCildren="row.children" :collapse="row.collapse" />
       </template>
       <template v-else>{{ cell ? cell : '&nbsp;' }}</template>
       <template v-if="i == row.data.length - 1">
@@ -59,7 +60,7 @@ export default defineComponent({
       </template>
     </td>
   </tr>
-  <Row v-if="row.children" :dragAndDropPages="dragAndDropPages" :headers="headers" :settings="settings"
+  <Row v-if="row.children && !row.collapse" :dragAndDropPages="dragAndDropPages" :headers="headers" :settings="settings"
        @edit="$emit('edit' as any, row.id)" :id="row.id" :row="childRow" v-for="childRow in row.children"
        :level="level + 1"/>
 </template>

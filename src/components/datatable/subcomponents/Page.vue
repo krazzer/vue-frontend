@@ -6,7 +6,7 @@ export default defineComponent({
   components: {Svg},
   emits: ['startDrag'],
   name: "Page",
-  props: ['cell', 'cloned', 'x', 'y', 'isDragged', 'dragAndDropPages', 'id', 'level', 'type'],
+  props: ['cell', 'cloned', 'x', 'y', 'isDragged', 'dragAndDropPages', 'id', 'level', 'type', 'hasCildren', 'collapse'],
   computed: {
     pageStyle() {
       return this.cloned ? {'margin-left': this.x + 'px', 'margin-top': this.y + 'px'} : '';
@@ -54,7 +54,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <span class="arrow"></span>
+  <span v-if="hasCildren" :data-level="level" class="arrow" :class="collapse ? 'closed' : ''"></span>
   <span :class="getClasses" @mousedown="$emit('startDrag', $event)" :style="pageStyle" :data-level="level">
     <template v-if="typeof cell === 'object'">
       <template v-for="icon in cell['icons']"><Svg :svg="icon"/></template>
@@ -65,6 +65,38 @@ export default defineComponent({
 </template>
 
 <style lang="scss" scoped>
+.arrow{
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 10px solid #aaa;
+  cursor: pointer;
+  display: block;
+  height: 10px;
+  margin-right: 10px;
+  margin-top: -5px;
+  position: absolute;
+  top: 50%;
+  width: 12px;
+
+  @for $i from 1 through 10 {
+    &[data-level="#{$i}"]{
+      margin-left: calc(40px * $i);
+    }
+  }
+
+  &.closed{
+    border-bottom: 6px solid transparent;
+    border-left: 10px solid #aaa;
+    border-top: 6px solid transparent;
+    height: 12px;
+    margin-right: 10px;
+    margin-top: -6px;
+    position: absolute;
+    top: 50%;
+    width: 10px;
+  }
+}
+
 .name {
   border: 1px solid var(--color-background-shade3);
   width: 200px;
@@ -115,9 +147,11 @@ export default defineComponent({
     padding-bottom: 2px;
   }
 
+  margin-left: 20px;
+
   @for $i from 1 through 10 {
     &[data-level="#{$i}"]{
-      margin-left: 40px * ($i);
+      margin-left: calc(20px + 40px * ($i));
     }
   }
 
