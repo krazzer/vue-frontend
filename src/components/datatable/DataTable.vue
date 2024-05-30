@@ -84,8 +84,11 @@ export default defineComponent({
 
     /**
      * @param id
+     * @param event
      */
-    async edit(id: number) {
+    async edit(id: number, event: MouseEvent) {
+      event.stopPropagation();
+
       await axios
           .get('/api/datatable/edit', {params: {instance: this.instance}})
           .then(response => {
@@ -162,7 +165,7 @@ export default defineComponent({
           </thead>
           <tbody>
           <Row v-for="row in data" :row="row" :dragAndDropPages="dragAndDropPages" :headers="headers"
-               :settings="settings" @collapse="collapse" @edit="edit(row.id)" :id="row.id" :level="0"/>
+               :settings="settings" @collapse="collapse" @edit="edit" :id="row.id" :level="0"/>
           </tbody>
         </table>
       </div>
