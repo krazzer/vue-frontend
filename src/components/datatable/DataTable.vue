@@ -148,8 +148,9 @@ export default defineComponent({
           </tr>
           </thead>
           <tbody>
-          <Row :row="row" :dragAndDropPages="dragAndDropPages" :headers="headers" :settings="settings"
-               @edit="edit(row.id)" :id="row.id" v-for="row in data" :level="0"/>
+          <Row v-for="row in data" :row="row" :dragAndDropPages="dragAndDropPages" :headers="headers"
+               :settings="settings"
+               @edit="edit(row.id)" :id="row.id" :level="0"/>
           </tbody>
         </table>
       </div>

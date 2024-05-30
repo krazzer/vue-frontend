@@ -250,7 +250,7 @@ class DataTableMock {
                     {id: '9', data: [3, 'Contact', 'contact', 'contact']},
             ]},
             {id: '10', data: [10, 'Other pages', '', ''], type: 'menu', children:[
-                {id: '11', data: [11, 'Other pagina', 'default', 'other-page']},
+                {id: '11', data: [11, 'Other page', 'default', 'other-page']},
             ]},
         ];
 
