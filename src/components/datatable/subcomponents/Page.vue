@@ -49,12 +49,19 @@ export default defineComponent({
 
       return classes;
     }
+  },
+  methods: {
+    // prevent arrow dblclick to trigger row dblclick
+    arrowDblClick(event: MouseEvent){
+      event.stopPropagation();
+    }
   }
 });
 </script>
 
 <template>
-  <span v-if="hasCildren" :data-level="level" class="arrow" @click="$emit('arrowClick', $event)" :class="collapse ? 'closed' : ''"></span>
+  <span v-if="hasCildren" :data-level="level" class="arrow" @dblclick="arrowDblClick"
+        @click="$emit('arrowClick', $event)" :class="collapse ? 'closed' : ''"></span>
   <span :class="getClasses" @mousedown="$emit('startDrag', $event)" :style="pageStyle" :data-level="level">
     <template v-if="typeof cell === 'object'">
       <template v-for="icon in cell['icons']"><Svg :svg="icon"/></template>
