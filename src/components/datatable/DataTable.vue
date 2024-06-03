@@ -10,6 +10,7 @@ export default defineComponent({
   name: "DataTable",
   components: {Svg, EditDialog, Row},
   props: {
+    darkMode: Boolean,
     settings: {
       type: Object,
       default() {
@@ -172,7 +173,7 @@ export default defineComponent({
     </template>
   </div>
   <EditDialog :dialog="dialog" :dialogEditId="dialogEditId" :form="form ?? {}" @clickClose="dialog = false"
-              @clickSave="save" :data="editData"/>
+              @clickSave="save" :data="editData" :darkMode="darkMode" />
 </template>
 
 <style lang="scss" scoped>

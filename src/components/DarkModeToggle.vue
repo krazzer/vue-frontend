@@ -16,6 +16,7 @@ export default defineComponent({
       localStorage.darkMode = JSON.stringify(this.darkMode);
     }
   },
+  emits: ['change'],
   watch: {
     darkMode(val) {
       let body = document.body;
@@ -29,6 +30,8 @@ export default defineComponent({
       body.addEventListener('transitionend', () => {
         body.classList.remove('transitioning');
       });
+
+      this.$emit('change', val);
     }
   },
   mounted() {

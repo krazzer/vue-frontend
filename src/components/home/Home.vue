@@ -8,6 +8,7 @@ import Media from "@/components/media/Media.vue";
 
 export default defineComponent({
   components: {Logo, Menu, DataTable, Media},
+  props: ['darkMode'],
   watch: {
     $route() {
       let module = this.$route.params.module;
@@ -137,7 +138,7 @@ export default defineComponent({
       </div>
       <span v-if="html" v-html="html"></span>
       <Media v-if="media && Object.keys(media).length" :settings="media"/>
-      <DataTable v-if="dataTable" :settings="dataTable" :instance="dataTable.instance"/>
+      <DataTable v-if="dataTable" :settings="dataTable" :instance="dataTable.instance" :darkMode="darkMode" />
     </div>
   </div>
 </template>
@@ -245,4 +246,8 @@ $mainPadding: 40px;
     display: block;
   }
 }
+
+:deep(.tox-tinymce-aux){
+    z-index: 2500;
+};
 </style>

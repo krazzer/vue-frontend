@@ -265,6 +265,21 @@ class DataTableMock {
             data: data,
             instance: 'pages',
             class: 'pages',
+            form: {
+                fields: [
+                    {
+                        key: 'title',
+                        type: 'text',
+                        label: 'Title',
+                        validator: {name: 'presence', parameters: {}}
+                    },{
+                        key: 'content',
+                        type: 'richtext',
+                        label: 'Content',
+                        validator: {name: 'presence', parameters: {}}
+                    },
+                ],
+            },
         };
     }
 
