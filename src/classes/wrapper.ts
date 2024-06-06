@@ -12,6 +12,7 @@ import 'vuetify/styles'
 import {createVuetify} from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
+import {Translator} from "@/classes/translator";
 
 class Wrapper {
     getApp(Component: Component) {
@@ -20,6 +21,7 @@ class Wrapper {
         const app = Vue.createApp(Component).use(vuetify);
 
         app.config.globalProperties.$assets = 'src/assets/';
+        app.config.globalProperties.$translator = new Translator();
 
         if (import.meta.env.DEV) {
             new Mocker().mock();

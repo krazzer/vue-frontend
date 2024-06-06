@@ -86,7 +86,13 @@ export default defineComponent({
 
       if (button.action == 'delete') {
         if (selectedCount > 0) {
-          let confirmed = confirm('Are you sure you want to delete these ' + selectedCount + ' items?');
+          let confirmed = false;
+
+          if (selectedCount > 1) {
+            confirmed = confirm(this.$translator.tl('datatable.deleteMultiple', {amount: selectedCount}));
+          } else {
+            confirmed = confirm(this.$translator.tl('datatable.deleteSinlge'));
+          }
 
           if (confirmed) {
             this.delete();

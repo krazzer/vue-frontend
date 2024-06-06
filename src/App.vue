@@ -1,5 +1,6 @@
 <script>
 import DarkModeToggle from "@/components/DarkModeToggle.vue";
+import axios from "axios";
 
 export default{
   components: {DarkModeToggle},
@@ -13,11 +14,23 @@ export default{
       setTimeout(() => {
         document.body.classList.add('transition')
       });
-    })
+    });
+
+    this.loadTranslations();
   },
   methods: {
     setDarkMode(val){
       this.darkMode = val;
+    },
+
+    async loadTranslations() {
+      await axios
+          .get('/api/translations', {params: {}})
+          .then(response => {
+            this.$translator.setStrings(response.data);
+          }).catch(error => {
+            alert(error);
+          });
     }
   }
 }
