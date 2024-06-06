@@ -192,6 +192,11 @@ export default defineComponent({
 
   &__toolbar {
     margin-bottom: 50px;
+
+    &__buttons {
+      display: flex;
+      gap: 5px;
+    }
   }
 
   &__table {
@@ -223,8 +228,29 @@ export default defineComponent({
   }
 }
 
+.v-overlay
+{
+  .datatable{
+    border: 1px solid var(--color-background-shade3);
+    border-radius: var(--border-radius);
+
+    tbody :deep(tr:last-child td:first-child){
+      border-bottom-left-radius: var(--border-radius);
+    }
+
+    tbody :deep(tr:last-child td:last-child){
+      border-bottom-right-radius: var(--border-radius);
+    }
+  }
+
+  .datatable__toolbar {
+    margin-bottom: 20px;
+    padding: 15px;
+  }
+}
+
 body.transitioning {
-  table tbody :deep(tr) {
+  table tbody :deep(tr){
     transition: background-color var(--color-scheme-transition-speed);
   }
 }

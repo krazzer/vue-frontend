@@ -91,5 +91,7 @@ const DataTable = defineAsyncComponent(() => import('../DataTable.vue'));
 </template>
 
 <style scoped lang="scss">
-
+.v-card{
+  transition-duration: var(--color-scheme-transition-speed);
+}
 </style>
