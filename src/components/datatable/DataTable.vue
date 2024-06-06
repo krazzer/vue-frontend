@@ -30,8 +30,8 @@ export default defineComponent({
   },
   data() {
     return {
-      addButtonLabel: null,
       headers: [],
+      buttons: <any>[],
       data: <any>[],
       form: <any>[],
       editData: <any>[],
@@ -65,10 +65,10 @@ export default defineComponent({
   },
   methods: {
     convertSettings(settings: any) {
-      this.addButtonLabel = settings.addButtonLabel;
-      this.headers        = settings.headers;
-      this.data           = settings.data;
-      this.form           = settings.form;
+      this.headers = settings.headers;
+      this.data    = settings.data;
+      this.form    = settings.form;
+      this.buttons = settings.buttons;
     },
 
     async init() {
@@ -155,7 +155,16 @@ export default defineComponent({
     </div>
     <template v-else>
       <div class="datatable__toolbar">
-        <v-btn @click="dialog = true; dialogEditId = null; editData = {};">{{ addButtonLabel }}</v-btn>
+        <div class="datatable__toolbar__buttons">
+          <template v-for="button in buttons">
+            <v-btn v-if="button.action == 'add'" @click="dialog = true; dialogEditId = null; editData = {};">
+              {{ button.label }}
+            </v-btn>
+            <v-btn v-else>
+              {{ button.label }}
+            </v-btn>
+          </template>
+        </div>
       </div>
       <div class="datatable__table">
         <table>
@@ -173,7 +182,7 @@ export default defineComponent({
     </template>
   </div>
   <EditDialog :dialog="dialog" :dialogEditId="dialogEditId" :form="form ?? {}" @clickClose="dialog = false"
-              @clickSave="save" :data="editData" :darkMode="darkMode" />
+              @clickSave="save" :data="editData" :darkMode="darkMode"/>
 </template>
 
 <style lang="scss" scoped>

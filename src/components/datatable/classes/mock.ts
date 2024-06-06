@@ -2,7 +2,7 @@ import type MockAdapter from "axios-mock-adapter";
 
 class DataTableMock {
     public defaultData = {
-        addButtonLabel: 'Add client',
+        buttons: [{label: 'Add client', action: 'add'}, {label: 'Delete', action: 'delete'}],
         headers: ['id', 'name', 'address', 'zip'],
         form: {
             fields: [
@@ -129,7 +129,7 @@ class DataTableMock {
     };
 
     public subDataTableData = {
-        addButtonLabel: 'Add hobby',
+        buttons: [{label: 'Add hobby', action: 'add'}, {label: 'Delete', action: 'delete'}],
         headers: ['id', 'name'],
         form: {
             fields: [
@@ -240,7 +240,8 @@ class DataTableMock {
 
     getPagesData() {
         let data = [
-            {id: '1', data: [1, 'Hoofdmenu', '', ''], type: 'menu', children:[
+            {
+                id: '1', data: [1, 'Hoofdmenu', '', ''], type: 'menu', children: [
                     {id: '2', data: [1, {'label': 'Home', 'icons': ['lock']}, 'home', 'home']},
                     {id: '3', data: [2, 'About', 'default', 'about']},
                     {id: '4', data: [4, 'Prices', 'default', 'prices']},
@@ -252,14 +253,20 @@ class DataTableMock {
                         ]
                     },
                     {id: '9', data: [3, 'Contact', 'contact', 'contact']},
-            ]},
-            {id: '10', data: [10, 'Other pages', '', ''], type: 'menu', children:[
-                {id: '11', data: [11, 'Other page', 'default', 'other-page']},
-            ]},
+                ]
+            },
+            {
+                id: '10', data: [10, 'Other pages', '', ''], type: 'menu', children: [
+                    {id: '11', data: [11, 'Other page', 'default', 'other-page']},
+                ]
+            },
         ];
 
         return {
-            addButtonLabel: 'Add page',
+            buttons: [
+                {label: 'Add page', action: 'add'},
+                {label: 'Delete', action: 'delete'},
+            ],
             headers: ['id', 'name', 'template', 'slug'],
             cells: {'name': {'type': 'page'}},
             data: data,
@@ -272,7 +279,7 @@ class DataTableMock {
                         type: 'text',
                         label: 'Title',
                         validator: {name: 'presence', parameters: {}}
-                    },{
+                    }, {
                         key: 'content',
                         type: 'richtext',
                         label: 'Content',
@@ -285,6 +292,8 @@ class DataTableMock {
 
     getEditData(): any {
         return {
+            title: 'Page title',
+            content: '<p>Some content</p><p>Second paragraph</p>',
             firstname: 'Peter',
             lastname: 'Peterson',
             middlename: 'von',
