@@ -7,7 +7,7 @@ export default defineComponent({
   components: {Page, Svg},
   emits: ['collapse', 'edit', 'toggle'],
   name: "Row",
-  props: ['row', 'dragAndDropPages', 'headers', 'settings', 'id', 'level', 'selected'],
+  props: ['row', 'dragAndDropPages', 'headers', 'settings', 'id', 'level', 'selected', 'selectedIds'],
   data() {
     return {
       preventSelect: <boolean>false,
@@ -54,6 +54,14 @@ export default defineComponent({
       this.$emit('edit', id, event);
     },
 
+    /**
+     * @param id
+     * @param selected
+     */
+    childToggle(id: string, selected: boolean){
+      this.$emit('toggle', id, selected);
+    },
+
     toggleRow() {
       this.$emit('toggle', this.id, !this.selected);
     },
@@ -80,6 +88,13 @@ export default defineComponent({
       }
 
       return classes;
+    },
+
+    /**
+     * @param id
+     */
+    isSelected(id: string): boolean{
+      return this.selectedIds.includes(id);
     }
   }
 });
@@ -109,8 +124,8 @@ export default defineComponent({
     </td>
   </tr>
   <Row v-if="row.children && !row.collapse" :dragAndDropPages="dragAndDropPages" :headers="headers" :settings="settings"
-       @edit="childEdit" :id="row.id" :row="childRow" v-for="childRow in row.children"
-       :level="level + 1" @collapse="childCollapse"/>
+       @edit="childEdit" :id="childRow.id" :row="childRow" v-for="childRow in row.children" @toggle="childToggle"
+       :level="level + 1" @collapse="childCollapse" :selected-ids="selectedIds" :selected="isSelected(childRow.id)" />
 </template>
 
 <style lang="scss" scoped>
