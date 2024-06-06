@@ -5,12 +5,11 @@ import {defineComponent} from "vue";
 
 export default defineComponent({
   components: {Page, Svg},
-  emits: ['collapse', 'edit'],
+  emits: ['collapse', 'edit', 'toggle'],
   name: "Row",
-  props: ['row', 'dragAndDropPages', 'headers', 'settings', 'id', 'level'],
+  props: ['row', 'dragAndDropPages', 'headers', 'settings', 'id', 'level', 'selected'],
   data() {
     return {
-      selected: <boolean>false,
       preventSelect: <boolean>false,
     };
   },
@@ -56,7 +55,7 @@ export default defineComponent({
     },
 
     toggleRow() {
-      this.selected = !this.selected;
+      this.$emit('toggle', this.id, !this.selected);
     },
 
     /**

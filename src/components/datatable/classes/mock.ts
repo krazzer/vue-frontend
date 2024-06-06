@@ -151,16 +151,27 @@ class DataTableMock {
 
     mock(mocker: MockAdapter) {
         mocker.onGet("/api/datatable").reply((request) => {
-
             let dataTableSettings = this.getDataForInstance(request.params.instance);
-
-            let params = {settings: dataTableSettings};
+            let params            = {settings: dataTableSettings};
 
             return [200, params];
         });
 
         mocker.onGet("/api/datatable/edit").reply(() => {
             return [200, this.getEditData()];
+        });
+
+        mocker.onPost("/api/datatable/delete").reply((request) => {
+            let params = JSON.parse(request.data).params;
+            let data   = this.getDataForInstance(params.instance).data;
+            let ids    = params.ids;
+
+            ids.forEach((id: string) => {
+                let index = this.getIndexById(data, id);
+                data.splice(index, 1);
+            });
+
+            return [200, data];
         });
 
         mocker.onGet("/api/datatable/save").reply((request) => {

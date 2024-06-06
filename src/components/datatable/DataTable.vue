@@ -30,6 +30,7 @@ export default defineComponent({
   },
   data() {
     return {
+      selected: <any>[],
       headers: [],
       buttons: <any>[],
       data: <any>[],
@@ -69,6 +70,49 @@ export default defineComponent({
       this.data    = settings.data;
       this.form    = settings.form;
       this.buttons = settings.buttons;
+    },
+
+    /**
+     * @param button
+     */
+    buttonClick(button: any) {
+      let selectedCount = this.selected.length;
+
+      if (button.action == 'add') {
+        this.dialog       = true;
+        this.dialogEditId = null;
+        this.editData     = {};
+      }
+
+      if (button.action == 'delete') {
+        if (selectedCount > 0) {
+          let confirmed = confirm('Are you sure you want to delete these ' + selectedCount + ' items?');
+
+          if (confirmed) {
+            this.delete();
+          }
+        }
+      }
+    },
+
+    async delete() {
+      await axios
+          .post('/api/datatable/delete', {params: {instance: this.instance, ids: this.selected}})
+          .then(response => {
+            this.data     = response.data;
+            this.selected = [];
+          }).catch(error => {
+            alert(error);
+          });
+    },
+
+    /**
+     * @param button
+     */
+    isDisabled(button: any) {
+      if (button.action == 'delete') {
+        return this.selected.length < 1;
+      }
     },
 
     async init() {
@@ -141,6 +185,26 @@ export default defineComponent({
           }).catch(error => {
             alert(error);
           });
+    },
+
+    /**
+     * @param id
+     * @param selected
+     */
+    toggle(id: string, selected: boolean) {
+      if (selected) {
+        this.selected.push(id);
+      } else {
+        let index = this.selected.indexOf(id);
+        this.selected.splice(index, 1);
+      }
+    },
+
+    /**
+     * @param id
+     */
+    isSelected(id: string): boolean{
+      return this.selected.includes(id);
     }
   }
 });
@@ -157,10 +221,7 @@ export default defineComponent({
       <div class="datatable__toolbar">
         <div class="datatable__toolbar__buttons">
           <template v-for="button in buttons">
-            <v-btn v-if="button.action == 'add'" @click="dialog = true; dialogEditId = null; editData = {};">
-              {{ button.label }}
-            </v-btn>
-            <v-btn v-else>
+            <v-btn @click="buttonClick(button)" :disabled="isDisabled(button)">
               {{ button.label }}
             </v-btn>
           </template>
@@ -175,7 +236,8 @@ export default defineComponent({
           </thead>
           <tbody>
           <Row v-for="row in data" :row="row" :dragAndDropPages="dragAndDropPages" :headers="headers"
-               :settings="settings" @collapse="collapse" @edit="edit" :id="row.id" :level="0"/>
+               :selected="isSelected(row.id)" @toggle="toggle" :settings="settings" @collapse="collapse" @edit="edit"
+               :id="row.id" :level="0"/>
           </tbody>
         </table>
       </div>
@@ -228,17 +290,16 @@ export default defineComponent({
   }
 }
 
-.v-overlay
-{
-  .datatable{
+.v-overlay {
+  .datatable {
     border: 1px solid var(--color-background-shade3);
     border-radius: var(--border-radius);
 
-    tbody :deep(tr:last-child td:first-child){
+    tbody :deep(tr:last-child td:first-child) {
       border-bottom-left-radius: var(--border-radius);
     }
 
-    tbody :deep(tr:last-child td:last-child){
+    tbody :deep(tr:last-child td:last-child) {
       border-bottom-right-radius: var(--border-radius);
     }
   }
@@ -250,7 +311,7 @@ export default defineComponent({
 }
 
 body.transitioning {
-  table tbody :deep(tr){
+  table tbody :deep(tr) {
     transition: background-color var(--color-scheme-transition-speed);
   }
 }
