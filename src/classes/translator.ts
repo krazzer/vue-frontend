@@ -1,7 +1,7 @@
 export class Translator {
-    public strings = {};
+    public strings: any = {};
 
-    setStrings(strings) {
+    setStrings(strings: object) {
         this.strings = strings;
     }
 
