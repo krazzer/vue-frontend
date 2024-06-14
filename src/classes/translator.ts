@@ -5,7 +5,7 @@ export class Translator {
         this.strings = strings;
     }
 
-    tl(name: string, replaces: object) {
+    tl(name: string, replaces?: object) {
         let string = this.strings[name];
 
         if( ! replaces){

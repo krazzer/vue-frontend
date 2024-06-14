@@ -252,7 +252,7 @@ class DataTableMock {
     getPagesData() {
         let data = [
             {
-                id: '1', data: [1, 'Hoofdmenu', '', ''], type: 'menu', children: [
+                id: '1', data: [1, 'Hoofdmenu', '', ''], type: 'menu', max: 2, children: [
                     {id: '2', data: [1, {'label': 'Home', 'icons': ['lock']}, 'home', 'home']},
                     {id: '3', data: [2, 'About', 'default', 'about']},
                     {id: '4', data: [4, 'Prices', 'default', 'prices']},
@@ -267,7 +267,7 @@ class DataTableMock {
                 ]
             },
             {
-                id: '10', data: [10, 'Other pages', '', ''], type: 'menu', children: [
+                id: '10', data: [10, 'Other pages', '', ''], type: 'menu', max: 1, children: [
                     {id: '11', data: [11, 'Other page', 'default', 'other-page']},
                 ]
             },

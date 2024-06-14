@@ -1,18 +1,14 @@
 import DataTable from "@/components/datatable/DataTable.vue";
 
 class DragAndDropPages {
-    readonly HALF_TOP: number    = 0;
-    readonly HALF_BOTTOM: number = 1;
-
-    readonly THIRD_TOP: number    = 0;
-    readonly THIRD_MIDDLE: number = 1;
-    readonly THIRD_BOTTOM: number = 2;
+    readonly TOP: number    = 0;
+    readonly MIDDLE: number = 1;
+    readonly BOTTOM: number = 2;
 
     itemIdMouseDown: number | null;
     itemIdMouseOver: number | null;
     itemMouseOverRect: DOMRect | null;
-    draggedOverHalf: number | null;
-    draggedOverThird: number | null;
+    draggedOverPosition: number | null;
     pixelsRequiredForDrag: number = 3;
     movedEnoughToStart: boolean   = false;
     handleMouseUp: any;
@@ -74,7 +70,7 @@ class DragAndDropPages {
      * @param event
      */
     setMouseDown(id: number, event: MouseEvent) {
-        if(event.button !== 0){
+        if (event.button !== 0) {
             return;
         }
 
@@ -87,8 +83,8 @@ class DragAndDropPages {
     }
 
     setMouseUp() {
-        if(this.itemIdMouseOver !== this.itemIdMouseDown && this.isDragging()) {
-            this.DataTable.rearrange(this.itemIdMouseDown, this.itemIdMouseOver, this.draggedOverThird);
+        if (this.itemIdMouseOver !== this.itemIdMouseDown && this.isDragging()) {
+            this.DataTable.rearrange(this.itemIdMouseDown, this.itemIdMouseOver, this.draggedOverPosition);
         }
 
         this.itemIdMouseDown    = null;
@@ -118,24 +114,28 @@ class DragAndDropPages {
      * Trigged when hovering the page's element container (td) to determine where the mouse is
      * @param id
      * @param event
+     * @param max
+     * @param level
      */
-    mouseMoveContainer(id: number, event: MouseEvent) {
+    mouseMoveContainer(id: number, event: MouseEvent, max: number, level: number) {
         if (this.isDragging() && !this.isDragged(id) && this.itemMouseOverRect) {
             let height  = this.itemMouseOverRect.height;
             let clientY = event.clientY - this.itemMouseOverRect.y;
 
-            if(clientY < height / 2){
-                this.draggedOverHalf = this.HALF_TOP;
+            if (level >= max) {
+                if (clientY < height / 2) {
+                    this.draggedOverPosition = this.TOP;
+                } else {
+                    this.draggedOverPosition = this.BOTTOM;
+                }
             } else {
-                this.draggedOverHalf = this.HALF_BOTTOM;
-            }
-
-            if(clientY < height / 3){
-                this.draggedOverThird = this.THIRD_TOP;
-            } else if(clientY > height * (2/3)){
-                this.draggedOverThird = this.THIRD_BOTTOM;
-            } else {
-                this.draggedOverThird = this.THIRD_MIDDLE;
+                if (clientY < height / 3) {
+                    this.draggedOverPosition = this.TOP;
+                } else if (clientY > height * (2 / 3)) {
+                    this.draggedOverPosition = this.BOTTOM;
+                } else {
+                    this.draggedOverPosition = this.MIDDLE;
+                }
             }
         }
     }

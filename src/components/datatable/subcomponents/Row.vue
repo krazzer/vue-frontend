@@ -7,7 +7,7 @@ export default defineComponent({
   components: {Page, Svg},
   emits: ['collapse', 'edit', 'toggle'],
   name: "Row",
-  props: ['row', 'dragAndDropPages', 'headers', 'settings', 'id', 'level', 'selected', 'selectedIds'],
+  props: ['row', 'dragAndDropPages', 'headers', 'settings', 'id', 'level', 'selected', 'selectedIds', 'max'],
   data() {
     return {
       preventSelect: <boolean>false,
@@ -104,7 +104,7 @@ export default defineComponent({
   <tr @click="toggleRow" :class="getClasses()" @mousedown="mousedown($event)" @dblclick="$emit('edit', row.id, $event)">
     <td v-for="(cell, i) in row.data" :data-column="headers[i]" @mouseleave="dragAndDropPages.mouseLeave"
         @mouseenter="dragAndDropPages.mouseEnter(row.id, $event)"
-        @mousemove="dragAndDropPages.mouseMoveContainer(row.id, $event)">
+        @mousemove="dragAndDropPages.mouseMoveContainer(row.id, $event, max, level)">
       <template v-if="getCellType(i) == 'page'">
         <Page v-if="dragAndDropPages.itemIdMouseDown == row.id" :cell="cell" :cloned="true" :level="level"
               @startDrag="dragAndDropPages.setMouseDown(row.id, $event)" :x="dragAndDropPages.itemX"
@@ -125,7 +125,7 @@ export default defineComponent({
   </tr>
   <Row v-if="row.children && !row.collapse" :dragAndDropPages="dragAndDropPages" :headers="headers" :settings="settings"
        @edit="childEdit" :id="childRow.id" :row="childRow" v-for="childRow in row.children" @toggle="childToggle"
-       :level="level + 1" @collapse="childCollapse" :selected-ids="selectedIds" :selected="isSelected(childRow.id)" />
+       :level="level + 1" @collapse="childCollapse" :max="max" :selected-ids="selectedIds" :selected="isSelected(childRow.id)" />
 </template>
 
 <style lang="scss" scoped>

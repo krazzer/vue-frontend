@@ -243,7 +243,7 @@ export default defineComponent({
           <tbody>
           <Row v-for="row in data" :row="row" :dragAndDropPages="dragAndDropPages" :headers="headers"
                :selected="isSelected(row.id)" @toggle="toggle" :settings="settings" @collapse="collapse" @edit="edit"
-               :id="row.id" :level="0" :selectedIds="selected"/>
+               :id="row.id" :level="0" :selectedIds="selected" :max="row.max"/>
           </tbody>
         </table>
       </div>

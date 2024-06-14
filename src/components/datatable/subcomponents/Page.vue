@@ -38,11 +38,11 @@ export default defineComponent({
       let isHovering = this.dragAndDropPages.isHovering(this.id);
 
       if (isDragging && !isDragged && isHovering) {
-        if(this.dragAndDropPages.draggedOverThird == this.dragAndDropPages.THIRD_MIDDLE) {
+        if(this.dragAndDropPages.draggedOverPosition == this.dragAndDropPages.MIDDLE) {
           classes.push('hovering');
-        } else if(this.dragAndDropPages.draggedOverThird == this.dragAndDropPages.THIRD_TOP){
+        } else if(this.dragAndDropPages.draggedOverPosition == this.dragAndDropPages.TOP){
           classes.push('hovering-top');
-        } else if(this.dragAndDropPages.draggedOverThird == this.dragAndDropPages.THIRD_BOTTOM){
+        } else if(this.dragAndDropPages.draggedOverPosition == this.dragAndDropPages.BOTTOM){
           classes.push('hovering-bottom');
         }
       }
