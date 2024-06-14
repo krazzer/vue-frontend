@@ -284,17 +284,71 @@ class DataTableMock {
             instance: 'pages',
             class: 'pages',
             form: {
-                fields: [
+                tabs: [
                     {
-                        key: 'title',
-                        type: 'text',
-                        label: 'Title',
-                        validator: {name: 'presence', parameters: {}}
-                    }, {
-                        key: 'content',
-                        type: 'richtext',
-                        label: 'Content',
-                        validator: {name: 'presence', parameters: {}}
+                        key: 'page',
+                        name: 'Page',
+                        fields: [
+                            {
+                                key: 'title',
+                                type: 'text',
+                                label: 'Title',
+                                validator: {name: 'presence', parameters: {}}
+                            },
+                            {
+                                key: 'content',
+                                type: 'richtext',
+                                label: 'Content',
+                                validator: {name: 'presence', parameters: {}}
+                            },
+                        ],
+                    },
+                    {
+                        key: 'seo',
+                        name: 'SEO',
+                        fields: [
+                            {
+                                key: 'seo_title',
+                                type: 'text',
+                                label: 'SEO title',
+                            },
+                            {
+                                key: 'seo_keywords',
+                                type: 'textarea',
+                                label: 'SEO keywords',
+                            },
+                            {
+                                key: 'seo_description',
+                                type: 'textarea',
+                                label: 'SEO description',
+                            },
+                        ]
+                    },
+                    {
+                        key: 'advanced',
+                        name: 'Advanced',
+                        fields: [
+                            {
+                                key: 'template',
+                                type: 'select',
+                                label: 'Template',
+                            },
+                            {
+                                key: 'slug',
+                                type: 'text',
+                                label: 'Slug',
+                            },
+                            {
+                                key: 'key',
+                                type: 'text',
+                                label: 'Key',
+                            },
+                            {
+                                key: 'active',
+                                type: 'checkbox',
+                                label: 'Active',
+                            },
+                        ]
                     },
                 ],
             },
