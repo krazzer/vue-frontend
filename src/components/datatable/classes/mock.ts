@@ -275,8 +275,8 @@ class DataTableMock {
 
         return {
             buttons: [
-                {label: 'Add page', action: 'add'},
-                {label: 'Delete', action: 'delete'},
+                {label: 'Add page', action: 'add', icon: 'add'},
+                {label: 'Delete', action: 'delete', icon: 'delete'},
             ],
             headers: ['id', 'name', 'template', 'slug'],
             cells: {'name': {'type': 'page'}},

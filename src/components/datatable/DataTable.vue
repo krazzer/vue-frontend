@@ -228,7 +228,7 @@ export default defineComponent({
         <div class="datatable__toolbar__buttons">
           <template v-for="button in buttons">
             <v-btn @click="buttonClick(button)" :disabled="isDisabled(button)">
-              {{ button.label }}
+              <Svg v-if="button.icon" :svg="button.icon" />{{ button.label }}
             </v-btn>
           </template>
         </div>
@@ -264,6 +264,31 @@ export default defineComponent({
     &__buttons {
       display: flex;
       gap: 5px;
+
+      :deep(.icon--add){
+        top: 1px;
+      }
+
+      :deep(.icon--delete){
+        top: 1px;
+      }
+
+      :deep(svg){
+        width: 20px;
+        height: 20px;
+        margin-right: 5px;
+        fill: var(--color-text);
+
+        line{
+          stroke: var(--color-text);
+        }
+      }
+
+      .v-btn--disabled{
+        :deep(svg){
+          opacity: .3;
+        }
+      }
     }
   }
 

@@ -53,3 +53,9 @@ export default defineComponent({
   <span class="icon" v-if="isSvg()" v-html="svg"></span>
   <span class="icon" :class="'icon--' + svg" v-else v-html="icon"></span>
 </template>
+
+<style lang="scss" scoped>
+  .icon{
+    position: relative;
+  }
+</style>
