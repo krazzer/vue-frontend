@@ -119,6 +119,14 @@ export default defineComponent({
     fill: var(--color-text);
     float: left;
     margin-right: 5px;
+
+    :deep(svg){
+      fill: var(--color-text);
+
+      path{
+        fill: var(--color-text);
+      }
+    }
   }
 
   .icon--lock:deep(svg) {
