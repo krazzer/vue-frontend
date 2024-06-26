@@ -27,10 +27,11 @@ class HomeMock {
             }
 
             let paramsFor: any = {
-                'clients': {html: '', selectedMenuItem: '', dataTable: clientsDataTable},
-                'pages': {html: '', selectedMenuItem: '', dataTable: pagesDataTable},
-                '': {html: '', selectedMenuItem: '', dataTable: pagesDataTable},
-                'media': {html: '', selectedMenuItem: '', media: {files: mediaFiles}},
+                'clients': {dataTable: clientsDataTable},
+                'pages': {dataTable: pagesDataTable},
+                '': {dataTable: pagesDataTable},
+                'media': {media: {files: mediaFiles}},
+                'settings': {form: this.getSettingsForm()},
             };
 
             Object.keys(paramsFor).forEach(key => {
@@ -60,6 +61,45 @@ class HomeMock {
      */
     getModuleName(url: any) {
         return String(url).split('/').pop();
+    }
+
+    /**
+     * @returns object
+     */
+    getSettingsForm() {
+        return {
+            tabs: [
+                {
+                    key: 'general',
+                    name: 'General',
+                    fields: [
+                        {
+                            key: 'darkmode',
+                            type: 'select',
+                            options: {default: "System", light: "Light", dark: "Dark"},
+                            label: 'Darkmode',
+                        }
+                    ],
+                },
+                {
+                    key: 'advanced',
+                    name: 'Advanced',
+                    fields: [
+                        {
+                            key: 'field',
+                            type: 'text',
+                            label: 'Open field',
+                        },
+                        {
+                            key: 'field2',
+                            type: 'text',
+                            label: 'Another open field',
+                        },
+                    ]
+                },
+            ],
+            data: {}
+        };
     }
 
     mockHomeReply(mocker: MockAdapter) {

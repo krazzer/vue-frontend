@@ -2,7 +2,7 @@
 import {defineComponent} from "vue";
 import validator from "@/classes/validator";
 import Editor from '@tinymce/tinymce-vue';
-import Form from "@/components/datatable/subcomponents/Form.vue";
+import Form from "@/components/form/Form.vue";
 
 export default defineComponent({
   name: "EditDialog",
@@ -28,13 +28,14 @@ export default defineComponent({
 
     getForm() {
       let thisComponent: any = this;
-      return thisComponent.$refs.form;
+      return thisComponent.$refs.tabbedForm.$refs.form;
     },
   }
 });
 </script>
 <script lang="ts" setup>
 import {defineAsyncComponent} from "vue";
+import TabbedForm from "@/components/form/TabbedForm.vue";
 
 const DataTable = defineAsyncComponent(() => import('../DataTable.vue'));
 </script>
@@ -45,19 +46,7 @@ const DataTable = defineAsyncComponent(() => import('../DataTable.vue'));
         <v-card-title>
           <span class="text-h5">{{ dialogEditId ? 'Edit ' + dialogEditId : 'Add' }}</span>
         </v-card-title>
-        <v-tabs v-if="form.tabs" v-model="tab">
-          <v-tab v-for="tab in form.tabs" :value="tab.key">{{ tab.name }}</v-tab>
-        </v-tabs>
-        <v-card-text>
-          <v-form ref="form" v-on:submit.prevent v-on:submit="clickSave">
-            <v-tabs-window v-if="form.tabs" v-model="tab">
-              <v-tabs-window-item v-for="tab in form.tabs" :value="tab.key">
-                <Form :fields="tab.fields" :data="data" :darkMode="darkMode" />
-              </v-tabs-window-item>
-            </v-tabs-window>
-            <Form v-else :fields="form.fields" :data="data" :darkMode="darkMode" />
-          </v-form>
-        </v-card-text>
+        <TabbedForm ref="tabbedForm" :form="form" :data="data" @submit="clickSave" :darkMode="darkMode" />
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue-darken-1" variant="text" @click="$emit('clickClose')">Close</v-btn>
@@ -71,5 +60,13 @@ const DataTable = defineAsyncComponent(() => import('../DataTable.vue'));
 <style scoped lang="scss">
 .v-card {
   transition-duration: var(--color-scheme-transition-speed);
+}
+
+:deep(.v-card-actions){
+  padding: 24px;
+}
+
+:deep(form){
+  padding: 24px;
 }
 </style>

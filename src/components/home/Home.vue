@@ -5,9 +5,11 @@ import Logo from "@/components/icons/Logo.vue";
 import Menu from "@/components/menu/Menu.vue";
 import DataTable from "@/components/datatable/DataTable.vue";
 import Media from "@/components/media/Media.vue";
+import Form from "@/components/form/Form.vue";
+import TabbedForm from "@/components/form/TabbedForm.vue";
 
 export default defineComponent({
-  components: {Logo, Menu, DataTable, Media},
+  components: {TabbedForm, Logo, Menu, DataTable, Media, Form},
   props: ['darkMode'],
   watch: {
     $route() {
@@ -21,6 +23,7 @@ export default defineComponent({
   data() {
     return {
       menu: {},
+      form: <any>{},
       dataTable: <any>{},
       media: {},
       selectedMenuItem: '',
@@ -105,6 +108,7 @@ export default defineComponent({
       this.dataTable = data.dataTable;
       this.media     = data.media;
       this.component = data.component;
+      this.form      = data.form;
     },
 
     toggleMenu() {
@@ -138,7 +142,8 @@ export default defineComponent({
       </div>
       <span v-if="html" v-html="html"></span>
       <Media v-if="media && Object.keys(media).length" :settings="media"/>
-      <DataTable v-if="dataTable" :settings="dataTable" :instance="dataTable.instance" :darkMode="darkMode" />
+      <DataTable v-if="dataTable" :settings="dataTable" :instance="dataTable.instance" :darkMode="darkMode"/>
+      <TabbedForm v-if="form" :form="form" :data="form.data" @submit=""/>
     </div>
   </div>
 </template>
@@ -249,5 +254,5 @@ $mainPadding: 40px;
 
 :deep(.tox-tinymce-aux){
     z-index: 2500;
-};
+}
 </style>
