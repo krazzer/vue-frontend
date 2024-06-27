@@ -259,7 +259,7 @@ export default defineComponent({
 .datatable {
 
   &__toolbar {
-    margin-bottom: 50px;
+    margin-bottom: $spaceLogoMenu;
 
     &__buttons {
       display: flex;

@@ -150,6 +150,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 @import "@/assets/media-query-sizes.scss";
+@import "@/assets/base.scss";
 
 $sideBarWidth: 250px;
 $mainPadding: 40px;
@@ -184,9 +185,10 @@ $mainPadding: 40px;
   z-index: 1;
   transition: background-color var(--color-scheme-transition-speed), margin-left .3s;
 
+  // logo height = 39px
   &__logo {
-    margin-top: -3px;
-    margin-bottom: $mainPadding + 3px;
+    margin-top: -4px;
+    margin-bottom: $spaceLogoMenu - 5px;
   }
 
   &__menu {
@@ -207,6 +209,10 @@ $mainPadding: 40px;
 
   @media (max-width: $screen-sm-max) {
     padding-left: $mainPadding;
+  }
+
+  > :deep(.v-tabs){
+    margin-bottom: $spaceLogoMenu - $spaceExtraTab;
   }
 }
 

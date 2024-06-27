@@ -119,4 +119,11 @@ body, :host > .datatable{
         box-sizing: border-box;
         font-weight: normal;
     }
+
+    .v-card-title{
+        padding: 24px;
+    }
 }
+
+$spaceLogoMenu: 50px;
+$spaceExtraTab: 12px; // tab is 12px higher than button
