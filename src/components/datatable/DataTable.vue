@@ -227,8 +227,8 @@ export default defineComponent({
       <div class="datatable__toolbar">
         <div class="datatable__toolbar__buttons">
           <template v-for="button in buttons">
-            <v-btn @click="buttonClick(button)" :disabled="isDisabled(button)">
-              <Svg v-if="button.icon" :svg="button.icon" />{{ button.label }}
+            <v-btn @click="buttonClick(button)" :disabled="isDisabled(button)" :prepend-icon="button.icon">
+              {{ button.label }}
             </v-btn>
           </template>
         </div>

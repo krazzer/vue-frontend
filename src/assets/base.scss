@@ -122,6 +122,11 @@ body, :host > .datatable{
 
     .v-card-title{
         padding: 24px;
+
+        &:has(+ .v-tabs){
+            padding-top: 19px;
+            padding-bottom: 19px;
+        }
     }
 }
 

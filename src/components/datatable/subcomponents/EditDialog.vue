@@ -49,8 +49,8 @@ const DataTable = defineAsyncComponent(() => import('../DataTable.vue'));
         <TabbedForm ref="tabbedForm" :form="form" :data="data" @submit="clickSave" :darkMode="darkMode" />
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue-darken-1" variant="text" @click="$emit('clickClose')">Close</v-btn>
-          <v-btn color="blue-darken-1" variant="text" @click="clickSave">Save</v-btn>
+          <v-btn variant="tonal" @click="$emit('clickClose')" prepend-icon="mdi-close">Close</v-btn>
+          <v-btn variant="tonal" @click="clickSave" prepend-icon="mdi-content-save">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -62,11 +62,8 @@ const DataTable = defineAsyncComponent(() => import('../DataTable.vue'));
   transition-duration: var(--color-scheme-transition-speed);
 }
 
-:deep(.v-card-actions){
-  padding: 24px;
-}
-
-:deep(form){
+.v-card-actions{
+  margin-top: auto;
   padding: 24px;
 }
 </style>

@@ -28,3 +28,9 @@ export default defineComponent({
     <Form v-else :fields="form.fields" :data="data" :darkMode="darkMode"/>
   </v-form>
 </template>
+
+<style scoped lang="scss">
+  .v-dialog form{
+    padding: 24px;
+  }
+</style>
