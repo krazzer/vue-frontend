@@ -17,34 +17,13 @@ export default defineComponent({
   },
   watch: {
     'data.darkmode'(val) {
-      switch (val){
-        case 'light':
-          this.$darkMode.value = false;
-        break;
-        case 'dark':
-          this.$darkMode.value = true;
-          break;
-        default:
-          this.$darkMode.value = null;
-          break;
-      }
-
+      this.$darkMode.value = val;
       localStorage.darkMode = JSON.stringify(this.$darkMode.value);
     }
   },
   mounted(){
     if(this.hasDarkModeField()) {
-      switch (this.$darkMode.value) {
-        case true:
-          this.data.darkmode = 'dark';
-          break;
-        case false:
-          this.data.darkmode = 'light';
-          break;
-        default:
-          this.data.darkmode = 'default';
-          break;
-      }
+      this.data.darkmode = this.$darkMode.value;
     }
   },
   methods: {
@@ -80,7 +59,6 @@ export default defineComponent({
 </script>
 <script lang="ts" setup>
 import {defineAsyncComponent} from "vue";
-
 const DataTable = defineAsyncComponent(() => import('../datatable/DataTable.vue'));
 </script>
 

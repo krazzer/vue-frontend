@@ -28,11 +28,11 @@ export default {
     this.colorSchemeQueryList.addEventListener('change', this.setColorScheme);
   },
   watch: {
-    '$darkMode.value'(val){
-      if(val === null){
-        this.setColorScheme(this.colorSchemeQueryList);
+    '$darkMode.value'(){
+      if(this.$darkMode.value === this.$darkMode.DEFAULT){
+        this.setColorScheme(this.colorSchemeQueryList)
       } else {
-        this.darkMode = val;
+        this.darkMode = this.$darkMode.getDarkMode();
       }
     },
     darkMode() {
@@ -51,7 +51,7 @@ export default {
     },
 
     setColorScheme(e: Event | MediaQueryList) {
-      if(this.$darkMode.value !== null){
+      if(this.$darkMode.value != this.$darkMode.DEFAULT){
         return;
       }
 

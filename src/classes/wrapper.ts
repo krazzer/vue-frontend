@@ -3,7 +3,7 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import type {Component} from "vue";
 import {Mocker} from "@/classes/mocker";
-import {defineCustomElement, ref} from "vue";
+import {defineCustomElement, reactive} from "vue";
 import DataTable from "@/components/datatable/DataTable.vue";
 import '@mdi/font/css/materialdesignicons.css'
 
@@ -13,6 +13,7 @@ import {createVuetify} from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import {Translator} from "@/classes/translator";
+import {DarkModeSetting} from "@/classes/DarkModeSetting";
 
 class Wrapper {
     getApp(Component: Component) {
@@ -21,8 +22,8 @@ class Wrapper {
         const app = Vue.createApp(Component).use(vuetify);
 
         app.config.globalProperties.$assets = 'src/assets/';
-        app.config.globalProperties.$translator = new Translator();
-        app.config.globalProperties.$darkMode = ref(null);
+        app.config.globalProperties.$translator = new Translator;
+        app.config.globalProperties.$darkMode = reactive(new DarkModeSetting);
 
         if (import.meta.env.DEV) {
             new Mocker().mock();
