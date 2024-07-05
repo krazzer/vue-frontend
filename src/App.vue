@@ -1,12 +1,14 @@
-<script>
-import DarkModeToggle from "@/components/DarkModeToggle.vue";
+<script lang="ts">
 import axios from "axios";
+import { useTheme } from 'vuetify'
 
-export default{
-  components: {DarkModeToggle},
+export default {
+  components: {},
   data() {
     return {
-      darkMode: null,
+      colorSchemeQueryList: <MediaQueryList> window.matchMedia('(prefers-color-scheme: dark)'),
+      darkMode: true,
+      theme: useTheme(),
     };
   },
   mounted() {
@@ -16,13 +18,28 @@ export default{
       });
     });
 
+    if (localStorage.darkMode) {
+      this.$darkMode.value = JSON.parse(localStorage.darkMode);
+    }
+
     this.loadTranslations();
+    this.setMode(false);
+
+    this.colorSchemeQueryList.addEventListener('change', this.setColorScheme);
+  },
+  watch: {
+    '$darkMode.value'(val){
+      if(val === null){
+        this.setColorScheme(this.colorSchemeQueryList);
+      } else {
+        this.darkMode = val;
+      }
+    },
+    darkMode() {
+      this.setMode(true);
+    },
   },
   methods: {
-    setDarkMode(val){
-      this.darkMode = val;
-    },
-
     async loadTranslations() {
       await axios
           .get('/api/translations', {params: {}})
@@ -31,15 +48,43 @@ export default{
           }).catch(error => {
             alert(error);
           });
+    },
+
+    setColorScheme(e: Event | MediaQueryList) {
+      if(this.$darkMode.value !== null){
+        return;
+      }
+
+      if ("matches" in e) {
+        this.darkMode = e.matches;
+      }
+    },
+
+    /**
+     * @param transition
+     */
+    setMode(transition: boolean){
+      let body = document.body;
+      let globalTheme: any = this.theme.global;
+
+      globalTheme.name = this.darkMode ? 'dark' : 'light';
+
+      if(transition) {
+        body.classList.add('transitioning');
+        body.addEventListener('transitionend', () => {
+          body.classList.remove('transitioning');
+        });
+      }
+
+      body.classList.toggle('darkmode', this.darkMode);
     }
   }
 }
 </script>
 
 <template>
-  <DarkModeToggle @change="setDarkMode" />
   <RouterView v-slot="{ Component }">
-    <component :is="Component" :darkMode="darkMode" />
+    <component :is="Component" :darkMode="darkMode"/>
   </RouterView>
 </template>
 
@@ -47,16 +92,16 @@ export default{
 @import "assets/base.scss";
 @import "assets/formkit.scss";
 
-html, body{
+html, body {
   height: 100%;
 }
 
 body {
-  .tox-tinymce-aux{
+  .tox-tinymce-aux {
     z-index: 2500;
   }
 
-  .tox .tox-edit-area__iframe{
+  .tox .tox-edit-area__iframe {
     background-color: transparent;
   }
 }

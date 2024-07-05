@@ -10,6 +10,7 @@ declare module '@vue/runtime-core' {
         $mocker: MockAdapter,
         $assets: string,
         $translator: Translator,
+        $darkMode: any,
     }
 }
 

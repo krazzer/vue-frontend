@@ -3,7 +3,7 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import type {Component} from "vue";
 import {Mocker} from "@/classes/mocker";
-import {defineCustomElement} from "vue";
+import {defineCustomElement, ref} from "vue";
 import DataTable from "@/components/datatable/DataTable.vue";
 import '@mdi/font/css/materialdesignicons.css'
 
@@ -22,6 +22,7 @@ class Wrapper {
 
         app.config.globalProperties.$assets = 'src/assets/';
         app.config.globalProperties.$translator = new Translator();
+        app.config.globalProperties.$darkMode = ref(null);
 
         if (import.meta.env.DEV) {
             new Mocker().mock();

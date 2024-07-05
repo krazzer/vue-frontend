@@ -2,6 +2,7 @@
 import {defineComponent} from 'vue'
 import validator from "@/classes/validator";
 import Editor from "@tinymce/tinymce-vue";
+import {useTheme} from "vuetify";
 
 export default defineComponent({
   name: "Form",
@@ -9,8 +10,42 @@ export default defineComponent({
   components: {Editor},
   data() {
     return {
+      darkModeSelect: null,
       validator: validator,
+      theme: useTheme()
     };
+  },
+  watch: {
+    'data.darkmode'(val) {
+      switch (val){
+        case 'light':
+          this.$darkMode.value = false;
+        break;
+        case 'dark':
+          this.$darkMode.value = true;
+          break;
+        default:
+          this.$darkMode.value = null;
+          break;
+      }
+
+      localStorage.darkMode = JSON.stringify(this.$darkMode.value);
+    }
+  },
+  mounted(){
+    if(this.hasDarkModeField()) {
+      switch (this.$darkMode.value) {
+        case true:
+          this.data.darkmode = 'dark';
+          break;
+        case false:
+          this.data.darkmode = 'light';
+          break;
+        default:
+          this.data.darkmode = 'default';
+          break;
+      }
+    }
   },
   methods: {
     initTinyMCE() {
@@ -23,6 +58,22 @@ export default defineComponent({
 
     tinyMCEApiKey() {
       return import.meta.env.VITE_TINYMCE_API_KEY;
+    },
+
+    hasDarkModeField(): boolean{
+      if( ! this.fields) {
+        return false;
+      }
+
+      let returnValue = false;
+
+      this.fields.forEach((field: any) => {
+        if(field.key === 'darkmode'){
+          returnValue = true;
+        }
+      });
+
+      return returnValue;
     }
   }
 })

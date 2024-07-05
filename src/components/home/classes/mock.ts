@@ -76,8 +76,13 @@ class HomeMock {
                         {
                             key: 'darkmode',
                             type: 'select',
-                            options: {default: "System", light: "Light", dark: "Dark"},
+                            items: [
+                                {key: 'default', value: 'System'},
+                                {key: 'light', value: 'Light'},
+                                {key: 'dark', value: 'Dark'},
+                            ],
                             label: 'Darkmode',
+                            ref: 'darkModeSelect',
                         }
                     ],
                 },
