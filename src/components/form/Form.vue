@@ -68,7 +68,7 @@ export default defineComponent({
       let returnValue = false;
 
       this.fields.forEach((field: any) => {
-        if(field.key === 'darkmode'){
+        if(field.special === 'darkModeSelect'){
           returnValue = true;
         }
       });

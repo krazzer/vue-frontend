@@ -82,7 +82,7 @@ class HomeMock {
                                 {key: 'dark', value: 'Dark'},
                             ],
                             label: 'Darkmode',
-                            ref: 'darkModeSelect',
+                            special: 'darkModeSelect',
                         }
                     ],
                 },
