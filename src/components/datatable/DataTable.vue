@@ -82,6 +82,7 @@ export default defineComponent({
         this.dialog       = true;
         this.dialogEditId = null;
         this.editData     = {};
+        this.resetForm();
       }
 
       if (button.action == 'delete') {
@@ -146,6 +147,8 @@ export default defineComponent({
             this.dialog       = true;
             this.dialogEditId = id;
             this.editData     = response.data;
+
+            this.resetForm();
           }).catch(error => {
             this.error = error;
           });
@@ -180,6 +183,11 @@ export default defineComponent({
           });
     },
 
+    resetForm() {
+      let thisComp: any = this;
+      thisComp.$refs.editDialog.$refs.tabbedForm.$refs.form.reset();
+    },
+
     /**
      * @param id
      * @param collapsed
@@ -209,7 +217,7 @@ export default defineComponent({
     /**
      * @param id
      */
-    isSelected(id: string): boolean{
+    isSelected(id: string): boolean {
       return this.selected.includes(id);
     }
   }
@@ -250,7 +258,7 @@ export default defineComponent({
     </template>
   </div>
   <EditDialog :dialog="dialog" :dialogEditId="dialogEditId" :form="form ?? {}" @clickClose="dialog = false"
-              @clickSave="save" :data="editData" :darkMode="darkMode"/>
+              @clickSave="save" :data="editData" :darkMode="darkMode" ref="editDialog"/>
 </template>
 
 <style lang="scss" scoped>
@@ -265,27 +273,27 @@ export default defineComponent({
       display: flex;
       gap: 5px;
 
-      :deep(.icon--add){
+      :deep(.icon--add) {
         top: 1px;
       }
 
-      :deep(.icon--delete){
+      :deep(.icon--delete) {
         top: 1px;
       }
 
-      :deep(svg){
+      :deep(svg) {
         width: 20px;
         height: 20px;
         margin-right: 5px;
         fill: var(--color-text);
 
-        line{
+        line {
           stroke: var(--color-text);
         }
       }
 
-      .v-btn--disabled{
-        :deep(svg){
+      .v-btn--disabled {
+        :deep(svg) {
           opacity: .3;
         }
       }
