@@ -30,8 +30,8 @@ export default defineComponent({
     initTinyMCE() {
       return {
         plugins: 'lists link image table code help wordcount',
-        skin_url: this.darkMode ? '/cms/tinymceskin' : '',
-        content_css: this.darkMode ? "/cms/tinymceskin/editor.min.css" : "",
+        skin_url: this.darkMode ? '/cms/tinymceskin' : null,
+        content_css: this.darkMode ? "/cms/tinymceskin/editor.min.css" : null,
       };
     },
 
