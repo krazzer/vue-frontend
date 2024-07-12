@@ -12,17 +12,27 @@ export default defineComponent({
     return {
       darkModeSelect: null,
       validator: validator,
-      theme: useTheme()
+      theme: useTheme(),
+      fieldComponents: <any>{
+        text: 'v-text-field',
+        textarea: 'v-textarea',
+        richtext: 'Editor',
+        password: 'v-text-field',
+        select: 'v-select',
+        autocomplete: 'v-autocomplete',
+        checkbox: 'v-checkbox',
+        datatable: 'DataTable',
+      },
     };
   },
   watch: {
     'data.darkmode'(val) {
-      this.$darkMode.value = val;
+      this.$darkMode.value  = val;
       localStorage.darkMode = JSON.stringify(this.$darkMode.value);
     }
   },
-  mounted(){
-    if(this.hasDarkModeField()) {
+  mounted() {
+    if (this.hasDarkModeField()) {
       this.data.darkmode = this.$darkMode.value;
     }
   },
@@ -39,54 +49,70 @@ export default defineComponent({
       return import.meta.env.VITE_TINYMCE_API_KEY;
     },
 
-    hasDarkModeField(): boolean{
-      if( ! this.fields) {
+    hasDarkModeField(): boolean {
+      if (!this.fields) {
         return false;
       }
 
       let returnValue = false;
 
       this.fields.forEach((field: any) => {
-        if(field.special === 'darkModeSelect'){
+        if (field.special === 'darkModeSelect') {
           returnValue = true;
         }
       });
 
       return returnValue;
+    },
+    getFieldProperties(field: any): any {
+      let fieldProps: any = {
+        label: field.label,
+        hint: field.hint,
+        validateOn: 'blur',
+        rules: field.validator ? validator.get(field.validator.name, field.validator.parameters) : [],
+        value: this.data[field.key],
+        hideDetails: 'auto',
+      };
+
+      if (field.type == 'richtext') {
+        fieldProps.init   = this.initTinyMCE();
+        fieldProps.apiKey = this.tinyMCEApiKey();
+      }
+
+      if (field.type == 'password') {
+        fieldProps.autocomplete = 'new-password';
+      }
+
+      if (field.type == 'autocomplete') {
+        fieldProps.multiple = field.multiple;
+      }
+
+      if (['select', 'autocomplete'].includes(field.type)) {
+        fieldProps.itemValue = "key";
+        fieldProps.itemTitle = "value";
+        fieldProps.items     = field.items;
+      }
+
+      return fieldProps;
     }
   }
 })
 </script>
 <script lang="ts" setup>
 import {defineAsyncComponent} from "vue";
+
 const DataTable = defineAsyncComponent(() => import('../datatable/DataTable.vue'));
 </script>
 
 <template>
-    <v-row>
-      <v-col v-for="field in fields ?? {}" cols="12" :md="field.size ? field.size.md : 0"
-             :sm="field.size ? field.size.sm : 0">
-        <v-text-field v-if="field.type == 'text'" :label="field.label" :hint="field.hint" required validate-on="blur"
-                      :rules="field.validator ? validator.get(field.validator.name, field.validator.parameters) : []"
-                      :value="data[field.key]" v-model="data[field.key]" hide-details="auto"/>
-        <v-textarea v-if="field.type == 'textarea'" :label="field.label" :hint="field.hint" required validate-on="blur"
-                    :rules="field.validator ? validator.get(field.validator.name, field.validator.parameters) : []"
-                    :value="data[field.key]" v-model="data[field.key]" hide-details="auto"/>
-        <Editor v-if="field.type == 'richtext'" :api-key="tinyMCEApiKey()" v-model="data[field.key]"
-                :init="initTinyMCE()" :initial-value="data[field.key]"/>
-        <v-text-field v-if="field.type == 'password'" type="password" :label="field.label" required hide-details="auto"
-                      :value="data[field.key]" v-model="data[field.key]" autocomplete="new-password"/>
-        <v-select v-if="field.type == 'select'" item-value="key" item-title="value" :items="field.items"
-                  :label="field.label" required :value="data[field.key]" v-model="data[field.key]" hide-details="auto"/>
-        <v-autocomplete v-if="field.type == 'autocomplete'" item-value="key" item-title="value"
-                        :items="field.items" :label="field.label" required :multiple="field.multiple"
-                        :value="data[field.key]" v-model="data[field.key]" hide-details="auto"/>
-        <v-checkbox v-if="field.type == 'checkbox'" :label="field.label" :hint="field.hint" required validate-on="blur"
-                    :rules="field.validator ? validator.get(field.validator.name, field.validator.parameters) : []"
-                    :value="data[field.key]" v-model="data[field.key]" hide-details="auto"/>
-        <DataTable v-if="field.type == 'datatable'" :instance="field.instance"/>
-      </v-col>
-    </v-row>
+  <v-row>
+    <v-col v-for="field in fields ?? {}" cols="12" :md="field.size ? field.size.md : 0"
+           :sm="field.size ? field.size.sm : 0">
+
+      <DataTable v-if="field.type == 'datatable'" :instance="field.instance"/>
+      <component v-else :is="fieldComponents[field.type]" v-bind="getFieldProperties(field)" v-model="data[field.key]"/>
+    </v-col>
+  </v-row>
 </template>
 
 <style scoped lang="scss">
