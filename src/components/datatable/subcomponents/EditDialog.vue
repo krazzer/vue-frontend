@@ -11,6 +11,7 @@ export default defineComponent({
   data() {
     return {
       validator: validator,
+      checkTabErrors: false,
       tab: null,
     };
   },
@@ -20,16 +21,26 @@ export default defineComponent({
 
       if (isValid.valid) {
         this.$emit('clickSave', this.dialogEditId, this.data);
+      } else {
+        this.checkTabErrors = true;
       }
     },
     reset() {
-      this.getForm().reset()
+      this.getForm().reset();
+      this.checkTabErrors = false;
     },
 
     getForm() {
       let thisComponent: any = this;
       return thisComponent.$refs.tabbedForm.$refs.form;
     },
+  },
+  watch: {
+    dialog(){
+      if( ! this.dialog){
+        this.checkTabErrors = false;
+      }
+    }
   }
 });
 </script>
@@ -46,7 +57,8 @@ const DataTable = defineAsyncComponent(() => import('../DataTable.vue'));
         <v-card-title>
           <span class="text-h5">{{ dialogEditId ? 'Edit ' + dialogEditId : 'Add' }}</span>
         </v-card-title>
-        <TabbedForm ref="tabbedForm" :form="form" :data="data" @submit="clickSave" :darkMode="darkMode" />
+        <TabbedForm ref="tabbedForm" :form="form" :data="data" @submit="clickSave" :darkMode="darkMode"
+                    :checkTabErrors="checkTabErrors" />
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn variant="tonal" @click="$emit('clickClose')" prepend-icon="mdi-close">Close</v-btn>

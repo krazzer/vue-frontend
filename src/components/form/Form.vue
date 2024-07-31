@@ -6,10 +6,12 @@ import {useTheme} from "vuetify";
 
 export default defineComponent({
   name: "Form",
-  props: ['fields', 'data', 'darkMode'],
+  props: ['fields', 'data', 'darkMode', 'checkErrors', 'tab'],
+  emits: ['fieldError'],
   components: {Editor},
   data() {
     return {
+      fieldRefs: <any>[],
       darkModeSelect: null,
       validator: validator,
       theme: useTheme(),
@@ -29,6 +31,28 @@ export default defineComponent({
     'data.darkmode'(val) {
       this.$darkMode.value  = val;
       localStorage.darkMode = JSON.stringify(this.$darkMode.value);
+    },
+    async checkErrors () {
+      if (!this.checkErrors){
+        this.$emit('fieldError', this.tab, false);
+        return;
+      }
+
+      const fields = this.$refs.fieldRefs as any || [];
+
+      let hasError = false;
+
+      for (const field of fields) {
+        if (typeof field.validate === 'function') {
+          if (await this.fieldHasError(field)) {
+            hasError = true;
+          }
+        }
+      }
+
+      if(hasError){
+        this.$emit('fieldError', this.tab, true);
+      }
     }
   },
   mounted() {
@@ -37,6 +61,12 @@ export default defineComponent({
     }
   },
   methods: {
+    async fieldHasError(field: any){
+      let validation = await field.validate();
+
+      return validation.length > 0;
+    },
+
     initTinyMCE() {
       return {
         plugins: 'lists link image table code help wordcount',
@@ -110,7 +140,8 @@ const DataTable = defineAsyncComponent(() => import('../datatable/DataTable.vue'
            :sm="field.size ? field.size.sm : 0">
 
       <DataTable v-if="field.type == 'datatable'" :instance="field.instance"/>
-      <component v-else :is="fieldComponents[field.type]" v-bind="getFieldProperties(field)" v-model="data[field.key]"/>
+      <component v-else :is="fieldComponents[field.type]" v-bind="getFieldProperties(field)" v-model="data[field.key]"
+                 ref="fieldRefs"/>
     </v-col>
   </v-row>
 </template>
