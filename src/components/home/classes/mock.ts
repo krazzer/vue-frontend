@@ -10,6 +10,7 @@ class HomeMock {
 
         let clientsDataTable = dataTableMock.getDefaultData();
         let pagesDataTable   = dataTableMock.getPagesData();
+        let contentDataTable   = dataTableMock.getContentData();
 
         let mediaFiles = [
             {name: 'Folder', isDir: true}, {name: 'Folder', isDir: true}, {name: 'Folder', isDir: true},
@@ -29,6 +30,7 @@ class HomeMock {
             let paramsFor: any = {
                 'clients': {dataTable: clientsDataTable},
                 'pages': {dataTable: pagesDataTable},
+                'content': {dataTable: contentDataTable},
                 '': {dataTable: pagesDataTable},
                 'media': {media: {files: mediaFiles}},
                 'settings': {form: this.getSettingsForm()},
@@ -142,6 +144,7 @@ class HomeMock {
                 },
                 visitors: {label: "Visitors", icon: 'stats'},
                 users: {label: "Users", icon: 'users'},
+                content: {label: "Content", icon: 'pages'},
                 settings: {label: "Settings"},
             },
             html: 'pages',

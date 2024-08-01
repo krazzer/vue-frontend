@@ -230,12 +230,42 @@ class DataTableMock {
         });
     }
 
+    getContentData(){
+        return {
+            buttons: [{label: 'Add content', action: 'add'}, {label: 'Delete', action: 'delete'}],
+            headers: ['id', 'name', 'content'],
+            form: {
+                fields: [
+                    {
+                        key: 'name',
+                        type: 'text',
+                        label: 'Name',
+                        validator: {name: 'presence', parameters: {}}
+                    },
+                    {
+                        key: 'content',
+                        type: 'richtext',
+                        label: 'Content',
+                        validator: {name: 'presence', parameters: {}}
+                    },
+                ],
+            },
+            data: [
+                {id: 'a1', data: ['content1', 'Peter', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas libero ante, feugiat at nibh at, convallis volutpat nunc. Etiam elit massa, luctus at diam a, accumsan volutpat mauris. Nulla facilisi. Phasellus molestie dignissim enim viverra malesuada. Maecenas ultricies imperdiet consequat. Nulla laoreet vitae arcu id mattis. Aliquam commodo nulla ex, at sodales ante bibendum eget. Pellentesque lorem elit, dictum ut lectus et, fringilla dapibus enim.']},
+                {id: 'a2', data: ['content2', 'John', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas libero ante, feugiat at nibh at, convallis volutpat nunc. Etiam elit massa, luctus at diam a, accumsan volutpat mauris. Nulla facilisi. Phasellus molestie dignissim enim viverra malesuada. Maecenas ultricies imperdiet consequat. Nulla laoreet vitae arcu id mattis. Aliquam commodo nulla ex, at sodales ante bibendum eget. Pellentesque lorem elit, dictum ut lectus et, fringilla dapibus enim.']},
+            ],
+            instance: 'content',
+        };
+    }
+
     getDataForInstance(instance: string): any {
         switch (instance) {
             case 'hobbies':
                 return this.getSubDataTableData();
             case 'clients':
                 return this.getDefaultData();
+            case 'content':
+                return this.getContentData();
             case 'pages':
                 return this.getPagesData();
         }
@@ -297,7 +327,7 @@ class DataTableMock {
                             },
                             {
                                 key: 'content',
-                                type: 'richtext',
+                                type: 'textarea',
                                 label: 'Content',
                                 validator: {name: 'presence', parameters: {}}
                             },
