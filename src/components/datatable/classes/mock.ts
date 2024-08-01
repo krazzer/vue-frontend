@@ -251,8 +251,8 @@ class DataTableMock {
                 ],
             },
             data: [
-                {id: 'a1', data: ['content1', 'Peter', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas libero ante, feugiat at nibh at, convallis volutpat nunc. Etiam elit massa, luctus at diam a, accumsan volutpat mauris. Nulla facilisi. Phasellus molestie dignissim enim viverra malesuada. Maecenas ultricies imperdiet consequat. Nulla laoreet vitae arcu id mattis. Aliquam commodo nulla ex, at sodales ante bibendum eget. Pellentesque lorem elit, dictum ut lectus et, fringilla dapibus enim.']},
-                {id: 'a2', data: ['content2', 'John', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas libero ante, feugiat at nibh at, convallis volutpat nunc. Etiam elit massa, luctus at diam a, accumsan volutpat mauris. Nulla facilisi. Phasellus molestie dignissim enim viverra malesuada. Maecenas ultricies imperdiet consequat. Nulla laoreet vitae arcu id mattis. Aliquam commodo nulla ex, at sodales ante bibendum eget. Pellentesque lorem elit, dictum ut lectus et, fringilla dapibus enim.']},
+                {id: 'a1', data: ['content1', 'Peter', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas libero an...']},
+                {id: 'a2', data: ['content2', 'John', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas libero an...']},
             ],
             instance: 'content',
         };

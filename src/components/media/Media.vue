@@ -7,7 +7,7 @@ export default defineComponent({
     return {
       files: <any>[],
       isSelecting: false,
-      selectedFile: null
+      selectedFiles: <any>[]
     };
   },
   mounted() {
@@ -23,6 +23,16 @@ export default defineComponent({
     onFileChanged(e: any) {
       console.log(e.target.files);
     },
+    selectFile(id: number) {
+      this.selectedFiles = [id];
+    },
+    getFileClasses(id: number){
+      if(this.selectedFiles.includes(id)){
+        return ['selected'];
+      }
+
+      return [];
+    }
   }
 });
 </script>
@@ -34,9 +44,9 @@ export default defineComponent({
       <input ref="uploader" class="d-none" type="file" multiple @change="onFileChanged"/>
     </div>
     <div class="media__files">
-      <div class="media__file" v-for="file in files">
+      <div class="media__file" v-for="file in files" @click="selectFile(file.id)" :class="getFileClasses(file.id)">
         <div class="icon"></div>
-        <div class="name">{{ file.name }}</div>
+        <div class="name"><span>{{ file.name }}</span></div>
       </div>
     </div>
   </div>
@@ -57,18 +67,30 @@ export default defineComponent({
 
   &__file {
     float: left;
-    padding: 5px;
+    padding: 10px;
     height: 160px;
 
     .icon {
       width: 120px;
       height: 120px;
       background: url("@/assets/icons/map.svg") no-repeat center;
-      background-size: 80px 80px;
+      background-size: 90px 90px;
+      border-radius: var(--border-radius);
     }
 
     .name {
       text-align: center;
+    }
+
+    &.selected{
+      .icon{
+        background-color: var(--color-background-shade3);
+      }
+
+      .name span {
+        background-color: var(--color-action);
+        color: var(--color-white);
+      }
     }
   }
 

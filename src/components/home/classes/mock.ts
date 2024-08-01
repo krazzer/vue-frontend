@@ -10,13 +10,15 @@ class HomeMock {
 
         let clientsDataTable = dataTableMock.getDefaultData();
         let pagesDataTable   = dataTableMock.getPagesData();
-        let contentDataTable   = dataTableMock.getContentData();
+        let contentDataTable = dataTableMock.getContentData();
 
         let mediaFiles = [
-            {name: 'Folder', isDir: true}, {name: 'Folder', isDir: true}, {name: 'Folder', isDir: true},
-            {name: 'Folder', isDir: true}, {name: 'Folder', isDir: true}, {name: 'Folder', isDir: true},
-            {name: 'Folder', isDir: true}, {name: 'Folder', isDir: true}, {name: 'Folder', isDir: true},
-            {name: 'Folder', isDir: true}, {name: 'Folder', isDir: true}, {name: 'Folder', isDir: true},
+            {id: 1, name: 'Folder', isDir: true}, {id: 2, name: 'Folder', isDir: true},
+            {id: 3, name: 'Folder', isDir: true}, {id: 4, name: 'Folder', isDir: true},
+            {id: 5, name: 'Folder', isDir: true}, {id: 6, name: 'Folder', isDir: true},
+            {id: 7, name: 'Folder', isDir: true}, {id: 8, name: 'Folder', isDir: true},
+            {id: 9, name: 'Folder', isDir: true}, {id: 10, name: 'Folder', isDir: true},
+            {id: 11, name: 'Folder', isDir: true}, {id: 12, name: 'Folder', isDir: true},
         ];
 
         mocker.onGet(moduleRegExp).reply((requestConfig) => {
