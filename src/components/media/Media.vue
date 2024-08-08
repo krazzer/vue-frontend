@@ -37,7 +37,6 @@ export default defineComponent({
       } else {
         this.selectedFiles = [id];
       }
-      console.log(this.selectedFiles);
       event.stopPropagation();
     },
     getFileClasses(id: number) {
