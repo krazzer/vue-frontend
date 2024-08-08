@@ -15,8 +15,10 @@ export default defineComponent({
       this.files = this.settings.files;
     }
 
-    window.addEventListener('click', () => {
-      this.selectedFiles = [];
+    window.addEventListener('click', (event) => {
+      if (!event.shiftKey) {
+        this.selectedFiles = [];
+      }
     });
   },
   methods: {
@@ -28,11 +30,18 @@ export default defineComponent({
       console.log(e.target.files);
     },
     selectFile(id: number, event: MouseEvent) {
-      this.selectedFiles = [id];
+      if (event.shiftKey) {
+        if( ! this.selectedFiles.includes(id)) {
+          this.selectedFiles.push(id);
+        }
+      } else {
+        this.selectedFiles = [id];
+      }
+      console.log(this.selectedFiles);
       event.stopPropagation();
     },
-    getFileClasses(id: number){
-      if(this.selectedFiles.includes(id)){
+    getFileClasses(id: number) {
+      if (this.selectedFiles.includes(id)) {
         return ['selected'];
       }
 
@@ -49,7 +58,8 @@ export default defineComponent({
       <input ref="uploader" class="d-none" type="file" multiple @change="onFileChanged"/>
     </div>
     <div class="media__files">
-      <div class="media__file" v-for="file in files" @click="selectFile(file.id, $event)" :class="getFileClasses(file.id)">
+      <div class="media__file" v-for="file in files" @click="selectFile(file.id, $event)"
+           :class="getFileClasses(file.id)">
         <div class="icon"></div>
         <div class="name"><span>{{ file.name }}</span></div>
       </div>
@@ -87,8 +97,8 @@ export default defineComponent({
       text-align: center;
     }
 
-    &.selected{
-      .icon{
+    &.selected {
+      .icon {
         background-color: var(--color-background-shade3);
       }
 
@@ -108,6 +118,9 @@ export default defineComponent({
     min-height: 480px;
     background-color: var(--color-background-shade1);
     transition: background-color var(--color-scheme-transition-speed);
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 
     &:after {
       clear: both;
