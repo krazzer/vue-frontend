@@ -14,6 +14,10 @@ export default defineComponent({
     if (this.settings) {
       this.files = this.settings.files;
     }
+
+    window.addEventListener('click', () => {
+      this.selectedFiles = [];
+    });
   },
   methods: {
     handleFileImport() {
@@ -23,8 +27,9 @@ export default defineComponent({
     onFileChanged(e: any) {
       console.log(e.target.files);
     },
-    selectFile(id: number) {
+    selectFile(id: number, event: MouseEvent) {
       this.selectedFiles = [id];
+      event.stopPropagation();
     },
     getFileClasses(id: number){
       if(this.selectedFiles.includes(id)){
@@ -44,7 +49,7 @@ export default defineComponent({
       <input ref="uploader" class="d-none" type="file" multiple @change="onFileChanged"/>
     </div>
     <div class="media__files">
-      <div class="media__file" v-for="file in files" @click="selectFile(file.id)" :class="getFileClasses(file.id)">
+      <div class="media__file" v-for="file in files" @click="selectFile(file.id, $event)" :class="getFileClasses(file.id)">
         <div class="icon"></div>
         <div class="name"><span>{{ file.name }}</span></div>
       </div>
@@ -90,6 +95,10 @@ export default defineComponent({
       .name span {
         background-color: var(--color-action);
         color: var(--color-white);
+        display: inline-block;
+        padding: 2px 3px 3px;
+        line-height: 14px;
+        border-radius: 2px;
       }
     }
   }
