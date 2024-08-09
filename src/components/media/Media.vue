@@ -1,5 +1,6 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
+import axios from "axios";
 
 export default defineComponent({
   props: ['settings'],
@@ -31,7 +32,7 @@ export default defineComponent({
     },
     selectFile(id: number, event: MouseEvent) {
       if (event.shiftKey) {
-        if( ! this.selectedFiles.includes(id)) {
+        if (!this.selectedFiles.includes(id)) {
           this.selectedFiles.push(id);
         }
       } else {
@@ -45,7 +46,18 @@ export default defineComponent({
       }
 
       return [];
-    }
+    },
+    async newFolder() {
+      let name = prompt('Geef een naam op voor de nieuwe map', 'Nieuwe map');
+
+      await axios
+          .get('/api/media/newfolder', {params: {name: name}})
+          .then((response: any) => {
+            console.log(response);
+          }).catch((error: any) => {
+            console.error(error);
+          });
+    },
   }
 });
 </script>
@@ -53,7 +65,8 @@ export default defineComponent({
 <template>
   <div class="media">
     <div class="media__toolbar">
-      <v-btn @click="handleFileImport">Uploaden</v-btn>
+      <v-btn @click="handleFileImport" prepend-icon="mdi-file-upload-outline">Uploaden</v-btn>
+      <v-btn @click="newFolder" prepend-icon="mdi-folder-plus-outline">Nieuwe map</v-btn>
       <input ref="uploader" class="d-none" type="file" multiple @change="onFileChanged"/>
     </div>
     <div class="media__files">
@@ -71,6 +84,8 @@ export default defineComponent({
 
   &__toolbar {
     margin-bottom: 50px;
+    display: flex;
+    gap: 5px;
 
     .upload {
       input {

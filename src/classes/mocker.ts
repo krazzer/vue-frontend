@@ -3,6 +3,7 @@ import axios from "axios";
 import dataTableMock from "@/components/datatable/classes/mock";
 import loginMock from "@/components/login/classes/mock";
 import homeMock from "@/components/home/classes/mock";
+import mediaMock from "@/components/media/classes/mock";
 import appMock from "@/classes/mock";
 
 export class Mocker {
@@ -10,6 +11,7 @@ export class Mocker {
     public dataTableMock;
     public loginMock;
     public homeMock;
+    public mediaMock;
     public appMock;
 
     constructor(delay: number = 50) {
@@ -19,6 +21,7 @@ export class Mocker {
         this.loginMock     = loginMock;
         this.homeMock      = homeMock;
         this.appMock       = appMock;
+        this.mediaMock     = mediaMock;
     }
 
     mock() {
@@ -26,5 +29,6 @@ export class Mocker {
         this.loginMock.mock(this.mocker);
         this.homeMock.mock(this.mocker);
         this.appMock.mock(this.mocker);
+        this.mediaMock.mock(this.mocker);
     }
 }
