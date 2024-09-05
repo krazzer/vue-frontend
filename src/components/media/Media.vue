@@ -69,6 +69,9 @@ export default defineComponent({
       <v-btn @click="newFolder" prepend-icon="mdi-folder-plus-outline">Nieuwe map</v-btn>
       <input ref="uploader" class="d-none" type="file" multiple @change="onFileChanged"/>
     </div>
+    <div class="media__path">
+      🏠
+    </div>
     <div class="media__files">
       <div class="media__file" v-for="file in files" @click="selectFile(file.id, $event)"
            :class="getFileClasses(file.id)">
@@ -141,6 +144,11 @@ export default defineComponent({
       content: "";
       display: table;
     }
+  }
+
+  &__path{
+    background-color: var(--color-background-shade2);
+    padding: 10px 20px;
   }
 }
 </style>
