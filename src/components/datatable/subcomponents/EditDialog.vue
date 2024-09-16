@@ -56,6 +56,9 @@ const DataTable = defineAsyncComponent(() => import('../DataTable.vue'));
       <v-card height="100vh">
         <v-card-title>
           <span class="text-h5">{{ dialogEditId ? 'Edit ' + dialogEditId : 'Add' }}</span>
+          <span class="close">
+            <i class="mdi mdi-close" @click="$emit('clickClose')"></i>
+          </span>
         </v-card-title>
         <TabbedForm ref="tabbedForm" :form="form" :data="data" @submit="clickSave" :darkMode="darkMode"
                     :checkTabErrors="checkTabErrors" />
@@ -77,5 +80,20 @@ const DataTable = defineAsyncComponent(() => import('../DataTable.vue'));
 .v-card-actions{
   margin-top: auto;
   padding: 24px;
+}
+
+.v-card-title{
+  position: relative;
+}
+
+.close{
+  position: absolute;
+  right: 24px;
+  font-size: 30px;
+  top: 10px;
+
+  .mdi{
+    cursor: pointer;
+  }
 }
 </style>
