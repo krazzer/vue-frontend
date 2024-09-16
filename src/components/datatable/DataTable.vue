@@ -38,6 +38,7 @@ export default defineComponent({
       editData: <any>[],
       error: '',
       dialog: false,
+      search: '',
       dialogEditId: <any>null,
       dragAndDropPages: DragAndDropPages,
       cloned: <number | null>null,
@@ -70,6 +71,10 @@ export default defineComponent({
       this.data    = settings.data;
       this.form    = settings.form;
       this.buttons = settings.buttons;
+    },
+
+    clearSearch() {
+      this.search = ''; // Clear the search field
     },
 
     /**
@@ -154,6 +159,11 @@ export default defineComponent({
           });
     },
 
+    searchKeyDown(event: KeyboardEvent){
+        if(event.key == "Escape"){
+          this.search = '';
+        }
+    },
 
     async save(dialogEditId: any, data: any) {
       await axios
@@ -239,7 +249,12 @@ export default defineComponent({
               {{ button.label }}
             </v-btn>
           </template>
-          <v-text-field prepend-inner-icon="mdi-magnify" :placeholder="$translator.tl('general.search')" class="search" />
+          <v-text-field prepend-inner-icon="mdi-magnify" v-model="search" class="search"
+                        :placeholder="$translator.tl('general.search')" @keydown="searchKeyDown">
+            <template v-slot:append-inner>
+              <v-icon v-if="search" @click="clearSearch">mdi-close</v-icon>
+            </template>
+          </v-text-field>
         </div>
       </div>
       <div class="datatable__table">
@@ -299,12 +314,12 @@ export default defineComponent({
         }
       }
 
-      .search{
+      .search {
         max-width: 250px;
         height: 36px;
         margin-left: auto;
 
-        :deep(input){
+        :deep(input) {
           min-height: auto;
           padding: 6px 10px;
         }
