@@ -239,6 +239,7 @@ export default defineComponent({
               {{ button.label }}
             </v-btn>
           </template>
+          <v-text-field prepend-inner-icon="mdi-magnify" :placeholder="$translator.tl('general.search')" class="search" />
         </div>
       </div>
       <div class="datatable__table">
@@ -295,6 +296,17 @@ export default defineComponent({
       .v-btn--disabled {
         :deep(svg) {
           opacity: .3;
+        }
+      }
+
+      .search{
+        max-width: 250px;
+        height: 36px;
+        margin-left: auto;
+
+        :deep(input){
+          min-height: auto;
+          padding: 6px 10px;
         }
       }
     }
