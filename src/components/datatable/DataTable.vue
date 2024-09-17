@@ -42,6 +42,8 @@ export default defineComponent({
       headers: [],
       highlight: '',
       search: '',
+      sortKey: '',
+      sortDirection: '',
       selected: <any>[],
     };
   },
@@ -65,6 +67,12 @@ export default defineComponent({
   },
   unmounted() {
     this.dragAndDropPages.unload();
+  },
+  setup() {
+    const ASCENDING  = 'ascending';
+    const DESCENDING = 'descending';
+
+    return {ASCENDING, DESCENDING};
   },
   methods: {
     convertSettings(settings: any) {
@@ -248,7 +256,35 @@ export default defineComponent({
      */
     isSelected(id: string): boolean {
       return this.selected.includes(id);
-    }
+    },
+
+    /**
+     * @param key
+     */
+    async sort(key: string) {
+      if(this.sortKey !== key){
+        this.sortKey = key;
+        this.sortDirection = this.ASCENDING;
+      } else {
+        if(this.sortDirection == this.ASCENDING){
+          this.sortDirection = this.DESCENDING;
+        } else {
+          this.sortDirection = this.ASCENDING;
+          this.sortKey = '';
+        }
+      }
+
+      if(this.sortKey && this.sortDirection){
+        await axios
+            .post('/api/datatable/sort', {
+              params: {instance: this.instance, sort: this.sortKey, sortDirection: this.sortDirection}
+            }).then(response => {
+              this.data = response.data;
+            }).catch(error => {
+              alert(error);
+            });
+      }
+    },
   }
 });
 
@@ -280,13 +316,17 @@ export default defineComponent({
         <table>
           <thead>
           <tr>
-            <th v-for="header in headers">{{ header }}</th>
+            <th v-for="(name, key) in headers" @click="sort(key.toString())">
+              {{ name }}
+              <i v-if="key.toString() == sortKey && sortDirection == ASCENDING" class="mdi mdi-sort-ascending"></i>
+              <i v-if="key.toString() == sortKey && sortDirection == DESCENDING" class="mdi mdi-sort-descending"></i>
+            </th>
           </tr>
           </thead>
           <tbody>
           <Row v-for="row in data" :row="row" :dragAndDropPages="dragAndDropPages" :headers="headers"
                :selected="isSelected(row.id)" @toggle="toggle" :settings="settings" @collapse="collapse" @edit="edit"
-               :id="row.id" :level="0" :selectedIds="selected" :max="row.max" :highlight="highlight" />
+               :id="row.id" :level="0" :selectedIds="selected" :max="row.max" :highlight="highlight"/>
           </tbody>
         </table>
       </div>
@@ -360,6 +400,18 @@ export default defineComponent({
       thead th {
         text-align: left;
         font-weight: bold;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+
+        .mdi{
+          position: absolute;
+          font-size: 23px;
+          color: var(--color-text-gray);
+          margin-left: 8px;
+          margin-top: -5px;
+        }
       }
 
       tbody {

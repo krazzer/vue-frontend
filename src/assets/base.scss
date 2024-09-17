@@ -23,6 +23,9 @@
     --text-light-1: var(--color-indigo);
     --text-dark-1: var(--color-white);
 
+    --text-light-2: #aaa;
+    --text-dark-2: #666;
+
     --vt-c-text-light-1: var(--color-indigo);
 
     --border-radius: 4px;
@@ -38,6 +41,7 @@
     --color-background-shade3: var(--shade3-light);
     --color-border: var(--line-light-1);
     --color-text: var(--text-light-1);
+    --color-text-gray: var(--text-light-2);
     --color-line: var(--line-light-1);
     --color-text-in-main-bg: var(--color-white);
     --color-action: var(--color-blue);
@@ -51,6 +55,7 @@ body.darkmode, :host > .datatable.darkmode {
     --color-background-shade3: var(--shade3-dark);
     --color-border: var(--line-dark-1);
     --color-text: var(--text-dark-1);
+    --color-text-gray: var(--text-dark-2);
     --color-line: var(--line-dark-1);
     --color-text-in-main-bg: var(--color-white);
 }

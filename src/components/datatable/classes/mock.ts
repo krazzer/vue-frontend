@@ -3,7 +3,7 @@ import type MockAdapter from "axios-mock-adapter";
 class DataTableMock {
     public defaultData = {
         buttons: [{label: 'Add client', action: 'add'}, {label: 'Delete', action: 'delete'}],
-        headers: ['id', 'name', 'address', 'zip'],
+        headers: {'id': "Id", 'name': "Name", 'address': "Address", 'zip': "Zip"},
         form: {
             fields: [
                 {
@@ -179,16 +179,16 @@ class DataTableMock {
             let data   = this.getDataForInstance(params.instance).data;
             let search = params.search;
 
-            if(search){
+            if (search) {
                 let newData = <any>[];
 
                 data.forEach((row: any) => {
-                    for (let key in row.data){
-                        if(typeof row.data[key] !== 'string'){
+                    for (let key in row.data) {
+                        if (typeof row.data[key] !== 'string') {
                             continue;
                         }
 
-                        if(row.data[key].toLowerCase().includes(search.toLowerCase())){
+                        if (row.data[key].toLowerCase().includes(search.toLowerCase())) {
                             newData.push(row);
                             break;
                         }
@@ -255,9 +255,35 @@ class DataTableMock {
         mocker.onGet("/api/datatable/collapse").reply(() => {
             return [200];
         });
+
+        mocker.onPost("/api/datatable/sort").reply((request) => {
+            let params        = JSON.parse(request.data).params;
+            let sort          = params.sort;
+            let sortDirection = params.sortDirection;
+            let config        = this.getDataForInstance(params.instance);
+            let data          = config.data;
+            let keys          = Object.keys(config.headers);
+            let index         = keys.indexOf(sort);
+
+            data.sort((a: any, b: any) => {
+                const nameA = a.data[index].toLowerCase();
+                const nameB = b.data[index].toLowerCase();
+
+                if (sortDirection == 'ascending') {
+                    if (nameA < nameB) return -1;
+                    if (nameA > nameB) return 1;
+                } else {
+                    if (nameA < nameB) return 1;
+                    if (nameA > nameB) return -1;
+                }
+                return 0;
+            });
+
+            return [200, data];
+        });
     }
 
-    getContentData(){
+    getContentData() {
         return {
             buttons: [{label: 'Add content', action: 'add'}, {label: 'Delete', action: 'delete'}],
             headers: ['id', 'name', 'content'],
@@ -278,8 +304,14 @@ class DataTableMock {
                 ],
             },
             data: [
-                {id: 'a1', data: ['content1', 'Peter', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas libero an...']},
-                {id: 'a2', data: ['content2', 'John', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas libero an...']},
+                {
+                    id: 'a1',
+                    data: ['content1', 'Peter', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas libero an...']
+                },
+                {
+                    id: 'a2',
+                    data: ['content2', 'John', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas libero an...']
+                },
             ],
             instance: 'content',
         };
