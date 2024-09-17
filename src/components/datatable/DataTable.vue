@@ -165,6 +165,23 @@ export default defineComponent({
         }
     },
 
+    searchKeyUp(){
+        let searchOnKeyUp = this.search;
+
+        setTimeout(async () => {
+          if(this.search == searchOnKeyUp){
+            await axios
+                .post('/api/datatable/search', {params: {instance: this.instance, search: this.search}})
+                .then(response => {
+                  this.data     = response.data;
+                  this.selected = [];
+                }).catch(error => {
+                  this.error = error;
+                });
+          }
+        }, 300);
+    },
+
     async save(dialogEditId: any, data: any) {
       await axios
           .get('/api/datatable/save', {params: {instance: this.instance, data: data, id: dialogEditId}})
@@ -250,7 +267,7 @@ export default defineComponent({
             </v-btn>
           </template>
           <v-text-field prepend-inner-icon="mdi-magnify" v-model="search" class="search"
-                        :placeholder="$translator.tl('general.search')" @keydown="searchKeyDown">
+                        :placeholder="$translator.tl('general.search')" @keydown="searchKeyDown" @keyup="searchKeyUp">
             <template v-slot:append-inner>
               <v-icon v-if="search" @click="clearSearch">mdi-close</v-icon>
             </template>

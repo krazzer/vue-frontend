@@ -174,6 +174,33 @@ class DataTableMock {
             return [200, data];
         });
 
+        mocker.onPost("/api/datatable/search").reply((request) => {
+            let params = JSON.parse(request.data).params;
+            let data   = this.getDataForInstance(params.instance).data;
+            let search = params.search;
+
+            if(search){
+                let newData = <any>[];
+
+                data.forEach((row: any) => {
+                    for (let key in row.data){
+                        if(typeof row.data[key] !== 'string'){
+                            continue;
+                        }
+
+                        if(row.data[key].toLowerCase().includes(search)){
+                            newData.push(row);
+                            break;
+                        }
+                    }
+                });
+
+                data = newData;
+            }
+
+            return [200, data];
+        });
+
         mocker.onGet("/api/datatable/save").reply((request) => {
             let newData = request.params.data;
             let id      = request.params.id;
