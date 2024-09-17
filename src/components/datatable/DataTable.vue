@@ -75,6 +75,21 @@ export default defineComponent({
     return {ASCENDING, DESCENDING};
   },
   methods: {
+    async filter() {
+      await axios
+          .post('/api/datatable/filter', {
+            params: {
+              instance: this.instance, search: this.search, sort: this.sortKey, sortDirection: this.sortDirection
+            }
+          })
+          .then(response => {
+            this.data     = response.data;
+            this.selected = [];
+          }).catch(error => {
+            alert(error);
+          });
+    },
+
     convertSettings(settings: any) {
       this.headers = settings.headers;
       this.data    = settings.data;
@@ -179,15 +194,7 @@ export default defineComponent({
 
       setTimeout(async () => {
         if (this.search == searchOnKeyUp) {
-          await axios
-              .post('/api/datatable/search', {params: {instance: this.instance, search: this.search}})
-              .then(response => {
-                this.data      = response.data;
-                this.selected  = [];
-                this.highlight = this.search;
-              }).catch(error => {
-                this.error = error;
-              });
+          await this.filter();
         }
       }, 300);
     },
@@ -262,28 +269,19 @@ export default defineComponent({
      * @param key
      */
     async sort(key: string) {
-      if(this.sortKey !== key){
-        this.sortKey = key;
+      if (this.sortKey !== key) {
+        this.sortKey       = key;
         this.sortDirection = this.ASCENDING;
       } else {
-        if(this.sortDirection == this.ASCENDING){
+        if (this.sortDirection == this.ASCENDING) {
           this.sortDirection = this.DESCENDING;
         } else {
           this.sortDirection = this.ASCENDING;
-          this.sortKey = '';
+          this.sortKey       = '';
         }
       }
 
-      if(this.sortKey && this.sortDirection){
-        await axios
-            .post('/api/datatable/sort', {
-              params: {instance: this.instance, sort: this.sortKey, sortDirection: this.sortDirection}
-            }).then(response => {
-              this.data = response.data;
-            }).catch(error => {
-              alert(error);
-            });
-      }
+      await this.filter();
     },
   }
 });
@@ -405,7 +403,7 @@ export default defineComponent({
         -ms-user-select: none;
         user-select: none;
 
-        .mdi{
+        .mdi {
           position: absolute;
           font-size: 23px;
           color: var(--color-text-gray);

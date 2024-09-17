@@ -174,10 +174,15 @@ class DataTableMock {
             return [200, data];
         });
 
-        mocker.onPost("/api/datatable/search").reply((request) => {
-            let params = JSON.parse(request.data).params;
-            let data   = this.getDataForInstance(params.instance).data;
-            let search = params.search;
+        mocker.onPost("/api/datatable/filter").reply((request) => {
+            let params        = JSON.parse(request.data).params;
+            let search        = params.search;
+            let sort          = params.sort;
+            let sortDirection = params.sortDirection;
+            let config        = this.getDataForInstance(params.instance);
+            let data          = structuredClone(config.data);
+            let keys          = Object.keys(config.headers);
+            let index         = keys.indexOf(sort);
 
             if (search) {
                 let newData = <any>[];
@@ -196,6 +201,22 @@ class DataTableMock {
                 });
 
                 data = newData;
+            }
+
+            if(sort) {
+                data.sort((a: any, b: any) => {
+                    const nameA = a.data[index].toLowerCase();
+                    const nameB = b.data[index].toLowerCase();
+
+                    if (sortDirection == 'ascending') {
+                        if (nameA < nameB) return -1;
+                        if (nameA > nameB) return 1;
+                    } else {
+                        if (nameA < nameB) return 1;
+                        if (nameA > nameB) return -1;
+                    }
+                    return 0;
+                });
             }
 
             return [200, data];
@@ -254,32 +275,6 @@ class DataTableMock {
 
         mocker.onGet("/api/datatable/collapse").reply(() => {
             return [200];
-        });
-
-        mocker.onPost("/api/datatable/sort").reply((request) => {
-            let params        = JSON.parse(request.data).params;
-            let sort          = params.sort;
-            let sortDirection = params.sortDirection;
-            let config        = this.getDataForInstance(params.instance);
-            let data          = config.data;
-            let keys          = Object.keys(config.headers);
-            let index         = keys.indexOf(sort);
-
-            data.sort((a: any, b: any) => {
-                const nameA = a.data[index].toLowerCase();
-                const nameB = b.data[index].toLowerCase();
-
-                if (sortDirection == 'ascending') {
-                    if (nameA < nameB) return -1;
-                    if (nameA > nameB) return 1;
-                } else {
-                    if (nameA < nameB) return 1;
-                    if (nameA > nameB) return -1;
-                }
-                return 0;
-            });
-
-            return [200, data];
         });
     }
 
