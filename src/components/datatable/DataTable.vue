@@ -39,8 +39,10 @@ export default defineComponent({
       form: <any>[],
       editData: <any>[],
       error: '',
+      page: 1,
       headers: [],
       highlight: '',
+      pages: <any>[],
       search: '',
       sortKey: '',
       sortDirection: '',
@@ -95,6 +97,7 @@ export default defineComponent({
       this.data    = settings.data;
       this.form    = settings.form;
       this.buttons = settings.buttons;
+      this.pages   = settings.pages;
     },
 
     clearSearch() {
@@ -302,6 +305,12 @@ export default defineComponent({
               {{ button.label }}
             </v-btn>
           </template>
+          <div v-if="pages" class="pages">
+            <span class="page" :class="pageNr ? (pageNr == page ? 'selected' : '') : 'disabled'" v-for="pageNr in pages"
+                  @click="page = pageNr">
+              {{ pageNr ? pageNr : '...' }}
+            </span>
+          </div>
           <v-text-field prepend-inner-icon="mdi-magnify" v-model="search" class="search"
                         :placeholder="$translator.tl('general.search')" @keydown="searchKeyDown" @keyup="searchKeyUp">
             <template v-slot:append-inner>
@@ -327,6 +336,14 @@ export default defineComponent({
                :id="row.id" :level="0" :selectedIds="selected" :max="row.max" :highlight="highlight"/>
           </tbody>
         </table>
+      </div>
+      <div class="bottom-bar">
+        <div v-if="pages" class="pages">
+            <span class="page" :class="pageNr ? (pageNr == page ? 'selected' : '') : 'disabled'" v-for="pageNr in pages"
+                  @click="page = pageNr">
+              {{ pageNr ? pageNr : '...' }}
+            </span>
+        </div>
       </div>
     </template>
   </div>
@@ -421,6 +438,54 @@ export default defineComponent({
           background-color: var(--color-background-shade2);
         }
       }
+    }
+  }
+
+  .pages {
+    display: inline-block;
+    margin-left: auto;
+    margin-right: 5px;
+
+    .page{
+      display: inline-block;
+      padding: 5px;
+      border: 1px solid var(--color-line);
+      min-width: 38px;
+      text-align: center;
+      margin-right: -1px;
+
+      &:not(.disabled):hover{
+        background-color: var(--color-background-shade3);
+        cursor: pointer;
+      }
+
+      &:last-child{
+        border-bottom-right-radius: var(--border-radius);
+        border-top-right-radius: var(--border-radius);
+      }
+
+      &:first-child{
+        border-bottom-left-radius: var(--border-radius);
+        border-top-left-radius: var(--border-radius);
+      }
+
+      &.selected, &.selected:hover{
+        background-color: var(--main-color);
+        border-color: var(--main-color);
+        color: var(--color-text-in-main-bg);
+      }
+    }
+  }
+
+  .pages ~ .search{
+    margin-left: 0;
+  }
+
+  .bottom-bar{
+    display: flex;
+
+    .pages{
+      margin-top: 20px;
     }
   }
 }

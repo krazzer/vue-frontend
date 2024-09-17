@@ -3,6 +3,7 @@ import type MockAdapter from "axios-mock-adapter";
 class DataTableMock {
     public defaultData = {
         buttons: [{label: 'Add client', action: 'add'}, {label: 'Delete', action: 'delete'}],
+        pages: [1, null, 5, 6, 7, null, 11],
         headers: {'id': "Id", 'name': "Name", 'address': "Address", 'zip': "Zip"},
         form: {
             fields: [
