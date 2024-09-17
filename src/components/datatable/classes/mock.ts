@@ -220,7 +220,7 @@ class DataTableMock {
                 });
             }
 
-            return [200, data];
+            return [200, {data: data, pages: config.pages}];
         });
 
         mocker.onGet("/api/datatable/save").reply((request) => {

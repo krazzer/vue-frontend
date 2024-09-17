@@ -81,11 +81,13 @@ export default defineComponent({
       await axios
           .post('/api/datatable/filter', {
             params: {
-              instance: this.instance, search: this.search, sort: this.sortKey, sortDirection: this.sortDirection
+              instance: this.instance, search: this.search, sort: this.sortKey, sortDirection: this.sortDirection,
+              page: this.page
             }
           })
-          .then(response => {
-            this.data     = response.data;
+          .then((response: any) => {
+            this.data     = response.data.data;
+            this.pages    = response.data.pages;
             this.selected = [];
           }).catch(error => {
             alert(error);
@@ -286,6 +288,15 @@ export default defineComponent({
 
       await this.filter();
     },
+
+    setPage(page: number) {
+      if (!page) {
+        return;
+      }
+
+      this.page = page;
+      this.filter();
+    }
   }
 });
 
@@ -307,7 +318,7 @@ export default defineComponent({
           </template>
           <div v-if="pages" class="pages">
             <span class="page" :class="pageNr ? (pageNr == page ? 'selected' : '') : 'disabled'" v-for="pageNr in pages"
-                  @click="pageNr ? page = pageNr : null">
+                  @click="setPage(pageNr)">
               {{ pageNr ? pageNr : '...' }}
             </span>
           </div>
@@ -340,7 +351,7 @@ export default defineComponent({
       <div class="bottom-bar">
         <div v-if="pages" class="pages">
             <span class="page" :class="pageNr ? (pageNr == page ? 'selected' : '') : 'disabled'" v-for="pageNr in pages"
-                  @click="pageNr ? page = pageNr : null">
+                  @click="setPage(pageNr)">
               {{ pageNr ? pageNr : '...' }}
             </span>
         </div>
@@ -446,7 +457,7 @@ export default defineComponent({
     margin-left: auto;
     margin-right: 5px;
 
-    .page{
+    .page {
       display: inline-block;
       padding: 5px;
       border: 1px solid var(--color-line);
@@ -454,22 +465,22 @@ export default defineComponent({
       text-align: center;
       margin-right: -1px;
 
-      &:not(.disabled):hover{
+      &:not(.disabled):hover {
         background-color: var(--color-background-shade3);
         cursor: pointer;
       }
 
-      &:last-child{
+      &:last-child {
         border-bottom-right-radius: var(--border-radius);
         border-top-right-radius: var(--border-radius);
       }
 
-      &:first-child{
+      &:first-child {
         border-bottom-left-radius: var(--border-radius);
         border-top-left-radius: var(--border-radius);
       }
 
-      &.selected, &.selected:hover{
+      &.selected, &.selected:hover {
         background-color: var(--main-color);
         border-color: var(--main-color);
         color: var(--color-text-in-main-bg);
@@ -477,14 +488,14 @@ export default defineComponent({
     }
   }
 
-  .pages ~ .search{
+  .pages ~ .search {
     margin-left: 0;
   }
 
-  .bottom-bar{
+  .bottom-bar {
     display: flex;
 
-    .pages{
+    .pages {
       margin-top: 20px;
     }
   }
