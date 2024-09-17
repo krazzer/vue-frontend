@@ -307,7 +307,7 @@ export default defineComponent({
           </template>
           <div v-if="pages" class="pages">
             <span class="page" :class="pageNr ? (pageNr == page ? 'selected' : '') : 'disabled'" v-for="pageNr in pages"
-                  @click="page = pageNr">
+                  @click="pageNr ? page = pageNr : null">
               {{ pageNr ? pageNr : '...' }}
             </span>
           </div>
@@ -340,7 +340,7 @@ export default defineComponent({
       <div class="bottom-bar">
         <div v-if="pages" class="pages">
             <span class="page" :class="pageNr ? (pageNr == page ? 'selected' : '') : 'disabled'" v-for="pageNr in pages"
-                  @click="page = pageNr">
+                  @click="pageNr ? page = pageNr : null">
               {{ pageNr ? pageNr : '...' }}
             </span>
         </div>
