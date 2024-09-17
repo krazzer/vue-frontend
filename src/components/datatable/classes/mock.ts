@@ -188,7 +188,7 @@ class DataTableMock {
                             continue;
                         }
 
-                        if(row.data[key].toLowerCase().includes(search)){
+                        if(row.data[key].toLowerCase().includes(search.toLowerCase())){
                             newData.push(row);
                             break;
                         }

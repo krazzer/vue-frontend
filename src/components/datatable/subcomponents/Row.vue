@@ -7,7 +7,7 @@ export default defineComponent({
   components: {Page, Svg},
   emits: ['collapse', 'edit', 'toggle'],
   name: "Row",
-  props: ['row', 'dragAndDropPages', 'headers', 'settings', 'id', 'level', 'selected', 'selectedIds', 'max'],
+  props: ['row', 'dragAndDropPages', 'headers', 'settings', 'id', 'level', 'selected', 'selectedIds', 'max', 'highlight'],
   data() {
     return {
       preventSelect: <boolean>false,
@@ -76,6 +76,22 @@ export default defineComponent({
       }
     },
 
+    getCell(cell: string){
+      if( ! cell){
+        return '&nbsp;';
+      }
+
+      if(this.highlight){
+        let regexp = new RegExp(String.raw`${this.highlight}`, "gi");
+
+        cell = cell.replace(regexp, (match) => {
+          return `<span class="highlighted">${match}</span>`;
+        });
+      }
+
+      return cell;
+    },
+
     getClasses(){
       let classes = [];
 
@@ -115,7 +131,7 @@ export default defineComponent({
               @startDrag="dragAndDropPages.setMouseDown(row.id, $event)" :type="row.type"
               :hasCildren="row.children" :collapse="row.collapse" @arrowClick="arrowClick($event)"/>
       </template>
-      <template v-else>{{ cell ? cell : '&nbsp;' }}</template>
+      <template v-else><span v-html="getCell(cell)" /></template>
       <template v-if="i == row.data.length - 1">
         <div class="buttons">
           <span @click="$emit('edit', row.id, $event)"><Svg :svg="'edit'"/></span>
@@ -125,11 +141,17 @@ export default defineComponent({
   </tr>
   <Row v-if="row.children && !row.collapse" :dragAndDropPages="dragAndDropPages" :headers="headers" :settings="settings"
        @edit="childEdit" :id="childRow.id" :row="childRow" v-for="childRow in row.children" @toggle="childToggle"
-       :level="level + 1" @collapse="childCollapse" :max="max" :selected-ids="selectedIds" :selected="isSelected(childRow.id)" />
+       :level="level + 1" @collapse="childCollapse" :max="max" :selected-ids="selectedIds"
+       :selected="isSelected(childRow.id)" :highlight="highlight" />
 </template>
 
 <style lang="scss" scoped>
 @import "./../styles/pages";
+
+:deep(.highlighted){
+  background-color: var(--color-action);
+  color: var(--color-text-in-main-bg);
+}
 
 tr.selected td{
   background-color: var(--main-color);

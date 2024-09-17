@@ -30,18 +30,19 @@ export default defineComponent({
   },
   data() {
     return {
-      selected: <any>[],
-      headers: [],
       buttons: <any>[],
+      cloned: <number | null>null,
       data: <any>[],
+      dialog: false,
+      dialogEditId: <any>null,
+      dragAndDropPages: DragAndDropPages,
       form: <any>[],
       editData: <any>[],
       error: '',
-      dialog: false,
+      headers: [],
+      highlight: '',
       search: '',
-      dialogEditId: <any>null,
-      dragAndDropPages: DragAndDropPages,
-      cloned: <number | null>null,
+      selected: <any>[],
     };
   },
   watch: {
@@ -159,27 +160,28 @@ export default defineComponent({
           });
     },
 
-    searchKeyDown(event: KeyboardEvent){
-        if(event.key == "Escape"){
-          this.search = '';
-        }
+    searchKeyDown(event: KeyboardEvent) {
+      if (event.key == "Escape") {
+        this.search = '';
+      }
     },
 
-    searchKeyUp(){
-        let searchOnKeyUp = this.search;
+    searchKeyUp() {
+      let searchOnKeyUp = this.search;
 
-        setTimeout(async () => {
-          if(this.search == searchOnKeyUp){
-            await axios
-                .post('/api/datatable/search', {params: {instance: this.instance, search: this.search}})
-                .then(response => {
-                  this.data     = response.data;
-                  this.selected = [];
-                }).catch(error => {
-                  this.error = error;
-                });
-          }
-        }, 300);
+      setTimeout(async () => {
+        if (this.search == searchOnKeyUp) {
+          await axios
+              .post('/api/datatable/search', {params: {instance: this.instance, search: this.search}})
+              .then(response => {
+                this.data      = response.data;
+                this.selected  = [];
+                this.highlight = this.search;
+              }).catch(error => {
+                this.error = error;
+              });
+        }
+      }, 300);
     },
 
     async save(dialogEditId: any, data: any) {
@@ -284,7 +286,7 @@ export default defineComponent({
           <tbody>
           <Row v-for="row in data" :row="row" :dragAndDropPages="dragAndDropPages" :headers="headers"
                :selected="isSelected(row.id)" @toggle="toggle" :settings="settings" @collapse="collapse" @edit="edit"
-               :id="row.id" :level="0" :selectedIds="selected" :max="row.max"/>
+               :id="row.id" :level="0" :selectedIds="selected" :max="row.max" :highlight="highlight" />
           </tbody>
         </table>
       </div>
