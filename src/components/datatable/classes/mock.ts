@@ -335,21 +335,24 @@ class DataTableMock {
     }
 
     getPagesData() {
+        let mainMenuChildren = [
+            {id: '2', data: [1, {'label': 'Home', 'icons': ['lock']}, 'home', 'home']},
+            {id: '3', data: [2, 'About', 'default', 'about']},
+            {id: '4', data: [4, 'Prices', 'default', 'prices']},
+            {
+                id: '5', data: [5, 'Projects', 'projects', 'projects'], collapse: true, children: [
+                    {id: '6', data: [6, 'Project A', 'project', 'project-A']},
+                    {id: '7', data: [7, 'Project B', 'project', 'project-B']},
+                    {id: '8', data: [8, 'Project C', 'project', 'project-C']},
+                ]
+            },
+            {id: '9', data: [3, 'Contact', 'contact', 'contact']},
+        ];
+
         let data = [
             {
-                id: '1', data: [1, 'Hoofdmenu', '', ''], type: 'menu', max: 2, children: [
-                    {id: '2', data: [1, {'label': 'Home', 'icons': ['lock']}, 'home', 'home']},
-                    {id: '3', data: [2, 'About', 'default', 'about']},
-                    {id: '4', data: [4, 'Prices', 'default', 'prices']},
-                    {
-                        id: '5', data: [5, 'Projects', 'projects', 'projects'], collapse: true, children: [
-                            {id: '6', data: [6, 'Project A', 'project', 'project-A']},
-                            {id: '7', data: [7, 'Project B', 'project', 'project-B']},
-                            {id: '8', data: [8, 'Project C', 'project', 'project-C']},
-                        ]
-                    },
-                    {id: '9', data: [3, 'Contact', 'contact', 'contact']},
-                ]
+                id: '1', data: [1, 'Hoofdmenu', '', ''], type: 'menu', max: 2, children: mainMenuChildren,
+                actionUrls: {preview: 'https://google.nl'},
             },
             {
                 id: '10', data: [10, 'Other pages', '', ''], type: 'menu', max: 1, children: [
@@ -362,6 +365,9 @@ class DataTableMock {
             buttons: [
                 {label: 'Add page', action: 'add', icon: 'mdi-plus'},
                 {label: 'Delete', action: 'delete', icon: 'mdi-delete'},
+            ],
+            actions: [
+                {key: 'preview', type: 'url', icon: 'mdi-eye'}
             ],
             headers: ['id', 'name', 'template', 'slug'],
             cells: {'name': {'type': 'page'}},

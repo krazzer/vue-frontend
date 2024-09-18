@@ -7,7 +7,8 @@ export default defineComponent({
   components: {Page, Svg},
   emits: ['collapse', 'edit', 'toggle'],
   name: "Row",
-  props: ['row', 'dragAndDropPages', 'headers', 'settings', 'id', 'level', 'selected', 'selectedIds', 'max', 'highlight'],
+  props: ['row', 'dragAndDropPages', 'headers', 'settings', 'id', 'level', 'selected', 'selectedIds', 'max',
+    'highlight', 'actions'],
   data() {
     return {
       preventSelect: <boolean>false,
@@ -60,6 +61,19 @@ export default defineComponent({
      */
     childToggle(id: string, selected: boolean){
       this.$emit('toggle', id, selected);
+    },
+
+    /**
+     * @param row
+     * @param iconKey
+     * @param event
+     */
+    clickAction(row: any, iconKey: string, event: MouseEvent){
+      event.stopPropagation();
+
+      if(row.actionUrls && row.actionUrls[iconKey]){
+        window.open(row.actionUrls[iconKey]);
+      }
     },
 
     toggleRow() {
@@ -134,7 +148,9 @@ export default defineComponent({
       <template v-else><span v-html="getCell(cell)" /></template>
       <template v-if="i == row.data.length - 1">
         <div class="buttons">
-          <span @click="$emit('edit', row.id, $event)"><Svg :svg="'edit'"/></span>
+          <span v-for="action in actions" @click="clickAction(row, action.key, $event)"><i :class="'mdi ' + action.icon"></i></span>
+          <span @click="$emit('edit', row.id, $event)"><i class="mdi mdi-square-edit-outline"></i>
+          </span>
         </div>
       </template>
     </td>
@@ -142,7 +158,7 @@ export default defineComponent({
   <Row v-if="row.children && !row.collapse" :dragAndDropPages="dragAndDropPages" :headers="headers" :settings="settings"
        @edit="childEdit" :id="childRow.id" :row="childRow" v-for="childRow in row.children" @toggle="childToggle"
        :level="level + 1" @collapse="childCollapse" :max="max" :selected-ids="selectedIds"
-       :selected="isSelected(childRow.id)" :highlight="highlight" />
+       :selected="isSelected(childRow.id)" :highlight="highlight" :actions="actions" />
 </template>
 
 <style lang="scss" scoped>
@@ -176,41 +192,16 @@ td .buttons {
   display: none;
   position: absolute;
   right: 15px;
-}
+  top: 0;
+  padding: 4px 0;
 
-td .icon {
-  width: 20px;
-  display: inline-block;
-  cursor: pointer;
-
-  :deep(svg) {
-    path {
-      fill: var(--color-text);
-    }
+  span{
+    cursor: pointer;
+    margin-left: 6px;
   }
 
-  &--edit {
-    margin-top: 2px;
-  }
-}
-
-td .icon {
-  width: 20px;
-  display: inline-block;
-  cursor: pointer;
-
-  :deep(.icon) {
-    display: inline-block;
-  }
-
-  :deep(svg) {
-    path {
-      fill: var(--color-text);
-    }
-  }
-
-  &--edit {
-    margin-top: 2px;
+  i{
+    font-size: 20px;
   }
 }
 </style>

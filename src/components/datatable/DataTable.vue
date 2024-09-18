@@ -30,6 +30,7 @@ export default defineComponent({
   },
   data() {
     return {
+      actions: <any>[],
       buttons: <any>[],
       cloned: <number | null>null,
       data: <any>[],
@@ -104,6 +105,7 @@ export default defineComponent({
       this.pages     = settings.pages;
       this.languages = settings.languages;
       this.language  = settings.language;
+      this.actions   = settings.actions;
     },
 
     clearSearch() {
@@ -143,7 +145,7 @@ export default defineComponent({
     /**
      * @param val
      */
-    changeLanguage(val: string){
+    changeLanguage(val: string) {
       this.language = val;
       this.filter();
     },
@@ -356,7 +358,7 @@ export default defineComponent({
           </tr>
           </thead>
           <tbody>
-          <Row v-for="row in data" :row="row" :dragAndDropPages="dragAndDropPages" :headers="headers"
+          <Row v-for="row in data" :row="row" :dragAndDropPages="dragAndDropPages" :headers="headers" :actions="actions"
                :selected="isSelected(row.id)" @toggle="toggle" :settings="settings" @collapse="collapse" @edit="edit"
                :id="row.id" :level="0" :selectedIds="selected" :max="row.max" :highlight="highlight"/>
           </tbody>
