@@ -84,7 +84,7 @@ export default defineComponent({
           .post('/api/datatable/filter', {
             params: {
               instance: this.instance, search: this.search, sort: this.sortKey, sortDirection: this.sortDirection,
-              page: this.page
+              page: this.page, language: this.language
             }
           })
           .then((response: any) => {
@@ -138,6 +138,14 @@ export default defineComponent({
           }
         }
       }
+    },
+
+    /**
+     * @param val
+     */
+    changeLanguage(val: string){
+      this.language = val;
+      this.filter();
     },
 
     async delete() {
@@ -326,7 +334,7 @@ export default defineComponent({
               {{ pageNr ? pageNr : '...' }}
             </span>
           </div>
-          <v-select v-if="languages" :items="languages" item-title="label"
+          <v-select v-if="languages" :items="languages" item-title="label" @update:modelValue="changeLanguage"
                     item-value="key" density="compact" class="language" v-model="language"/>
           <v-text-field prepend-inner-icon="mdi-magnify" v-model="search" class="search" density="compact"
                         :placeholder="$translator.tl('general.search')" @keydown="searchKeyDown" @keyup="searchKeyUp">
@@ -406,42 +414,6 @@ export default defineComponent({
       }
     }
 
-    .pages {
-      display: inline-block;
-      margin-left: auto;
-      margin-right: 5px;
-
-      .page {
-        display: inline-block;
-        padding: 5px;
-        border: 1px solid var(--color-line);
-        min-width: 38px;
-        text-align: center;
-        margin-right: -1px;
-
-        &:not(.disabled):hover {
-          background-color: var(--color-background-shade3);
-          cursor: pointer;
-        }
-
-        &:last-child {
-          border-bottom-right-radius: var(--border-radius);
-          border-top-right-radius: var(--border-radius);
-        }
-
-        &:first-child {
-          border-bottom-left-radius: var(--border-radius);
-          border-top-left-radius: var(--border-radius);
-        }
-
-        &.selected, &.selected:hover {
-          background-color: var(--main-color);
-          border-color: var(--main-color);
-          color: var(--color-text-in-main-bg);
-        }
-      }
-    }
-
     .language, .search {
       max-height: 36px;
 
@@ -515,6 +487,42 @@ export default defineComponent({
 
     .pages {
       margin-top: 20px;
+    }
+  }
+
+  .pages {
+    display: inline-block;
+    margin-left: auto;
+    margin-right: 5px;
+
+    .page {
+      display: inline-block;
+      padding: 5px;
+      border: 1px solid var(--color-line);
+      min-width: 38px;
+      text-align: center;
+      margin-right: -1px;
+
+      &:not(.disabled):hover {
+        background-color: var(--color-background-shade3);
+        cursor: pointer;
+      }
+
+      &:last-child {
+        border-bottom-right-radius: var(--border-radius);
+        border-top-right-radius: var(--border-radius);
+      }
+
+      &:first-child {
+        border-bottom-left-radius: var(--border-radius);
+        border-top-left-radius: var(--border-radius);
+      }
+
+      &.selected, &.selected:hover {
+        background-color: var(--main-color);
+        border-color: var(--main-color);
+        color: var(--color-text-in-main-bg);
+      }
     }
   }
 }
