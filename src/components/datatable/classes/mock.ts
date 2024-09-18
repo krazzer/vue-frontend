@@ -365,7 +365,13 @@ class DataTableMock {
             ],
             headers: ['id', 'name', 'template', 'slug'],
             cells: {'name': {'type': 'page'}},
+            pages: [1, 2, 3],
             data: data,
+            languages: [
+                {key: 'en', label: 'English'},
+                {key: 'nl', label: 'Dutch'},
+            ],
+            language: 'en',
             instance: 'pages',
             class: 'pages',
             form: {

@@ -39,6 +39,8 @@ export default defineComponent({
       form: <any>[],
       editData: <any>[],
       error: '',
+      language: <any>null,
+      languages: <any>null,
       page: 1,
       headers: [],
       highlight: '',
@@ -95,11 +97,13 @@ export default defineComponent({
     },
 
     convertSettings(settings: any) {
-      this.headers = settings.headers;
-      this.data    = settings.data;
-      this.form    = settings.form;
-      this.buttons = settings.buttons;
-      this.pages   = settings.pages;
+      this.headers   = settings.headers;
+      this.data      = settings.data;
+      this.form      = settings.form;
+      this.buttons   = settings.buttons;
+      this.pages     = settings.pages;
+      this.languages = settings.languages;
+      this.language  = settings.language;
     },
 
     clearSearch() {
@@ -322,7 +326,9 @@ export default defineComponent({
               {{ pageNr ? pageNr : '...' }}
             </span>
           </div>
-          <v-text-field prepend-inner-icon="mdi-magnify" v-model="search" class="search"
+          <v-select v-if="languages" :items="languages" item-title="label"
+                    item-value="key" density="compact" class="language" v-model="language"/>
+          <v-text-field prepend-inner-icon="mdi-magnify" v-model="search" class="search" density="compact"
                         :placeholder="$translator.tl('general.search')" @keydown="searchKeyDown" @keyup="searchKeyUp">
             <template v-slot:append-inner>
               <v-icon v-if="search" @click="clearSearch">mdi-close</v-icon>
@@ -398,17 +404,69 @@ export default defineComponent({
           opacity: .3;
         }
       }
+    }
 
-      .search {
-        max-width: 250px;
-        height: 36px;
-        margin-left: auto;
+    .pages {
+      display: inline-block;
+      margin-left: auto;
+      margin-right: 5px;
 
-        :deep(input) {
-          min-height: auto;
-          padding: 6px 10px;
+      .page {
+        display: inline-block;
+        padding: 5px;
+        border: 1px solid var(--color-line);
+        min-width: 38px;
+        text-align: center;
+        margin-right: -1px;
+
+        &:not(.disabled):hover {
+          background-color: var(--color-background-shade3);
+          cursor: pointer;
+        }
+
+        &:last-child {
+          border-bottom-right-radius: var(--border-radius);
+          border-top-right-radius: var(--border-radius);
+        }
+
+        &:first-child {
+          border-bottom-left-radius: var(--border-radius);
+          border-top-left-radius: var(--border-radius);
+        }
+
+        &.selected, &.selected:hover {
+          background-color: var(--main-color);
+          border-color: var(--main-color);
+          color: var(--color-text-in-main-bg);
         }
       }
+    }
+
+    .language, .search {
+      max-height: 36px;
+
+      :deep(input), :deep(.v-field__input) {
+        min-height: auto;
+        padding: 6px 10px;
+      }
+    }
+
+    .language {
+      max-width: 200px;
+      margin-left: auto;
+    }
+
+    .pages ~ .search, .language ~ .search {
+      margin-left: 0;
+    }
+
+    .pages ~ .language {
+      margin-left: 0;
+    }
+
+    .search {
+      max-width: 250px;
+      margin-left: auto;
     }
   }
 
@@ -450,46 +508,6 @@ export default defineComponent({
         }
       }
     }
-  }
-
-  .pages {
-    display: inline-block;
-    margin-left: auto;
-    margin-right: 5px;
-
-    .page {
-      display: inline-block;
-      padding: 5px;
-      border: 1px solid var(--color-line);
-      min-width: 38px;
-      text-align: center;
-      margin-right: -1px;
-
-      &:not(.disabled):hover {
-        background-color: var(--color-background-shade3);
-        cursor: pointer;
-      }
-
-      &:last-child {
-        border-bottom-right-radius: var(--border-radius);
-        border-top-right-radius: var(--border-radius);
-      }
-
-      &:first-child {
-        border-bottom-left-radius: var(--border-radius);
-        border-top-left-radius: var(--border-radius);
-      }
-
-      &.selected, &.selected:hover {
-        background-color: var(--main-color);
-        border-color: var(--main-color);
-        color: var(--color-text-in-main-bg);
-      }
-    }
-  }
-
-  .pages ~ .search {
-    margin-left: 0;
   }
 
   .bottom-bar {
