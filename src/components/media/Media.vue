@@ -9,6 +9,7 @@ export default defineComponent({
       files: <any>[],
       isSelecting: false,
       selectedFiles: <any>[],
+      selectedFilesCut: <any>[],
       path: <any>[],
     };
   },
@@ -29,6 +30,15 @@ export default defineComponent({
      */
     canClickPath(index: number){
       return index != Object.keys(this.path).length - 1;
+    },
+
+    /**
+     * Cut selected items
+     * @param event
+     */
+    cut(event: MouseEvent){
+      event.stopPropagation();
+      this.selectedFilesCut = [...this.selectedFiles];
     },
 
     /**
@@ -66,11 +76,17 @@ export default defineComponent({
      * @param id
      */
     getFileClasses(id: number) {
+      let classes = [];
+
       if (this.selectedFiles.includes(id)) {
-        return ['selected'];
+        classes.push('selected');
       }
 
-      return [];
+      if (this.selectedFilesCut.includes(id)) {
+        classes.push('cut');
+      }
+
+      return classes;
     },
 
     /**
@@ -107,12 +123,14 @@ export default defineComponent({
       <v-btn @click="handleFileImport" prepend-icon="mdi-file-upload-outline">Uploaden</v-btn>
       <v-btn @click="newFolder" prepend-icon="mdi-folder-plus-outline">Nieuwe map</v-btn>
       <input ref="uploader" class="d-none" type="file" multiple @change="onFileChanged"/>
+      <v-btn @click="cut" prepend-icon="mdi-content-cut">
+        Knip<span v-if="selectedFilesCut.length"> ({{ selectedFilesCut.length }})</span>
+      </v-btn>
     </div>
     <ul class="media__path" v-if="Object.keys(path).length">
       <li><span class="clickable" @click="open(null)">🏠</span></li>
       <li v-for="(name, id, i) in path">
-        <span :class="canClickPath(i) ? 'clickable' : ''"
-              @click="canClickPath(i) ? open(id) : null">
+        <span :class="canClickPath(i) ? 'clickable' : ''" @click="canClickPath(i) ? open(id) : null">
           {{ name }}
         </span>
       </li>
@@ -172,6 +190,10 @@ export default defineComponent({
         line-height: 14px;
         border-radius: 2px;
       }
+    }
+
+    &.cut{
+      opacity: .3;
     }
   }
 
