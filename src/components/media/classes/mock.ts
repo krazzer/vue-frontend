@@ -34,8 +34,28 @@ class MediaMock {
             let path       = this.getPathById(folderId);
 
             ids.forEach((id: number) => {
-                mediaFiles.push({id: id, name: 'Somepastedfolder', isDir: true});
+                mediaFiles.push({id: id, name: 'Some pasted folder', isDir: true});
             });
+
+            return [200, {files: mediaFiles, path: path}];
+        });
+
+        mocker.onGet("/api/media/key").reply((request) => {
+            let params   = request.params;
+            let folderId = params.folder;
+            let id       = params.id;
+            let name     = params.name;
+
+            let mediaFiles = this.getFilesById(folderId);
+            let path       = this.getPathById(folderId);
+            let index      = this.getIndexById(id, mediaFiles);
+
+            if (index) {
+                let file = mediaFiles[index];
+                file.key = name;
+
+                mediaFiles[index] = file;
+            }
 
             return [200, {files: mediaFiles, path: path}];
         });
@@ -44,7 +64,7 @@ class MediaMock {
     /**
      * @param id
      */
-    getFilesById(id: number): Array<object> {
+    getFilesById(id: number): Array<any> {
         if (!id) {
             return this.appMocker.homeMock.getMediaFiles();
         } else if (this.subFolderIds.includes(id)) {
@@ -74,6 +94,22 @@ class MediaMock {
         } else {
             return {1: 'Folder'};
         }
+    }
+
+    /**
+     * @param id
+     * @param files
+     */
+    getIndexById(id: number, files: Array<any>): null | number {
+        let index = null;
+
+        files.forEach((file, i) => {
+            if (file.id == id) {
+                index = i;
+            }
+        });
+
+        return index;
     }
 }
 

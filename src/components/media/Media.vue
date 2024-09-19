@@ -43,6 +43,27 @@ export default defineComponent({
     },
 
     /**
+     * Cut selected items
+     * @param event
+     */
+    async editKey(event: MouseEvent){
+      event.stopPropagation();
+
+      let name = prompt('Geef een naam op voor de key van dit bestand', '');
+
+      await axios
+          .get('/api/media/key', {params: {name: name, folder: this.currentFolderId, id: this.selectedFiles[0]}})
+          .then((response: any) => {
+            this.files = response.data.files;
+
+            this.selectedFilesCut = [];
+            this.selectedFiles    = [];
+          }).catch((error: any) => {
+            console.error(error);
+          });
+    },
+
+    /**
      * Show file upload when clicking button
      */
     handleFileImport() {
@@ -150,6 +171,7 @@ export default defineComponent({
       <v-btn v-if="selectedFilesCut.length" @click="paste" prepend-icon="mdi-content-paste">
         Plak<span v-if="selectedFilesCut.length"> ({{ selectedFilesCut.length }})</span>
       </v-btn>
+      <v-btn v-if="selectedFiles.length == 1" @click="editKey" prepend-icon="mdi-lock">Edit key</v-btn>
     </div>
     <ul class="media__path" v-if="Object.keys(path).length">
       <li><span class="clickable" @click="open(null)">🏠</span></li>
