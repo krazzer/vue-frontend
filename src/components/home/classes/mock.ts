@@ -12,15 +12,6 @@ class HomeMock {
         let pagesDataTable   = dataTableMock.getPagesData();
         let contentDataTable = dataTableMock.getContentData();
 
-        let mediaFiles = [
-            {id: 1, name: 'Folder', isDir: true}, {id: 2, name: 'Folder', isDir: true},
-            {id: 3, name: 'Folder', isDir: true}, {id: 4, name: 'Folder', isDir: true},
-            {id: 5, name: 'Folder', isDir: true}, {id: 6, name: 'Folder', isDir: true},
-            {id: 7, name: 'Folder', isDir: true}, {id: 8, name: 'Folder', isDir: true},
-            {id: 9, name: 'Folder', isDir: true}, {id: 10, name: 'Folder', isDir: true},
-            {id: 11, name: 'Folder', isDir: true}, {id: 12, name: 'Folder', isDir: true},
-        ];
-
         mocker.onGet(moduleRegExp).reply((requestConfig) => {
             let module = this.getModuleName(requestConfig.url);
             let params = {html: module, selectedMenuItem: ''};
@@ -34,7 +25,7 @@ class HomeMock {
                 'pages': {dataTable: pagesDataTable},
                 'content': {dataTable: contentDataTable},
                 '': {dataTable: pagesDataTable},
-                'media': {media: {files: mediaFiles}},
+                'media': {media: {files: this.getMediaFiles()}},
                 'settings': {form: this.getSettingsForm()},
             };
 
@@ -58,6 +49,17 @@ class HomeMock {
             loginMock.loggedIn    = false;
             return [200];
         });
+    }
+
+    getMediaFiles(){
+        return [
+            {id: 1, name: 'Folder', isDir: true}, {id: 2, name: 'Folder', isDir: true},
+            {id: 3, name: 'Folder', isDir: true}, {id: 4, name: 'Folder', isDir: true},
+            {id: 5, name: 'Folder', isDir: true}, {id: 6, name: 'Folder', isDir: true},
+            {id: 7, name: 'Folder', isDir: true}, {id: 8, name: 'Folder', isDir: true},
+            {id: 9, name: 'Folder', isDir: true}, {id: 10, name: 'Folder', isDir: true},
+            {id: 11, name: 'Folder', isDir: true}, {id: 12, name: 'Folder', isDir: true},
+        ];
     }
 
     /**

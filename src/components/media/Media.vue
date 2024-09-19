@@ -8,7 +8,8 @@ export default defineComponent({
     return {
       files: <any>[],
       isSelecting: false,
-      selectedFiles: <any>[]
+      selectedFiles: <any>[],
+      path: <any>[],
     };
   },
   mounted() {
@@ -23,13 +24,33 @@ export default defineComponent({
     });
   },
   methods: {
+    /**
+     * @param index
+     */
+    canClickPath(index: number){
+      return index != Object.keys(this.path).length - 1;
+    },
+
+    /**
+     * Show file upload when clicking button
+     */
     handleFileImport() {
       let mediaComponent: any = this;
       mediaComponent.$refs.uploader.click();
     },
+
+    /**
+     * Action when file has been selected for upload
+     * @param e
+     */
     onFileChanged(e: any) {
       console.log(e.target.files);
     },
+
+    /**
+     * @param id
+     * @param event
+     */
     selectFile(id: number, event: MouseEvent) {
       if (event.shiftKey) {
         if (!this.selectedFiles.includes(id)) {
@@ -40,6 +61,10 @@ export default defineComponent({
       }
       event.stopPropagation();
     },
+
+    /**
+     * @param id
+     */
     getFileClasses(id: number) {
       if (this.selectedFiles.includes(id)) {
         return ['selected'];
@@ -47,6 +72,10 @@ export default defineComponent({
 
       return [];
     },
+
+    /**
+     * Action when clicking the 'new folder' button
+     */
     async newFolder() {
       let name = prompt('Geef een naam op voor de nieuwe map', 'Nieuwe map');
 
@@ -58,6 +87,16 @@ export default defineComponent({
             console.error(error);
           });
     },
+    async open(id: number | null) {
+      await axios
+          .get('/api/media/open', {params: {id: id}})
+          .then((response: any) => {
+            this.files = response.data.files;
+            this.path  = response.data.path;
+          }).catch((error: any) => {
+            console.error(error);
+          });
+    }
   }
 });
 </script>
@@ -69,11 +108,17 @@ export default defineComponent({
       <v-btn @click="newFolder" prepend-icon="mdi-folder-plus-outline">Nieuwe map</v-btn>
       <input ref="uploader" class="d-none" type="file" multiple @change="onFileChanged"/>
     </div>
-    <div class="media__path">
-      🏠
-    </div>
+    <ul class="media__path" v-if="Object.keys(path).length">
+      <li><span class="clickable" @click="open(null)">🏠</span></li>
+      <li>
+        <span v-for="(name, id, i) in path" :class="canClickPath(i) ? 'clickable' : ''"
+              @click="canClickPath(i) ? open(id) : null">
+          {{ name }}
+        </span>
+      </li>
+    </ul>
     <div class="media__files">
-      <div class="media__file" v-for="file in files" @click="selectFile(file.id, $event)"
+      <div class="media__file" v-for="file in files" @click="selectFile(file.id, $event)" @dblclick="open(file.id)"
            :class="getFileClasses(file.id)">
         <div class="icon"></div>
         <div class="name"><span>{{ file.name }}</span></div>
@@ -146,9 +191,33 @@ export default defineComponent({
     }
   }
 
-  &__path{
+  &__path {
     background-color: var(--color-background-shade2);
     padding: 10px 20px;
+    list-style: none;
+    margin: 0;
+
+    li{
+      display: inline-block;
+
+      span{
+        &.clickable {
+          cursor: pointer;
+          color: var(--main-color)
+        }
+      }
+
+      &:before{
+        content: '/';
+        margin: 0 15px;
+      }
+
+      &:first-child{
+        &:before{
+          display: none;
+        }
+      }
+    }
   }
 }
 </style>

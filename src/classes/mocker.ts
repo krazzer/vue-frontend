@@ -29,6 +29,6 @@ export class Mocker {
         this.loginMock.mock(this.mocker);
         this.homeMock.mock(this.mocker);
         this.appMock.mock(this.mocker);
-        this.mediaMock.mock(this.mocker);
+        this.mediaMock.mock(this.mocker, this);
     }
 }
