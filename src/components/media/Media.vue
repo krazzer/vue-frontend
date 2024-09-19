@@ -49,7 +49,7 @@ export default defineComponent({
     async editKey(event: MouseEvent){
       event.stopPropagation();
 
-      let name = prompt('Geef een naam op voor de key van dit bestand', '');
+      let name = prompt(this.$translator.tl('media.editKeyPrompt'), '');
 
       await axios
           .get('/api/media/key', {params: {name: name, folder: this.currentFolderId, id: this.selectedFiles[0]}})
@@ -131,7 +131,7 @@ export default defineComponent({
      * Action when clicking the 'new folder' button
      */
     async newFolder() {
-      let name = prompt('Geef een naam op voor de nieuwe map', 'Nieuwe map');
+      let name = prompt(this.$translator.tl('media.newFolderPrompt'), this.$translator.tl('media.newFolderPlaceholder'));
 
       await axios
           .get('/api/media/newfolder', {params: {name: name}})
@@ -164,14 +164,22 @@ export default defineComponent({
 <template>
   <div class="media">
     <div class="media__toolbar">
-      <v-btn @click="handleFileImport" prepend-icon="mdi-file-upload-outline">Uploaden</v-btn>
-      <v-btn @click="newFolder" prepend-icon="mdi-folder-plus-outline">Nieuwe map</v-btn>
+      <v-btn @click="handleFileImport" prepend-icon="mdi-file-upload-outline">
+        {{ $translator.tl('media.upload') }}
+      </v-btn>
+      <v-btn @click="newFolder" prepend-icon="mdi-folder-plus-outline">
+        {{ $translator.tl('media.newFolder') }}
+      </v-btn>
       <input ref="uploader" class="d-none" type="file" multiple @change="onFileChanged"/>
-      <v-btn v-if="selectedFiles.length" @click="cut" prepend-icon="mdi-content-cut">Knip</v-btn>
+      <v-btn v-if="selectedFiles.length" @click="cut" prepend-icon="mdi-content-cut">
+        {{ $translator.tl('media.cut') }}
+      </v-btn>
       <v-btn v-if="selectedFilesCut.length" @click="paste" prepend-icon="mdi-content-paste">
         Plak<span v-if="selectedFilesCut.length"> ({{ selectedFilesCut.length }})</span>
       </v-btn>
-      <v-btn v-if="selectedFiles.length == 1" @click="editKey" prepend-icon="mdi-lock">Edit key</v-btn>
+      <v-btn v-if="selectedFiles.length == 1" @click="editKey" prepend-icon="mdi-lock">
+        {{ $translator.tl('media.editKey') }}
+      </v-btn>
     </div>
     <ul class="media__path" v-if="Object.keys(path).length">
       <li><span class="clickable" @click="open(null)">🏠</span></li>
