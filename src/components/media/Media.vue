@@ -185,7 +185,20 @@ export default defineComponent({
      * @param search
      */
     async search(search: string){
-      console.log('zutsj! ' + search);
+      if( ! search){
+        await this.open(this.currentFolderId);
+        return;
+      }
+
+      await axios
+          .get('/api/media/search', {params: {search: search}})
+          .then((response: any) => {
+            this.files           = response.data.files;
+            this.path            = response.data.path;
+            this.selectedFiles   = [];
+          }).catch((error: any) => {
+            console.error(error);
+          });
     }
   }
 });

@@ -50,7 +50,7 @@ class MediaMock {
             ids.forEach((id: number) => {
                 let index = this.getIndexById(id, mediaFiles);
 
-                if(index) {
+                if (index) {
                     mediaFiles.splice(index, 1);
                 }
             });
@@ -76,6 +76,13 @@ class MediaMock {
             }
 
             return [200, {files: mediaFiles, path: path}];
+        });
+
+        mocker.onGet("/api/media/search").reply((request) => {
+            let search     = request.params.search;
+            let mediaFiles = [{id: 1, name: search, isDir: true}];
+
+            return [200, {files: mediaFiles, path: []}];
         });
     }
 
