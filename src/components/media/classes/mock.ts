@@ -40,6 +40,24 @@ class MediaMock {
             return [200, {files: mediaFiles, path: path}];
         });
 
+        mocker.onGet("/api/media/delete").reply((request) => {
+            let params     = request.params;
+            let ids        = params.ids;
+            let folderId   = params.folder;
+            let mediaFiles = this.getFilesById(folderId);
+            let path       = this.getPathById(folderId);
+
+            ids.forEach((id: number) => {
+                let index = this.getIndexById(id, mediaFiles);
+
+                if(index) {
+                    mediaFiles.splice(index, 1);
+                }
+            });
+
+            return [200, {files: mediaFiles, path: path}];
+        });
+
         mocker.onGet("/api/media/key").reply((request) => {
             let params   = request.params;
             let folderId = params.folder;

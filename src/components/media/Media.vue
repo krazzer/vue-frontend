@@ -43,10 +43,31 @@ export default defineComponent({
     },
 
     /**
+     * @param event
+     */
+    async deleteFile(event: MouseEvent) {
+      event.stopPropagation();
+      let doDelete = confirm(this.$translator.tl('media.deleteConfirm'));
+
+      if( ! doDelete){
+        return;
+      }
+
+      await axios
+          .get('/api/media/delete', {params: {folder: this.currentFolderId, ids: this.selectedFiles}})
+          .then((response: any) => {
+            this.files         = response.data.files;
+            this.selectedFiles = [];
+          }).catch((error: any) => {
+            console.error(error);
+          });
+    },
+
+    /**
      * Cut selected items
      * @param event
      */
-    async editKey(event: MouseEvent){
+    async editKey(event: MouseEvent) {
       event.stopPropagation();
 
       let name = prompt(this.$translator.tl('media.editKeyPrompt'), '');
@@ -171,6 +192,9 @@ export default defineComponent({
         {{ $translator.tl('media.newFolder') }}
       </v-btn>
       <input ref="uploader" class="d-none" type="file" multiple @change="onFileChanged"/>
+      <v-btn v-if="selectedFiles.length" @click="deleteFile" prepend-icon="mdi-delete">
+        {{ $translator.tl('media.delete') }}
+      </v-btn>
       <v-btn v-if="selectedFiles.length" @click="cut" prepend-icon="mdi-content-cut">
         {{ $translator.tl('media.cut') }}
       </v-btn>
@@ -229,7 +253,7 @@ export default defineComponent({
       border-radius: var(--border-radius);
       position: relative;
 
-      .lock-icon{
+      .lock-icon {
         position: absolute;
         bottom: 10px;
         right: 16px;
@@ -243,7 +267,7 @@ export default defineComponent({
       margin-right: -5px;
       justify-content: center;
 
-      span{
+      span {
         padding: 2px 5px 3px;
         line-height: 20px;
         border-radius: 2px;

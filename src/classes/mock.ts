@@ -15,6 +15,8 @@ class AppMock {
                 'media.newFolder': 'New folder',
                 'media.cut': 'Cut',
                 'media.editKey': 'Edit key',
+                'media.delete': 'Delete',
+                'media.deleteConfirm': 'Are you sure you want to delete the selected files?',
             }];
         });
     }
