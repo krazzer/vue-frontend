@@ -228,7 +228,25 @@ export default defineComponent({
     }
 
     .name {
-      text-align: center;
+      display: flex;
+      margin-left: -5px;
+      margin-right: -5px;
+      justify-content: center;
+
+      span{
+        padding: 2px 5px 3px;
+        line-height: 20px;
+        border-radius: 2px;
+        margin-top: 2px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        max-width: 130px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        width: fit-content;
+        text-align: center;
+      }
     }
 
     &.selected {
@@ -239,10 +257,7 @@ export default defineComponent({
       .name span {
         background-color: var(--color-action);
         color: var(--color-white);
-        display: inline-block;
-        padding: 2px 3px 3px;
-        line-height: 14px;
-        border-radius: 2px;
+
       }
     }
 
