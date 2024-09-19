@@ -1,8 +1,10 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
 import axios from "axios";
+import ToolbarSearch from "@/components/toolbarsearch/ToolbarSearch.vue";
 
 export default defineComponent({
+  components: {ToolbarSearch},
   props: ['settings'],
   data() {
     return {
@@ -177,6 +179,13 @@ export default defineComponent({
           }).catch((error: any) => {
             console.error(error);
           });
+    },
+
+    /**
+     * @param search
+     */
+    async search(search: string){
+      console.log('zutsj! ' + search);
     }
   }
 });
@@ -204,6 +213,10 @@ export default defineComponent({
       <v-btn v-if="selectedFiles.length == 1" @click="editKey" prepend-icon="mdi-lock">
         {{ $translator.tl('media.editKey') }}
       </v-btn>
+
+      <div class="media__toolbar__right">
+        <ToolbarSearch @search="search" />
+      </div>
     </div>
     <ul class="media__path" v-if="Object.keys(path).length">
       <li><span class="clickable" @click="open(null)">🏠</span></li>
@@ -237,6 +250,10 @@ export default defineComponent({
       input {
         display: none;
       }
+    }
+
+    &__right{
+      margin-left: auto;
     }
   }
 

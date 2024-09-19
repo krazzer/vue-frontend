@@ -5,10 +5,11 @@ import EditDialog from "./subcomponents/EditDialog.vue";
 import Row from "./subcomponents/Row.vue";
 import Svg from "@/components/svg/Svg.vue";
 import DragAndDropPages from "./classes/dragAndDropPages";
+import ToolbarSearch from "@/components/toolbarsearch/ToolbarSearch.vue";
 
 export default defineComponent({
   name: "DataTable",
-  components: {Svg, EditDialog, Row},
+  components: {ToolbarSearch, Svg, EditDialog, Row},
   props: {
     darkMode: Boolean,
     settings: {
@@ -202,20 +203,9 @@ export default defineComponent({
           });
     },
 
-    searchKeyDown(event: KeyboardEvent) {
-      if (event.key == "Escape") {
-        this.search = '';
-      }
-    },
-
-    searchKeyUp() {
-      let searchOnKeyUp = this.search;
-
-      setTimeout(async () => {
-        if (this.search == searchOnKeyUp) {
-          await this.filter();
-        }
-      }, 300);
+    async searchAction(search: string) {
+      this.search = search;
+      await this.filter();
     },
 
     async save(dialogEditId: any, data: any) {
@@ -330,20 +320,17 @@ export default defineComponent({
               {{ button.label }}
             </v-btn>
           </template>
-          <div v-if="pages" class="pages">
+          <div class="datatable__toolbar__buttons__right">
+            <div v-if="pages" class="pages">
             <span class="page" :class="pageNr ? (pageNr == page ? 'selected' : '') : 'disabled'" v-for="pageNr in pages"
                   @click="setPage(pageNr)">
               {{ pageNr ? pageNr : '...' }}
             </span>
+            </div>
+            <v-select v-if="languages" :items="languages" item-title="label" @update:modelValue="changeLanguage"
+                      item-value="key" density="compact" class="language" v-model="language"/>
+            <ToolbarSearch @search="searchAction"/>
           </div>
-          <v-select v-if="languages" :items="languages" item-title="label" @update:modelValue="changeLanguage"
-                    item-value="key" density="compact" class="language" v-model="language"/>
-          <v-text-field prepend-inner-icon="mdi-magnify" v-model="search" class="search" density="compact"
-                        :placeholder="$translator.tl('general.search')" @keydown="searchKeyDown" @keyup="searchKeyUp">
-            <template v-slot:append-inner>
-              <v-icon v-if="search" @click="clearSearch">mdi-close</v-icon>
-            </template>
-          </v-text-field>
         </div>
       </div>
       <div class="datatable__table">
@@ -409,6 +396,13 @@ export default defineComponent({
         }
       }
 
+      &__right{
+        margin-left: auto;
+        display: flex;
+        gap: 5px;
+        white-space: nowrap;
+      }
+
       .v-btn--disabled {
         :deep(svg) {
           opacity: .3;
@@ -416,31 +410,14 @@ export default defineComponent({
       }
     }
 
-    .language, .search {
+    .language {
       max-height: 36px;
+      max-width: 200px;
 
       :deep(input), :deep(.v-field__input) {
         min-height: auto;
         padding: 6px 10px;
       }
-    }
-
-    .language {
-      max-width: 200px;
-      margin-left: auto;
-    }
-
-    .pages ~ .search, .language ~ .search {
-      margin-left: 0;
-    }
-
-    .pages ~ .language {
-      margin-left: 0;
-    }
-
-    .search {
-      max-width: 250px;
-      margin-left: auto;
     }
   }
 
@@ -486,6 +463,7 @@ export default defineComponent({
 
   .bottom-bar {
     display: flex;
+    justify-content: flex-end;
 
     .pages {
       margin-top: 20px;
@@ -494,8 +472,6 @@ export default defineComponent({
 
   .pages {
     display: inline-block;
-    margin-left: auto;
-    margin-right: 5px;
 
     .page {
       display: inline-block;
