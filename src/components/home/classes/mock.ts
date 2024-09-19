@@ -55,7 +55,7 @@ class HomeMock {
         return [
             {id: 1, name: 'Folder with an exceptionally long name that will probably not fit', isDir: true},
             {id: 2, name: 'Folderwithanexceptionallylongnameandhasnospacesaswell', isDir: true},
-            {id: 3, name: 'Folder', isDir: true}, {id: 4, name: 'Folder', isDir: true},
+            {id: 3, name: 'Folder with key', isDir: true, key: 'somekey'}, {id: 4, name: 'Folder', isDir: true},
             {id: 5, name: 'Folder', isDir: true}, {id: 6, name: 'Folder', isDir: true},
             {id: 7, name: 'Folder', isDir: true}, {id: 8, name: 'Folder', isDir: true},
             {id: 9, name: 'Folder', isDir: true}, {id: 10, name: 'Folder', isDir: true},

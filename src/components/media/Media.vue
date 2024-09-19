@@ -192,7 +192,9 @@ export default defineComponent({
     <div class="media__files">
       <div class="media__file" v-for="file in files" @click="selectFile(file.id, $event)" @dblclick="open(file.id)"
            :class="getFileClasses(file.id)">
-        <div class="icon"></div>
+        <div class="icon">
+          <i v-if="file.key" class="mdi mdi-lock lock-icon"></i>
+        </div>
         <div class="name"><span>{{ file.name }}</span></div>
       </div>
     </div>
@@ -225,6 +227,14 @@ export default defineComponent({
       background: url("@/assets/icons/map.svg") no-repeat center;
       background-size: 90px 90px;
       border-radius: var(--border-radius);
+      position: relative;
+
+      .lock-icon{
+        position: absolute;
+        bottom: 10px;
+        right: 16px;
+        font-size: 20px;
+      }
     }
 
     .name {
