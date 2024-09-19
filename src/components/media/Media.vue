@@ -11,6 +11,7 @@ export default defineComponent({
       selectedFiles: <any>[],
       selectedFilesCut: <any>[],
       path: <any>[],
+      currentFolderId: <number | null>null,
     };
   },
   mounted() {
@@ -28,7 +29,7 @@ export default defineComponent({
     /**
      * @param index
      */
-    canClickPath(index: number){
+    canClickPath(index: number) {
       return index != Object.keys(this.path).length - 1;
     },
 
@@ -36,7 +37,7 @@ export default defineComponent({
      * Cut selected items
      * @param event
      */
-    cut(event: MouseEvent){
+    cut(event: MouseEvent) {
       event.stopPropagation();
       this.selectedFilesCut = [...this.selectedFiles];
     },
@@ -55,6 +56,22 @@ export default defineComponent({
      */
     onFileChanged(e: any) {
       console.log(e.target.files);
+    },
+
+    /**
+     * Paste the selected files to the current folder
+     */
+    async paste() {
+      await axios
+          .get('/api/media/paste', {params: {ids: this.selectedFilesCut, folder: this.currentFolderId}})
+          .then((response: any) => {
+            this.files = response.data.files;
+
+            this.selectedFilesCut = [];
+            this.selectedFiles    = [];
+          }).catch((error: any) => {
+            console.error(error);
+          });
     },
 
     /**
@@ -103,12 +120,18 @@ export default defineComponent({
             console.error(error);
           });
     },
+
+    /**
+     * @param id
+     */
     async open(id: number | null) {
       await axios
           .get('/api/media/open', {params: {id: id}})
           .then((response: any) => {
-            this.files = response.data.files;
-            this.path  = response.data.path;
+            this.files           = response.data.files;
+            this.path            = response.data.path;
+            this.selectedFiles   = [];
+            this.currentFolderId = id;
           }).catch((error: any) => {
             console.error(error);
           });
@@ -123,8 +146,9 @@ export default defineComponent({
       <v-btn @click="handleFileImport" prepend-icon="mdi-file-upload-outline">Uploaden</v-btn>
       <v-btn @click="newFolder" prepend-icon="mdi-folder-plus-outline">Nieuwe map</v-btn>
       <input ref="uploader" class="d-none" type="file" multiple @change="onFileChanged"/>
-      <v-btn @click="cut" prepend-icon="mdi-content-cut">
-        Knip<span v-if="selectedFilesCut.length"> ({{ selectedFilesCut.length }})</span>
+      <v-btn v-if="selectedFiles.length" @click="cut" prepend-icon="mdi-content-cut">Knip</v-btn>
+      <v-btn v-if="selectedFilesCut.length" @click="paste" prepend-icon="mdi-content-paste">
+        Plak<span v-if="selectedFilesCut.length"> ({{ selectedFilesCut.length }})</span>
       </v-btn>
     </div>
     <ul class="media__path" v-if="Object.keys(path).length">
@@ -192,7 +216,7 @@ export default defineComponent({
       }
     }
 
-    &.cut{
+    &.cut {
       opacity: .3;
     }
   }
@@ -219,23 +243,23 @@ export default defineComponent({
     list-style: none;
     margin: 0;
 
-    li{
+    li {
       display: inline-block;
 
-      span{
+      span {
         &.clickable {
           cursor: pointer;
           color: var(--main-color)
         }
       }
 
-      &:before{
+      &:before {
         content: '/';
         margin: 0 15px;
       }
 
-      &:first-child{
-        &:before{
+      &:first-child {
+        &:before {
           display: none;
         }
       }
