@@ -16,6 +16,15 @@ class MediaMock {
 
             if( ! id){
                 return [200, {files: appMocker.homeMock.getMediaFiles(), path: {}}];
+            } else if([12,13,14,15,16,17,18,19].includes(id)) {
+                let mediaFiles = [
+                    {id: 16, name: 'Subsubfolder', isDir: true},
+                    {id: 17, name: 'Subsubfolder', isDir: true},
+                    {id: 18, name: 'Subsubfolder', isDir: true},
+                    {id: 19, name: 'Subsubfolder', isDir: true},
+                ];
+
+                return [200, {files: mediaFiles, path: {1: 'Folder', 12: 'Subfolder'}}];
             } else {
                 let mediaFiles = [
                     {id: 12, name: 'Subfolder', isDir: true},

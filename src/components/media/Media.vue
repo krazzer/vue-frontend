@@ -110,8 +110,8 @@ export default defineComponent({
     </div>
     <ul class="media__path" v-if="Object.keys(path).length">
       <li><span class="clickable" @click="open(null)">🏠</span></li>
-      <li>
-        <span v-for="(name, id, i) in path" :class="canClickPath(i) ? 'clickable' : ''"
+      <li v-for="(name, id, i) in path">
+        <span :class="canClickPath(i) ? 'clickable' : ''"
               @click="canClickPath(i) ? open(id) : null">
           {{ name }}
         </span>
