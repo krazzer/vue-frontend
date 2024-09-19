@@ -217,7 +217,7 @@ export default defineComponent({
   &__file {
     float: left;
     padding: 10px;
-    height: 160px;
+    height: 180px;
 
     .icon {
       width: 120px;
