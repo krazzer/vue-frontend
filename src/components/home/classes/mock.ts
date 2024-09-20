@@ -155,6 +155,7 @@ class HomeMock {
             },
             html: 'pages',
             selectedMenuItem: 'pages',
+            role: 'developer',
         }
     }
 }

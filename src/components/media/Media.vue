@@ -5,7 +5,7 @@ import ToolbarSearch from "@/components/toolbarsearch/ToolbarSearch.vue";
 
 export default defineComponent({
   components: {ToolbarSearch},
-  props: ['settings'],
+  props: ['settings', 'role'],
   data() {
     return {
       files: <any>[],
@@ -231,7 +231,7 @@ export default defineComponent({
       <v-btn v-if="selectedFilesCut.length" @click="paste" prepend-icon="mdi-content-paste">
         Plak<span v-if="selectedFilesCut.length"> ({{ selectedFilesCut.length }})</span>
       </v-btn>
-      <v-btn v-if="selectedFiles.length == 1" @click="editKey" prepend-icon="mdi-lock">
+      <v-btn v-if="selectedFiles.length == 1 && $appUtil.roleIsDev(role)" @click="editKey" prepend-icon="mdi-lock">
         {{ $translator.tl('media.editKey') }}
       </v-btn>
 

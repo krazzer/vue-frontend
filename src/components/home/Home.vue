@@ -30,6 +30,7 @@ export default defineComponent({
       html: '',
       component: '',
       mobileMenuOpen: false,
+      role: '',
     }
   },
   mounted() {
@@ -87,6 +88,7 @@ export default defineComponent({
               this.$router.push({name: 'login'});
             } else {
               this.menu = response.data.menu;
+              this.role = response.data.role;
 
               if (!this.selectedMenuItem) {
                 this.selectedMenuItem = response.data.selectedMenuItem;
@@ -141,7 +143,7 @@ export default defineComponent({
         <span></span>
       </div>
       <span v-if="html" v-html="html"></span>
-      <Media v-if="media && Object.keys(media).length" :settings="media"/>
+      <Media v-if="media && Object.keys(media).length" :settings="media" :role="role"/>
       <DataTable v-if="dataTable" :settings="dataTable" :instance="dataTable.instance" :darkMode="darkMode"/>
       <TabbedForm v-if="form" :form="form" :data="form.data" @submit=""/>
     </div>

@@ -13,6 +13,7 @@ import {createVuetify} from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import {Translator} from "@/classes/translator";
+import {AppUtil} from "@/classes/AppUtil";
 import {DarkModeSetting} from "@/classes/DarkModeSetting";
 
 class Wrapper {
@@ -23,6 +24,7 @@ class Wrapper {
 
         app.config.globalProperties.$assets = 'src/assets/';
         app.config.globalProperties.$translator = new Translator;
+        app.config.globalProperties.$appUtil = new AppUtil;
         app.config.globalProperties.$darkMode = reactive(new DarkModeSetting);
 
         if (import.meta.env.DEV) {
