@@ -51,6 +51,8 @@ export default defineComponent({
       sortKey: '',
       sortDirection: '',
       selected: <any>[],
+      lastIndex: <number | null>null,
+      noselect: false,
     };
   },
   watch: {
@@ -163,6 +165,23 @@ export default defineComponent({
     },
 
     /**
+     * Get datatable css classes
+     */
+    getClasses() {
+      let classes = ['datatable'];
+
+      if (this.settings) {
+        classes.push(this.settings.class);
+      }
+
+      if (this.noselect) {
+        classes.push('noselect');
+      }
+
+      return classes;
+    },
+
+    /**
      * @param button
      */
     isDisabled(button: any) {
@@ -201,6 +220,17 @@ export default defineComponent({
           }).catch(error => {
             this.error = error;
           });
+    },
+
+    /**
+     * @param event
+     */
+    keyDown(event: KeyboardEvent) {
+      this.noselect = event.shiftKey;
+    },
+
+    keyUp() {
+      this.noselect = false;
     },
 
     async searchAction(search: string) {
@@ -257,10 +287,33 @@ export default defineComponent({
     /**
      * @param id
      * @param selected
+     * @param index
+     * @param event
      */
-    toggle(id: string, selected: boolean) {
+    toggle(id: string, selected: boolean, index: number, event: MouseEvent) {
       if (selected) {
-        this.selected.push(id);
+        if (event.shiftKey && this.lastIndex !== null) {
+          let start = this.lastIndex;
+          let end   = index;
+
+          if(index < this.lastIndex) {
+            start = index;
+            end   = this.lastIndex;
+          }
+
+          for (let i = start; i <= end; i++) {
+            let row = this.data[i];
+            this.selected.push(row.id);
+          }
+
+          event.preventDefault();
+
+          this.lastIndex = index;
+
+        } else {
+          this.selected.push(id);
+          this.lastIndex = index;
+        }
       } else {
         let index = this.selected.indexOf(id);
         this.selected.splice(index, 1);
@@ -307,8 +360,8 @@ export default defineComponent({
 </script>
 
 <template>
-  <div ref="datatable" class="datatable" :class="settings ? settings.class : null" v-if="instance"
-       :style="dataTableStyle">
+  <div ref="datatable" :class="getClasses()" v-if="instance" :style="dataTableStyle" @keydown="keyDown" @keyup="keyUp"
+       tabindex="0">
     <div class="datatable__error" v-if="error">
       {{ error }}
     </div>
@@ -345,9 +398,10 @@ export default defineComponent({
           </tr>
           </thead>
           <tbody>
-          <Row v-for="row in data" :row="row" :dragAndDropPages="dragAndDropPages" :headers="headers" :actions="actions"
-               :selected="isSelected(row.id)" @toggle="toggle" :settings="settings" @collapse="collapse" @edit="edit"
-               :id="row.id" :level="0" :selectedIds="selected" :max="row.max" :highlight="highlight"/>
+          <Row v-for="(row, index) in data" :row="row" :dragAndDropPages="dragAndDropPages" :headers="headers"
+               :actions="actions" :selected="isSelected(row.id)" @toggle="toggle" :settings="settings"
+               @collapse="collapse" @edit="edit" :id="row.id" :level="0" :selectedIds="selected" :max="row.max"
+               :highlight="highlight" :index="index"/>
           </tbody>
         </table>
       </div>
@@ -396,7 +450,7 @@ export default defineComponent({
         }
       }
 
-      &__right{
+      &__right {
         margin-left: auto;
         display: flex;
         gap: 5px;
@@ -502,6 +556,14 @@ export default defineComponent({
         color: var(--color-text-in-main-bg);
       }
     }
+  }
+
+  &.noselect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
   }
 }
 

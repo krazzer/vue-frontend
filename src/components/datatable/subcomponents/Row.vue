@@ -8,7 +8,7 @@ export default defineComponent({
   emits: ['collapse', 'edit', 'toggle'],
   name: "Row",
   props: ['row', 'dragAndDropPages', 'headers', 'settings', 'id', 'level', 'selected', 'selectedIds', 'max',
-    'highlight', 'actions'],
+    'highlight', 'actions', 'index'],
   data() {
     return {
       preventSelect: <boolean>false,
@@ -76,8 +76,11 @@ export default defineComponent({
       }
     },
 
-    toggleRow() {
-      this.$emit('toggle', this.id, !this.selected);
+    /**
+     * @param event
+     */
+    toggleRow(event: MouseEvent) {
+      this.$emit('toggle', this.id, !this.selected, this.index, event);
     },
 
     /**
