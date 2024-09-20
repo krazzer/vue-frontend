@@ -167,8 +167,14 @@ export default defineComponent({
 
     /**
      * @param id
+     * @param url
      */
-    async open(id: number | null) {
+    async open(id: number | null, url?: string | null) {
+      if(url){
+        window.open(url);
+        return;
+      }
+
       await axios
           .get('/api/media/open', {params: {id: id}})
           .then((response: any) => {
@@ -240,7 +246,7 @@ export default defineComponent({
       </li>
     </ul>
     <div class="media__files">
-      <div class="media__file" v-for="file in files" @click="selectFile(file.id, $event)" @dblclick="open(file.id)"
+      <div class="media__file" v-for="file in files" @click="selectFile(file.id, $event)" @dblclick="open(file.id, file.url)"
            :class="getFileClasses(file.id)">
         <div class="icon">
           <div class="thumb" :class="file.isDir ? 'folder' : ''" :style="file.thumb ? 'background-image:url(' + file.thumb + ');' : ''"></div>
