@@ -157,9 +157,11 @@ export default defineComponent({
       let name = prompt(this.$translator.tl('media.newFolderPrompt'), this.$translator.tl('media.newFolderPlaceholder'));
 
       await axios
-          .get('/api/media/newfolder', {params: {name: name}})
+          .get('/api/media/newfolder', {params: {name: name, folder: this.currentFolderId}})
           .then((response: any) => {
-            console.log(response);
+            this.files           = response.data.files;
+            this.path            = response.data.path;
+            this.selectedFiles   = [];
           }).catch((error: any) => {
             console.error(error);
           });

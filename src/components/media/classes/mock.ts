@@ -10,10 +10,14 @@ class MediaMock {
         this.subFolderIds = [12, 13, 14, 15, 16, 17, 18, 19];
 
         mocker.onGet("/api/media/newfolder").reply((request) => {
-            let name   = request.params.name;
-            let params = {name: name};
+            let name       = request.params.name;
+            let folderId   = request.params.folder;
+            let mediaFiles = this.getFilesById(folderId);
+            let path       = this.getPathById(folderId);
 
-            return [200, params];
+            mediaFiles.push({id: 100, name: name, isDir: true});
+
+            return [200, {files: mediaFiles, path: path}];
         });
 
         mocker.onGet("/api/media/open").reply((request) => {
