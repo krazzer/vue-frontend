@@ -193,9 +193,9 @@ export default defineComponent({
       await axios
           .get('/api/media/search', {params: {search: search}})
           .then((response: any) => {
-            this.files           = response.data.files;
-            this.path            = response.data.path;
-            this.selectedFiles   = [];
+            this.files         = response.data.files;
+            this.path          = response.data.path;
+            this.selectedFiles = [];
           }).catch((error: any) => {
             console.error(error);
           });
@@ -228,7 +228,7 @@ export default defineComponent({
       </v-btn>
 
       <div class="media__toolbar__right">
-        <ToolbarSearch @search="search" />
+        <ToolbarSearch @search="search"/>
       </div>
     </div>
     <ul class="media__path" v-if="Object.keys(path).length">
@@ -243,6 +243,7 @@ export default defineComponent({
       <div class="media__file" v-for="file in files" @click="selectFile(file.id, $event)" @dblclick="open(file.id)"
            :class="getFileClasses(file.id)">
         <div class="icon">
+          <div class="thumb" :class="file.isDir ? 'folder' : ''" :style="file.thumb ? 'background-image:url(' + file.thumb + ');' : ''"></div>
           <i v-if="file.key" class="mdi mdi-lock lock-icon"></i>
         </div>
         <div class="name"><span>{{ file.name }}</span></div>
@@ -265,7 +266,7 @@ export default defineComponent({
       }
     }
 
-    &__right{
+    &__right {
       margin-left: auto;
     }
   }
@@ -278,16 +279,29 @@ export default defineComponent({
     .icon {
       width: 120px;
       height: 120px;
-      background: url("@/assets/icons/map.svg") no-repeat center;
-      background-size: 90px 90px;
       border-radius: var(--border-radius);
       position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
 
       .lock-icon {
         position: absolute;
         bottom: 10px;
         right: 16px;
         font-size: 20px;
+      }
+
+      .thumb{
+        width: 90px;
+        height: 90px;
+        background-size: contain;
+        background-position: center center;
+        background-repeat: no-repeat;
+
+        &.folder{
+          background-image: url("@/assets/icons/map.svg");
+        }
       }
     }
 
@@ -298,7 +312,7 @@ export default defineComponent({
       justify-content: center;
 
       span {
-        padding: 2px 5px 3px;
+        padding: 0 3px 1px 3px;
         line-height: 20px;
         border-radius: 2px;
         margin-top: 2px;

@@ -59,7 +59,8 @@ class HomeMock {
             {id: 5, name: 'Folder', isDir: true}, {id: 6, name: 'Folder', isDir: true},
             {id: 7, name: 'Folder', isDir: true}, {id: 8, name: 'Folder', isDir: true},
             {id: 9, name: 'Folder', isDir: true}, {id: 10, name: 'Folder', isDir: true},
-            {id: 11, name: 'Folder', isDir: true}, {id: 12, name: 'Folder', isDir: true},
+            {id: 11, name: 'Image 1', isDir: false, thumb: '/cms/src/assets/images/example-image-1.jpg', url: '/cms/src/assets/images/example-image-1.jpg'},
+            {id: 12, name: 'Image 2', isDir: false, thumb: '/cms/src/assets/images/example-image-2.jpg', url: '/cms/src/assets/images/example-image-2.jpg'},
         ];
     }
 
