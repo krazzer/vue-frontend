@@ -51,7 +51,7 @@ class HomeMock {
         });
     }
 
-    getMediaFiles(){
+    getMediaFiles() {
         return [
             {id: 1, name: 'Folder with an exceptionally long name that will probably not fit', isDir: true},
             {id: 2, name: 'Folderwithanexceptionallylongnameandhasnospacesaswell', isDir: true},
@@ -59,8 +59,20 @@ class HomeMock {
             {id: 5, name: 'Folder', isDir: true}, {id: 6, name: 'Folder', isDir: true},
             {id: 7, name: 'Folder', isDir: true}, {id: 8, name: 'Folder', isDir: true},
             {id: 9, name: 'Folder', isDir: true}, {id: 10, name: 'Folder', isDir: true},
-            {id: 11, name: 'Image 1', isDir: false, thumb: '/cms/src/assets/images/example-image-1.jpg', url: '/cms/src/assets/images/example-image-1.jpg'},
-            {id: 12, name: 'Image 2', isDir: false, thumb: '/cms/src/assets/images/example-image-2.jpg', url: '/cms/src/assets/images/example-image-2.jpg'},
+            {
+                id: 11,
+                name: 'Image 1',
+                isDir: false,
+                thumb: '/cms/src/assets/images/example-image-1.jpg',
+                url: '/cms/src/assets/images/example-image-1.jpg'
+            },
+            {
+                id: 12,
+                name: 'Image 2',
+                isDir: false,
+                thumb: '/cms/src/assets/images/example-image-2.jpg',
+                url: '/cms/src/assets/images/example-image-2.jpg'
+            },
         ];
     }
 
@@ -128,12 +140,9 @@ class HomeMock {
         return {
             loggedIn: loggedIn,
             menu: {
-                pages: {label: "Pages", icon: 'pages'},
-                media: {label: "Media", icon: 'media'},
-                clients: {
-                    label: "Clients",
-                    icon: 'users'
-                },
+                pages: {label: "Pages", icon: 'view-grid'},
+                media: {label: "Media", icon: 'image-outline'},
+                clients: {label: "Clients", icon: 'account-multiple-outline'},
                 invoices: {
                     label: "Invoices",
                     icon: '<svg width="80" height="80"><rect width="80" height="80" fill="red" /></svg>',
@@ -148,9 +157,9 @@ class HomeMock {
                         },
                     }
                 },
-                visitors: {label: "Visitors", icon: 'stats'},
-                users: {label: "Users", icon: 'users'},
-                content: {label: "Content", icon: 'pages'},
+                visitors: {label: "Visitors", icon: 'google-analytics'},
+                users: {label: "Users", icon: 'account-multiple-outline'},
+                content: {label: "Content", icon: 'view-grid'},
                 settings: {label: "Settings"},
             },
             html: 'pages',

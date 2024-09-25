@@ -34,7 +34,8 @@ export default defineComponent({
   <ul>
     <li v-for="(item, key) in menu" :class="isSelected(item, key) ? 'selected' : ''">
       <a @click="openLink(key.toString(), hasSubItems(item))">
-        <Svg :svg="item.icon" /> {{ item.label }}
+        <Svg :svg="item.icon" />
+        {{ item.label }}
       </a>
       <ul v-if="item.submenu" :data-count="Object.keys(item.submenu).length">
         <li v-for="(subitem, subkey) in item.submenu" :class="selectedItem === subkey ? 'selected' : ''">
@@ -85,6 +86,13 @@ ul {
         * {
           fill: var(--color-text);
         }
+      }
+
+      i.mdi{
+        position: absolute;
+        left: 8px;
+        font-size: 22px;
+        margin-top: 1px;
       }
     }
 

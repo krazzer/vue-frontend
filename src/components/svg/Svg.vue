@@ -51,7 +51,8 @@ export default defineComponent({
 
 <template>
   <span class="icon" v-if="isSvg()" v-html="svg"></span>
-  <span class="icon" :class="'icon--' + svg" v-else v-html="icon"></span>
+  <i v-else-if="svg" :class="'mdi mdi-' + svg"></i>
+  <i v-else :class="'mdi mdi-cog'"></i>
 </template>
 
 <style lang="scss" scoped>
