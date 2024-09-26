@@ -265,8 +265,11 @@ export default defineComponent({
     /**
      * @param id
      * @param collapsed
+     * @param index
      */
-    async collapse(id: string, collapsed: boolean) {
+    async collapse(id: string, collapsed: boolean, index: number) {
+      this.data[index].collapsed = collapsed;
+
       await axios
           .get('/api/datatable/collapse', {
             params: {instance: this.instance, id: id, collapsed: collapsed}
@@ -344,6 +347,40 @@ export default defineComponent({
 
       this.page = page;
       this.filter();
+    },
+
+    /**
+     * @param index
+     */
+    parentIsOpen(index: number): boolean {
+      let row = this.data[index];
+
+      if(row.level < 1){
+        return true;
+      } else {
+        return ! this.getParentIsCollapsed(index);
+      }
+    },
+
+    /**
+     * @param index
+     */
+    getParentIsCollapsed(index: number): boolean{
+      let targetLevel = this.data[index].level;
+
+      for(let i = index; i >= 0; i--){
+        let level = this.data[i].level;
+
+        if(level < targetLevel){
+          if(this.data[i].collapsed){
+            return true;
+          } else {
+            targetLevel = level;
+          }
+        }
+      }
+
+      return false;
     }
   }
 });
@@ -389,10 +426,12 @@ export default defineComponent({
           </tr>
           </thead>
           <tbody>
-          <Row v-for="(row, index) in data" :row="row" :dragAndDropPages="dragAndDropPages" :headers="headers"
-               :actions="actions" :selected="isSelected(row.id)" @toggle="toggle" :settings="settings"
-               @collapse="collapse" @edit="edit" :id="row.id" :level="0" :selectedIds="selected" :max="row.max"
-               :highlight="highlight" :index="index"/>
+          <template v-for="(row, index) in data">
+            <Row v-if="parentIsOpen(index)" :row="row" :dragAndDropPages="dragAndDropPages" :headers="headers"
+                 :actions="actions" :selected="isSelected(row.id)" @toggle="toggle" :settings="settings"
+                 @collapse="collapse" @edit="edit" :id="row.id" :level="row.level" :selectedIds="selected"
+                 :max="row.max" :highlight="highlight" :index="index"/>
+          </template>
           </tbody>
         </table>
       </div>

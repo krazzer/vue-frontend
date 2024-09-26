@@ -43,26 +43,8 @@ export default defineComponent({
 
     arrowClick(event: MouseEvent) {
       event.stopPropagation();
-      this.row.collapse = !this.row.collapse;
-      this.$emit('collapse', this.row.id, this.row.collapse);
-    },
-
-    childCollapse(id: string, collapsed: boolean) {
-      this.$emit('collapse', id, collapsed);
-    },
-
-    childEdit(id: string, event: MouseEvent) {
-      this.$emit('edit', id, event);
-    },
-
-    /**
-     * @param id
-     * @param selected
-     * @param index
-     * @param event
-     */
-    childToggle(id: string, selected: boolean, index: number, event: MouseEvent){
-      this.$emit('toggle', id, selected, index, event);
+      this.row.collapsed = !this.row.collapsed;
+      this.$emit('collapse', this.row.id, this.row.collapsed, this.index);
     },
 
     /**
@@ -141,14 +123,14 @@ export default defineComponent({
         @mouseenter="dragAndDropPages.mouseEnter(row.id, $event)"
         @mousemove="dragAndDropPages.mouseMoveContainer(row.id, $event, max, level)">
       <template v-if="getCellType(i) == 'page'">
-        <Page v-if="dragAndDropPages.itemIdMouseDown == row.id" :cell="cell" :cloned="true" :level="level"
+        <Page v-if="dragAndDropPages.itemIdMouseDown == row.id" :cell="cell" :cloned="true" :level="row.level"
               @startDrag="dragAndDropPages.setMouseDown(row.id, $event)" :x="dragAndDropPages.itemX"
-              :y="dragAndDropPages.itemY" :type="row.type" :hasCildren="row.children" :collapse="row.collapse"
+              :y="dragAndDropPages.itemY" :type="row.type" :hasCildren="row.children" :collapse="row.collapsed"
               @arrowClick="arrowClick($event)"/>
         <Page :cell="cell" :id="row.id" :key="row.id" :dragAndDropPages="dragAndDropPages"
-              :isDragged="dragAndDropPages.isDragged(row.id)" :level="level" ref="pages"
+              :isDragged="dragAndDropPages.isDragged(row.id)" :level="row.level" ref="pages"
               @startDrag="dragAndDropPages.setMouseDown(row.id, $event)" :type="row.type"
-              :hasCildren="row.children" :collapse="row.collapse" @arrowClick="arrowClick($event)"/>
+              :hasCildren="row.children" :collapse="row.collapsed" @arrowClick="arrowClick($event)"/>
       </template>
       <template v-else><span v-html="getCell(cell)" /></template>
       <template v-if="i == row.data.length - 1">
@@ -160,10 +142,6 @@ export default defineComponent({
       </template>
     </td>
   </tr>
-  <Row v-if="row.children && !row.collapse" :dragAndDropPages="dragAndDropPages" :headers="headers" :settings="settings"
-       @edit="childEdit" :id="childRow.id" :row="childRow" v-for="childRow in row.children" @toggle="childToggle"
-       :level="level + 1" @collapse="childCollapse" :max="max" :selected-ids="selectedIds"
-       :selected="isSelected(childRow.id)" :highlight="highlight" :actions="actions" />
 </template>
 
 <style lang="scss" scoped>

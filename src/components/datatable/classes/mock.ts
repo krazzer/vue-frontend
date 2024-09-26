@@ -335,30 +335,18 @@ class DataTableMock {
     }
 
     getPagesData() {
-        let mainMenuChildren = [
-            {id: '2', data: [1, {'label': 'Home', 'icons': ['lock']}, 'home', 'home']},
-            {id: '3', data: [2, 'About', 'default', 'about']},
-            {id: '4', data: [4, 'Prices', 'default', 'prices']},
-            {
-                id: '5', data: [5, 'Projects', 'projects', 'projects'], collapse: true, children: [
-                    {id: '6', data: [6, 'Project A', 'project', 'project-A']},
-                    {id: '7', data: [7, 'Project B', 'project', 'project-B']},
-                    {id: '8', data: [8, 'Project C', 'project', 'project-C']},
-                ]
-            },
-            {id: '9', data: [3, 'Contact', 'contact', 'contact']},
-        ];
-
         let data = [
-            {
-                id: '1', data: [1, 'Hoofdmenu', '', ''], type: 'menu', max: 2, children: mainMenuChildren,
-                actionUrls: {preview: 'https://google.nl'},
-            },
-            {
-                id: '10', data: [10, 'Other pages', '', ''], type: 'menu', max: 1, children: [
-                    {id: '11', data: [11, 'Other page', 'default', 'other-page']},
-                ]
-            },
+            {id: '1', level: 0, data: ['Hoofdmenu', '', '', 1], type: 'menu', max: 2, actionUrls: {preview: 'https://google.nl'}, children: true},
+            {id: '2', level: 1, data: [{'label': 'Home', 'icons': ['lock']}, 'home', 'home', 2]},
+            {id: '3', level: 1, data: ['About', 'default', 'about', 3]},
+            {id: '4', level: 1, data: ['Prices', 'default', 'prices', 4]},
+            {id: '5', level: 1, data: ['Projects', 'projects', 'projects', 5], collapsed: true, children: true},
+            {id: '6', level: 2, data: ['Project A', 'project', 'project-A', 6]},
+            {id: '7', level: 2, data: ['Project B', 'project', 'project-B', 7]},
+            {id: '8', level: 2, data: ['Project C', 'project', 'project-C', 8]},
+            {id: '9', level: 1, data: ['Contact', 'contact', 'contact', 3]},
+            {id: '10', level: 0, data: ['Other pages', '', '', 10], type: 'menu', max: 1, children: true},
+            {id: '11', level: 1, data: ['Other page', 'default', 'other-page', 11]},
         ];
 
         return {
@@ -369,7 +357,7 @@ class DataTableMock {
             actions: [
                 {key: 'preview', type: 'url', icon: 'mdi-eye'}
             ],
-            headers: ['id', 'name', 'template', 'slug'],
+            headers: ['name', 'template', 'slug', 'id'],
             cells: {'name': {'type': 'page'}},
             pages: [1, 2, 3],
             data: data,
