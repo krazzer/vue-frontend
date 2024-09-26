@@ -1,5 +1,5 @@
 <script lang="ts">
-import {defineComponent, type StyleValue} from "vue";
+import {defineComponent} from "vue";
 import axios from "axios";
 import EditDialog from "./subcomponents/EditDialog.vue";
 import Row from "./subcomponents/Row.vue";
@@ -19,15 +19,6 @@ export default defineComponent({
       }
     },
     instance: String,
-  },
-  computed: {
-    dataTableStyle(): StyleValue {
-      return this.dragAndDropPages.itemIdMouseDown ? {
-        '-webkit-user-select': 'none',
-        '-ms-user-select': 'none',
-        'user-select': 'none',
-      } : {};
-    }
   },
   data() {
     return {
@@ -174,7 +165,7 @@ export default defineComponent({
         classes.push(this.settings.class);
       }
 
-      if (this.noselect) {
+      if (this.noselect || this.dragAndDropPages.itemIdMouseDown) {
         classes.push('noselect');
       }
 
@@ -360,7 +351,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div ref="datatable" :class="getClasses()" v-if="instance" :style="dataTableStyle" @keydown="keyDown" @keyup="keyUp"
+  <div ref="datatable" :class="getClasses()" v-if="instance" @keydown="keyDown" @keyup="keyUp"
        tabindex="0">
     <div class="datatable__error" v-if="error">
       {{ error }}
@@ -421,6 +412,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 @import "@/assets/base.scss";
+@import "@/assets/media-query-sizes.scss";
 
 .datatable {
 
@@ -490,9 +482,7 @@ export default defineComponent({
         text-align: left;
         font-weight: bold;
         cursor: pointer;
-        -webkit-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
+        @include noSelect();
 
         .mdi {
           position: absolute;
@@ -559,11 +549,7 @@ export default defineComponent({
   }
 
   &.noselect {
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+    @include noSelect();
   }
 }
 

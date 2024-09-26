@@ -261,6 +261,8 @@ export default defineComponent({
 </template>
 
 <style lang="scss" scoped>
+@import "@/assets/media-query-sizes.scss";
+
 .media {
 
   &__toolbar {
@@ -357,9 +359,7 @@ export default defineComponent({
     min-height: 480px;
     background-color: var(--color-background-shade1);
     transition: background-color var(--color-scheme-transition-speed);
-    -webkit-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+    @include noSelect();
 
     &:after {
       clear: both;
