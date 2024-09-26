@@ -58,9 +58,11 @@ export default defineComponent({
     /**
      * @param id
      * @param selected
+     * @param index
+     * @param event
      */
-    childToggle(id: string, selected: boolean){
-      this.$emit('toggle', id, selected);
+    childToggle(id: string, selected: boolean, index: number, event: MouseEvent){
+      this.$emit('toggle', id, selected, index, event);
     },
 
     /**
