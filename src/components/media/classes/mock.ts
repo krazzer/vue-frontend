@@ -9,6 +9,57 @@ class MediaMock {
         this.appMocker    = appMocker;
         this.subFolderIds = [12, 13, 14, 15, 16, 17, 18, 19];
 
+        /**
+         * Mocks the media upload.
+         * To test a real upload use this code:
+         * const xhr = new XMLHttpRequest();
+         * xhr.upload.addEventListener("progress", uploadProgressEvent);
+         * xhr.open("POST", "https://kiksaus.nl/test/uploadtest.php");
+         * xhr.send(formData);
+         */
+        mocker.onPost("/api/media/upload").reply(async (request) => {
+            const totalSize        = request.totalBytes;
+            const step             = request.totalBytes / 20;
+            const progressInterval = 100;
+
+            let uploadedSize = 0;
+            let folderId     = null;
+            let files        = [];
+
+            request.data.forEach((value, key) => {
+                if (key === "folder") {
+                    folderId = value == 'null' ? null : parseInt(value);
+                }
+                if (key === "file") {
+                    files.push(value);
+                }
+            });
+
+            let mediaFiles = this.getFilesById(folderId);
+            let path       = this.getPathById(folderId);
+
+            let newId = 100;
+
+            files.forEach(file => {
+                mediaFiles.push({id: newId++, name: file.name, thumb: '/cms/src/assets/images/example-image-1.jpg'});
+            });
+
+            return new Promise((resolve) => {
+                const intervalId = setInterval(() => {
+                    uploadedSize += step;
+
+                    if (request.onUploadProgress) {
+                        request.onUploadProgress({loaded: uploadedSize, total: totalSize});
+                    }
+
+                    if (uploadedSize >= totalSize) {
+                        clearInterval(intervalId);
+                        resolve([200, {files: mediaFiles, path: path}]);
+                    }
+                }, progressInterval);
+            });
+        });
+
         mocker.onGet("/api/media/newfolder").reply((request) => {
             let name       = request.params.name;
             let folderId   = request.params.folder;
