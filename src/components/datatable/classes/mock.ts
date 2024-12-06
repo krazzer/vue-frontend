@@ -206,8 +206,26 @@ class DataTableMock {
 
             if(sort) {
                 data.sort((a: any, b: any) => {
-                    const nameA = a.data[index].toLowerCase();
-                    const nameB = b.data[index].toLowerCase();
+                    let itemA = a.data[index];
+                    let itemB = b.data[index];
+
+                    let nameA, nameB;
+
+                    if(typeof itemA == 'object'){
+                        nameA = itemA.label.toLowerCase();
+                    } else if(Number.isInteger(itemA)) {
+                        nameA = itemA;
+                    } else {
+                        nameA = itemA.toString().toLowerCase();
+                    }
+
+                    if(typeof itemB == 'object'){
+                        nameB = itemB.label.toLowerCase();
+                    } else if(Number.isInteger(itemB)) {
+                        nameB = itemB;
+                    } else {
+                        nameB = itemB.toString().toLowerCase();
+                    }
 
                     if (sortDirection == 'ascending') {
                         if (nameA < nameB) return -1;
