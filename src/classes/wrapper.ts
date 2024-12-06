@@ -22,10 +22,11 @@ class Wrapper {
 
         const app = Vue.createApp(Component).use(vuetify);
 
-        app.config.globalProperties.$assets = 'src/assets/';
+        app.config.globalProperties.$assets     = 'src/assets/';
         app.config.globalProperties.$translator = new Translator;
-        app.config.globalProperties.$appUtil = new AppUtil;
-        app.config.globalProperties.$darkMode = reactive(new DarkModeSetting);
+        app.config.globalProperties.$appUtil    = new AppUtil;
+        app.config.globalProperties.$darkMode   = reactive(new DarkModeSetting);
+        app.config.globalProperties.$isLoading  = false;
 
         if (import.meta.env.DEV) {
             new Mocker().mock();

@@ -5,5 +5,4 @@ import router from "@/router";
 const app = Wrapper.getApp(App);
 
 app.use(router);
-
 app.mount("#app");

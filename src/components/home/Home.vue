@@ -58,11 +58,10 @@ export default defineComponent({
       );
     },
     loadModule(module: string) {
-      this.selectedMenuItem = module;
-
       axios
           .get('/api/module/' + module, {params: {}})
           .then(response => {
+            this.selectedMenuItem = module;
             this.setContentByResponseData(response.data);
           }).catch(error => {
             console.error(error);
@@ -131,6 +130,9 @@ export default defineComponent({
       <div class="sidebar__logo">
         <Logo/>
       </div>
+      <div class="sidebar__loader" v-if="$isLoading">
+        Loading...
+      </div>
       <div class="sidebar__menu">
         <Menu :menu="menu" :mobileMenuOpen="mobileMenuOpen" :selectedItem="selectedMenuItem" :logout="logout"
               @select="closeMenu"/>
@@ -190,11 +192,15 @@ $mainPadding: 40px;
   // logo height = 39px
   &__logo {
     margin-top: -4px;
-    margin-bottom: $spaceLogoMenu - 5px;
   }
 
   &__menu {
     position: relative;
+    margin-top: $spaceLogoMenu - 5px;
+  }
+
+  &__loader{
+    position: absolute;
   }
 
   @media (max-width: $screen-sm-max) {
