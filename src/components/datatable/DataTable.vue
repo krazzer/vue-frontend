@@ -44,6 +44,7 @@ export default defineComponent({
       selected: <any>[],
       lastIndex: <number | null>null,
       noselect: false,
+      forceDefaultView: false,
     };
   },
   watch: {
@@ -86,6 +87,8 @@ export default defineComponent({
             this.data     = response.data.data;
             this.pages    = response.data.pages;
             this.selected = [];
+
+            this.forceDefaultView = this.search || this.sortKey;
           }).catch(error => {
             alert(error);
           });
@@ -430,7 +433,7 @@ export default defineComponent({
             <Row v-if="parentIsOpen(index)" :row="row" :dragAndDropPages="dragAndDropPages" :headers="headers"
                  :actions="actions" :selected="isSelected(row.id)" @toggle="toggle" :settings="settings"
                  @collapse="collapse" @edit="edit" :id="row.id" :level="row.level" :selectedIds="selected"
-                 :max="row.max" :highlight="highlight" :index="index"/>
+                 :max="row.max" :highlight="highlight" :index="index" :forceDefaultView="forceDefaultView" />
           </template>
           </tbody>
         </table>

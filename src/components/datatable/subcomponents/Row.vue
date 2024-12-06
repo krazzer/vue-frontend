@@ -8,13 +8,23 @@ export default defineComponent({
   emits: ['collapse', 'edit', 'toggle'],
   name: "Row",
   props: ['row', 'dragAndDropPages', 'headers', 'settings', 'id', 'level', 'selected', 'selectedIds', 'max',
-    'highlight', 'actions', 'index'],
+    'highlight', 'actions', 'index', 'forceDefaultView'],
   data() {
     return {
       preventSelect: <boolean>false,
     };
   },
   methods: {
+    displayAsPage(index: number): boolean{
+        let isPage = this.getCellType(index) == 'page';
+
+        if(this.forceDefaultView){
+          return false;
+        }
+
+        return isPage;
+    },
+
     /**
      * @param index
      */
@@ -122,7 +132,7 @@ export default defineComponent({
     <td v-for="(cell, i) in row.data" :data-column="headers[i]" @mouseleave="dragAndDropPages.mouseLeave"
         @mouseenter="dragAndDropPages.mouseEnter(row.id, $event)"
         @mousemove="dragAndDropPages.mouseMoveContainer(row.id, $event, max, level)">
-      <template v-if="getCellType(i) == 'page'">
+      <template v-if="displayAsPage(i)">
         <Page v-if="dragAndDropPages.itemIdMouseDown == row.id" :cell="cell" :cloned="true" :level="row.level"
               @startDrag="dragAndDropPages.setMouseDown(row.id, $event)" :x="dragAndDropPages.itemX"
               :y="dragAndDropPages.itemY" :type="row.type" :hasCildren="row.children" :collapse="row.collapsed"
