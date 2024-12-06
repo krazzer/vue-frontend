@@ -58,15 +58,10 @@ export default defineComponent({
       );
     },
     loadModule(module: string) {
-      axios
-          .get('/api/module/' + module, {params: {}})
-          .then(response => {
-            this.selectedMenuItem = module;
-            this.setContentByResponseData(response.data);
-          }).catch(error => {
-            console.error(error);
-          }
-      );
+      this.$appUtil.action('module/' + module, {}, (response) => {
+        this.selectedMenuItem = module;
+        this.setContentByResponseData(response.data);
+      });
     },
     logout() {
       axios
