@@ -356,6 +356,10 @@ export default defineComponent({
      * @param index
      */
     parentIsOpen(index: number): boolean {
+      if(this.forceDefaultView){
+        return true;
+      }
+
       let row = this.data[index];
 
       if(row.level < 1){
