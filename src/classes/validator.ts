@@ -1,10 +1,16 @@
-import axios from "axios";
 import {ValidationParameters} from "./ValidationParameters";
+import appUtil, {AppUtil} from "@/classes/AppUtil";
 
 class Validator {
     readonly EMAIL      = 'email';
     readonly PRESENCE   = 'presence';
     readonly SERVERSIDE = 'server';
+
+    private appUtil: AppUtil;
+
+    constructor() {
+        this.appUtil = appUtil;
+    }
 
     /**
      * @param required
@@ -57,13 +63,9 @@ class Validator {
      * @param name
      */
     async getServerSideCheck(value: string, name: string) {
-        return await axios
-            .post('/api/datatable/validate', {params: {value: value, name: name}})
-            .then(response => {
-                return response.data;
-            }).catch(error => {
-                return '' + error;
-            });
+        return await this.appUtil.doAction('datatable/validate', {value: value, name: name}, (response: any) => {
+            return response.data;
+        });
     }
 }
 

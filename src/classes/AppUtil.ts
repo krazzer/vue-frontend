@@ -11,7 +11,7 @@ export class AppUtil {
      * @param onSuccess
      * @param config
      */
-    doAction(url: string, params: object, onSuccess: any, config: object){
+    doAction(url: string, params: object, onSuccess: any = null, config: object = {}){
         return axios
             .post('/api/' + url, {params: params}, config)
             .then(onSuccess).catch(error => {
@@ -20,3 +20,5 @@ export class AppUtil {
         );
     }
 }
+
+export default new AppUtil;

@@ -75,7 +75,7 @@ export default defineComponent({
   },
   methods: {
     async filter() {
-      this.$appUtil.doAction('datatable/filter', {
+      await this.$appUtil.doAction('datatable/filter', {
         instance: this.instance, search: this.search, sort: this.sortKey, sortDirection: this.sortDirection,
         page: this.page, language: this.language
       }, (response: any) => {
@@ -83,7 +83,7 @@ export default defineComponent({
         this.pages    = response.data.pages;
         this.selected = [];
 
-        this.forceDefaultView = this.search || this.sortKey;
+        this.forceDefaultView = !!(this.search || this.sortKey);
       })
     },
 
@@ -141,7 +141,7 @@ export default defineComponent({
     },
 
     async delete() {
-      this.$appUtil.doAction('datatable/delete', {instance: this.instance, ids: this.selected}, response => {
+      await this.$appUtil.doAction('datatable/delete', {instance: this.instance, ids: this.selected}, (response: any) => {
         this.data     = response.data;
         this.selected = [];
       });
@@ -176,7 +176,7 @@ export default defineComponent({
     async init() {
       this.error = '';
 
-      this.$appUtil.doAction('datatable', {instance: this.instance}, response => {
+      await this.$appUtil.doAction('datatable', {instance: this.instance}, (response: any) => {
         this.convertSettings(response.data.settings);
       });
     },
@@ -188,7 +188,7 @@ export default defineComponent({
     async edit(id: number, event: MouseEvent) {
       event.stopPropagation();
 
-      await this.$appUtil.doAction('datatable/edit', {instance: this.instance}, response => {
+      await this.$appUtil.doAction('datatable/edit', {instance: this.instance}, (response: any) => {
         this.dialog       = true;
         this.dialogEditId = id;
         this.editData     = response.data;
@@ -222,7 +222,7 @@ export default defineComponent({
         instance: this.instance,
         data: data,
         id: dialogEditId
-      }, response => {
+      }, (response: any) => {
         this.data   = response.data;
         this.dialog = false;
       });
@@ -236,7 +236,7 @@ export default defineComponent({
     async rearrange(itemIdMouseDown: string, itemIdMouseOver: string, location: number) {
       await this.$appUtil.doAction('datatable/rearrange', {
         instance: this.instance, source: itemIdMouseDown, target: itemIdMouseOver, location: location
-      }, response => {
+      }, (response: any) => {
         this.data = response.data;
       });
     },
