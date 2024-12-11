@@ -60,9 +60,10 @@ class MediaMock {
             });
         });
 
-        mocker.onGet("/api/media/newfolder").reply((request) => {
-            let name       = request.params.name;
-            let folderId   = request.params.folder;
+        mocker.onPost("/api/media/newfolder").reply((request) => {
+            let params     = JSON.parse(request.data).params;
+            let name       = params.name;
+            let folderId   = params.folder;
             let mediaFiles = this.getFilesById(folderId);
             let path       = this.getPathById(folderId);
 
@@ -71,8 +72,8 @@ class MediaMock {
             return [200, {files: mediaFiles, path: path}];
         });
 
-        mocker.onGet("/api/media/open").reply((request) => {
-            let params = request.params;
+        mocker.onPost("/api/media/open").reply((request) => {
+            let params = JSON.parse(request.data).params;
             let id     = params.id;
 
             let mediaFiles = this.getFilesById(id);
@@ -81,8 +82,8 @@ class MediaMock {
             return [200, {files: mediaFiles, path: path}];
         });
 
-        mocker.onGet("/api/media/paste").reply((request) => {
-            let params     = request.params;
+        mocker.onPost("/api/media/paste").reply((request) => {
+            let params     = JSON.parse(request.data).params;
             let ids        = params.ids;
             let folderId   = params.folder;
             let mediaFiles = this.getFilesById(folderId);
@@ -95,8 +96,8 @@ class MediaMock {
             return [200, {files: mediaFiles, path: path}];
         });
 
-        mocker.onGet("/api/media/delete").reply((request) => {
-            let params     = request.params;
+        mocker.onPost("/api/media/delete").reply((request) => {
+            let params     = JSON.parse(request.data).params;
             let ids        = params.ids;
             let folderId   = params.folder;
             let mediaFiles = this.getFilesById(folderId);
@@ -113,8 +114,8 @@ class MediaMock {
             return [200, {files: mediaFiles, path: path}];
         });
 
-        mocker.onGet("/api/media/key").reply((request) => {
-            let params   = request.params;
+        mocker.onPost("/api/media/key").reply((request) => {
+            let params   = JSON.parse(request.data).params;
             let folderId = params.folder;
             let id       = params.id;
             let name     = params.name;
@@ -133,8 +134,9 @@ class MediaMock {
             return [200, {files: mediaFiles, path: path}];
         });
 
-        mocker.onGet("/api/media/search").reply((request) => {
-            let search     = request.params.search;
+        mocker.onPost("/api/media/search").reply((request) => {
+            let params     = JSON.parse(request.data).params;
+            let search     = params.search;
             let mediaFiles = [{id: 1, name: search, isDir: true}];
 
             return [200, {files: mediaFiles, path: []}];

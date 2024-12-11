@@ -1,6 +1,5 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
-import axios from "axios";
 import Base from "./Base.vue";
 import validator from "@/classes/validator";
 import InlineSvg from 'vue-inline-svg';
@@ -34,20 +33,15 @@ export default defineComponent({
 
       let params = {email: this.email, password: this.password, remember: this.remember};
 
-      await axios
-          .post('/api/login', {params: params})
-          .then(response => {
-            this.loginStatus = response.data;
+      await this.$appUtil.doAction('login', params, response => {
+        this.loginStatus = response.data;
 
-            if (this.loginStatus.success) {
-              this.$router.push({name: 'home'});
-            } else {
-              this.errors.push('Wrong e-mail or password');
-            }
-          })
-          .catch(error => {
-            this.errors.push(error.message);
-          });
+        if (this.loginStatus.success) {
+          this.$router.push({name: 'home'});
+        } else {
+          this.errors.push('Wrong e-mail or password');
+        }
+      });
     }
   }
 });

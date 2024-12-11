@@ -45,7 +45,7 @@ export default {
     },
 
     async loadTranslations() {
-      this.$appUtil.doAction('translations', {}, (response) => {
+      await this.$appUtil.doAction('translations', {}, (response) => {
         this.$translator.setStrings(response.data);
       });
     },

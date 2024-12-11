@@ -12,7 +12,7 @@ class HomeMock {
         let pagesDataTable   = dataTableMock.getPagesData();
         let contentDataTable = dataTableMock.getContentData();
 
-        mocker.onGet(moduleRegExp).reply((requestConfig) => {
+        mocker.onPost(moduleRegExp).reply((requestConfig) => {
             let module = this.getModuleName(requestConfig.url);
             let params = {html: module, selectedMenuItem: ''};
 
@@ -38,13 +38,13 @@ class HomeMock {
             return [200, params];
         });
 
-        mocker.onGet("/api/default-module").reply(() => {
+        mocker.onPost("/api/default-module").reply(() => {
             let params = {html: '', selectedMenuItem: '', dataTable: pagesDataTable};
 
             return [200, params];
         });
 
-        mocker.onGet("/api/logout").reply(() => {
+        mocker.onPost("/api/logout").reply(() => {
             localStorage.loggedIn = JSON.stringify(false);
             loginMock.loggedIn    = false;
             return [200];
@@ -128,7 +128,7 @@ class HomeMock {
     }
 
     mockHomeReply(mocker: MockAdapter) {
-        mocker.onGet("/api/home").reply(() => {
+        mocker.onPost("/api/home").reply(() => {
             return [200, this.getDefaultHomeResponse(loginMock.loggedIn)];
         });
     }

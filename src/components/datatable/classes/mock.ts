@@ -152,14 +152,15 @@ class DataTableMock {
     };
 
     mock(mocker: MockAdapter) {
-        mocker.onGet("/api/datatable").reply((request) => {
-            let dataTableSettings = this.getDataForInstance(request.params.instance);
-            let params            = {settings: dataTableSettings};
+        mocker.onPost("/api/datatable").reply((request) => {
+            let params            = JSON.parse(request.data).params;
+            let dataTableSettings = this.getDataForInstance(params.instance);
+            let returnData        = {settings: dataTableSettings};
 
-            return [200, params];
+            return [200, returnData];
         });
 
-        mocker.onGet("/api/datatable/edit").reply(() => {
+        mocker.onPost("/api/datatable/edit").reply(() => {
             return [200, this.getEditData()];
         });
 
@@ -205,20 +206,21 @@ class DataTableMock {
                 data = newData;
             }
 
-            if(sort) {
-                data.sort((a, b) => MockSorter.sort(a, b, index, sortDirection));
+            if (sort) {
+                data.sort((a: any, b: any) => MockSorter.sort(a, b, index, sortDirection));
             }
 
             return [200, {data: data, pages: config.pages}];
         });
 
-        mocker.onGet("/api/datatable/save").reply((request) => {
-            let newData = request.params.data;
-            let id      = request.params.id;
+        mocker.onPost("/api/datatable/save").reply((request) => {
+            let params  = JSON.parse(request.data).params;
+            let newData = params.data;
+            let id      = params.id;
 
             let index;
 
-            let editData = this.getDataForInstance(request.params.instance).data;
+            let editData = this.getDataForInstance(params.instance).data;
 
             if (id) {
                 index = this.getIndexById(editData, id);
@@ -226,7 +228,7 @@ class DataTableMock {
                 index = parseInt(Object.keys(editData)[Object.keys(editData).length - 1]) + 1;
             }
 
-            switch (request.params.instance) {
+            switch (params.instance) {
                 case 'hobbies':
                     editData[index] = {id: id, data: [id, newData.name]};
                     break;
@@ -235,13 +237,13 @@ class DataTableMock {
                     break;
             }
 
-            this.getDataForInstance(request.params.instance).data = editData;
+            this.getDataForInstance(params.instance).data = editData;
 
             return [200, editData];
         });
 
         // will not calculate the actual rearrange, not worth coding for just a mock
-        mocker.onGet("/api/datatable/rearrange").reply((request) => {
+        mocker.onPost("/api/datatable/rearrange").reply((request) => {
             let editData = this.getDataForInstance(request.params.instance).data;
 
             let from = this.getIndexById(editData, request.params.source);
@@ -263,7 +265,7 @@ class DataTableMock {
             return [200, validated];
         });
 
-        mocker.onGet("/api/datatable/collapse").reply(() => {
+        mocker.onPost("/api/datatable/collapse").reply(() => {
             return [200];
         });
     }

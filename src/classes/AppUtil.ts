@@ -9,10 +9,11 @@ export class AppUtil {
      * @param url
      * @param params
      * @param onSuccess
+     * @param config
      */
-    doAction(url: string, params: object, onSuccess: object){
-        axios
-            .get('/api/' + url, {params: params})
+    doAction(url: string, params: object, onSuccess: any, config: object){
+        return axios
+            .post('/api/' + url, {params: params}, config)
             .then(onSuccess).catch(error => {
                 console.error(error);
             }

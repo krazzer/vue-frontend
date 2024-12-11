@@ -53,18 +53,14 @@ export default defineComponent({
       event.stopPropagation();
       let doDelete = confirm(this.$translator.tl('media.deleteConfirm'));
 
-      if( ! doDelete){
+      if (!doDelete) {
         return;
       }
 
-      await axios
-          .get('/api/media/delete', {params: {folder: this.currentFolderId, ids: this.selectedFiles}})
-          .then((response: any) => {
-            this.files         = response.data.files;
-            this.selectedFiles = [];
-          }).catch((error: any) => {
-            console.error(error);
-          });
+      this.$appUtil.doAction('media/delete', {folder: this.currentFolderId, ids: this.selectedFiles}, response => {
+        this.files         = response.data.files;
+        this.selectedFiles = [];
+      });
     },
 
     /**
@@ -76,16 +72,14 @@ export default defineComponent({
 
       let name = prompt(this.$translator.tl('media.editKeyPrompt'), '');
 
-      await axios
-          .get('/api/media/key', {params: {name: name, folder: this.currentFolderId, id: this.selectedFiles[0]}})
-          .then((response: any) => {
+      this.$appUtil.doAction('media/key', {name: name, folder: this.currentFolderId, id: this.selectedFiles[0]},
+          response => {
             this.files = response.data.files;
 
             this.selectedFilesCut = [];
             this.selectedFiles    = [];
-          }).catch((error: any) => {
-            console.error(error);
-          });
+          }
+      );
     },
 
     /**
@@ -100,16 +94,12 @@ export default defineComponent({
      * Paste the selected files to the current folder
      */
     async paste() {
-      await axios
-          .get('/api/media/paste', {params: {ids: this.selectedFilesCut, folder: this.currentFolderId}})
-          .then((response: any) => {
-            this.files = response.data.files;
+      this.$appUtil.doAction('media/paste', {ids: this.selectedFilesCut, folder: this.currentFolderId}, response => {
+        this.files = response.data.files;
 
-            this.selectedFilesCut = [];
-            this.selectedFiles    = [];
-          }).catch((error: any) => {
-            console.error(error);
-          });
+        this.selectedFilesCut = [];
+        this.selectedFiles    = [];
+      });
     },
 
     /**
@@ -150,15 +140,11 @@ export default defineComponent({
     async newFolder() {
       let name = prompt(this.$translator.tl('media.newFolderPrompt'), this.$translator.tl('media.newFolderPlaceholder'));
 
-      await axios
-          .get('/api/media/newfolder', {params: {name: name, folder: this.currentFolderId}})
-          .then((response: any) => {
-            this.files         = response.data.files;
-            this.path          = response.data.path;
-            this.selectedFiles = [];
-          }).catch((error: any) => {
-            console.error(error);
-          });
+      this.$appUtil.doAction('media/newfolder', {name: name, folder: this.currentFolderId}, response => {
+        this.files         = response.data.files;
+        this.path          = response.data.path;
+        this.selectedFiles = [];
+      });
     },
 
     /**
@@ -171,36 +157,28 @@ export default defineComponent({
         return;
       }
 
-      await axios
-          .get('/api/media/open', {params: {id: id}})
-          .then((response: any) => {
-            this.files           = response.data.files;
-            this.path            = response.data.path;
-            this.selectedFiles   = [];
-            this.currentFolderId = id;
-          }).catch((error: any) => {
-            console.error(error);
-          });
+      this.$appUtil.doAction('media/open', {id: id}, response => {
+        this.files           = response.data.files;
+        this.path            = response.data.path;
+        this.selectedFiles   = [];
+        this.currentFolderId = id;
+      });
     },
 
     /**
      * @param search
      */
-    async search(search: string){
-      if( ! search){
+    async search(search: string) {
+      if (!search) {
         await this.open(this.currentFolderId);
         return;
       }
 
-      await axios
-          .get('/api/media/search', {params: {search: search}})
-          .then((response: any) => {
-            this.files         = response.data.files;
-            this.path          = response.data.path;
-            this.selectedFiles = [];
-          }).catch((error: any) => {
-            console.error(error);
-          });
+      this.$appUtil.doAction('media/search', {search: search}, response => {
+        this.files         = response.data.files;
+        this.path          = response.data.path;
+        this.selectedFiles = [];
+      });
     },
 
     /**

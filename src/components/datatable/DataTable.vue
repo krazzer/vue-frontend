@@ -1,6 +1,5 @@
 <script lang="ts">
 import {defineComponent} from "vue";
-import axios from "axios";
 import EditDialog from "./subcomponents/EditDialog.vue";
 import Row from "./subcomponents/Row.vue";
 import Svg from "@/components/svg/Svg.vue";
@@ -76,22 +75,16 @@ export default defineComponent({
   },
   methods: {
     async filter() {
-      await axios
-          .post('/api/datatable/filter', {
-            params: {
-              instance: this.instance, search: this.search, sort: this.sortKey, sortDirection: this.sortDirection,
-              page: this.page, language: this.language
-            }
-          })
-          .then((response: any) => {
-            this.data     = response.data.data;
-            this.pages    = response.data.pages;
-            this.selected = [];
+      this.$appUtil.doAction('datatable/filter', {
+        instance: this.instance, search: this.search, sort: this.sortKey, sortDirection: this.sortDirection,
+        page: this.page, language: this.language
+      }, (response: any) => {
+        this.data     = response.data.data;
+        this.pages    = response.data.pages;
+        this.selected = [];
 
-            this.forceDefaultView = this.search || this.sortKey;
-          }).catch(error => {
-            alert(error);
-          });
+        this.forceDefaultView = this.search || this.sortKey;
+      })
     },
 
     convertSettings(settings: any) {
@@ -148,14 +141,10 @@ export default defineComponent({
     },
 
     async delete() {
-      await axios
-          .post('/api/datatable/delete', {params: {instance: this.instance, ids: this.selected}})
-          .then(response => {
-            this.data     = response.data;
-            this.selected = [];
-          }).catch(error => {
-            alert(error);
-          });
+      this.$appUtil.doAction('datatable/delete', {instance: this.instance, ids: this.selected}, response => {
+        this.data     = response.data;
+        this.selected = [];
+      });
     },
 
     /**
@@ -187,13 +176,9 @@ export default defineComponent({
     async init() {
       this.error = '';
 
-      await axios
-          .get('/api/datatable', {params: {instance: this.instance}})
-          .then(response => {
-            this.convertSettings(response.data.settings);
-          }).catch(error => {
-            this.error = error;
-          });
+      this.$appUtil.doAction('datatable', {instance: this.instance}, response => {
+        this.convertSettings(response.data.settings);
+      });
     },
 
     /**
@@ -203,17 +188,13 @@ export default defineComponent({
     async edit(id: number, event: MouseEvent) {
       event.stopPropagation();
 
-      await axios
-          .get('/api/datatable/edit', {params: {instance: this.instance}})
-          .then(response => {
-            this.dialog       = true;
-            this.dialogEditId = id;
-            this.editData     = response.data;
+      await this.$appUtil.doAction('datatable/edit', {instance: this.instance}, response => {
+        this.dialog       = true;
+        this.dialogEditId = id;
+        this.editData     = response.data;
 
-            this.resetForm();
-          }).catch(error => {
-            this.error = error;
-          });
+        this.resetForm();
+      });
     },
 
     /**
@@ -232,15 +213,19 @@ export default defineComponent({
       await this.filter();
     },
 
+    /**
+     * @param dialogEditId
+     * @param data
+     */
     async save(dialogEditId: any, data: any) {
-      await axios
-          .get('/api/datatable/save', {params: {instance: this.instance, data: data, id: dialogEditId}})
-          .then(response => {
-            this.data   = response.data;
-            this.dialog = false;
-          }).catch(error => {
-            alert(error);
-          });
+      await this.$appUtil.doAction('datatable/save', {
+        instance: this.instance,
+        data: data,
+        id: dialogEditId
+      }, response => {
+        this.data   = response.data;
+        this.dialog = false;
+      });
     },
 
     /**
@@ -249,15 +234,11 @@ export default defineComponent({
      * @param location
      */
     async rearrange(itemIdMouseDown: string, itemIdMouseOver: string, location: number) {
-      await axios
-          .get('/api/datatable/rearrange', {
-            params: {instance: this.instance, source: itemIdMouseDown, target: itemIdMouseOver, location: location}
-          })
-          .then(response => {
-            this.data = response.data;
-          }).catch(error => {
-            alert(error);
-          });
+      await this.$appUtil.doAction('datatable/rearrange', {
+        instance: this.instance, source: itemIdMouseDown, target: itemIdMouseOver, location: location
+      }, response => {
+        this.data = response.data;
+      });
     },
 
     resetForm() {
@@ -272,13 +253,7 @@ export default defineComponent({
      */
     async collapse(id: string, collapsed: boolean, index: number) {
       this.data[index].collapsed = collapsed;
-
-      await axios
-          .get('/api/datatable/collapse', {
-            params: {instance: this.instance, id: id, collapsed: collapsed}
-          }).catch(error => {
-            alert(error);
-          });
+      await this.$appUtil.doAction('datatable/collapse', {instance: this.instance, id: id, collapsed: collapsed});
     },
 
     /**
@@ -293,7 +268,7 @@ export default defineComponent({
           let start = this.lastIndex;
           let end   = index;
 
-          if(index < this.lastIndex) {
+          if (index < this.lastIndex) {
             start = index;
             end   = this.lastIndex;
           }
@@ -356,30 +331,30 @@ export default defineComponent({
      * @param index
      */
     parentIsOpen(index: number): boolean {
-      if(this.forceDefaultView){
+      if (this.forceDefaultView) {
         return true;
       }
 
       let row = this.data[index];
 
-      if(row.level < 1){
+      if (row.level < 1) {
         return true;
       } else {
-        return ! this.getParentIsCollapsed(index);
+        return !this.getParentIsCollapsed(index);
       }
     },
 
     /**
      * @param index
      */
-    getParentIsCollapsed(index: number): boolean{
+    getParentIsCollapsed(index: number): boolean {
       let targetLevel = this.data[index].level;
 
-      for(let i = index; i >= 0; i--){
+      for (let i = index; i >= 0; i--) {
         let level = this.data[i].level;
 
-        if(level < targetLevel){
-          if(this.data[i].collapsed){
+        if (level < targetLevel) {
+          if (this.data[i].collapsed) {
             return true;
           } else {
             targetLevel = level;
@@ -437,7 +412,7 @@ export default defineComponent({
             <Row v-if="parentIsOpen(index)" :row="row" :dragAndDropPages="dragAndDropPages" :headers="headers"
                  :actions="actions" :selected="isSelected(row.id)" @toggle="toggle" :settings="settings"
                  @collapse="collapse" @edit="edit" :id="row.id" :level="row.level" :selectedIds="selected"
-                 :max="row.max" :highlight="highlight" :index="index" :forceDefaultView="forceDefaultView" />
+                 :max="row.max" :highlight="highlight" :index="index" :forceDefaultView="forceDefaultView"/>
           </template>
           </tbody>
         </table>

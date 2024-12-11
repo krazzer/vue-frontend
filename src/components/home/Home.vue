@@ -1,6 +1,5 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
-import axios from "axios";
 import Logo from "@/components/icons/Logo.vue";
 import Menu from "@/components/menu/Menu.vue";
 import DataTable from "@/components/datatable/DataTable.vue";
@@ -48,14 +47,9 @@ export default defineComponent({
   },
   methods: {
     loadDefaultModule() {
-      axios
-          .get('/api/default-module', {params: {}})
-          .then(response => {
-            this.setContentByResponseData(response.data);
-          }).catch(error => {
-            console.error(error);
-          }
-      );
+      this.$appUtil.doAction('default-module', {}, response => {
+          this.setContentByResponseData(response.data);
+      });
     },
     loadModule(module: string) {
       this.$appUtil.doAction('module/' + module, {}, (response) => {
@@ -64,36 +58,24 @@ export default defineComponent({
       });
     },
     logout() {
-      axios
-          .get('/api/logout', {params: {}})
-          .then(() => {
-            this.checkLogin();
-          }).catch(error => {
-            console.error(error);
-          }
-      );
+      this.$appUtil.doAction('logout', {}, () => this.checkLogin() );
     },
 
     checkLogin() {
-      axios
-          .get('/api/home', {params: {}})
-          .then(response => {
-            if (!response.data.loggedIn) {
-              this.$router.push({name: 'login'});
-            } else {
-              this.menu = response.data.menu;
-              this.role = response.data.role;
+      this.$appUtil.doAction('home', {}, response => {
+        if (!response.data.loggedIn) {
+          this.$router.push({name: 'login'});
+        } else {
+          this.menu = response.data.menu;
+          this.role = response.data.role;
 
-              if (!this.selectedMenuItem) {
-                this.selectedMenuItem = response.data.selectedMenuItem;
-              }
-
-              this.setContentByResponseData(response.data);
-            }
-          }).catch(error => {
-            console.error(error);
+          if (!this.selectedMenuItem) {
+            this.selectedMenuItem = response.data.selectedMenuItem;
           }
-      );
+
+          this.setContentByResponseData(response.data);
+        }
+      });
     },
 
     /**
