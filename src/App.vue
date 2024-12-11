@@ -1,5 +1,4 @@
 <script lang="ts">
-import axios from "axios";
 import { useTheme } from 'vuetify'
 
 export default {
@@ -28,26 +27,27 @@ export default {
     this.colorSchemeQueryList.addEventListener('change', this.setColorScheme);
   },
   watch: {
-    '$darkMode.value'(){
-      if(this.$darkMode.value === this.$darkMode.DEFAULT){
-        this.setColorScheme(this.colorSchemeQueryList)
-      } else {
-        this.darkMode = this.$darkMode.getDarkMode();
-      }
+    $darkMode: {
+      handler: 'handleDarkModeChange',
+      deep: true
     },
     darkMode() {
       this.setMode(true);
     },
   },
   methods: {
+    handleDarkModeChange() {
+      if(this.$darkMode.value === this.$darkMode.DEFAULT){
+        this.setColorScheme(this.colorSchemeQueryList)
+      } else {
+        this.darkMode = this.$darkMode.getDarkMode();
+      }
+    },
+
     async loadTranslations() {
-      await axios
-          .get('/api/translations', {params: {}})
-          .then(response => {
-            this.$translator.setStrings(response.data);
-          }).catch(error => {
-            alert(error);
-          });
+      this.$appUtil.doAction('translations', {}, (response) => {
+        this.$translator.setStrings(response.data);
+      });
     },
 
     setColorScheme(e: Event | MediaQueryList) {

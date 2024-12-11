@@ -10,7 +10,7 @@ export class AppUtil {
      * @param params
      * @param onSuccess
      */
-    action(url: string, params: object, onSuccess: object){
+    doAction(url: string, params: object, onSuccess: object){
         axios
             .get('/api/' + url, {params: params})
             .then(onSuccess).catch(error => {

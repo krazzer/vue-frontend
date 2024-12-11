@@ -58,7 +58,7 @@ export default defineComponent({
       );
     },
     loadModule(module: string) {
-      this.$appUtil.action('module/' + module, {}, (response) => {
+      this.$appUtil.doAction('module/' + module, {}, (response) => {
         this.selectedMenuItem = module;
         this.setContentByResponseData(response.data);
       });
