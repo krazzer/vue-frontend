@@ -189,30 +189,30 @@ export default defineComponent({
       this.totalProgress = 0;
 
       this.uploadFiles(Array.from(event.target.files));
-      this.$refs.uploader.value = '';
+      (this.$refs.uploader as HTMLInputElement).value = '';
     },
 
     /**
      * @param uploadedFiles
      */
-    async uploadFiles(uploadedFiles) {
+    async uploadFiles(uploadedFiles: any) {
       if (!uploadedFiles.length) {
         return;
       }
 
-      let totalBytes = uploadedFiles.reduce((sum, file) => sum + file.size, 0);
+      let totalBytes = uploadedFiles.reduce((sum: any, file: any) => sum + file.size, 0);
       let formData   = new FormData();
 
-      formData.append("folder", this.currentFolderId);
+      formData.append("folder", String(this.currentFolderId));
 
-      let fileUploadLoaded = {};
+      let fileUploadLoaded: any = {};
 
-      uploadedFiles.forEach((file) => {
+      uploadedFiles.forEach((file: any) => {
         formData.append("file", file);
         fileUploadLoaded[file.name] = 0;
       });
 
-      let uploadProgressEvent = event => {
+      let uploadProgressEvent = (event: any) => {
         let totalProgress  = Math.round((event.loaded / totalBytes) * 100);
         this.totalProgress = totalProgress > 100 ? 100 : totalProgress;
       };
