@@ -2,12 +2,12 @@
 import {defineComponent} from "vue";
 import validator from "@/classes/validator";
 import Editor from '@tinymce/tinymce-vue';
-import Form from "@/components/form/Form.vue";
+import TabbedForm from "@/components/form/TabbedForm.vue"
 
 export default defineComponent({
   name: "EditDialog",
   props: ['dialog', 'form', 'dialogEditId', 'data', 'values', 'darkMode'],
-  components: {Editor, Form},
+  components: {Editor, TabbedForm},
   data() {
     return {
       validator: validator,
@@ -43,12 +43,6 @@ export default defineComponent({
     }
   }
 });
-</script>
-<script lang="ts" setup>
-import {defineAsyncComponent} from "vue";
-import TabbedForm from "@/components/form/TabbedForm.vue";
-
-const DataTable = defineAsyncComponent(() => import('../DataTable.vue'));
 </script>
 <template>
   <v-row justify="center">

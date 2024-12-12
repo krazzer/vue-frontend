@@ -6,7 +6,7 @@ class Validator {
     readonly PRESENCE   = 'presence';
     readonly SERVERSIDE = 'server';
 
-    private appUtil = appUtil;
+    public appUtil = appUtil;
 
     /**
      * @param required

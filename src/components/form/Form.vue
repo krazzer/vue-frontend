@@ -98,7 +98,7 @@ export default defineComponent({
       let fieldProps: any = {
         label: field.label,
         hint: field.hint,
-        validateOn: 'blur',
+        validateOn: 'blur lazy',
         rules: field.validator ? validator.get(field.validator.name, field.validator.parameters) : [],
         value: this.data[field.key],
         hideDetails: 'auto',
