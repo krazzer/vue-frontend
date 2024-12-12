@@ -1,6 +1,7 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
 import Logo from "@/components/icons/Logo.vue";
+import Loader from "@/components/icons/Loader.vue";
 import Menu from "@/components/menu/Menu.vue";
 import DataTable from "@/components/datatable/DataTable.vue";
 import Media from "@/components/media/Media.vue";
@@ -8,7 +9,7 @@ import Form from "@/components/form/Form.vue";
 import TabbedForm from "@/components/form/TabbedForm.vue";
 
 export default defineComponent({
-  components: {TabbedForm, Logo, Menu, DataTable, Media, Form},
+  components: {TabbedForm, Logo, Loader, Menu, DataTable, Media, Form},
   props: ['darkMode'],
   watch: {
     $route() {
@@ -48,7 +49,7 @@ export default defineComponent({
   methods: {
     loadDefaultModule() {
       this.$appUtil.doAction('default-module', {}, (response: any) => {
-          this.setContentByResponseData(response.data);
+        this.setContentByResponseData(response.data);
       });
     },
     loadModule(module: string) {
@@ -58,7 +59,7 @@ export default defineComponent({
       });
     },
     logout() {
-      this.$appUtil.doAction('logout', {}, () => this.checkLogin() );
+      this.$appUtil.doAction('logout', {}, () => this.checkLogin());
     },
 
     checkLogin() {
@@ -108,7 +109,7 @@ export default defineComponent({
         <Logo/>
       </div>
       <div class="sidebar__loader" v-if="$appUtil.isLoading()">
-        Loading...
+        <Loader /> {{ $translator.tl('general.loading') }}
       </div>
       <div class="sidebar__menu">
         <Menu :menu="menu" :mobileMenuOpen="mobileMenuOpen" :selectedItem="selectedMenuItem" :logout="logout"
@@ -176,8 +177,20 @@ $mainPadding: 40px;
     margin-top: $spaceLogoMenu - 5px;
   }
 
-  &__loader{
+  &__loader {
     position: absolute;
+    border-radius: var(--border-radius);
+    width: $sideBarWidth - ($mainPadding * 2);
+    margin-top: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12.5px;
+
+    svg{
+      height: 23px;
+      margin-right: 2px;
+    }
   }
 
   @media (max-width: $screen-sm-max) {
@@ -196,7 +209,7 @@ $mainPadding: 40px;
     padding-left: $mainPadding;
   }
 
-  > :deep(.v-tabs){
+  > :deep(.v-tabs) {
     margin-bottom: $spaceLogoMenu - $spaceExtraTab;
   }
 }
@@ -243,7 +256,7 @@ $mainPadding: 40px;
   }
 }
 
-:deep(.tox-tinymce-aux){
-    z-index: 2500;
+:deep(.tox-tinymce-aux) {
+  z-index: 2500;
 }
 </style>
