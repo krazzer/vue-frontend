@@ -13,8 +13,8 @@ import {createVuetify} from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import {Translator} from "@/classes/translator";
-import appUtil from "@/classes/AppUtil";
 import {DarkModeSetting} from "@/classes/DarkModeSetting";
+import {appUtil} from "@/classes/AppUtil";
 
 class Wrapper {
     getApp(Component: Component) {
@@ -26,10 +26,11 @@ class Wrapper {
         app.config.globalProperties.$translator = new Translator;
         app.config.globalProperties.$appUtil    = appUtil;
         app.config.globalProperties.$darkMode   = reactive(new DarkModeSetting);
-        app.config.globalProperties.$isLoading  = false;
 
         if (import.meta.env.DEV) {
-            new Mocker().mock();
+            // initialize the mocker and make it available for console manipulation, e.g. to change the delay with
+            // mocker.mocker.delayResponse = 500
+            (window as any).mocker = new Mocker().mock();
         }
 
         app.use(VueAxios, axios);

@@ -49,7 +49,7 @@ export default defineComponent({
     /**
      * @param event
      */
-    async deleteFile(event: MouseEvent) {
+    deleteFile(event: MouseEvent) {
       event.stopPropagation();
       let doDelete = confirm(this.$translator.tl('media.deleteConfirm'));
 
@@ -57,7 +57,7 @@ export default defineComponent({
         return;
       }
 
-      this.$appUtil.doAction('media/delete', {folder: this.currentFolderId, ids: this.selectedFiles}, response => {
+      this.$appUtil.doAction('media/delete', {folder: this.currentFolderId, ids: this.selectedFiles}, (response: any) => {
         this.files         = response.data.files;
         this.selectedFiles = [];
       });
@@ -67,13 +67,13 @@ export default defineComponent({
      * Cut selected items
      * @param event
      */
-    async editKey(event: MouseEvent) {
+    editKey(event: MouseEvent) {
       event.stopPropagation();
 
       let name = prompt(this.$translator.tl('media.editKeyPrompt'), '');
 
       this.$appUtil.doAction('media/key', {name: name, folder: this.currentFolderId, id: this.selectedFiles[0]},
-          response => {
+          (response: any) => {
             this.files = response.data.files;
 
             this.selectedFilesCut = [];
@@ -93,8 +93,8 @@ export default defineComponent({
     /**
      * Paste the selected files to the current folder
      */
-    async paste() {
-      this.$appUtil.doAction('media/paste', {ids: this.selectedFilesCut, folder: this.currentFolderId}, response => {
+    paste() {
+      this.$appUtil.doAction('media/paste', {ids: this.selectedFilesCut, folder: this.currentFolderId}, (response: any) => {
         this.files = response.data.files;
 
         this.selectedFilesCut = [];
@@ -137,10 +137,10 @@ export default defineComponent({
     /**
      * Action when clicking the 'new folder' button
      */
-    async newFolder() {
+    newFolder() {
       let name = prompt(this.$translator.tl('media.newFolderPrompt'), this.$translator.tl('media.newFolderPlaceholder'));
 
-      this.$appUtil.doAction('media/newfolder', {name: name, folder: this.currentFolderId}, response => {
+      this.$appUtil.doAction('media/newfolder', {name: name, folder: this.currentFolderId}, (response: any) => {
         this.files         = response.data.files;
         this.path          = response.data.path;
         this.selectedFiles = [];
@@ -151,13 +151,13 @@ export default defineComponent({
      * @param id
      * @param url
      */
-    async open(id: number | null, url?: string | null) {
+    open(id: number | null, url?: string | null) {
       if (url) {
         window.open(url);
         return;
       }
 
-      this.$appUtil.doAction('media/open', {id: id}, response => {
+      this.$appUtil.doAction('media/open', {id: id}, (response: any) => {
         this.files           = response.data.files;
         this.path            = response.data.path;
         this.selectedFiles   = [];
@@ -168,13 +168,13 @@ export default defineComponent({
     /**
      * @param search
      */
-    async search(search: string) {
+    search(search: string) {
       if (!search) {
-        await this.open(this.currentFolderId);
+        this.open(this.currentFolderId);
         return;
       }
 
-      this.$appUtil.doAction('media/search', {search: search}, response => {
+      this.$appUtil.doAction('media/search', {search: search}, (response: any) => {
         this.files         = response.data.files;
         this.path          = response.data.path;
         this.selectedFiles = [];
@@ -184,7 +184,7 @@ export default defineComponent({
     /**
      * @param event
      */
-    handleFileChange(event) {
+    handleFileChange(event: any) {
       this.hideProgress  = false;
       this.totalProgress = 0;
 
@@ -388,6 +388,7 @@ export default defineComponent({
         max-width: 130px;
         display: -webkit-box;
         -webkit-line-clamp: 2;
+        line-clamp: 2;
         -webkit-box-orient: vertical;
         width: fit-content;
         text-align: center;

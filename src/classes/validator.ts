@@ -1,16 +1,12 @@
 import {ValidationParameters} from "./ValidationParameters";
-import appUtil, {AppUtil} from "@/classes/AppUtil";
+import {appUtil} from "@/classes/AppUtil";
 
 class Validator {
     readonly EMAIL      = 'email';
     readonly PRESENCE   = 'presence';
     readonly SERVERSIDE = 'server';
 
-    private appUtil: AppUtil;
-
-    constructor() {
-        this.appUtil = appUtil;
-    }
+    private appUtil = appUtil;
 
     /**
      * @param required

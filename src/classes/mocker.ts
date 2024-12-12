@@ -30,5 +30,7 @@ export class Mocker {
         this.homeMock.mock(this.mocker);
         this.appMock.mock(this.mocker);
         this.mediaMock.mock(this.mocker, this);
+
+        return this;
     }
 }

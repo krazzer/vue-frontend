@@ -47,12 +47,12 @@ export default defineComponent({
   },
   methods: {
     loadDefaultModule() {
-      this.$appUtil.doAction('default-module', {}, response => {
+      this.$appUtil.doAction('default-module', {}, (response: any) => {
           this.setContentByResponseData(response.data);
       });
     },
     loadModule(module: string) {
-      this.$appUtil.doAction('module/' + module, {}, (response) => {
+      this.$appUtil.doAction('module/' + module, {}, (response: any) => {
         this.selectedMenuItem = module;
         this.setContentByResponseData(response.data);
       });
@@ -62,7 +62,7 @@ export default defineComponent({
     },
 
     checkLogin() {
-      this.$appUtil.doAction('home', {}, response => {
+      this.$appUtil.doAction('home', {}, (response: any) => {
         if (!response.data.loggedIn) {
           this.$router.push({name: 'login'});
         } else {
@@ -107,7 +107,7 @@ export default defineComponent({
       <div class="sidebar__logo">
         <Logo/>
       </div>
-      <div class="sidebar__loader" v-if="$isLoading">
+      <div class="sidebar__loader" v-if="$appUtil.isLoading()">
         Loading...
       </div>
       <div class="sidebar__menu">
