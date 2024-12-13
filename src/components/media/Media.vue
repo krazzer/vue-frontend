@@ -258,7 +258,7 @@ export default defineComponent({
         {{ $translator.tl('media.cut') }}
       </v-btn>
       <v-btn v-if="selectedFilesCut.length" @click="paste" prepend-icon="mdi-content-paste">
-        Plak<span v-if="selectedFilesCut.length"> ({{ selectedFilesCut.length }})</span>
+        {{ $translator.tl('media.paste') }}<span v-if="selectedFilesCut.length"> ({{ selectedFilesCut.length }})</span>
       </v-btn>
       <v-btn v-if="selectedFiles.length == 1 && $appUtil.roleIsDev(role)" @click="editKey" prepend-icon="mdi-lock">
         {{ $translator.tl('media.editKey') }}
