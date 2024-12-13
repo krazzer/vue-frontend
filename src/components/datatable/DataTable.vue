@@ -109,10 +109,12 @@ export default defineComponent({
       let selectedCount = this.selected.length;
 
       if (button.action == 'add') {
-        this.dialog       = true;
-        this.dialogEditId = null;
-        this.editData     = {};
-        this.resetForm();
+        this.$appUtil.doAction('datatable/add', {instance: this.instance}, (response: any) => {
+          this.dialog       = true;
+          this.dialogEditId = null;
+          this.form         = response.data.form;
+          this.editData     = {};
+        });
       }
 
       if (button.action == 'delete') {
@@ -141,7 +143,10 @@ export default defineComponent({
     },
 
     async delete() {
-      await this.$appUtil.doAction('datatable/delete', {instance: this.instance, ids: this.selected}, (response: any) => {
+      await this.$appUtil.doAction('datatable/delete', {
+        instance: this.instance,
+        ids: this.selected
+      }, (response: any) => {
         this.data     = response.data;
         this.selected = [];
       });
@@ -191,9 +196,8 @@ export default defineComponent({
       await this.$appUtil.doAction('datatable/edit', {instance: this.instance}, (response: any) => {
         this.dialog       = true;
         this.dialogEditId = id;
-        this.editData     = response.data;
-
-        this.resetForm();
+        this.form         = response.data.form;
+        this.editData     = response.data.data;
       });
     },
 

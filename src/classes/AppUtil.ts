@@ -44,18 +44,22 @@ export class AppUtil {
             }
         }, this.loaderDelay);
 
+        let handleLoader = () => {
+            if(currentActionIndex == this.actionIndex){
+                this.state.isLoading = false;
+            }
+
+            isLoading = false;
+        }
+
         return axios
             .post('/api/' + url, {params: params}, config)
             .then((response: any) => {
-                let successResponse = onSuccess(response);
-
-                if(currentActionIndex == this.actionIndex){
-                    this.state.isLoading = false;
-                }
-
-                isLoading = false;
+                let successResponse = onSuccess ? onSuccess(response) : null;
+                handleLoader();
                 return successResponse;
             }).catch(error => {
+                handleLoader();
                 console.error(error);
             }
         );

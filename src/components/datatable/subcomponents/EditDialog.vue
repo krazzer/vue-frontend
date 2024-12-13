@@ -54,7 +54,7 @@ export default defineComponent({
             <i class="mdi mdi-close" @click="$emit('clickClose')"></i>
           </span>
         </v-card-title>
-        <TabbedForm ref="tabbedForm" :form="form" :data="data" @submit="clickSave" :darkMode="darkMode"
+        <TabbedForm v-if="dialog" ref="tabbedForm" :form="form" :data="data" @submit="clickSave" :darkMode="darkMode"
                     :checkTabErrors="checkTabErrors" />
         <v-card-actions>
           <v-spacer></v-spacer>

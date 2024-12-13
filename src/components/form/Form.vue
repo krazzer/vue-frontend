@@ -139,7 +139,7 @@ const DataTable = defineAsyncComponent(() => import('../datatable/DataTable.vue'
     <v-col v-for="field in fields ?? {}" cols="12" :md="field.size ? field.size.md : 0"
            :sm="field.size ? field.size.sm : 0">
 
-      <DataTable v-if="field.type == 'datatable'" :instance="field.instance"/>
+      <DataTable v-if="field.type == 'datatable'" :instance="field.instance" :settings="field.settings" />
       <component v-else :is="fieldComponents[field.type]" v-bind="getFieldProperties(field)" v-model="data[field.key]"
                  ref="fieldRefs"/>
     </v-col>
