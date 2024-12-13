@@ -125,7 +125,7 @@ export default defineComponent({
       <span v-if="html" v-html="html"></span>
       <Media v-if="media && Object.keys(media).length" :settings="media" :role="role"/>
       <DataTable v-if="dataTable" :settings="dataTable" :instance="dataTable.instance" :darkMode="darkMode" :level="0" />
-      <TabbedForm v-if="form" :form="form" :data="form.data" @submit=""/>
+      <TabbedForm v-if="form" :form="form" :data="form.data" :handleSubmit="true" />
     </div>
   </div>
 </template>

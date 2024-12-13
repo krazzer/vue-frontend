@@ -7,7 +7,7 @@ import {useTheme} from "vuetify";
 export default defineComponent({
   name: "Form",
   props: ['fields', 'data', 'darkMode', 'checkErrors', 'tab', 'level', 'save'],
-  emits: ['fieldError'],
+  emits: ['fieldError', 'doSubmit'],
   components: {Editor},
   data() {
     return {
@@ -32,8 +32,8 @@ export default defineComponent({
       handler: 'handleDataChange',
       deep: true
     },
-    async checkErrors () {
-      if (!this.checkErrors){
+    async checkErrors() {
+      if (!this.checkErrors) {
         this.$emit('fieldError', this.tab, false);
         return;
       }
@@ -50,7 +50,7 @@ export default defineComponent({
         }
       }
 
-      if(hasError){
+      if (hasError) {
         this.$emit('fieldError', this.tab, true);
       }
     }
@@ -61,14 +61,14 @@ export default defineComponent({
     }
   },
   methods: {
-    async fieldHasError(field: any){
+    async fieldHasError(field: any) {
       let validation = await field.validate();
 
       return validation.length > 0;
     },
 
-    handleDataChange(val: any){
-      if(this.hasDarkModeField() && this.$darkMode.value !== val.darkmode){
+    handleDataChange(val: any) {
+      if (this.hasDarkModeField() && this.$darkMode.value !== val.darkmode) {
         this.$darkMode.value  = val.darkmode;
         localStorage.darkMode = JSON.stringify(this.$darkMode.value);
       }
@@ -146,12 +146,13 @@ const DataTable = defineAsyncComponent(() => import('../datatable/DataTable.vue'
     <v-col v-for="field in fields ?? {}" cols="12" :md="field.size ? field.size.md : 0"
            :sm="field.size ? field.size.sm : 0">
 
-      <DataTable v-if="field.type == 'datatable'" :instance="field.instance" :settings="field.settings" :level="level + 1" />
+      <DataTable v-if="field.type == 'datatable'" :instance="field.instance" :settings="field.settings"
+                 :level="level + 1"/>
       <component v-else :is="fieldComponents[field.type]" v-bind="getFieldProperties(field)" v-model="data[field.key]"
                  ref="fieldRefs"/>
     </v-col>
     <v-col v-if="save">
-      <v-btn variant="tonal" prepend-icon="mdi-content-save">
+      <v-btn variant="tonal" prepend-icon="mdi-content-save" type="submit">
         {{ $translator.tl('general.save') }}
       </v-btn>
     </v-col>

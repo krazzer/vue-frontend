@@ -124,7 +124,8 @@ class HomeMock {
                     save: true,
                 },
             ],
-            data: {}
+            data: {},
+            instance: 'settings'
         };
     }
 
