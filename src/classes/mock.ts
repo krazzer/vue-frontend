@@ -9,6 +9,8 @@ class AppMock {
                 'general.search': 'Search',
                 'general.loading': 'loading...',
                 'general.language': 'Language',
+                'general.save': 'Save',
+                'general.close': 'Close',
                 'media.editKeyPrompt': 'Give a name for the key of this file',
                 'media.newFolderPrompt': 'Give a name for the new folder',
                 'media.newFolderPlaceholder': 'New folder',

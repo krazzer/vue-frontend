@@ -120,7 +120,8 @@ class HomeMock {
                             type: 'text',
                             label: 'Another open field',
                         },
-                    ]
+                    ],
+                    save: true,
                 },
             ],
             data: {}

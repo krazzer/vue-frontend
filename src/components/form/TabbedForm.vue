@@ -10,21 +10,21 @@ export default defineComponent({
   data() {
     return {
       tab: null,
-      tabErrors: <any> {},
-      forms: <any> []
+      tabErrors: <any>{},
+      forms: <any>[]
     };
   },
   methods: {
-    getClass(tab: string): string{
-      if(this.tabErrors[tab]){
+    getClass(tab: string): string {
+      if (this.tabErrors[tab]) {
         return 'error';
       }
 
       return '';
     },
 
-    setTabError(tab: string, set: boolean){
-        this.tabErrors[tab] = set;
+    setTabError(tab: string, set: boolean) {
+      this.tabErrors[tab] = set;
     }
   }
 })
@@ -38,19 +38,20 @@ export default defineComponent({
     <v-tabs-window v-if="form.tabs" v-model="tab">
       <v-tabs-window-item v-for="tab in form.tabs" :value="tab.key">
         <Form :fields="tab.fields" :data="data" :darkMode="darkMode" @fieldError="setTabError"
-              :checkErrors="checkTabErrors" :tab="tab.key" :level="level" />
+              :checkErrors="checkTabErrors" :tab="tab.key" :save="tab.save" :level="level"/>
       </v-tabs-window-item>
     </v-tabs-window>
-    <Form v-else :fields="form.fields" :data="data" :level="level" :darkMode="darkMode" ref="oneForm"/>
+    <Form v-else :fields="form.fields" :save="form.save" :data="data" :level="level" :darkMode="darkMode"
+          ref="oneForm"/>
   </v-form>
 </template>
 
 <style scoped lang="scss">
-  .v-dialog form{
-    padding: 24px;
-  }
+.v-dialog form {
+  padding: 24px;
+}
 
-  .v-tab.error{
-    color: rgb(var(--v-theme-error));
-  }
+.v-tab.error {
+  color: rgb(var(--v-theme-error));
+}
 </style>

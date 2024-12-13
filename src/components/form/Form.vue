@@ -6,7 +6,7 @@ import {useTheme} from "vuetify";
 
 export default defineComponent({
   name: "Form",
-  props: ['fields', 'data', 'darkMode', 'checkErrors', 'tab', 'level'],
+  props: ['fields', 'data', 'darkMode', 'checkErrors', 'tab', 'level', 'save'],
   emits: ['fieldError'],
   components: {Editor},
   data() {
@@ -28,9 +28,9 @@ export default defineComponent({
     };
   },
   watch: {
-    'data.darkmode'(val) {
-      this.$darkMode.value  = val;
-      localStorage.darkMode = JSON.stringify(this.$darkMode.value);
+    data: {
+      handler: 'handleDataChange',
+      deep: true
     },
     async checkErrors () {
       if (!this.checkErrors){
@@ -65,6 +65,13 @@ export default defineComponent({
       let validation = await field.validate();
 
       return validation.length > 0;
+    },
+
+    handleDataChange(val: any){
+      if(this.$darkMode.value !== val.darkmode){
+        this.$darkMode.value  = val.darkmode;
+        localStorage.darkMode = JSON.stringify(this.$darkMode.value);
+      }
     },
 
     initTinyMCE() {
@@ -142,6 +149,11 @@ const DataTable = defineAsyncComponent(() => import('../datatable/DataTable.vue'
       <DataTable v-if="field.type == 'datatable'" :instance="field.instance" :settings="field.settings" :level="level + 1" />
       <component v-else :is="fieldComponents[field.type]" v-bind="getFieldProperties(field)" v-model="data[field.key]"
                  ref="fieldRefs"/>
+    </v-col>
+    <v-col v-if="save">
+      <v-btn variant="tonal" prepend-icon="mdi-content-save">
+        {{ $translator.tl('general.save') }}
+      </v-btn>
     </v-col>
   </v-row>
 </template>

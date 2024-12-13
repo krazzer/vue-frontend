@@ -36,8 +36,8 @@ export default defineComponent({
     },
   },
   watch: {
-    dialog(){
-      if( ! this.dialog){
+    dialog() {
+      if (!this.dialog) {
         this.checkTabErrors = false;
       }
     }
@@ -55,11 +55,15 @@ export default defineComponent({
           </span>
         </v-card-title>
         <TabbedForm v-if="dialog" ref="tabbedForm" :form="form" :data="data" @submit="clickSave" :darkMode="darkMode"
-                    :checkTabErrors="checkTabErrors" :level="level" />
+                    :checkTabErrors="checkTabErrors" :level="level"/>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn variant="tonal" @click="$emit('clickClose')" prepend-icon="mdi-close">Close</v-btn>
-          <v-btn variant="tonal" @click="clickSave" prepend-icon="mdi-content-save">Save</v-btn>
+          <v-btn variant="tonal" @click="$emit('clickClose')" prepend-icon="mdi-close">
+            {{ $translator.tl('general.close') }}
+          </v-btn>
+          <v-btn variant="tonal" @click="clickSave" prepend-icon="mdi-content-save">
+            {{ $translator.tl('general.save') }}
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -71,40 +75,40 @@ export default defineComponent({
   transition-duration: var(--color-scheme-transition-speed);
 }
 
-.v-card-actions{
+.v-card-actions {
   margin-top: auto;
   padding: 24px;
 }
 
-.v-card-title{
+.v-card-title {
   position: relative;
 }
 
-.v-dialog{
+.v-dialog {
   width: 1200px;
 
   @for $i from 1 through 10 {
-    &[data-level="#{$i}"]{
+    &[data-level="#{$i}"] {
       width: 1200px - (24 * $i);
       height: 100% - (2 * $i);
     }
   }
 
   @for $i from 11 through 100 {
-    &[data-level="#{$i}"]{
+    &[data-level="#{$i}"] {
       width: 1200px - (24 * 10);
       height: 100% - (2 * 10);
     }
   }
 }
 
-.close{
+.close {
   position: absolute;
   right: 24px;
   font-size: 30px;
   top: 10px;
 
-  .mdi{
+  .mdi {
     cursor: pointer;
   }
 }
