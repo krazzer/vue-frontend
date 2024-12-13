@@ -68,7 +68,7 @@ export default defineComponent({
     },
 
     handleDataChange(val: any){
-      if(this.$darkMode.value !== val.darkmode){
+      if(this.hasDarkModeField() && this.$darkMode.value !== val.darkmode){
         this.$darkMode.value  = val.darkmode;
         localStorage.darkMode = JSON.stringify(this.$darkMode.value);
       }
