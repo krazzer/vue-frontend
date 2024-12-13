@@ -6,7 +6,7 @@ import {useTheme} from "vuetify";
 
 export default defineComponent({
   name: "Form",
-  props: ['fields', 'data', 'darkMode', 'checkErrors', 'tab'],
+  props: ['fields', 'data', 'darkMode', 'checkErrors', 'tab', 'level'],
   emits: ['fieldError'],
   components: {Editor},
   data() {
@@ -139,7 +139,7 @@ const DataTable = defineAsyncComponent(() => import('../datatable/DataTable.vue'
     <v-col v-for="field in fields ?? {}" cols="12" :md="field.size ? field.size.md : 0"
            :sm="field.size ? field.size.sm : 0">
 
-      <DataTable v-if="field.type == 'datatable'" :instance="field.instance" :settings="field.settings" />
+      <DataTable v-if="field.type == 'datatable'" :instance="field.instance" :settings="field.settings" :level="level + 1" />
       <component v-else :is="fieldComponents[field.type]" v-bind="getFieldProperties(field)" v-model="data[field.key]"
                  ref="fieldRefs"/>
     </v-col>

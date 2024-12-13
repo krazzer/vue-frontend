@@ -6,7 +6,7 @@ import TabbedForm from "@/components/form/TabbedForm.vue"
 
 export default defineComponent({
   name: "EditDialog",
-  props: ['dialog', 'form', 'dialogEditId', 'data', 'values', 'darkMode'],
+  props: ['dialog', 'form', 'dialogEditId', 'data', 'values', 'darkMode', 'level'],
   components: {Editor, TabbedForm},
   data() {
     return {
@@ -46,7 +46,7 @@ export default defineComponent({
 </script>
 <template>
   <v-row justify="center">
-    <v-dialog v-model="dialog" persistent width="1200" :eager="true" :retain-focus="false">
+    <v-dialog v-model="dialog" persistent :eager="true" :retain-focus="false" :data-level="level">
       <v-card height="100vh">
         <v-card-title>
           <span class="text-h5">{{ dialogEditId ? 'Edit ' + dialogEditId : 'Add' }}</span>
@@ -55,7 +55,7 @@ export default defineComponent({
           </span>
         </v-card-title>
         <TabbedForm v-if="dialog" ref="tabbedForm" :form="form" :data="data" @submit="clickSave" :darkMode="darkMode"
-                    :checkTabErrors="checkTabErrors" />
+                    :checkTabErrors="checkTabErrors" :level="level" />
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn variant="tonal" @click="$emit('clickClose')" prepend-icon="mdi-close">Close</v-btn>
@@ -78,6 +78,24 @@ export default defineComponent({
 
 .v-card-title{
   position: relative;
+}
+
+.v-dialog{
+  width: 1200px;
+
+  @for $i from 1 through 10 {
+    &[data-level="#{$i}"]{
+      width: 1200px - (24 * $i);
+      height: 100% - (2 * $i);
+    }
+  }
+
+  @for $i from 11 through 100 {
+    &[data-level="#{$i}"]{
+      width: 1200px - (24 * 10);
+      height: 100% - (2 * 10);
+    }
+  }
 }
 
 .close{

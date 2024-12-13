@@ -18,6 +18,7 @@ export default defineComponent({
       }
     },
     instance: String,
+    level: Number,
   },
   data() {
     return {
@@ -245,11 +246,6 @@ export default defineComponent({
       });
     },
 
-    resetForm() {
-      let thisComp: any = this;
-      thisComp.$refs.editDialog.$refs.tabbedForm.$refs.form.reset();
-    },
-
     /**
      * @param id
      * @param collapsed
@@ -432,7 +428,7 @@ export default defineComponent({
     </template>
   </div>
   <EditDialog :dialog="dialog" :dialogEditId="dialogEditId" :form="form ?? {}" @clickClose="dialog = false"
-              @clickSave="save" :data="editData" :darkMode="darkMode" ref="editDialog"/>
+              @clickSave="save" :data="editData" :darkMode="darkMode" :level="level" ref="editDialog"/>
 </template>
 
 <style lang="scss" scoped>
