@@ -115,7 +115,7 @@ export default defineComponent({
   }
 
   @media (max-width: 1200px) {
-      width: 100%;
+    width: 100% !important;
   }
 }
 

@@ -8,7 +8,7 @@ export default defineComponent({
   emits: ['collapse', 'edit', 'toggle'],
   name: "Row",
   props: ['row', 'dragAndDropPages', 'headers', 'settings', 'id', 'level', 'selected', 'selectedIds', 'max',
-    'highlight', 'actions', 'index', 'forceDefaultView'],
+    'highlight', 'actions', 'index', 'forceDefaultView', 'mobileColumns'],
   data() {
     return {
       preventSelect: <boolean>false,
@@ -131,6 +131,7 @@ export default defineComponent({
   <tr @click="toggleRow" :class="getClasses()" @mousedown="mousedown($event)" @dblclick="$emit('edit', row.id, $event)">
     <td v-for="(cell, i) in row.data" :data-column="headers[i]" @mouseleave="dragAndDropPages.mouseLeave"
         @mouseenter="dragAndDropPages.mouseEnter(row.id, $event)"
+        :class="mobileColumns.includes(i) || i in mobileColumns ? 'mobile' : ''"
         @mousemove="dragAndDropPages.mouseMoveContainer(row.id, $event, max, level)">
       <template v-if="displayAsPage(i)">
         <Page v-if="dragAndDropPages.itemIdMouseDown == row.id" :cell="cell" :cloned="true" :level="row.level"

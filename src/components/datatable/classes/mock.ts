@@ -6,6 +6,7 @@ class DataTableMock {
         buttons: [{label: 'Add client', action: 'add'}, {label: 'Delete', action: 'delete'}],
         pages: [1, null, 5, 6, 7, null, 11],
         headers: {'id': "Id", 'name': "Name", 'address': "Address", 'zip': "Zip"},
+        mobileColumns: ['id', 'name'],
         data: [
             {id: 'a1', data: ['a1', 'Peter', 'Peterstreet 17', '12345']},
             {id: 'a2', data: ['a2', 'John', 'Johnstreet 17', '23456']},
@@ -54,6 +55,7 @@ class DataTableMock {
     public subDataTableData = {
         buttons: [{label: 'Add hobby', action: 'add'}, {label: 'Delete', action: 'delete'}],
         headers: ['id', 'name'],
+        mobileColumns: [0, 1],
         data: [
             {id: 1, data: [1, 'Fitness']},
             {id: 2, data: [2, 'Gaming']},
@@ -377,6 +379,7 @@ class DataTableMock {
         return {
             buttons: [{label: 'Add content', action: 'add'}, {label: 'Delete', action: 'delete'}],
             headers: ['id', 'name', 'content'],
+            mobileColumns: [0, 1],
             data: [
                 {
                     id: 'a1',
@@ -444,6 +447,7 @@ class DataTableMock {
                 {key: 'preview', type: 'url', icon: 'mdi-eye'}
             ],
             headers: ['name', 'template', 'slug', 'id'],
+            mobileColumns: [0, 3],
             cells: {'name': {'type': 'page'}},
             pages: [1, 2, 3],
             data: data,

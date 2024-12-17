@@ -35,7 +35,8 @@ export default defineComponent({
       language: <any>null,
       languages: <any>null,
       page: 1,
-      headers: [],
+      headers: <any>[],
+      mobileColumns: <any>[],
       highlight: '',
       pages: <any>[],
       search: '',
@@ -55,8 +56,8 @@ export default defineComponent({
     'dragAndDropPages.itemIdMouseDown'() {
       this.cloned = this.dragAndDropPages.itemIdMouseDown;
     },
-    dialog(){
-      if( ! this.dialog){
+    dialog() {
+      if (!this.dialog) {
         this.saved = false;
       }
     }
@@ -95,14 +96,15 @@ export default defineComponent({
     },
 
     convertSettings(settings: any) {
-      this.headers   = settings.headers;
-      this.data      = settings.data;
-      this.form      = settings.form;
-      this.buttons   = settings.buttons;
-      this.pages     = settings.pages;
-      this.languages = settings.languages;
-      this.language  = settings.language;
-      this.actions   = settings.actions;
+      this.headers       = settings.headers;
+      this.data          = settings.data;
+      this.form          = settings.form;
+      this.buttons       = settings.buttons;
+      this.pages         = settings.pages;
+      this.languages     = settings.languages;
+      this.language      = settings.language;
+      this.actions       = settings.actions;
+      this.mobileColumns = settings.mobileColumns;
     },
 
     clearSearch() {
@@ -235,9 +237,9 @@ export default defineComponent({
         data: data,
         id: dialogEditId
       }, (response: any) => {
-        this.data   = response.data;
+        this.data = response.data;
 
-        if(close) {
+        if (close) {
           this.dialog = false;
         } else {
           this.saved = true;
@@ -304,7 +306,7 @@ export default defineComponent({
       }
     },
 
-    inputChange(){
+    inputChange() {
       this.saved = false;
     },
 
@@ -416,7 +418,7 @@ export default defineComponent({
         <table>
           <thead>
           <tr>
-            <th v-for="(name, key) in headers" @click="sort(key.toString())">
+            <th v-for="(name, key) in headers" @click="sort(key.toString())" :class="mobileColumns.includes(key) ? 'mobile' : ''">
               {{ name }}
               <i v-if="key.toString() == sortKey && sortDirection == ASCENDING" class="mdi mdi-sort-ascending"></i>
               <i v-if="key.toString() == sortKey && sortDirection == DESCENDING" class="mdi mdi-sort-descending"></i>
@@ -428,7 +430,8 @@ export default defineComponent({
             <Row v-if="parentIsOpen(index)" :row="row" :dragAndDropPages="dragAndDropPages" :headers="headers"
                  :actions="actions" :selected="isSelected(row.id)" @toggle="toggle" :settings="settings"
                  @collapse="collapse" @edit="edit" :id="row.id" :level="row.level" :selectedIds="selected"
-                 :max="row.max" :highlight="highlight" :index="index" :forceDefaultView="forceDefaultView"/>
+                 :max="row.max" :highlight="highlight" :index="index" :forceDefaultView="forceDefaultView"
+                 :mobile-columns="mobileColumns"/>
           </template>
           </tbody>
         </table>
@@ -538,6 +541,16 @@ export default defineComponent({
 
         :deep(tr:hover) {
           background-color: var(--color-background-shade2);
+        }
+      }
+
+      @media (max-width: $screen-sm-max) {
+        :deep(td), :deep(th) {
+          display: none;
+
+          &.mobile {
+            display: table-cell;
+          }
         }
       }
     }
