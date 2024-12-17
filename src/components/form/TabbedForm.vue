@@ -11,7 +11,8 @@ export default defineComponent({
     return {
       tab: null,
       tabErrors: <any>{},
-      forms: <any>[]
+      forms: <any>[],
+      saved: false,
     };
   },
   methods: {
@@ -32,15 +33,20 @@ export default defineComponent({
         instance: this.form.instance,
         data: this.data,
       }, () => {
+        this.saved = true;
       });
     },
 
-    submit(){
-      if(this.handleSubmit && this.form.instance){
-        if(this.form.instance) {
+    submit() {
+      if (this.handleSubmit && this.form.instance) {
+        if (this.form.instance) {
           this.save();
         }
       }
+    },
+
+    inputChange() {
+      this.saved = false;
     }
   }
 })
@@ -53,12 +59,13 @@ export default defineComponent({
   <v-form ref="form" v-on:submit.prevent v-on:submit="submit">
     <v-tabs-window v-if="form.tabs" v-model="tab">
       <v-tabs-window-item v-for="tab in form.tabs" :value="tab.key">
-        <Form :fields="tab.fields" :data="data" :darkMode="darkMode" @fieldError="setTabError"
-              :checkErrors="checkTabErrors" :tab="tab.key" :save="tab.save" :level="level" @doSubmit="submit"/>
+        <Form :fields="tab.fields" :data="data" :darkMode="darkMode" @fieldError="setTabError" :saved="saved"
+              :checkErrors="checkTabErrors" :tab="tab.key" :save="tab.save" :level="level" @do-submit="submit"
+              @input-change="inputChange"/>
       </v-tabs-window-item>
     </v-tabs-window>
-    <Form v-else :fields="form.fields" :save="form.save" :data="data" :level="level" :darkMode="darkMode"
-          ref="oneForm" @doSubmit="submit"/>
+    <Form v-else :fields="form.fields" :save="form.save" :data="data" :level="level" :darkMode="darkMode" :saved="saved"
+          ref="oneForm" @do-submit="submit" @input-change="inputChange"/>
   </v-form>
 </template>
 

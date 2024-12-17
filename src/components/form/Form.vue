@@ -6,8 +6,8 @@ import {useTheme} from "vuetify";
 
 export default defineComponent({
   name: "Form",
-  props: ['fields', 'data', 'darkMode', 'checkErrors', 'tab', 'level', 'save'],
-  emits: ['fieldError', 'doSubmit'],
+  props: ['fields', 'data', 'darkMode', 'checkErrors', 'tab', 'level', 'save', 'saved'],
+  emits: ['fieldError', 'doSubmit', 'inputChange'],
   components: {Editor},
   data() {
     return {
@@ -72,6 +72,8 @@ export default defineComponent({
         this.$darkMode.value  = val.darkmode;
         localStorage.darkMode = JSON.stringify(this.$darkMode.value);
       }
+
+      this.$emit('inputChange');
     },
 
     initTinyMCE() {
@@ -152,8 +154,8 @@ const DataTable = defineAsyncComponent(() => import('../datatable/DataTable.vue'
                  ref="fieldRefs"/>
     </v-col>
     <v-col v-if="save">
-      <v-btn variant="tonal" prepend-icon="mdi-content-save" type="submit">
-        {{ $translator.tl('general.save') }}
+      <v-btn variant="tonal" :prepend-icon="saved ? 'mdi-check' : 'mdi-content-save'" type="submit">
+        {{ saved ? $translator.tl('general.saved') : $translator.tl('general.save') }}
       </v-btn>
     </v-col>
   </v-row>
