@@ -45,6 +45,7 @@ export default defineComponent({
       lastIndex: <number | null>null,
       noselect: false,
       forceDefaultView: false,
+      saved: false,
     };
   },
   watch: {
@@ -53,6 +54,11 @@ export default defineComponent({
     },
     'dragAndDropPages.itemIdMouseDown'() {
       this.cloned = this.dragAndDropPages.itemIdMouseDown;
+    },
+    dialog(){
+      if( ! this.dialog){
+        this.saved = false;
+      }
     }
   },
   mounted() {
@@ -221,15 +227,21 @@ export default defineComponent({
     /**
      * @param dialogEditId
      * @param data
+     * @param close
      */
-    async save(dialogEditId: any, data: any) {
+    async save(dialogEditId: any, data: any, close: boolean = false) {
       await this.$appUtil.doAction('datatable/save', {
         instance: this.instance,
         data: data,
         id: dialogEditId
       }, (response: any) => {
         this.data   = response.data;
-        this.dialog = false;
+
+        if(close) {
+          this.dialog = false;
+        } else {
+          this.saved = true;
+        }
       });
     },
 
@@ -290,6 +302,10 @@ export default defineComponent({
         let index = this.selected.indexOf(id);
         this.selected.splice(index, 1);
       }
+    },
+
+    inputChange(){
+      this.saved = false;
     },
 
     /**
@@ -428,7 +444,8 @@ export default defineComponent({
     </template>
   </div>
   <EditDialog :dialog="dialog" :dialogEditId="dialogEditId" :form="form ?? {}" @clickClose="dialog = false"
-              @clickSave="save" :data="editData" :darkMode="darkMode" :level="level" ref="editDialog"/>
+              @clickSave="save" :data="editData" :darkMode="darkMode" :level="level" ref="editDialog"
+              :parent-saved="saved" @input-change="inputChange"/>
 </template>
 
 <style lang="scss" scoped>

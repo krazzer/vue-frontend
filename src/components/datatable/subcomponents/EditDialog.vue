@@ -6,21 +6,23 @@ import TabbedForm from "@/components/form/TabbedForm.vue"
 
 export default defineComponent({
   name: "EditDialog",
-  props: ['dialog', 'form', 'dialogEditId', 'data', 'values', 'darkMode', 'level'],
+  props: ['dialog', 'form', 'dialogEditId', 'data', 'values', 'darkMode', 'level', 'parentSaved'],
+  emits: ['clickSave', 'clickClose', 'inputChange'],
   components: {Editor, TabbedForm},
   data() {
     return {
       validator: validator,
       checkTabErrors: false,
       tab: null,
+      saved: false,
     };
   },
   methods: {
-    async clickSave() {
+    async clickSave(close: boolean){
       let isValid = await this.getForm().validate();
 
       if (isValid.valid) {
-        this.$emit('clickSave', this.dialogEditId, this.data);
+        this.$emit('clickSave', this.dialogEditId, this.data, close);
       } else {
         this.checkTabErrors = true;
       }
@@ -34,12 +36,20 @@ export default defineComponent({
       let thisComponent: any = this;
       return thisComponent.$refs.tabbedForm.$refs.form;
     },
+
+    inputChange() {
+      this.saved = false;
+      this.$emit('inputChange');
+    },
   },
   watch: {
     dialog() {
       if (!this.dialog) {
         this.checkTabErrors = false;
       }
+    },
+    parentSaved() {
+      this.saved = this.parentSaved;
     }
   }
 });
@@ -55,14 +65,17 @@ export default defineComponent({
           </span>
         </v-card-title>
         <TabbedForm v-if="dialog" ref="tabbedForm" :form="form" :data="data" @submit="clickSave" :darkMode="darkMode"
-                    :checkTabErrors="checkTabErrors" :level="level"/>
+                    :checkTabErrors="checkTabErrors" :level="level" @input-change="inputChange"/>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn variant="tonal" @click="$emit('clickClose')" prepend-icon="mdi-close">
             {{ $translator.tl('general.close') }}
           </v-btn>
-          <v-btn variant="tonal" @click="clickSave" prepend-icon="mdi-content-save">
-            {{ $translator.tl('general.save') }}
+          <v-btn variant="tonal" @click="clickSave(false)" :prepend-icon="saved ? 'mdi-check' : 'mdi-content-save'">
+            {{ saved ? $translator.tl('general.saved') : $translator.tl('general.save') }}
+          </v-btn>
+          <v-btn variant="tonal" @click="clickSave(true)" prepend-icon="mdi-content-save">
+            {{ $translator.tl('general.saveAndClose') }}
           </v-btn>
         </v-card-actions>
       </v-card>

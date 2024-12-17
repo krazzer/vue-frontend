@@ -10,6 +10,7 @@ class AppMock {
                 'general.loading': 'loading...',
                 'general.language': 'Language',
                 'general.save': 'Save',
+                'general.saveAndClose': 'Save & close',
                 'general.saved': 'Saved',
                 'general.close': 'Close',
                 'media.editKeyPrompt': 'Give a name for the key of this file',

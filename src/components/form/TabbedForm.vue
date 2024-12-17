@@ -5,7 +5,7 @@ import Form from "@/components/form/Form.vue";
 export default defineComponent({
   name: "TabbedForm",
   props: ['form', 'darkMode', 'data', 'checkTabErrors', 'level', 'handleSubmit'],
-  emits: ['submit'],
+  emits: ['submit', 'inputChange'],
   components: {Form},
   data() {
     return {
@@ -47,6 +47,7 @@ export default defineComponent({
 
     inputChange() {
       this.saved = false;
+      this.$emit('inputChange');
     }
   }
 })
