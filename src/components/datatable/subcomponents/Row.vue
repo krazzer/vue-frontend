@@ -15,14 +15,14 @@ export default defineComponent({
     };
   },
   methods: {
-    displayAsPage(index: number): boolean{
-        let isPage = this.getCellType(index) == 'page';
+    displayAsPage(index: number): boolean {
+      let isPage = this.getCellType(index) == 'page';
 
-        if(this.forceDefaultView){
-          return false;
-        }
+      if (this.forceDefaultView) {
+        return false;
+      }
 
-        return isPage;
+      return isPage;
     },
 
     /**
@@ -62,10 +62,10 @@ export default defineComponent({
      * @param iconKey
      * @param event
      */
-    clickAction(row: any, iconKey: string, event: MouseEvent){
+    clickAction(row: any, iconKey: string, event: MouseEvent) {
       event.stopPropagation();
 
-      if(row.actionUrls && row.actionUrls[iconKey]){
+      if (row.actionUrls && row.actionUrls[iconKey]) {
         window.open(row.actionUrls[iconKey]);
       }
     },
@@ -87,12 +87,12 @@ export default defineComponent({
       }
     },
 
-    getCell(cell: string){
-      if( ! cell){
+    getCell(cell: string) {
+      if (!cell) {
         return '&nbsp;';
       }
 
-      if(this.highlight){
+      if (this.highlight) {
         let regexp = new RegExp(String.raw`${this.highlight}`, "gi");
 
         cell = cell.replace(regexp, (match) => {
@@ -103,14 +103,14 @@ export default defineComponent({
       return cell;
     },
 
-    getClasses(){
+    getClasses() {
       let classes = [];
 
-      if(this.selected){
+      if (this.selected) {
         classes.push('selected');
       }
 
-      if(this.preventSelect){
+      if (this.preventSelect) {
         classes.push('preventselect');
       }
 
@@ -120,7 +120,7 @@ export default defineComponent({
     /**
      * @param id
      */
-    isSelected(id: string): boolean{
+    isSelected(id: string): boolean {
       return this.selectedIds.includes(id);
     }
   }
@@ -142,10 +142,11 @@ export default defineComponent({
               @startDrag="dragAndDropPages.setMouseDown(row.id, $event)" :type="row.type"
               :hasCildren="row.children" :collapse="row.collapsed" @arrowClick="arrowClick($event)"/>
       </template>
-      <template v-else><span v-html="getCell(cell)" /></template>
+      <template v-else><span v-html="getCell(cell)"/></template>
       <template v-if="i == row.data.length - 1">
         <div class="buttons">
-          <span v-for="action in actions" @click="clickAction(row, action.key, $event)"><i :class="'mdi ' + action.icon"></i></span>
+          <span v-for="action in actions" @click="clickAction(row, action.key, $event)"><i
+              :class="'mdi ' + action.icon"></i></span>
           <span @click="$emit('edit', row.id, $event)"><i class="mdi mdi-square-edit-outline"></i>
           </span>
         </div>
@@ -156,13 +157,18 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 @import "./../styles/pages";
+@import "@/assets/media-query-sizes.scss";
 
-:deep(.highlighted){
+:deep(.mdi:before){
+  line-height: 20px;
+}
+
+:deep(.highlighted) {
   background-color: var(--color-action);
   color: var(--color-text-in-main-bg);
 }
 
-tr.selected td{
+tr.selected td {
   background-color: var(--main-color);
   color: var(--color-text-in-main-bg);
 
@@ -177,8 +183,13 @@ tr.selected td{
   }
 }
 
+tr.selected:hover td .buttons {
+  background-color: var(--main-color);
+}
+
 tr:hover td .buttons {
   display: inline-block;
+  background-color: var(--color-background-shade2);
 }
 
 td .buttons {
@@ -186,15 +197,38 @@ td .buttons {
   position: absolute;
   right: 15px;
   top: 0;
-  padding: 4px 0;
+  padding: 5px 0 3px;
+  white-space: nowrap;
 
-  span{
+  span {
     cursor: pointer;
     margin-left: 6px;
   }
 
-  i{
+  i {
     font-size: 20px;
+  }
+
+  @media (max-width: $screen-sm-max) {
+    display: block;
+    position: relative;
+  }
+}
+
+@media (max-width: $screen-sm-max) {
+  td:last-child{
+    display: flex;
+    white-space: nowrap;
+    position: relative;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+
+    .buttons{
+      height: 22px;
+      top: -9px;
+      background-color: transparent !important;
+    }
   }
 }
 </style>

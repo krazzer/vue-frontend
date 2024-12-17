@@ -113,6 +113,10 @@ export default defineComponent({
       height: 100% - (2 * 10);
     }
   }
+
+  @media (max-width: 1200px) {
+      width: 100%;
+  }
 }
 
 .close {
