@@ -136,6 +136,8 @@ export default defineComponent({
 
 $sideBarWidth: 250px;
 $mainPadding: 40px;
+$mainPaddingMobile: 20px;
+$sideBarWidthMobile: 200px;
 
 #cms.open {
   .sidebar {
@@ -155,6 +157,11 @@ $mainPadding: 40px;
   z-index: 2;
   cursor: pointer;
   transition: margin-left .3s;
+
+  @media (max-width: $screen-sm-max) {
+    left: calc($sideBarWidthMobile - 25px);
+    margin-left: -$sideBarWidthMobile;
+  }
 }
 
 .sidebar {
@@ -194,7 +201,9 @@ $mainPadding: 40px;
   }
 
   @media (max-width: $screen-sm-max) {
-    margin-left: -$sideBarWidth;
+    width: $sideBarWidthMobile;
+    margin-left: -$sideBarWidthMobile;
+    padding: $mainPaddingMobile;
 
     .sidebar__logo {
       display: none;
@@ -205,12 +214,12 @@ $mainPadding: 40px;
 .main {
   padding: $mainPadding $mainPadding $mainPadding $mainPadding + $sideBarWidth;
 
-  @media (max-width: $screen-sm-max) {
-    padding-left: $mainPadding;
-  }
-
   > :deep(.v-tabs) {
     margin-bottom: $spaceLogoMenu - $spaceExtraTab;
+  }
+
+  @media (max-width: $screen-sm-max) {
+    padding: $mainPaddingMobile;
   }
 }
 

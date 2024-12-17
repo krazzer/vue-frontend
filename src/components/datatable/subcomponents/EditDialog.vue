@@ -116,6 +116,12 @@ export default defineComponent({
 
   @media (max-width: 1200px) {
     width: 100% !important;
+
+    :deep(.v-overlay__content){
+      max-height: calc(100% - 24px);
+      width: calc(100% - 24px);
+      max-width: calc(100% - 24px);
+    }
   }
 }
 
