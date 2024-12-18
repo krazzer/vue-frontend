@@ -423,6 +423,7 @@ export default defineComponent({
               <i v-if="key.toString() == sortKey && sortDirection == ASCENDING" class="mdi mdi-sort-ascending"></i>
               <i v-if="key.toString() == sortKey && sortDirection == DESCENDING" class="mdi mdi-sort-descending"></i>
             </th>
+            <th class="button-column"></th>
           </tr>
           </thead>
           <tbody>
@@ -519,6 +520,14 @@ export default defineComponent({
         position: relative;
       }
 
+      .button-column{
+        display: none;
+
+        @media (max-width: $screen-sm-max) {
+            display: inline-table;
+        }
+      }
+
       thead th {
         text-align: left;
         font-weight: bold;
@@ -545,7 +554,7 @@ export default defineComponent({
       }
 
       @media (max-width: $screen-sm-max) {
-        :deep(td), :deep(th) {
+        th {
           display: none;
 
           &.mobile {

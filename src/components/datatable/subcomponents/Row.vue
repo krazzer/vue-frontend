@@ -48,7 +48,9 @@ export default defineComponent({
         return null;
       }
 
-      return cellSettings[this.settings.headers[index]];
+      let key = Object.keys(this.settings.headers)[index];
+
+      return cellSettings[key];
     },
 
     arrowClick(event: MouseEvent) {
@@ -118,6 +120,26 @@ export default defineComponent({
     },
 
     /**
+     * @param index
+     */
+    getKey(index: number): string{
+      return Object.keys(this.settings.headers)[index];
+    },
+
+    /**
+     * @param index
+     */
+    getTdClass(index: number): string{
+      let key = this.getKey(index);
+
+      if(this.mobileColumns.includes(key)){
+        return 'mobile';
+      }
+
+      return '';
+    },
+
+    /**
      * @param id
      */
     isSelected(id: string): boolean {
@@ -129,9 +151,8 @@ export default defineComponent({
 
 <template>
   <tr @click="toggleRow" :class="getClasses()" @mousedown="mousedown($event)" @dblclick="$emit('edit', row.id, $event)">
-    <td v-for="(cell, i) in row.data" :data-column="headers[i]" @mouseleave="dragAndDropPages.mouseLeave"
-        @mouseenter="dragAndDropPages.mouseEnter(row.id, $event)"
-        :class="mobileColumns.includes(i) || i in mobileColumns ? 'mobile' : ''"
+    <td v-for="(cell, i) in row.data" :data-column="getKey(i)" @mouseleave="dragAndDropPages.mouseLeave"
+        @mouseenter="dragAndDropPages.mouseEnter(row.id, $event)" :class="getTdClass(i)"
         @mousemove="dragAndDropPages.mouseMoveContainer(row.id, $event, max, level)">
       <template v-if="displayAsPage(i)">
         <Page v-if="dragAndDropPages.itemIdMouseDown == row.id" :cell="cell" :cloned="true" :level="row.level"
@@ -152,6 +173,14 @@ export default defineComponent({
           </span>
         </div>
       </template>
+    </td>
+    <td class="button-column">
+      <div class="buttons">
+          <span v-for="action in actions" @click="clickAction(row, action.key, $event)"><i
+              :class="'mdi ' + action.icon"></i></span>
+        <span @click="$emit('edit', row.id, $event)"><i class="mdi mdi-square-edit-outline"></i>
+          </span>
+      </div>
     </td>
   </tr>
 </template>
@@ -188,9 +217,21 @@ tr.selected:hover td .buttons {
   background-color: var(--main-color);
 }
 
-tr:hover td .buttons {
-  display: inline-block;
-  background-color: var(--color-background-shade2);
+@media (min-width: $screen-md-min) {
+  tr:hover td .buttons {
+    display: inline-block;
+    background-color: var(--color-background-shade2);
+  }
+}
+
+@media (max-width: $screen-sm-max) {
+  td {
+    display: none;
+
+    &.mobile {
+      display: table-cell;
+    }
+  }
 }
 
 td .buttons {
@@ -209,26 +250,20 @@ td .buttons {
   i {
     font-size: 20px;
   }
-
-  @media (max-width: $screen-sm-max) {
-    display: block;
-    position: relative;
-  }
 }
 
-@media (max-width: $screen-sm-max) {
-  td:last-child{
-    display: flex;
-    white-space: nowrap;
-    position: relative;
-    justify-content: space-between;
-    align-items: center;
-    gap: 15px;
+
+td.button-column {
+  display: none;
+
+  @media (max-width: $screen-sm-max) {
+    display: table-cell;
 
     .buttons{
+      display: block;
+      position: relative;
       height: 22px;
       top: -9px;
-      background-color: transparent !important;
     }
   }
 }
