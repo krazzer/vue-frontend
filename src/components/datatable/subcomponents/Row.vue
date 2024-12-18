@@ -219,7 +219,7 @@ tr.selected:hover td .buttons {
 
 @media (min-width: $screen-md-min) {
   tr:hover td .buttons {
-    display: inline-block;
+    display: flex;
     background-color: var(--color-background-shade2);
   }
 }
@@ -238,13 +238,13 @@ td .buttons {
   display: none;
   position: absolute;
   right: 15px;
-  top: 0;
-  padding: 5px 0 3px;
+  top: 5px;
   white-space: nowrap;
+  gap: 8px;
+  align-items: center;
 
   span {
     cursor: pointer;
-    margin-left: 6px;
   }
 
   i {
@@ -260,10 +260,10 @@ td.button-column {
     display: table-cell;
 
     .buttons{
-      display: block;
-      position: relative;
+      display: flex;
+      position: static;
       height: 22px;
-      top: -9px;
+      top: 0;
     }
   }
 }
