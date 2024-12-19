@@ -37,11 +37,13 @@ export default defineComponent({
       });
     },
 
-    submit() {
+    submit(close: boolean = false) {
       if (this.handleSubmit && this.form.instance) {
         if (this.form.instance) {
           this.save();
         }
+      } else {
+        this.$emit('submit', close);
       }
     },
 
@@ -57,7 +59,7 @@ export default defineComponent({
   <v-tabs v-if="form.tabs" v-model="tab">
     <v-tab v-for="tab in form.tabs" :value="tab.key" :class="getClass(tab.key)">{{ tab.name }}</v-tab>
   </v-tabs>
-  <v-form ref="form" v-on:submit.prevent v-on:submit="submit">
+  <v-form ref="form" v-on:submit.prevent v-on:submit="submit(false)">
     <v-tabs-window v-if="form.tabs" v-model="tab">
       <v-tabs-window-item v-for="tab in form.tabs" :value="tab.key">
         <Form :fields="tab.fields" :data="data" :darkMode="darkMode" @fieldError="setTabError" :saved="saved"

@@ -81,6 +81,14 @@ export default defineComponent({
         plugins: 'lists link image table code help wordcount',
         skin_url: this.darkMode ? '/cms/tinymceskin' : null,
         content_css: this.darkMode ? "/cms/tinymceskin/editor.min.css" : null,
+        setup: (editor: any) => {
+          editor.on('keydown', (e: KeyboardEvent) => {
+            if ((e.metaKey || e.ctrlKey) && e.key === 's') {
+              e.preventDefault();
+              this.$emit('doSubmit', true);
+            }
+          });
+        }
       };
     },
 

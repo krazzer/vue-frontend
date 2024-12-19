@@ -17,8 +17,20 @@ export default defineComponent({
       saved: false,
     };
   },
+  mounted() {
+    window.addEventListener("keydown", this.handleKeyDown);
+  },
+  beforeUnmount() {
+    window.removeEventListener("keydown", this.handleKeyDown);
+  },
   methods: {
-    async clickSave(close: boolean){
+    handleKeyDown(e: KeyboardEvent) {
+      if (this.dialog && (e.metaKey || e.ctrlKey) && e.key == 's') {
+        e.preventDefault();
+        this.clickSave(true);
+      }
+    },
+    async clickSave(close: boolean) {
       let isValid = await this.getForm().validate();
 
       if (isValid.valid) {
@@ -99,7 +111,7 @@ export default defineComponent({
   align-items: flex-end;
 
   @media (max-width: $screen-sm-max) {
-      padding: 15px;
+    padding: 15px;
   }
 }
 
@@ -127,7 +139,7 @@ export default defineComponent({
   @media (max-width: 1200px) {
     width: 100% !important;
 
-    :deep(.v-overlay__content){
+    :deep(.v-overlay__content) {
       max-height: calc(100% - 24px);
       width: calc(100% - 24px);
       max-width: calc(100% - 24px);
