@@ -103,7 +103,9 @@ export default defineComponent({
 
 <template>
   <div id="cms" :class="{ open: mobileMenuOpen }">
-    <div class="sidebar-close-button" @click="toggleMenu">╳</div>
+    <div class="sidebar-close-button" @click="toggleMenu">
+      <i data-v-be8dafae="" class="mdi mdi-close"></i>
+    </div>
     <div class="sidebar">
       <div class="sidebar__logo">
         <Logo/>
@@ -153,14 +155,17 @@ $sideBarWidthMobile: 200px;
   position: fixed;
   left: calc($sideBarWidth - 25px);
   margin-left: -$sideBarWidth;
-  top: 3px;
+  top: 8px;
   z-index: 2;
   cursor: pointer;
   transition: margin-left .3s;
+  font-size: $closeButtonSize;
+  display: none;
 
   @media (max-width: $screen-sm-max) {
-    left: calc($sideBarWidthMobile - 25px);
+    left: calc($sideBarWidthMobile - 45px);
     margin-left: -$sideBarWidthMobile;
+    display: block;
   }
 }
 

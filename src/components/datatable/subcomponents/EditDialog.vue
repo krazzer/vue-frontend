@@ -85,6 +85,7 @@ export default defineComponent({
 
 <style scoped lang="scss">
 @import "@/assets/media-query-sizes.scss";
+@import "@/assets/base.scss";
 
 .v-card {
   transition-duration: var(--color-scheme-transition-speed);
@@ -137,7 +138,7 @@ export default defineComponent({
 .close {
   position: absolute;
   right: 24px;
-  font-size: 30px;
+  font-size: $closeButtonSize;
   top: 10px;
 
   .mdi {
