@@ -15,6 +15,9 @@ export default defineComponent({
       checkTabErrors: false,
       tab: null,
       saved: false,
+      inputHasChanged: false,
+      localDialog: false,
+      confirmDialog: false,
     };
   },
   mounted() {
@@ -34,6 +37,7 @@ export default defineComponent({
       let isValid = await this.getForm().validate();
 
       if (isValid.valid) {
+        this.inputHasChanged = false;
         this.$emit('clickSave', this.dialogEditId, this.data, close);
       } else {
         this.checkTabErrors = true;
@@ -50,37 +54,70 @@ export default defineComponent({
     },
 
     inputChange() {
-      this.saved = false;
+      this.saved           = false;
+      this.inputHasChanged = true;
       this.$emit('inputChange');
+    },
+
+    clickClose() {
+      if (this.inputHasChanged) {
+        this.confirmDialog = true;
+      } else {
+        this.$emit('clickClose');
+      }
+    },
+
+    onDialogClose() {
+      this.localDialog = true;
+      this.clickClose();
     },
   },
   watch: {
     dialog() {
+      this.localDialog = this.dialog;
+
       if (!this.dialog) {
         this.checkTabErrors = false;
+        this.inputHasChanged = false;
       }
     },
     parentSaved() {
       this.saved = this.parentSaved;
+
+      if (this.saved) {
+        this.inputHasChanged = false;
+      }
     }
   }
 });
 </script>
 <template>
+  <v-dialog v-model="confirmDialog" width="auto">
+    <v-card>
+      <v-card-text>{{ $translator.tl('general.closeWarning') }}</v-card-text>
+      <v-card-actions>
+        <v-btn @click="confirmDialog = false;">{{ $translator.tl('general.cancel') }}</v-btn>
+        <v-btn @click="confirmDialog = false; clickSave(true);">{{ $translator.tl('general.saveAndClose') }}</v-btn>
+        <v-btn @click="confirmDialog = false; $emit('clickClose');">{{ $translator.tl('general.close') }}</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
+
   <v-row justify="center">
-    <v-dialog v-model="dialog" persistent :eager="true" :retain-focus="false" :data-level="level">
+    <v-dialog class="dt-dialog" v-model="localDialog" @update:modelValue="onDialogClose" :eager="true" :retain-focus="false"
+              :data-level="level">
       <v-card height="100vh">
         <v-card-title>
           <span class="text-h5">{{ dialogEditId ? 'Edit ' + dialogEditId : 'Add' }}</span>
           <span class="close">
-            <i class="mdi mdi-close" @click="$emit('clickClose')"></i>
+            <i class="mdi mdi-close" @click="clickClose"></i>
           </span>
         </v-card-title>
         <TabbedForm v-if="dialog" ref="tabbedForm" :form="form" :data="data" @submit="clickSave" :darkMode="darkMode"
                     :checkTabErrors="checkTabErrors" :level="level" @input-change="inputChange"/>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn variant="tonal" @click="$emit('clickClose')" prepend-icon="mdi-close">
+          <v-btn variant="tonal" @click="clickClose" prepend-icon="mdi-close">
             {{ $translator.tl('general.close') }}
           </v-btn>
           <v-btn variant="tonal" @click="clickSave(false)" :prepend-icon="saved ? 'mdi-check' : 'mdi-content-save'">
@@ -119,7 +156,7 @@ export default defineComponent({
   position: relative;
 }
 
-.v-dialog {
+.dt-dialog.v-dialog {
   width: 1200px;
 
   @for $i from 1 through 10 {
