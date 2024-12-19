@@ -349,10 +349,11 @@ class DataTableMock {
 
         // will not calculate the actual rearrange, not worth coding for just a mock
         mocker.onPost("/api/datatable/rearrange").reply((request) => {
-            let editData = this.getDataForInstance(request.params.instance).data;
+            let params   = JSON.parse(request.data).params;
+            let editData = this.getDataForInstance(params.instance).data;
 
-            let from = this.getIndexById(editData, request.params.source);
-            let to   = this.getIndexById(editData, request.params.target);
+            let from = this.getIndexById(editData, params.source);
+            let to   = this.getIndexById(editData, params.target);
 
             editData.splice(to, 0, editData.splice(from, 1)[0]);
 
