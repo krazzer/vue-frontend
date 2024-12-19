@@ -29,6 +29,7 @@ class HomeMock {
                 'settings': {form: this.getSettingsForm()},
                 'invoices': {component: 'Invoices'},
                 'revenue': {component: 'Revenue'},
+                'users': {component: 'subfolder/Sub'},
             };
 
             Object.keys(paramsFor).forEach(key => {
