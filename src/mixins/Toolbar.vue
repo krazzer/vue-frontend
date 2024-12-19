@@ -30,5 +30,8 @@ export default {
   beforeUnmount() {
     window.removeEventListener("resize", this.onResize);
   },
+  updated() {
+    this.checkIfWrapped();
+  },
 }
 </script>

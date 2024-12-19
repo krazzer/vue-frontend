@@ -71,8 +71,14 @@ export default defineComponent({
 </template>
 
 <style scoped lang="scss">
+@import "@/assets/media-query-sizes.scss";
+
 .v-dialog form {
   padding: 24px;
+
+  @media (max-width: $screen-sm-max) {
+      padding: 15px;
+  }
 }
 
 .v-tab.error {
