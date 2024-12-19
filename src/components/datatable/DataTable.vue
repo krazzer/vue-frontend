@@ -47,6 +47,7 @@ export default defineComponent({
       noselect: false,
       forceDefaultView: false,
       saved: false,
+      isWrapped: false,
     };
   },
   watch: {
@@ -71,9 +72,17 @@ export default defineComponent({
 
     this.dragAndDropPages = DragAndDropPages;
     this.dragAndDropPages.init(this);
+
+    window.addEventListener("resize", this.onResize);
+  },
+  beforeUnmount() {
+    window.removeEventListener("resize", this.onResize);
   },
   unmounted() {
     this.dragAndDropPages.unload();
+  },
+  updated() {
+    this.checkIfWrapped();
   },
   setup() {
     const ASCENDING  = 'ascending';
@@ -381,7 +390,25 @@ export default defineComponent({
       }
 
       return false;
-    }
+    },
+
+    checkIfWrapped() {
+      const container = <any>this.$refs.toolbarButtons;
+      if (!container) return;
+
+      const items = container.children;
+
+      if (items.length < 2) {
+        this.isWrapped = false;
+        return;
+      }
+
+      this.isWrapped = container.offsetHeight > items[0].offsetHeight;
+    },
+
+    onResize() {
+      this.checkIfWrapped();
+    },
   }
 });
 
@@ -395,7 +422,7 @@ export default defineComponent({
     </div>
     <template v-else>
       <div class="datatable__toolbar">
-        <div class="datatable__toolbar__buttons">
+        <div class="datatable__toolbar__buttons" ref="toolbarButtons" :class="isWrapped ? 'wrapped' : ''">
           <template v-for="button in buttons">
             <v-btn @click="buttonClick(button)" :disabled="isDisabled(button)" :prepend-icon="button.icon">
               {{ button.label }}
@@ -418,7 +445,8 @@ export default defineComponent({
         <table>
           <thead>
           <tr>
-            <th v-for="(name, key) in headers" @click="sort(key.toString())" :class="mobileColumns.includes(key) ? 'mobile' : ''">
+            <th v-for="(name, key) in headers" @click="sort(key.toString())"
+                :class="mobileColumns.includes(key) ? 'mobile' : ''">
               {{ name }}
               <i v-if="key.toString() == sortKey && sortDirection == ASCENDING" class="mdi mdi-sort-ascending"></i>
               <i v-if="key.toString() == sortKey && sortDirection == DESCENDING" class="mdi mdi-sort-descending"></i>
@@ -462,7 +490,9 @@ export default defineComponent({
     margin-bottom: $spaceLogoMenu;
 
     &__buttons {
+      $self: &;
       display: flex;
+      flex-wrap: wrap;
       gap: 5px;
 
       :deep(.icon--add) {
@@ -489,11 +519,18 @@ export default defineComponent({
         display: flex;
         gap: 5px;
         white-space: nowrap;
+        flex-wrap: wrap;
       }
 
       .v-btn--disabled {
         :deep(svg) {
           opacity: .3;
+        }
+      }
+
+      &.wrapped {
+        #{$self}__right {
+          margin-left: 0;
         }
       }
     }
@@ -520,11 +557,11 @@ export default defineComponent({
         position: relative;
       }
 
-      .button-column{
+      .button-column {
         display: none;
 
         @media (max-width: $screen-sm-max) {
-            display: inline-table;
+          display: inline-table;
         }
       }
 
