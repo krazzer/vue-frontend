@@ -27,6 +27,8 @@ class HomeMock {
                 '': {dataTable: pagesDataTable},
                 'media': {media: {files: this.getMediaFiles()}},
                 'settings': {form: this.getSettingsForm()},
+                'invoices': {component: 'Invoices'},
+                'revenue': {component: 'Revenue'},
             };
 
             Object.keys(paramsFor).forEach(key => {

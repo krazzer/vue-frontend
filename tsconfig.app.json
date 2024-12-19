@@ -1,6 +1,9 @@
 {
   "extends": "@vue/tsconfig/tsconfig.json",
-  "include": ["env.d.ts", "src/**/*", "src/**/*.vue", "src/**/*.ts", "src/classes/*.ts"],
+  "include": [
+    "env.d.ts", "src/**/*", "src/**/*.vue", "src/**/*.ts", "src/classes/*.ts",
+    "plugins/*.ts", "plugins/*.vue"
+  ],
   "exclude": ["src/__tests__/*"],
   "compilerOptions": {
     "strictPropertyInitialization": false,

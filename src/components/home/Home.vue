@@ -1,11 +1,11 @@
 <script lang="ts">
-import {defineComponent} from 'vue'
+import {defineAsyncComponent, defineComponent, markRaw} from 'vue'
 import Logo from "@/components/icons/Logo.vue";
 import Loader from "@/components/icons/Loader.vue";
+import Form from "@/components/form/Form.vue";
 import Menu from "@/components/menu/Menu.vue";
 import DataTable from "@/components/datatable/DataTable.vue";
 import Media from "@/components/media/Media.vue";
-import Form from "@/components/form/Form.vue";
 import TabbedForm from "@/components/form/TabbedForm.vue";
 
 export default defineComponent({
@@ -18,7 +18,23 @@ export default defineComponent({
       if (module && typeof module != undefined) {
         this.loadModule(String(module));
       }
-    }
+    },
+    component(value) {
+      if (!value) {
+        return;
+      }
+
+      const componentPath = '../../../plugins/' + value + '.vue';
+
+      fetch(componentPath).then(response => {
+        if (response.ok) {
+          this.customComponent = markRaw(defineAsyncComponent(() => import(componentPath)));
+        } else {
+          this.html            = 'Component "' + value + '.vue" not found';
+          this.customComponent = null;
+        }
+      });
+    },
   },
   data() {
     return {
@@ -31,8 +47,10 @@ export default defineComponent({
       component: '',
       mobileMenuOpen: false,
       role: '',
+      customComponent: null,
     }
   },
+
   mounted() {
     this.checkLogin();
 
@@ -83,11 +101,12 @@ export default defineComponent({
      * @param data
      */
     setContentByResponseData(data: any) {
-      this.html      = data.html;
-      this.dataTable = data.dataTable;
-      this.media     = data.media;
-      this.component = data.component;
-      this.form      = data.form;
+      this.customComponent = null;
+      this.html            = data.html;
+      this.dataTable       = data.dataTable;
+      this.media           = data.media;
+      this.component       = data.component;
+      this.form            = data.form;
     },
 
     toggleMenu() {
@@ -96,8 +115,8 @@ export default defineComponent({
 
     closeMenu() {
       this.mobileMenuOpen = false;
-    }
-  }
+    },
+  },
 });
 </script>
 
@@ -111,7 +130,8 @@ export default defineComponent({
         <Logo/>
       </div>
       <div class="sidebar__loader" v-if="$appUtil.isLoading()">
-        <Loader /> {{ $translator.tl('general.loading') }}
+        <Loader/>
+        {{ $translator.tl('general.loading') }}
       </div>
       <div class="sidebar__menu">
         <Menu :menu="menu" :mobileMenuOpen="mobileMenuOpen" :selectedItem="selectedMenuItem" :logout="logout"
@@ -126,8 +146,9 @@ export default defineComponent({
       </div>
       <span v-if="html" v-html="html"></span>
       <Media v-if="media && Object.keys(media).length" :settings="media" :role="role"/>
-      <DataTable v-if="dataTable" :settings="dataTable" :instance="dataTable.instance" :darkMode="darkMode" :level="0" />
-      <TabbedForm v-if="form" :form="form" :data="form.data" :handleSubmit="true" />
+      <DataTable v-if="dataTable" :settings="dataTable" :instance="dataTable.instance" :darkMode="darkMode" :level="0"/>
+      <TabbedForm v-if="form" :form="form" :data="form.data" :handleSubmit="true"/>
+      <component v-if="customComponent" :is="customComponent"/>
     </div>
   </div>
 </template>
@@ -199,7 +220,7 @@ $sideBarWidthMobile: 200px;
     justify-content: center;
     font-size: 12.5px;
 
-    svg{
+    svg {
       height: 23px;
       margin-right: 2px;
     }
