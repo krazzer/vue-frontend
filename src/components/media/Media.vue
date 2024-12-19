@@ -2,9 +2,11 @@
 import {defineComponent} from 'vue'
 import axios from "axios";
 import ToolbarSearch from "@/components/toolbarsearch/ToolbarSearch.vue";
+import Toolbar from "@/mixins/Toolbar.vue";
 
 export default defineComponent({
   components: {ToolbarSearch},
+  mixins: [Toolbar],
   props: ['settings', 'role'],
   data() {
     return {
@@ -242,8 +244,7 @@ export default defineComponent({
 
 <template>
   <div class="media">
-
-    <div class="media__toolbar">
+    <div class="media__toolbar" ref="toolbarButtons" :class="isWrapped ? 'wrapped' : ''">
       <v-btn @click="openFileUploadModal" prepend-icon="mdi-file-upload-outline">
         {{ $translator.tl('media.upload') }}
       </v-btn>
@@ -323,9 +324,11 @@ export default defineComponent({
   }
 
   &__toolbar {
+    $self: &;
     margin-bottom: 50px;
     display: flex;
     gap: 5px;
+    flex-wrap: wrap;
 
     .upload {
       input {
@@ -335,6 +338,12 @@ export default defineComponent({
 
     &__right {
       margin-left: auto;
+    }
+
+    &.wrapped{
+      #{$self}__right{
+        margin-left: 0;
+      }
     }
   }
 

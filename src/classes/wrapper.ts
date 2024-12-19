@@ -33,7 +33,7 @@ class Wrapper {
             (window as any).mocker = new Mocker().mock();
         }
 
-        app.use(VueAxios, axios);
+        app.use(VueAxios, <any> axios);
 
         customElements.define('kikcms-datatable', defineCustomElement(DataTable));
 

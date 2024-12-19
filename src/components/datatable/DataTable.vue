@@ -5,10 +5,12 @@ import Row from "./subcomponents/Row.vue";
 import Svg from "@/components/svg/Svg.vue";
 import DragAndDropPages from "./classes/dragAndDropPages";
 import ToolbarSearch from "@/components/toolbarsearch/ToolbarSearch.vue";
+import Toolbar from "@/mixins/Toolbar.vue";
 
 export default defineComponent({
   name: "DataTable",
   components: {ToolbarSearch, Svg, EditDialog, Row},
+  mixins: [Toolbar],
   props: {
     darkMode: Boolean,
     settings: {
@@ -47,7 +49,6 @@ export default defineComponent({
       noselect: false,
       forceDefaultView: false,
       saved: false,
-      isWrapped: false,
     };
   },
   watch: {
@@ -72,17 +73,9 @@ export default defineComponent({
 
     this.dragAndDropPages = DragAndDropPages;
     this.dragAndDropPages.init(this);
-
-    window.addEventListener("resize", this.onResize);
-  },
-  beforeUnmount() {
-    window.removeEventListener("resize", this.onResize);
   },
   unmounted() {
     this.dragAndDropPages.unload();
-  },
-  updated() {
-    this.checkIfWrapped();
   },
   setup() {
     const ASCENDING  = 'ascending';
@@ -390,25 +383,7 @@ export default defineComponent({
       }
 
       return false;
-    },
-
-    checkIfWrapped() {
-      const container = <any>this.$refs.toolbarButtons;
-      if (!container) return;
-
-      const items = container.children;
-
-      if (items.length < 2) {
-        this.isWrapped = false;
-        return;
-      }
-
-      this.isWrapped = container.offsetHeight > items[0].offsetHeight;
-    },
-
-    onResize() {
-      this.checkIfWrapped();
-    },
+    }
   }
 });
 
