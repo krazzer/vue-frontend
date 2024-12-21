@@ -1,18 +1,25 @@
 <script lang="ts">
+import {defineComponent} from "vue";
 import Page from "./Page.vue";
 import Svg from "@/components/svg/Svg.vue";
-import {defineComponent} from "vue";
+import DragAndDropRow from "@/mixins/DragAndDropRow.vue";
 
 export default defineComponent({
   components: {Page, Svg},
   emits: ['collapse', 'edit', 'toggle'],
   name: "Row",
   props: ['row', 'dragAndDropPages', 'headers', 'settings', 'id', 'level', 'selected', 'selectedIds', 'max',
-    'highlight', 'actions', 'index', 'forceDefaultView', 'mobileColumns'],
+    'highlight', 'actions', 'index', 'forceDefaultView', 'mobileColumns', 'dragClone', 'cloneRowVisible'],
+  mixins: [DragAndDropRow],
   data() {
     return {
       preventSelect: <boolean>false,
     };
+  },
+  watch: {
+    mouseDownRearrange() {
+      this.preventSelect = this.mouseDownRearrange;
+    },
   },
   methods: {
     displayAsPage(index: number): boolean {
@@ -89,6 +96,20 @@ export default defineComponent({
       }
     },
 
+    getActionClass(action: any){
+      let classes = [];
+
+      if(action.type == 'rearrange'){
+        classes.push('rearrange');
+
+        if(this.mouseDownRearrange){
+          classes.push('mousedown');
+        }
+      }
+
+      return classes;
+    },
+
     getCell(cell: string) {
       if (!cell) {
         return '&nbsp;';
@@ -116,23 +137,35 @@ export default defineComponent({
         classes.push('preventselect');
       }
 
+      if (this.dragClone) {
+        classes.push('dragclone');
+      }
+
+      if (this.cloneRowVisible) {
+        classes.push('visible');
+      }
+
+      if (this.mouseDownRearrange) {
+        classes.push('mouseDownRearrange');
+      }
+
       return classes;
     },
 
     /**
      * @param index
      */
-    getKey(index: number): string{
+    getKey(index: number): string {
       return Object.keys(this.settings.headers)[index];
     },
 
     /**
      * @param index
      */
-    getTdClass(index: number): string{
+    getTdClass(index: number): string {
       let key = this.getKey(index);
 
-      if(this.mobileColumns.includes(key)){
+      if (this.mobileColumns.includes(key)) {
         return 'mobile';
       }
 
@@ -150,7 +183,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <tr @click="toggleRow" :class="getClasses()" @mousedown="mousedown($event)" @dblclick="$emit('edit', row.id, $event)">
+  <tr @click="toggleRow" :class="getClasses()" @mousedown="mousedown($event)" @dblclick="$emit('edit', row.id, $event)" :data-id="row.id">
     <td v-for="(cell, i) in row.data" :data-column="getKey(i)" @mouseleave="dragAndDropPages.mouseLeave"
         @mouseenter="dragAndDropPages.mouseEnter(row.id, $event)" :class="getTdClass(i)"
         @mousemove="dragAndDropPages.mouseMoveContainer(row.id, $event, max, level)">
@@ -167,8 +200,10 @@ export default defineComponent({
       <template v-else><span v-html="getCell(cell)"/></template>
       <template v-if="i == row.data.length - 1">
         <div class="buttons">
-          <span v-for="action in actions" @click="clickAction(row, action.key, $event)"><i
-              :class="'mdi ' + action.icon"></i></span>
+          <span v-for="action in actions" @click="clickAction(row, action.key, $event)"
+                @mousedown="actionMouseDown(row, action, $event)" :class="getActionClass(action)">
+            <i :class="'mdi ' + action.icon"></i>
+          </span>
           <span @click="$emit('edit', row.id, $event)"><i class="mdi mdi-square-edit-outline"></i>
           </span>
         </div>
@@ -189,7 +224,22 @@ export default defineComponent({
 @import "./../styles/pages";
 @import "@/assets/media-query-sizes.scss";
 
-:deep(.mdi:before){
+tr.dragclone{
+  display: none;
+  position: absolute;
+  width: 100%;
+  top: 0;
+  background-color: var(--color-background-shade1-opaque);
+  opacity: 1;
+  border-top: 1px solid var(--color-background-shade3);
+  border-bottom: 1px solid var(--color-background-shade3);
+
+  &.visible{
+    display: flex;
+  }
+}
+
+:deep(.mdi:before) {
   line-height: 20px;
 }
 
@@ -213,12 +263,12 @@ tr.selected td {
   }
 }
 
-tr.selected:hover td .buttons {
+tr.selected:hover:not(.mouseDownRearrange) td .buttons {
   background-color: var(--main-color);
 }
 
 @media (min-width: $screen-md-min) {
-  tr:hover td .buttons {
+  tr:hover:not(.mouseDownRearrange) td .buttons {
     display: flex;
     background-color: var(--color-background-shade2);
   }
@@ -250,6 +300,14 @@ td .buttons {
   i {
     font-size: 20px;
   }
+
+  .rearrange {
+    cursor: grab;
+
+    &.mousedown{
+      cursor: grabbing;
+    }
+  }
 }
 
 
@@ -259,7 +317,7 @@ td.button-column {
   @media (max-width: $screen-sm-max) {
     display: table-cell;
 
-    .buttons{
+    .buttons {
       display: flex;
       position: static;
       height: 22px;

@@ -9,6 +9,9 @@
     --shade1-light: #f8f8f8;
     --shade1-dark: #1f1f1f;
 
+    --shade1-light-opaque: rgba(248, 248, 248, .75);
+    --shade1-dark-opaque: rgba(31, 31, 31, .75);
+
     --shade2-light: #eee;
     --shade2-dark: #282828;
 
@@ -37,6 +40,7 @@
 :root, :host > .datatable {
     --color-background: var(--color-white);
     --color-background-shade1: var(--shade1-light);
+    --color-background-shade1-opaque: var(--shade1-light-opaque);
     --color-background-shade2: var(--shade2-light);
     --color-background-shade3: var(--shade3-light);
     --color-border: var(--line-light-1);
@@ -51,6 +55,7 @@
 body.darkmode, :host > .datatable.darkmode {
     --color-background: var(--color-black);
     --color-background-shade1: var(--shade1-dark);
+    --color-background-shade1-opaque: var(--shade1-dark-opaque);
     --color-background-shade2: var(--shade2-dark);
     --color-background-shade3: var(--shade3-dark);
     --color-border: var(--line-dark-1);

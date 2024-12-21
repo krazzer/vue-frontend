@@ -64,6 +64,18 @@ export class AppUtil {
             }
         );
     }
+
+    getIndexById(data: any, id: number | string): number {
+        let foundIndex = 0;
+
+        data.forEach((row: any, index: number) => {
+            if (id == row.id) {
+                foundIndex = index;
+            }
+        });
+
+        return foundIndex;
+    }
 }
 
 export const appUtil = new AppUtil();

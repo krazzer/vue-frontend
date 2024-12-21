@@ -1,7 +1,10 @@
 import type MockAdapter from "axios-mock-adapter";
 import MockSorter from "./mockSorter";
+import {appUtil} from "@/classes/AppUtil";
 
 class DataTableMock {
+    public appUtil = appUtil;
+
     public defaultData = {
         buttons: [{label: 'Add client', action: 'add'}, {label: 'Delete', action: 'delete'}],
         pages: [1, null, 5, 6, 7, null, 11],
@@ -56,6 +59,9 @@ class DataTableMock {
         buttons: [{label: 'Add hobby', action: 'add'}, {label: 'Delete', action: 'delete'}],
         headers: {'id': "Id", 'name': 'Name'},
         mobileColumns: ['id', 'name'],
+        actions: [
+            {key: 'rearrange', type: 'rearrange', icon: 'mdi-drag-horizontal-variant'}
+        ],
         data: [
             {id: 1, data: [1, 'Fitness']},
             {id: 2, data: [2, 'Gaming']},
@@ -275,7 +281,7 @@ class DataTableMock {
             let ids    = params.ids;
 
             ids.forEach((id: string) => {
-                let index = this.getIndexById(data, id);
+                let index = this.appUtil.getIndexById(data, id);
                 data.splice(index, 1);
             });
 
@@ -328,7 +334,7 @@ class DataTableMock {
             let editData = this.getDataForInstance(params.instance).data;
 
             if (id) {
-                index = this.getIndexById(editData, id);
+                index = this.appUtil.getIndexById(editData, id);
             } else {
                 index = parseInt(Object.keys(editData)[Object.keys(editData).length - 1]) + 1;
             }
@@ -352,8 +358,8 @@ class DataTableMock {
             let params   = JSON.parse(request.data).params;
             let editData = this.getDataForInstance(params.instance).data;
 
-            let from = this.getIndexById(editData, params.source);
-            let to   = this.getIndexById(editData, params.target);
+            let from = this.appUtil.getIndexById(editData, params.source);
+            let to   = this.appUtil.getIndexById(editData, params.target);
 
             editData.splice(to, 0, editData.splice(from, 1)[0]);
 
@@ -476,22 +482,6 @@ class DataTableMock {
             interests: ["1", "2"],
             address: 'Peterstreet 17',
         };
-    }
-
-    /**
-     * @param data
-     * @param id
-     */
-    getIndexById(data: any, id: number | string): number {
-        let foundIndex = 0;
-
-        data.forEach((row: any, index: number) => {
-            if (id == row.id) {
-                foundIndex = index;
-            }
-        });
-
-        return foundIndex;
     }
 }
 

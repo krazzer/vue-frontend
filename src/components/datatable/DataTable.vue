@@ -6,11 +6,12 @@ import Svg from "@/components/svg/Svg.vue";
 import DragAndDropPages from "./classes/dragAndDropPages";
 import ToolbarSearch from "@/components/toolbarsearch/ToolbarSearch.vue";
 import Toolbar from "@/mixins/Toolbar.vue";
+import DragAndDropTable from "@/mixins/DragAndDropTable.vue";
 
 export default defineComponent({
   name: "DataTable",
   components: {ToolbarSearch, Svg, EditDialog, Row},
-  mixins: [Toolbar],
+  mixins: [Toolbar, DragAndDropTable],
   props: {
     darkMode: Boolean,
     settings: {
@@ -173,7 +174,7 @@ export default defineComponent({
         classes.push(this.settings.class);
       }
 
-      if (this.noselect || this.dragAndDropPages.itemIdMouseDown) {
+      if (this.noselect || this.dragAndDropPages.itemIdMouseDown || this.mouseDownOnRearrange) {
         classes.push('noselect');
       }
 
@@ -417,7 +418,7 @@ export default defineComponent({
         </div>
       </div>
       <div class="datatable__table">
-        <table>
+        <table ref="table">
           <thead>
           <tr>
             <th v-for="(name, key) in headers" @click="sort(key.toString())"
@@ -435,7 +436,8 @@ export default defineComponent({
                  :actions="actions" :selected="isSelected(row.id)" @toggle="toggle" :settings="settings"
                  @collapse="collapse" @edit="edit" :id="row.id" :level="row.level" :selectedIds="selected"
                  :max="row.max" :highlight="highlight" :index="index" :forceDefaultView="forceDefaultView"
-                 :mobile-columns="mobileColumns"/>
+                 :mobile-columns="mobileColumns" @mouseDownOnRearrange="setMouseDownOnRearrange" :dragClone="row.clone"
+                 :cloneRowVisible="cloneRowVisible"/>
           </template>
           </tbody>
         </table>
@@ -526,6 +528,7 @@ export default defineComponent({
       border-spacing: 0;
       border-collapse: separate;
       width: 100%;
+      position: relative;
 
       :deep(td), th {
         padding: 8px 15px;
@@ -560,7 +563,7 @@ export default defineComponent({
           background-color: var(--color-background-shade1);
         }
 
-        :deep(tr:hover) {
+        :deep(tr:hover:not(.mouseDownRearrange)) {
           background-color: var(--color-background-shade2);
         }
       }
