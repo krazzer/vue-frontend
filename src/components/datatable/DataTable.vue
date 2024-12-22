@@ -531,7 +531,7 @@ export default defineComponent({
       position: relative;
 
       :deep(td), th {
-        padding: 8px 15px;
+        padding: $tableRowTopPadding 15px;
         position: relative;
       }
 

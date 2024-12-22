@@ -30,7 +30,7 @@ export default defineConfig({
   },
   css: {
     preprocessorOptions: {
-      scss: { additionalData: `@import "./src/assets/media-query-sizes";` },
+      scss: { additionalData: `@use "./src/assets/media-query-sizes";` },
       less: { },
     },
   },

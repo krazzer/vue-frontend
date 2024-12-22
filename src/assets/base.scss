@@ -9,8 +9,8 @@
     --shade1-light: #f8f8f8;
     --shade1-dark: #1f1f1f;
 
-    --shade1-light-opaque: rgba(248, 248, 248, .75);
-    --shade1-dark-opaque: rgba(31, 31, 31, .75);
+    --shade1-light-opaque: rgba(248, 248, 248, .5);
+    --shade1-dark-opaque: rgba(31, 31, 31, .5);
 
     --shade2-light: #eee;
     --shade2-dark: #282828;
@@ -144,3 +144,4 @@ $spaceLogoMenu: 50px;
 $spaceExtraTab: 12px; // tab is 12px higher than button
 
 $closeButtonSize: 30px;
+$tableRowTopPadding: 8px;

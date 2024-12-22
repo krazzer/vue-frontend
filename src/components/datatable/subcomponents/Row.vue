@@ -96,13 +96,13 @@ export default defineComponent({
       }
     },
 
-    getActionClass(action: any){
+    getActionClass(action: any) {
       let classes = [];
 
-      if(action.type == 'rearrange'){
+      if (action.type == 'rearrange') {
         classes.push('rearrange');
 
-        if(this.mouseDownRearrange){
+        if (this.mouseDownRearrange) {
           classes.push('mousedown');
         }
       }
@@ -183,7 +183,8 @@ export default defineComponent({
 </script>
 
 <template>
-  <tr @click="toggleRow" :class="getClasses()" @mousedown="mousedown($event)" @dblclick="$emit('edit', row.id, $event)" :data-id="row.id">
+  <tr @click="toggleRow" :class="getClasses()" @mousedown="mousedown($event)" @dblclick="$emit('edit', row.id, $event)"
+      :data-id="row.id">
     <td v-for="(cell, i) in row.data" :data-column="getKey(i)" @mouseleave="dragAndDropPages.mouseLeave"
         @mouseenter="dragAndDropPages.mouseEnter(row.id, $event)" :class="getTdClass(i)"
         @mousemove="dragAndDropPages.mouseMoveContainer(row.id, $event, max, level)">
@@ -223,19 +224,43 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import "./../styles/pages";
 @import "@/assets/media-query-sizes.scss";
+@import "@/assets/base";
 
-tr.dragclone{
+tr.dragclone {
   display: none;
   position: absolute;
   width: 100%;
   top: 0;
-  background-color: var(--color-background-shade1-opaque);
   opacity: 1;
   border-top: 1px solid var(--color-background-shade3);
   border-bottom: 1px solid var(--color-background-shade3);
 
-  &.visible{
+  td {
+    background-color: var(--color-background-shade1-opaque);
+  }
+
+  &.visible {
     display: flex;
+  }
+}
+
+tr.rearrange {
+  &--bottom {
+    td {
+      position: relative;
+      top: 2px;
+      border-bottom: 4px solid var(--color-action);
+      padding-top: $tableRowTopPadding - 2px !important;
+      padding-bottom: $tableRowTopPadding - 2px !important;
+    }
+  }
+
+  &--top td {
+    position: relative;
+    top: -2px;
+    border-top: 4px solid var(--color-action);
+    padding-top: $tableRowTopPadding - 2px !important;
+    padding-bottom: $tableRowTopPadding - 2px !important;
   }
 }
 
@@ -304,7 +329,7 @@ td .buttons {
   .rearrange {
     cursor: grab;
 
-    &.mousedown{
+    &.mousedown {
       cursor: grabbing;
     }
   }

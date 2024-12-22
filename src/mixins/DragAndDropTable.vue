@@ -17,7 +17,7 @@ export default defineComponent({
     }
   },
   watch: {
-    mouseDownOnRearrange(){
+    mouseDownOnRearrange() {
       this.$emit('mouseDownOnRearrange', this.mouseDownOnRearrange);
     }
   },
@@ -38,6 +38,7 @@ export default defineComponent({
 
       // already started dragging, so just position
       if (this.startedDragging) {
+        this.showHoverBar(e);
         this.positionClone(e);
         return;
       }
@@ -128,6 +129,33 @@ export default defineComponent({
         this.initialYDifference = this.initialY - clonedRow.getBoundingClientRect().top;
       }
     },
+
+    showHoverBar(e: MouseEvent) {
+      const rows = this.getTableElement().querySelectorAll('tr');
+
+      rows.forEach((row, index) => {
+        if (row.classList.contains('dragclone') || row.dataset.id == this.draggingId) return;
+
+        const { top, bottom, height } = row.getBoundingClientRect();
+        const isMouseOverRow = e.clientY > top && e.clientY < bottom;
+
+        row.classList.remove('rearrange', 'rearrange--top', 'rearrange--bottom');
+
+        if (isMouseOverRow) {
+          row.classList.add('rearrange');
+          const isTopHalf = e.clientY < top + height / 2;
+          row.classList.add(isTopHalf ? 'rearrange--top' : 'rearrange--bottom');
+        }
+
+        if (index === 1 && e.clientY < top && e.clientY > top - height) {
+          row.classList.add('rearrange', 'rearrange--top');
+        }
+
+        if (index === rows.length - 2 && e.clientY > bottom && e.clientY < bottom + height) {
+          row.classList.add('rearrange', 'rearrange--bottom');
+        }
+      });
+    }
   },
 
   mounted() {
