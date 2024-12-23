@@ -18,6 +18,7 @@ export default defineComponent({
       inputHasChanged: false,
       localDialog: false,
       confirmDialog: false,
+      displayForm: false,
     };
   },
   mounted() {
@@ -77,8 +78,13 @@ export default defineComponent({
       this.localDialog = this.dialog;
 
       if (!this.dialog) {
-        this.checkTabErrors = false;
+        this.checkTabErrors  = false;
         this.inputHasChanged = false;
+
+        // hide form when dialog animation has finished
+        setTimeout(() => this.displayForm = false, 300);
+      } else {
+        this.displayForm = true;
       }
     },
     parentSaved() {
@@ -92,7 +98,7 @@ export default defineComponent({
 });
 </script>
 <template>
-  <v-dialog v-model="confirmDialog" width="auto">
+  <v-dialog v-if="displayForm" v-model="confirmDialog" width="auto">
     <v-card>
       <v-card-text>{{ $translator.tl('general.closeWarning') }}</v-card-text>
       <v-card-actions>
@@ -104,7 +110,8 @@ export default defineComponent({
   </v-dialog>
 
   <v-row justify="center">
-    <v-dialog class="dt-dialog" v-model="localDialog" @update:modelValue="onDialogClose" :eager="true" :retain-focus="false"
+    <v-dialog class="dt-dialog" v-model="localDialog" @update:modelValue="onDialogClose" :eager="true"
+              :retain-focus="false"
               :data-level="level">
       <v-card height="100vh">
         <v-card-title>
@@ -113,7 +120,8 @@ export default defineComponent({
             <i class="mdi mdi-close" @click="clickClose"></i>
           </span>
         </v-card-title>
-        <TabbedForm v-if="dialog" ref="tabbedForm" :form="form" :data="data" @submit="clickSave" :darkMode="darkMode"
+        <TabbedForm v-if="displayForm" ref="tabbedForm" :form="form" :data="data" @submit="clickSave"
+                    :darkMode="darkMode"
                     :checkTabErrors="checkTabErrors" :level="level" @input-change="inputChange"/>
         <v-card-actions>
           <v-spacer></v-spacer>
