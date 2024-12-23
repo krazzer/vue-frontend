@@ -1,19 +1,25 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
 
+const BOTTOM = 1;
+const TOP    = 0;
+
 export default defineComponent({
   name: "DragAndDropTable",
   emits: ["mouseDownOnRearrange"],
+  props: ['instance'],
   data() {
     return {
       mouseDownOnRearrange: false,
       draggingId: <any>null,
       data: <any>[],
       mouseY: <number>0,
-      initialY: <number | null>0,
+      initialY: <number | null>null,
       initialYDifference: <number>0,
       startedDragging: false,
       cloneRowVisible: false,
+      hoveringId: <number | null>null,
+      hoveringPosition: <number>TOP,
     }
   },
   watch: {
@@ -23,6 +29,10 @@ export default defineComponent({
   },
   methods: {
     actionMouseUp() {
+      if (this.hoveringId) {
+        this.rearrange();
+      }
+
       this.removeClone();
       this.setMouseDownOnRearrange(false);
 
@@ -87,6 +97,14 @@ export default defineComponent({
       this.cloneRowVisible = true;
     },
 
+    rearrange() {
+      let params = {instance: this.instance, source: this.draggingId, target: this.hoveringId, position: this.hoveringPosition};
+
+      this.$appUtil.doAction('datatable/rearrange', params, (response: any) => {
+        this.data = response.data;
+      })
+    },
+
     removeClone() {
       const cloneIndex = this.data.findIndex((row: any) => row.clone === true);
 
@@ -131,30 +149,40 @@ export default defineComponent({
     },
 
     showHoverBar(e: MouseEvent) {
-      const rows = this.getTableElement().querySelectorAll('tr');
+      const rows   = Array.from(this.getTableElement().querySelectorAll('tr'));
+      const mouseY = e.clientY;
 
       rows.forEach((row, index) => {
-        if (row.classList.contains('dragclone') || row.dataset.id == this.draggingId) return;
+        if (!row.dataset.id || row.classList.contains('dragclone')) return;
 
-        const { top, bottom, height } = row.getBoundingClientRect();
-        const isMouseOverRow = e.clientY > top && e.clientY < bottom;
+        const id = parseInt(row.dataset.id);
+        if (id === this.draggingId) return;
+
+        const {top, bottom, height} = row.getBoundingClientRect();
+        const isMouseOverRow        = mouseY > top && mouseY < bottom;
 
         row.classList.remove('rearrange', 'rearrange--top', 'rearrange--bottom');
 
         if (isMouseOverRow) {
-          row.classList.add('rearrange');
-          const isTopHalf = e.clientY < top + height / 2;
-          row.classList.add(isTopHalf ? 'rearrange--top' : 'rearrange--bottom');
-        }
-
-        if (index === 1 && e.clientY < top && e.clientY > top - height) {
-          row.classList.add('rearrange', 'rearrange--top');
-        }
-
-        if (index === rows.length - 2 && e.clientY > bottom && e.clientY < bottom + height) {
-          row.classList.add('rearrange', 'rearrange--bottom');
+          this.setHoverState(row, id, mouseY < top + height / 2 ? 'top' : 'bottom');
+        } else if (this.isNearRow(mouseY, top, height, index, rows.length)) {
+          const position = mouseY < top ? 'top' : 'bottom';
+          this.setHoverState(row, id, position);
         }
       });
+    },
+
+    setHoverState(row: HTMLElement, id: number, position: 'top' | 'bottom') {
+      row.classList.add('rearrange', `rearrange--${position}`);
+      this.hoveringId       = id;
+      this.hoveringPosition = position === 'top' ? TOP : BOTTOM;
+    },
+
+    isNearRow(mouseY: number, top: number, height: number, index: number, totalRows: number): boolean {
+      return (
+          (index === 1 && mouseY < top && mouseY > top - height) ||
+          (index === totalRows - 2 && mouseY > top + height && mouseY < top + 2 * height)
+      );
     }
   },
 
@@ -167,5 +195,6 @@ export default defineComponent({
     window.removeEventListener('mouseup', this.actionMouseUp);
     window.removeEventListener('mousemove', this.actionMouseMove);
   }
-})
+});
+
 </script>

@@ -354,7 +354,7 @@ class DataTableMock {
         });
 
         // will not calculate the actual rearrange, not worth coding for just a mock
-        mocker.onPost("/api/datatable/rearrange").reply((request) => {
+        let rearrangeAction = (request: any) => {
             let params   = JSON.parse(request.data).params;
             let editData = this.getDataForInstance(params.instance).data;
 
@@ -364,7 +364,10 @@ class DataTableMock {
             editData.splice(to, 0, editData.splice(from, 1)[0]);
 
             return [200, editData];
-        });
+        };
+
+        mocker.onPost("/api/datatable/page/rearrange").reply(rearrangeAction);
+        mocker.onPost("/api/datatable/rearrange").reply(rearrangeAction);
 
         mocker.onPost("/api/datatable/validate").reply((request) => {
             let params         = JSON.parse(request.data).params;

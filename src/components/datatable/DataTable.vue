@@ -178,6 +178,10 @@ export default defineComponent({
         classes.push('noselect');
       }
 
+      if (this.startedDragging) {
+        classes.push('startedDragging');
+      }
+
       return classes;
     },
 
@@ -255,8 +259,8 @@ export default defineComponent({
      * @param itemIdMouseOver
      * @param location
      */
-    async rearrange(itemIdMouseDown: string, itemIdMouseOver: string, location: number) {
-      await this.$appUtil.doAction('datatable/rearrange', {
+    async pageRearrange(itemIdMouseDown: string, itemIdMouseOver: string, location: number) {
+      await this.$appUtil.doAction('datatable/page/rearrange', {
         instance: this.instance, source: itemIdMouseDown, target: itemIdMouseOver, location: location
       }, (response: any) => {
         this.data = response.data;
@@ -625,6 +629,10 @@ export default defineComponent({
 
   &.noselect {
     @include noSelect();
+  }
+
+  &.startedDragging {
+    cursor: grabbing;
   }
 }
 
