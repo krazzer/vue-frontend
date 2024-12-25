@@ -99,7 +99,9 @@ export default defineComponent({
     },
 
     rearrange() {
-      let params = {instance: this.instance, source: this.draggingId, target: this.hoveringId, position: this.hoveringPosition};
+      let params = {
+        instance: this.instance, source: this.draggingId, target: this.hoveringId, position: this.hoveringPosition
+      };
 
       this.$appUtil.doAction('datatable/rearrange', params, (response: any) => {
         this.data = response.data;
@@ -152,6 +154,8 @@ export default defineComponent({
     showHoverBar(e: MouseEvent) {
       const rows   = Array.from(this.getTableElement().querySelectorAll('tr'));
       const mouseY = e.clientY;
+
+      this.hoveringId = null;
 
       rows.forEach((row, index) => {
         if (!row.dataset.id || row.classList.contains('dragclone')) return;
