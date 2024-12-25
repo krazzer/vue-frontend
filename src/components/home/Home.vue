@@ -121,7 +121,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div id="cms" :class="{ open: mobileMenuOpen }">
+  <div id="cms" :class="{ open: mobileMenuOpen, noselect: $appUtil.isPreventSelect() }">
     <div class="sidebar-close-button" @click="toggleMenu">
       <i data-v-be8dafae="" class="mdi mdi-close"></i>
     </div>
@@ -129,7 +129,7 @@ export default defineComponent({
       <div class="sidebar__logo">
         <Logo/>
       </div>
-      <div class="sidebar__loader" v-if="$appUtil.isLoading()">
+      <div class="sidebar__loader" v-if="$appUtil.isBusyLoading()">
         <Loader/>
         {{ $translator.tl('general.loading') }}
       </div>
@@ -162,13 +162,19 @@ $mainPadding: 40px;
 $mainPaddingMobile: 20px;
 $sideBarWidthMobile: 200px;
 
-#cms.open {
-  .sidebar {
-    margin-left: 0;
+#cms{
+  &.noselect{
+    @include noSelect();
   }
 
-  .sidebar-close-button {
-    margin-left: 0;
+  &.open {
+    .sidebar {
+      margin-left: 0;
+    }
+
+    .sidebar-close-button {
+      margin-left: 0;
+    }
   }
 }
 

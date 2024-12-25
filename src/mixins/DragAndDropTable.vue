@@ -25,6 +25,7 @@ export default defineComponent({
   watch: {
     mouseDownOnRearrange() {
       this.$emit('mouseDownOnRearrange', this.mouseDownOnRearrange);
+      this.$appUtil.setPreventSelect(this.mouseDownOnRearrange);
     }
   },
   methods: {

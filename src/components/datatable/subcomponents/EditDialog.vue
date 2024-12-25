@@ -110,9 +110,8 @@ export default defineComponent({
   </v-dialog>
 
   <v-row justify="center">
-    <v-dialog class="dt-dialog" v-model="localDialog" @update:modelValue="onDialogClose" :eager="true"
-              :retain-focus="false"
-              :data-level="level">
+    <v-dialog class="dt-dialog"  v-model="localDialog" @update:modelValue="onDialogClose" :eager="true"
+              :retain-focus="false" :data-level="level" :class="{ noselect: $appUtil.isPreventSelect() }">
       <v-card height="100vh">
         <v-card-title>
           <span class="text-h5">{{ dialogEditId ? 'Edit ' + dialogEditId : 'Add' }}</span>
@@ -189,6 +188,10 @@ export default defineComponent({
       width: calc(100% - 24px);
       max-width: calc(100% - 24px);
     }
+  }
+
+  &.noselect{
+    @include noSelect();
   }
 }
 

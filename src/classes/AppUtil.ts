@@ -2,21 +2,29 @@ import axios from "axios";
 import {reactive} from "vue";
 
 export class AppUtil {
-    private state: { isLoading: boolean };
+    private state: { isLoading: boolean, preventSelect: boolean };
     private readonly loaderDelay: number = 350;
     private actionIndex: number = 0;
 
     constructor() {
         this.state = reactive({
-            isLoading: false, // Dit is nu reactief
+            isLoading: false,
+            preventSelect: false,
         });
     }
 
     /**
      * @return boolean
      */
-    isLoading(): boolean{
+    isBusyLoading(): boolean{
         return this.state.isLoading;
+    }
+
+    /**
+     * @return boolean
+     */
+    isPreventSelect(): boolean{
+        return this.state.preventSelect;
     }
 
     /**
@@ -75,6 +83,10 @@ export class AppUtil {
         });
 
         return foundIndex;
+    }
+
+    setPreventSelect(set: boolean){
+        this.state.preventSelect = set;
     }
 }
 
