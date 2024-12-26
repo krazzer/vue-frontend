@@ -19,21 +19,20 @@ export default defineComponent({
         this.loadModule(String(module));
       }
     },
-    component(value) {
+    async component(value) {
       if (!value) {
         return;
       }
 
       const componentPath = '../../../plugins/' + value + '.vue';
+      const components    = import.meta.glob('../../../plugins/**/*.vue');
 
-      fetch(componentPath).then(response => {
-        if (response.ok) {
-          this.customComponent = markRaw(defineAsyncComponent(() => import(/* @vite-ignore */ componentPath)));
-        } else {
-          this.html            = 'Component "' + value + '.vue" not found';
-          this.customComponent = null;
-        }
-      });
+      if (components[componentPath]) {
+        this.customComponent = markRaw(defineAsyncComponent(() => import(/* @vite-ignore */ componentPath)));
+      } else {
+        this.html            = `Component "${value}.vue" not found`;
+        this.customComponent = null;
+      }
     },
   },
   data() {
@@ -159,8 +158,8 @@ $mainPadding: 40px;
 $mainPaddingMobile: 20px;
 $sideBarWidthMobile: 200px;
 
-#cms{
-  &.noselect{
+#cms {
+  &.noselect {
     @include noSelect();
   }
 
