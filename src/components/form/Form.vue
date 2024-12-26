@@ -168,7 +168,3 @@ const DataTable = defineAsyncComponent(() => import('../datatable/DataTable.vue'
     </v-col>
   </v-row>
 </template>
-
-<style scoped lang="scss">
-
-</style>

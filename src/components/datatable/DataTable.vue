@@ -462,9 +462,6 @@ export default defineComponent({
 </template>
 
 <style lang="scss" scoped>
-@import "@/assets/base.scss";
-@import "@/assets/media-query-sizes.scss";
-
 .datatable {
 
   &__toolbar {

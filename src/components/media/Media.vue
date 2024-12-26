@@ -296,8 +296,6 @@ export default defineComponent({
 </template>
 
 <style lang="scss" scoped>
-@import "@/assets/media-query-sizes.scss";
-
 .media {
 
   &__progress {

@@ -140,9 +140,6 @@ export default defineComponent({
 </template>
 
 <style scoped lang="scss">
-@import "@/assets/media-query-sizes.scss";
-@import "@/assets/base.scss";
-
 .v-card {
   transition-duration: var(--color-scheme-transition-speed);
 }

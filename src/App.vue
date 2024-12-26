@@ -89,9 +89,6 @@ export default {
 </template>
 
 <style lang="scss">
-@import "assets/base.scss";
-@import "assets/formkit.scss";
-
 html, body {
   height: 100%;
 }

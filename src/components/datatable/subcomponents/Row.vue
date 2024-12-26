@@ -222,9 +222,7 @@ export default defineComponent({
 </template>
 
 <style lang="scss" scoped>
-@import "./../styles/pages";
-@import "@/assets/media-query-sizes.scss";
-@import "@/assets/base";
+@use "./../styles/pages";
 
 tr.dragclone {
   display: none;

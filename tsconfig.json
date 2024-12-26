@@ -14,5 +14,6 @@
   ],
   "compilerOptions": {
     "strictPropertyInitialization": false,
+    "types": ["vitest/globals"]
   }
 }

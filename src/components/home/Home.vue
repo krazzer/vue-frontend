@@ -28,7 +28,7 @@ export default defineComponent({
 
       fetch(componentPath).then(response => {
         if (response.ok) {
-          this.customComponent = markRaw(defineAsyncComponent(() => import(componentPath)));
+          this.customComponent = markRaw(defineAsyncComponent(() => import(/* @vite-ignore */ componentPath)));
         } else {
           this.html            = 'Component "' + value + '.vue" not found';
           this.customComponent = null;
@@ -154,9 +154,6 @@ export default defineComponent({
 </template>
 
 <style lang="scss" scoped>
-@import "@/assets/media-query-sizes.scss";
-@import "@/assets/base.scss";
-
 $sideBarWidth: 250px;
 $mainPadding: 40px;
 $mainPaddingMobile: 20px;

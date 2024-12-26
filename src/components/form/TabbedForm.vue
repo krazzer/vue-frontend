@@ -73,8 +73,6 @@ export default defineComponent({
 </template>
 
 <style scoped lang="scss">
-@import "@/assets/media-query-sizes.scss";
-
 .v-dialog form {
   padding: 24px;
 

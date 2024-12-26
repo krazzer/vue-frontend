@@ -1,4 +1,4 @@
-import * as Vue from 'vue'
+import { createApp } from 'vue';
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import type {Component} from "vue";
@@ -20,7 +20,7 @@ class Wrapper {
     getApp(Component: Component) {
         const vuetify = createVuetify({ssr: true, components, directives});
 
-        const app = Vue.createApp(Component).use(vuetify);
+        const app = createApp(Component).use(vuetify);
 
         app.config.globalProperties.$assets     = 'src/assets/';
         app.config.globalProperties.$translator = new Translator;

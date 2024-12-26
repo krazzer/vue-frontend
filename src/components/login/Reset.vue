@@ -32,6 +32,3 @@ export default defineComponent({
     <router-link to="/login">Terug naar login</router-link>
   </Base>
 </template>
-
-<style lang="scss">
-</style>
