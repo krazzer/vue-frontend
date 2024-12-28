@@ -121,7 +121,8 @@ class HomeMock {
                         {
                             key: 'field2',
                             type: 'text',
-                            label: 'Another open field',
+                            label: 'Another open field (required)',
+                            validator: {name: 'presence', parameters: {}}
                         },
                     ],
                     save: true,
