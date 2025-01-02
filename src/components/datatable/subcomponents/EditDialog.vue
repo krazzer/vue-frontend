@@ -39,6 +39,7 @@ export default defineComponent({
 
       if (isValid.valid) {
         this.inputHasChanged = false;
+        this.checkTabErrors  = false;
         this.$emit('clickSave', this.dialogEditId, this.data, close);
       } else {
         this.checkTabErrors = true;
@@ -110,7 +111,7 @@ export default defineComponent({
   </v-dialog>
 
   <v-row justify="center">
-    <v-dialog class="dt-dialog"  v-model="localDialog" @update:modelValue="onDialogClose" :eager="true"
+    <v-dialog class="dt-dialog" v-model="localDialog" @update:modelValue="onDialogClose" :eager="true"
               :retain-focus="false" :data-level="level" :class="{ noselect: $appUtil.isPreventSelect() }">
       <v-card height="100vh">
         <v-card-title>
@@ -187,7 +188,7 @@ export default defineComponent({
     }
   }
 
-  &.noselect{
+  &.noselect {
     @include noSelect();
   }
 }

@@ -13,7 +13,13 @@ export default defineComponent({
       tabErrors: <any>{},
       forms: <any>[],
       saved: false,
+      checkTabErrorsLocal: false,
     };
+  },
+  watch: {
+    checkTabErrors() {
+      this.checkTabErrorsLocal = this.checkTabErrors;
+    }
   },
   methods: {
     getClass(tab: string): string {
@@ -22,6 +28,18 @@ export default defineComponent({
       }
 
       return '';
+    },
+
+    async handleLocalSave(){
+      let isValid = await (this.$refs.form as any).validate();
+
+      if (!isValid.valid) {
+        this.checkTabErrorsLocal = true;
+        return;
+      }
+
+      this.checkTabErrorsLocal = false
+      await this.save();
     },
 
     setTabError(tab: string, set: boolean) {
@@ -37,11 +55,9 @@ export default defineComponent({
       });
     },
 
-    submit(close: boolean = false) {
+    async submit(close: boolean = false) {
       if (this.handleSubmit && this.form.instance) {
-        if (this.form.instance) {
-          this.save();
-        }
+        await this.handleLocalSave();
       } else {
         this.$emit('submit', close);
       }
@@ -63,7 +79,7 @@ export default defineComponent({
     <v-tabs-window v-if="form.tabs" v-model="tab">
       <v-tabs-window-item v-for="tab in form.tabs" :value="tab.key">
         <Form :fields="tab.fields" :data="data" :darkMode="darkMode" @fieldError="setTabError" :saved="saved"
-              :checkErrors="checkTabErrors" :tab="tab.key" :save="tab.save" :level="level" @do-submit="submit"
+              :checkErrors="checkTabErrorsLocal" :tab="tab.key" :save="tab.save" :level="level" @do-submit="submit"
               @input-change="inputChange"/>
       </v-tabs-window-item>
     </v-tabs-window>
@@ -77,7 +93,7 @@ export default defineComponent({
   padding: 24px;
 
   @media (max-width: $screen-sm-max) {
-      padding: 15px;
+    padding: 15px;
   }
 }
 
