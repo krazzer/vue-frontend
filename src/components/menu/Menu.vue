@@ -70,6 +70,10 @@ ul {
       border-radius: var(--border-radius);
       line-height: 19px;
 
+      &:hover{
+        color: var(--color-text);
+      }
+
       span{
         position: relative;
       }
