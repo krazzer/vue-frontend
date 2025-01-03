@@ -27,6 +27,7 @@ export default defineComponent({
     return {
       actions: <any>[],
       buttons: <any>[],
+      filters: <any>[],
       cloned: <number | null>null,
       data: <any>[],
       dialog: false,
@@ -103,6 +104,7 @@ export default defineComponent({
       this.data          = settings.data;
       this.form          = settings.form;
       this.buttons       = settings.buttons;
+      this.filters       = settings.filters;
       this.pages         = settings.pages;
       this.languages     = settings.languages;
       this.language      = settings.language;
@@ -408,6 +410,10 @@ export default defineComponent({
               {{ button.label }}
             </v-btn>
           </template>
+          <template v-for="filter in filters">
+            <v-select :label="filter.label" density="compact" :max-width="filter.width ? filter.width : 200"
+                      :multiple="filter.multiple" :items="filter.items"></v-select>
+          </template>
           <div class="datatable__toolbar__buttons__right">
             <div v-if="pages" class="pages">
             <span class="page" :class="pageNr ? (pageNr == page ? 'selected' : '') : 'disabled'" v-for="pageNr in pages"
@@ -513,14 +519,40 @@ export default defineComponent({
       }
     }
 
-    .language {
-      max-height: 36px;
-      max-width: 200px;
+    .v-select {
+      height: 36px;
+
+      :deep(.v-input__details) {
+        position: absolute;
+      }
+
+      :deep(.v-input__control) {
+        height: 36px;
+      }
+
+      :deep(.v-field-label){
+        margin-top: -1px;
+      }
+
+      :deep(.v-field--focused .v-field-label), &--selected :deep(.v-field-label) {
+        margin-top: -11px;
+        margin-left: 10px;
+        font-size: 10px;
+      }
 
       :deep(input), :deep(.v-field__input) {
-        min-height: auto;
         padding: 6px 10px;
+        margin-top: -2px;
       }
+
+      :deep(.v-field__input) {
+        flex-flow: nowrap;
+        overflow: hidden;
+      }
+    }
+
+    .language {
+      max-width: 200px;
     }
   }
 

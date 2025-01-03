@@ -7,6 +7,10 @@ class DataTableMock {
 
     public defaultData = {
         buttons: [{label: 'Add client', action: 'add'}, {label: 'Delete', action: 'delete'}],
+        filters: [
+            {label: 'Category',  multiple: false, items: ['Category 1', 'Category 2', 'Category 3', 'Category 4']},
+            {label: 'Categories',  multiple: true, width: 300, items: ['Category 1', 'Category 2', 'Category 3', 'Category 4']}
+        ],
         pages: [1, null, 5, 6, 7, null, 11],
         headers: {'id': "Id", 'name': "Name", 'address': "Address", 'zip': "Zip"},
         mobileColumns: ['id', 'name'],
