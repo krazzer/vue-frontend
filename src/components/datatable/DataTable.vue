@@ -1,5 +1,5 @@
 <script lang="ts">
-import {defineComponent} from "vue";
+import {defineComponent, toRaw} from "vue";
 import EditDialog from "./subcomponents/EditDialog.vue";
 import Row from "./subcomponents/Row.vue";
 import Svg from "@/components/svg/Svg.vue";
@@ -28,6 +28,8 @@ export default defineComponent({
       actions: <any>[],
       buttons: <any>[],
       filters: <any>[],
+      filterValues: <any>{},
+      filterValuesCompressed: <any>{},
       cloned: <number | null>null,
       data: <any>[],
       dialog: false,
@@ -64,6 +66,21 @@ export default defineComponent({
       if (!this.dialog) {
         this.saved = false;
       }
+    },
+    filterValues: {
+      handler(values) {
+        // prevent resize observer warning
+        setTimeout(() => window.dispatchEvent(new Event('resize')));
+
+        this.filterValuesCompressed = Object.fromEntries(
+            Object.entries(toRaw(values)).map(([key, value]) => [key,
+              Array.isArray(value) ? value.map(item => toRaw(item).key) : value ? toRaw(<any>value).key : null,
+            ])
+        );
+
+        this.filter();
+      },
+      deep: true
     }
   },
   mounted() {
@@ -89,7 +106,7 @@ export default defineComponent({
     async filter() {
       await this.$appUtil.doAction('datatable/filter', {
         instance: this.instance, search: this.search, sort: this.sortKey, sortDirection: this.sortDirection,
-        page: this.page, language: this.language
+        page: this.page, language: this.language, filters: this.filterValuesCompressed
       }, (response: any) => {
         this.data     = response.data.data;
         this.pages    = response.data.pages;
@@ -113,7 +130,7 @@ export default defineComponent({
     },
 
     clearSearch() {
-      this.search = ''; // Clear the search field
+      this.search = '';
     },
 
     /**
@@ -411,8 +428,9 @@ export default defineComponent({
             </v-btn>
           </template>
           <template v-for="filter in filters">
-            <v-select :label="filter.label" density="compact" :max-width="filter.width ? filter.width : 200"
-                      :multiple="filter.multiple" :items="filter.items"></v-select>
+            <v-select :multiple="filter.multiple" :items="filter.items" v-model="filterValues[filter.key]"
+                      :label="filter.label" density="compact" :max-width="filter.width ? filter.width : 200"
+                      return-object :clearable="!filter.multiple"></v-select>
           </template>
           <div class="datatable__toolbar__buttons__right">
             <div v-if="pages" class="pages">
@@ -530,7 +548,7 @@ export default defineComponent({
         height: 36px;
       }
 
-      :deep(.v-field-label){
+      :deep(.v-field-label) {
         margin-top: -1px;
       }
 

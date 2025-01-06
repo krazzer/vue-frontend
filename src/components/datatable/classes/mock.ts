@@ -5,56 +5,61 @@ import {appUtil} from "@/classes/AppUtil";
 class DataTableMock {
     public appUtil = appUtil;
 
+    public filterItems = [
+        {key: '1', title: 'Category 1'}, {key: '2', title: 'Category 2'},
+        {key: '3', title: 'Category 3'}, {key: '4', title: 'Category 4'},
+    ];
+
     public defaultData = {
         buttons: [{label: 'Add client', action: 'add'}, {label: 'Delete', action: 'delete'}],
         filters: [
-            {label: 'Category',  multiple: false, items: ['Category 1', 'Category 2', 'Category 3', 'Category 4']},
-            {label: 'Categories',  multiple: true, width: 300, items: ['Category 1', 'Category 2', 'Category 3', 'Category 4']}
+            {key: 'category', label: 'Category', multiple: false, items: this.filterItems},
+            {key: 'categories', label: 'Categories', multiple: true, width: 300, items: this.filterItems}
         ],
         pages: [1, null, 5, 6, 7, null, 11],
-        headers: {'id': "Id", 'name': "Name", 'address': "Address", 'zip': "Zip"},
+        headers: {'id': "Id", 'name': "Name", 'address': "Address", 'zip': "Zip", 'category': "Category"},
         mobileColumns: ['id', 'name'],
         data: [
-            {id: 'a1', data: ['a1', 'Peter', 'Peterstreet 17', '12345']},
-            {id: 'a2', data: ['a2', 'John', 'Johnstreet 17', '23456']},
-            {id: 'a3', data: ['a3', 'Susan', 'Susanstreet 17', '34567']},
-            {id: 'a4', data: ['a4', 'Henry', 'Henrystreet 17', '45678']},
-            {id: 'a5', data: ['a5', 'Naomi', 'Naomistreet 17', '56789']},
-            {id: 'a6', data: ['a6', 'Peter', 'Peterstreet 17', '12345']},
-            {id: 'a7', data: ['a7', 'John', 'Johnstreet 17', '23456']},
-            {id: 'a8', data: ['a8', 'Susan', 'Susanstreet 17', '34567']},
-            {id: 'a9', data: ['a9', 'Henry', 'Henrystreet 17', '45678']},
-            {id: 'a10', data: ['a10', 'Naomi', 'Naomistreet 17', '56789']},
-            {id: 'a11', data: ['a11', 'Peter', 'Peterstreet 17', '12345']},
-            {id: 'a12', data: ['a12', 'John', 'Johnstreet 17', '23456']},
-            {id: 'a13', data: ['a13', 'Susan', 'Susanstreet 17', '34567']},
-            {id: 'a14', data: ['a14', 'Henry', 'Henrystreet 17', '45678']},
-            {id: 'a15', data: ['a15', 'Naomi', 'Naomistreet 17', '56789']},
-            {id: 'a16', data: ['a16', 'Peter', 'Peterstreet 17', '12345']},
-            {id: 'a17', data: ['a17', 'John', 'Johnstreet 17', '23456']},
-            {id: 'a18', data: ['a18', 'Susan', 'Susanstreet 17', '34567']},
-            {id: 'a19', data: ['a19', 'Henry', 'Henrystreet 17', '45678']},
-            {id: 'a20', data: ['a20', 'Naomi', 'Naomistreet 17', '56789']},
-            {id: 'a21', data: ['a21', 'Peter', 'Peterstreet 17', '12345']},
-            {id: 'a22', data: ['a22', 'John', 'Johnstreet 17', '23456']},
-            {id: 'a23', data: ['a23', 'Susan', 'Susanstreet 17', '34567']},
-            {id: 'a24', data: ['a24', 'Henry', 'Henrystreet 17', '45678']},
-            {id: 'a25', data: ['a25', 'Naomi', 'Naomistreet 17', '56789']},
-            {id: 'a26', data: ['a26', 'Peter', 'Peterstreet 17', '12345']},
-            {id: 'a27', data: ['a27', 'John', 'Johnstreet 17', '23456']},
-            {id: 'a28', data: ['a28', 'Susan', 'Susanstreet 17', '34567']},
-            {id: 'a29', data: ['a29', 'Henry', 'Henrystreet 17', '45678']},
-            {id: 'a30', data: ['a30', 'Naomi', 'Naomistreet 17', '56789']},
-            {id: 'a31', data: ['a31', 'Peter', 'Peterstreet 17', '12345']},
-            {id: 'a32', data: ['a32', 'John', 'Johnstreet 17', '23456']},
-            {id: 'a33', data: ['a33', 'Susan', 'Susanstreet 17', '34567']},
-            {id: 'a34', data: ['a34', 'Henry', 'Henrystreet 17', '45678']},
-            {id: 'a35', data: ['a35', 'Naomi', 'Naomistreet 17', '56789']},
-            {id: 'a36', data: ['a36', 'Peter', 'Peterstreet 17', '12345']},
-            {id: 'a37', data: ['a37', 'John', 'Johnstreet 17', '23456']},
-            {id: 'a38', data: ['a38', 'Susan', 'Susanstreet 17', '34567']},
-            {id: 'a39', data: ['a39', 'Henry', 'Henrystreet 17', '45678']},
-            {id: 'a40', data: ['a40', 'Naomi', 'Naomistreet 17', '56789']},
+            {id: 'a1', data: ['a1', 'Peter', 'Peterstreet 17', '12345', 1]},
+            {id: 'a2', data: ['a2', 'John', 'Johnstreet 17', '23456', 2]},
+            {id: 'a3', data: ['a3', 'Susan', 'Susanstreet 17', '34567', 3]},
+            {id: 'a4', data: ['a4', 'Henry', 'Henrystreet 17', '45678', 4]},
+            {id: 'a5', data: ['a5', 'Naomi', 'Naomistreet 17', '56789', 1]},
+            {id: 'a6', data: ['a6', 'Peter', 'Peterstreet 17', '12345', 2]},
+            {id: 'a7', data: ['a7', 'John', 'Johnstreet 17', '23456', 3]},
+            {id: 'a8', data: ['a8', 'Susan', 'Susanstreet 17', '34567', 4]},
+            {id: 'a9', data: ['a9', 'Henry', 'Henrystreet 17', '45678', 1]},
+            {id: 'a10', data: ['a10', 'Naomi', 'Naomistreet 17', '56789', 2]},
+            {id: 'a11', data: ['a11', 'Peter', 'Peterstreet 17', '12345', 3]},
+            {id: 'a12', data: ['a12', 'John', 'Johnstreet 17', '23456', 4]},
+            {id: 'a13', data: ['a13', 'Susan', 'Susanstreet 17', '34567', 1]},
+            {id: 'a14', data: ['a14', 'Henry', 'Henrystreet 17', '45678', 2]},
+            {id: 'a15', data: ['a15', 'Naomi', 'Naomistreet 17', '56789', 3]},
+            {id: 'a16', data: ['a16', 'Peter', 'Peterstreet 17', '12345', 4]},
+            {id: 'a17', data: ['a17', 'John', 'Johnstreet 17', '23456', 1]},
+            {id: 'a18', data: ['a18', 'Susan', 'Susanstreet 17', '34567', 2]},
+            {id: 'a19', data: ['a19', 'Henry', 'Henrystreet 17', '45678', 3]},
+            {id: 'a20', data: ['a20', 'Naomi', 'Naomistreet 17', '56789', 4]},
+            {id: 'a21', data: ['a21', 'Peter', 'Peterstreet 17', '12345', 1]},
+            {id: 'a22', data: ['a22', 'John', 'Johnstreet 17', '23456', 2]},
+            {id: 'a23', data: ['a23', 'Susan', 'Susanstreet 17', '34567', 3]},
+            {id: 'a24', data: ['a24', 'Henry', 'Henrystreet 17', '45678', 4]},
+            {id: 'a25', data: ['a25', 'Naomi', 'Naomistreet 17', '56789', 1]},
+            {id: 'a26', data: ['a26', 'Peter', 'Peterstreet 17', '12345', 2]},
+            {id: 'a27', data: ['a27', 'John', 'Johnstreet 17', '23456', 3]},
+            {id: 'a28', data: ['a28', 'Susan', 'Susanstreet 17', '34567', 4]},
+            {id: 'a29', data: ['a29', 'Henry', 'Henrystreet 17', '45678', 1]},
+            {id: 'a30', data: ['a30', 'Naomi', 'Naomistreet 17', '56789', 2]},
+            {id: 'a31', data: ['a31', 'Peter', 'Peterstreet 17', '12345', 3]},
+            {id: 'a32', data: ['a32', 'John', 'Johnstreet 17', '23456', 4]},
+            {id: 'a33', data: ['a33', 'Susan', 'Susanstreet 17', '34567', 1]},
+            {id: 'a34', data: ['a34', 'Henry', 'Henrystreet 17', '45678', 2]},
+            {id: 'a35', data: ['a35', 'Naomi', 'Naomistreet 17', '56789', 3]},
+            {id: 'a36', data: ['a36', 'Peter', 'Peterstreet 17', '12345', 4]},
+            {id: 'a37', data: ['a37', 'John', 'Johnstreet 17', '23456', 1]},
+            {id: 'a38', data: ['a38', 'Susan', 'Susanstreet 17', '34567', 2]},
+            {id: 'a39', data: ['a39', 'Henry', 'Henrystreet 17', '45678', 3]},
+            {id: 'a40', data: ['a40', 'Naomi', 'Naomistreet 17', '56789', 4]},
         ],
         instance: 'clients',
     };
@@ -297,6 +302,7 @@ class DataTableMock {
             let search        = params.search;
             let sort          = params.sort;
             let sortDirection = params.sortDirection;
+            let filters       = params.filters;
             let config        = this.getDataForInstance(params.instance);
             let data          = structuredClone(config.data);
             let keys          = Object.keys(config.headers);
@@ -323,6 +329,24 @@ class DataTableMock {
 
             if (sort) {
                 data.sort((a: any, b: any) => MockSorter.sort(a, b, index, sortDirection));
+            }
+
+            if(filters && (filters.category || filters.categories)){
+                data = data.filter((item: any) => {
+                    if(filters.category && item.data[4] != filters.category){
+                        return false;
+                    }
+
+                    if(filters.categories){
+                        if(filters.categories.length == 0){
+                            return true;
+                        } else {
+                            return filters.categories.includes(item.data[4] + '');
+                        }
+                    }
+
+                    return true;
+                });
             }
 
             return [200, {data: data, pages: config.pages}];
