@@ -140,7 +140,7 @@ export default defineComponent({
       let selectedCount = this.selected.length;
 
       if (button.action == 'add') {
-        this.$appUtil.doAction('datatable/add', {instance: this.instance}, (response: any) => {
+        this.$appUtil.doAction('datatable/add', {instance: this.instance, type: button.addType}, (response: any) => {
           this.dialog       = true;
           this.dialogEditId = null;
           this.form         = response.data.form;
@@ -423,10 +423,24 @@ export default defineComponent({
       <div class="datatable__toolbar">
         <div class="datatable__toolbar__buttons" ref="toolbarButtons" :class="isWrapped ? 'wrapped' : ''">
           <template v-for="button in buttons">
-            <v-btn @click="buttonClick(button)" :disabled="isDisabled(button)" :prepend-icon="button.icon">
+            <v-menu v-if="button.type == 'menu'">
+              <template v-slot:activator="{ props }">
+                <v-btn v-bind="props" :prepend-icon="'mdi-menu'">{{ button.label }}</v-btn>
+              </template>
+              <v-list>
+                <v-list-item v-for="(item, index) in button.items" :key="index" :value="index" @click="buttonClick(item)">
+                  <template v-slot:prepend>
+                    <v-icon :icon="item.icon"></v-icon>
+                  </template>
+                  <v-list-item-title>{{ item.title }}</v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-menu>
+            <v-btn v-else @click="buttonClick(button)" :disabled="isDisabled(button)" :prepend-icon="button.icon">
               {{ button.label }}
             </v-btn>
           </template>
+
           <template v-for="filter in filters">
             <v-select :multiple="filter.multiple" :items="filter.items" v-model="filterValues[filter.key]"
                       :label="filter.label" density="compact" :max-width="filter.width ? filter.width : 200"
@@ -486,6 +500,10 @@ export default defineComponent({
 </template>
 
 <style lang="scss" scoped>
+:deep(.v-list-item__prepend){
+  width: 40px;
+}
+
 .datatable {
 
   &__toolbar {

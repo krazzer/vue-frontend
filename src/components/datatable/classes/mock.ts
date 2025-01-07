@@ -188,6 +188,17 @@ class DataTableMock {
         ],
     };
 
+    public linkForm = {
+        fields: [
+            {
+                key: 'name',
+                type: 'text',
+                label: 'Link name',
+                validator: {name: 'presence', parameters: {}}
+            },
+        ],
+    }
+
     public pagesForm = {
         tabs: [
             {
@@ -280,8 +291,15 @@ class DataTableMock {
         });
 
         mocker.onPost("/api/datatable/add").reply((request) => {
-            let instance = JSON.parse(request.data).params.instance;
-            return [200, {form: this.forms[instance]}];
+            let params   = JSON.parse(request.data).params;
+            let instance = params.instance;
+            let form     = this.forms[instance];
+
+            if (params.type == 'link') {
+                form = this.linkForm;
+            }
+
+            return [200, {form: form}];
         });
 
         mocker.onPost("/api/datatable/delete").reply((request) => {
@@ -331,14 +349,14 @@ class DataTableMock {
                 data.sort((a: any, b: any) => MockSorter.sort(a, b, index, sortDirection));
             }
 
-            if(filters && (filters.category || filters.categories)){
+            if (filters && (filters.category || filters.categories)) {
                 data = data.filter((item: any) => {
-                    if(filters.category && item.data[4] != filters.category){
+                    if (filters.category && item.data[4] != filters.category) {
                         return false;
                     }
 
-                    if(filters.categories){
-                        if(filters.categories.length == 0){
+                    if (filters.categories) {
+                        if (filters.categories.length == 0) {
                             return true;
                         } else {
                             return filters.categories.includes(item.data[4] + '');
@@ -480,6 +498,12 @@ class DataTableMock {
             buttons: [
                 {label: 'Add page', action: 'add', icon: 'mdi-plus'},
                 {label: 'Delete', action: 'delete', icon: 'mdi-delete'},
+                {
+                    label: 'Add new…', icon: 'mdi-menu', type: 'menu', items: [
+                        {title: 'Add link', icon: 'mdi-link-variant', action: 'add', addType: 'link'},
+                        {title: 'Add menu', icon: 'mdi-menu', action: 'add', addType: 'menu'}
+                    ]
+                },
             ],
             actions: [
                 {key: 'preview', type: 'url', icon: 'mdi-eye'}
