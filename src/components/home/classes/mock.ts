@@ -1,9 +1,13 @@
 import loginMock from "@/components/login/classes/mock";
 import dataTableMock from "@/components/datatable/classes/mock";
 import type MockAdapter from "axios-mock-adapter";
+import {Mocker} from "@/classes/mocker";
 
 class HomeMock {
-    mock(mocker: MockAdapter) {
+    appMocker: Mocker;
+
+    mock(mocker: MockAdapter, appMocker: Mocker) {
+        this.appMocker    = appMocker;
         this.mockHomeReply(mocker);
 
         let moduleRegExp = new RegExp('/api/module/*');
@@ -106,7 +110,7 @@ class HomeMock {
                             ],
                             label: 'Darkmode',
                             special: 'darkModeSelect',
-                        }
+                        },
                     ],
                 },
                 {
@@ -123,6 +127,13 @@ class HomeMock {
                             type: 'text',
                             label: 'Another open field (required)',
                             validator: {name: 'presence', parameters: {}}
+                        },
+                        {
+                            key: 'hobbies',
+                            type: 'datatable',
+                            label: 'Hobbies',
+                            instance: 'hobbies',
+                            settings: this.appMocker.dataTableMock.subDataTableData,
                         },
                     ],
                     save: true,

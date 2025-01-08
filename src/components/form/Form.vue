@@ -143,7 +143,7 @@ export default defineComponent({
 
       return fieldProps;
     },
-    showLabel(field: any){
+    showLabel(field: any) {
       return ['richtext', 'filepicker'].includes(field.type);
     }
   }
@@ -159,13 +159,11 @@ const DataTable = defineAsyncComponent(() => import('../datatable/DataTable.vue'
   <v-row>
     <v-col v-for="field in fields ?? {}" cols="12" :md="field.size ? field.size.md : 0"
            :sm="field.size ? field.size.sm : 0">
+      <label v-if="showLabel(field)" class="v-label">{{ field.label }}</label>
       <DataTable v-if="field.type == 'datatable'" :instance="field.instance" :settings="field.settings"
                  :level="level + 1"/>
-      <template v-else>
-        <label v-if="showLabel(field)" class="v-label">{{ field.label }}</label>
-        <component :is="fieldComponents[field.type]" v-bind="getFieldProperties(field)" v-model="data[field.key]"
-                   ref="fieldRefs"/>
-      </template>
+      <component v-else :is="fieldComponents[field.type]" v-bind="getFieldProperties(field)" v-model="data[field.key]"
+                 ref="fieldRefs"/>
     </v-col>
     <v-col v-if="save">
       <v-btn variant="tonal" :prepend-icon="saved ? 'mdi-check' : 'mdi-content-save'" type="submit">

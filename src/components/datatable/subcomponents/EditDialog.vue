@@ -110,33 +110,31 @@ export default defineComponent({
     </v-card>
   </v-dialog>
 
-  <v-row justify="center">
-    <v-dialog class="dt-dialog" v-model="localDialog" @update:modelValue="onDialogClose" :eager="true"
-              :retain-focus="false" :data-level="level" :class="{ noselect: $appUtil.isPreventSelect() }">
-      <v-card height="100vh">
-        <v-card-title>
-          <span class="text-h5">{{ dialogEditId ? 'Edit ' + dialogEditId : 'Add' }}</span>
-          <span class="close">
-            <i class="mdi mdi-close" @click="clickClose"></i>
-          </span>
-        </v-card-title>
-        <TabbedForm v-if="displayForm" ref="tabbedForm" :form="form" :data="data" @submit="clickSave"
-                    :darkMode="darkMode" :checkTabErrors="checkTabErrors" :level="level" @input-change="inputChange"/>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn variant="tonal" @click="clickClose" prepend-icon="mdi-close">
-            {{ $translator.tl('general.close') }}
-          </v-btn>
-          <v-btn variant="tonal" @click="clickSave(false)" :prepend-icon="saved ? 'mdi-check' : 'mdi-content-save'">
-            {{ saved ? $translator.tl('general.saved') : $translator.tl('general.save') }}
-          </v-btn>
-          <v-btn variant="tonal" @click="clickSave(true)" prepend-icon="mdi-content-save">
-            {{ $translator.tl('general.saveAndClose') }}
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-  </v-row>
+  <v-dialog class="dt-dialog" v-model="localDialog" @update:modelValue="onDialogClose" :eager="true"
+            :retain-focus="false" :data-level="level" :class="{ noselect: $appUtil.isPreventSelect() }">
+    <v-card height="100vh">
+      <v-card-title>
+        <span class="text-h5">{{ dialogEditId ? 'Edit ' + dialogEditId : 'Add' }}</span>
+        <span class="close">
+          <i class="mdi mdi-close" @click="clickClose"></i>
+        </span>
+      </v-card-title>
+      <TabbedForm v-if="displayForm" ref="tabbedForm" :form="form" :data="data" @submit="clickSave"
+                  :darkMode="darkMode" :checkTabErrors="checkTabErrors" :level="level" @input-change="inputChange"/>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn variant="tonal" @click="clickClose" prepend-icon="mdi-close">
+          {{ $translator.tl('general.close') }}
+        </v-btn>
+        <v-btn variant="tonal" @click="clickSave(false)" :prepend-icon="saved ? 'mdi-check' : 'mdi-content-save'">
+          {{ saved ? $translator.tl('general.saved') : $translator.tl('general.save') }}
+        </v-btn>
+        <v-btn variant="tonal" @click="clickSave(true)" prepend-icon="mdi-content-save">
+          {{ $translator.tl('general.saveAndClose') }}
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <style scoped lang="scss">

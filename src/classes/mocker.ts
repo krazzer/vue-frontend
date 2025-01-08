@@ -17,7 +17,7 @@ export class Mocker {
     public formMock;
 
     constructor(delay: number = 50) {
-        this.mocker = new MockAdapter(axios, {delayResponse: delay});
+        this.mocker = new MockAdapter(<any> axios, {delayResponse: delay});
 
         this.dataTableMock = dataTableMock;
         this.loginMock     = loginMock;
@@ -30,7 +30,7 @@ export class Mocker {
     mock() {
         this.dataTableMock.mock(this.mocker);
         this.loginMock.mock(this.mocker);
-        this.homeMock.mock(this.mocker);
+        this.homeMock.mock(this.mocker, this);
         this.appMock.mock(this.mocker);
         this.formMock.mock(this.mocker);
         this.mediaMock.mock(this.mocker, this);

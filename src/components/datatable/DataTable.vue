@@ -701,7 +701,7 @@ export default defineComponent({
   }
 }
 
-.v-overlay {
+.v-form {
   .datatable {
     border: 1px solid var(--color-background-shade3);
     border-radius: var(--border-radius);
