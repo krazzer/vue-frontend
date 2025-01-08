@@ -117,7 +117,6 @@ export default defineComponent({
         hint: field.hint,
         validateOn: 'blur lazy',
         rules: field.validator ? validator.get(field.validator.name, field.validator.parameters) : [],
-        value: this.data[field.key],
         hideDetails: 'auto',
       };
 
