@@ -121,8 +121,7 @@ export default defineComponent({
           </span>
         </v-card-title>
         <TabbedForm v-if="displayForm" ref="tabbedForm" :form="form" :data="data" @submit="clickSave"
-                    :darkMode="darkMode"
-                    :checkTabErrors="checkTabErrors" :level="level" @input-change="inputChange"/>
+                    :darkMode="darkMode" :checkTabErrors="checkTabErrors" :level="level" @input-change="inputChange"/>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn variant="tonal" @click="clickClose" prepend-icon="mdi-close">
@@ -141,25 +140,7 @@ export default defineComponent({
 </template>
 
 <style scoped lang="scss">
-.v-card {
-  transition-duration: var(--color-scheme-transition-speed);
-}
-
-.v-card-actions {
-  margin-top: auto;
-  padding: 24px;
-  flex-wrap: wrap;
-  row-gap: 0.5rem;
-  align-items: flex-end;
-
-  @media (max-width: $screen-sm-max) {
-    padding: 15px;
-  }
-}
-
-.v-card-title {
-  position: relative;
-}
+@use '@/assets/css/dialog';
 
 .dt-dialog.v-dialog {
   width: 1200px;
@@ -190,17 +171,6 @@ export default defineComponent({
 
   &.noselect {
     @include noSelect();
-  }
-}
-
-.close {
-  position: absolute;
-  right: 24px;
-  font-size: $closeButtonSize;
-  top: 10px;
-
-  .mdi {
-    cursor: pointer;
   }
 }
 </style>

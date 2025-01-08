@@ -217,6 +217,12 @@ class DataTableMock {
                         label: 'Content',
                         validator: {name: 'presence', parameters: {}}
                     },
+                    {
+                        key: 'file',
+                        type: 'filepicker',
+                        label: 'File',
+                        validator: {name: 'presence', parameters: {}}
+                    },
                 ],
             },
             {

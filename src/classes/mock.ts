@@ -24,6 +24,7 @@ class AppMock {
                 'media.editKey': 'Edit key',
                 'media.paste': 'Paste',
                 'media.delete': 'Delete',
+                'media.pickFile': 'Pick file',
                 'media.deleteConfirm': 'Are you sure you want to delete the selected files?',
             }];
         });

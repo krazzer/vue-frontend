@@ -23,6 +23,8 @@ export default defineComponent({
   mounted() {
     if (this.settings) {
       this.files = this.settings.files;
+    } else {
+      this.open(null);
     }
 
     window.addEventListener('click', (event) => {

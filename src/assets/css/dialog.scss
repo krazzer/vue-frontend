@@ -1,0 +1,33 @@
+@use '@/assets/base' as *;
+@use '@/assets/media-query-sizes' as *;
+
+.close {
+    position: absolute;
+    right: 24px;
+    font-size: $closeButtonSize;
+    top: 10px;
+
+    .mdi {
+        cursor: pointer;
+    }
+}
+
+.v-card {
+    transition-duration: var(--color-scheme-transition-speed);
+}
+
+.v-card-actions {
+    margin-top: auto;
+    padding: 24px;
+    flex-wrap: wrap;
+    row-gap: 0.5rem;
+    align-items: flex-end;
+
+    @media (max-width: $screen-sm-max) {
+        padding: 15px;
+    }
+}
+
+.v-card-title {
+    position: relative;
+}

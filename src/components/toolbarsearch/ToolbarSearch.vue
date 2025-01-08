@@ -16,6 +16,10 @@ export default defineComponent({
 
     searchKeyDown(event: KeyboardEvent) {
       if (event.key == "Escape") {
+        if (this.search !== '') {
+          event.stopPropagation();
+        }
+
         this.search = '';
       }
     },

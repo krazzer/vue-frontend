@@ -17,16 +17,16 @@ class MediaMock {
          * xhr.open("POST", "https://kiksaus.nl/test/uploadtest.php");
          * xhr.send(formData);
          */
-        mocker.onPost("/api/media/upload").reply(async (request) => {
+        mocker.onPost("/api/media/upload").reply(async (request: any) => {
             const totalSize        = request.totalBytes;
             const step             = request.totalBytes / 20;
             const progressInterval = 100;
 
             let uploadedSize = 0;
             let folderId     = null;
-            let files        = [];
+            let files        = <any>[];
 
-            request.data.forEach((value, key) => {
+            request.data.forEach((value: any, key: any) => {
                 if (key === "folder") {
                     folderId = value == 'null' ? null : parseInt(value);
                 }
@@ -35,12 +35,17 @@ class MediaMock {
                 }
             });
 
-            let mediaFiles = this.getFilesById(folderId);
-            let path       = this.getPathById(folderId);
+            let mediaFiles = <any>[];
+            let path       = {};
+
+            if (folderId) {
+                mediaFiles = this.getFilesById(folderId);
+                path       = this.getPathById(folderId);
+            }
 
             let newId = 100;
 
-            files.forEach(file => {
+            files.forEach((file: any) => {
                 mediaFiles.push({id: newId++, name: file.name, thumb: '/cms/src/assets/images/example-image-1.jpg'});
             });
 
