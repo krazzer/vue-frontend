@@ -444,7 +444,7 @@ export default defineComponent({
           <template v-for="filter in filters">
             <v-select :multiple="filter.multiple" :items="filter.items" v-model="filterValues[filter.key]"
                       :label="filter.label" density="compact" :max-width="filter.width ? filter.width : 200"
-                      return-object :clearable="!filter.multiple"></v-select>
+                      return-object :clearable="!filter.multiple" min-width="135"></v-select>
           </template>
           <div class="datatable__toolbar__buttons__right">
             <div v-if="pages" class="pages">
@@ -571,7 +571,7 @@ export default defineComponent({
       }
 
       :deep(.v-field--focused .v-field-label), &--selected :deep(.v-field-label) {
-        margin-top: -11px;
+        margin-top: -9px;
         margin-left: 10px;
         font-size: 10px;
       }
