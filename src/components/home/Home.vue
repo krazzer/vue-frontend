@@ -258,7 +258,7 @@ $sideBarWidthMobile: 200px;
   transform: rotate(0deg);
   transition: margin-left .3s;
   cursor: pointer;
-  margin-bottom: 40px;
+  margin-bottom: $tableRowHeight;
   display: none;
 
   span {

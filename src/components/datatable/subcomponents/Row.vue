@@ -162,14 +162,19 @@ export default defineComponent({
     /**
      * @param index
      */
-    getTdClass(index: number): string {
+    getTdClass(index: number): Array<string> {
       let key = this.getKey(index);
+      let classes = [];
 
       if (this.mobileColumns.includes(key)) {
-        return 'mobile';
+        classes.push('mobile');
       }
 
-      return '';
+      if(this.getCellType(index) == 'image'){
+        classes.push('image');
+      }
+
+      return classes;
     },
 
     /**
@@ -197,6 +202,9 @@ export default defineComponent({
               :isDragged="dragAndDropPages.isDragged(row.id)" :level="row.level" ref="pages"
               @startDrag="dragAndDropPages.setMouseDown(row.id, $event)" :type="row.type"
               :hasCildren="row.children" :collapse="row.collapsed" @arrowClick="arrowClick($event)"/>
+      </template>
+      <template v-else-if="getCellType(i) == 'image'">
+        <img :src="getCell(cell)" alt=""/>
       </template>
       <template v-else><span v-html="getCell(cell)"/></template>
       <template v-if="i == row.data.length - 1">
@@ -346,6 +354,16 @@ td.button-column {
       height: 22px;
       top: 0;
     }
+  }
+}
+
+.datatable__table table td.image{
+  padding: 2px 0;
+
+  img{
+    display: block;
+    height: calc($tableRowHeight - 4px);
+    border-radius: var(--border-radius);
   }
 }
 </style>

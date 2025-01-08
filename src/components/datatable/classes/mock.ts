@@ -185,6 +185,12 @@ class DataTableMock {
                 label: 'Content',
                 validator: {name: 'presence', parameters: {}}
             },
+            {
+                key: 'file',
+                type: 'filepicker',
+                label: 'File',
+                validator: {name: 'presence', parameters: {}}
+            },
         ],
     };
 
@@ -215,12 +221,6 @@ class DataTableMock {
                         key: 'content',
                         type: 'textarea',
                         label: 'Content',
-                        validator: {name: 'presence', parameters: {}}
-                    },
-                    {
-                        key: 'file',
-                        type: 'filepicker',
-                        label: 'File',
                         validator: {name: 'presence', parameters: {}}
                     },
                 ],
@@ -440,16 +440,19 @@ class DataTableMock {
     getContentData() {
         return {
             buttons: [{label: 'Add content', action: 'add'}, {label: 'Delete', action: 'delete'}],
-            headers: {'id': 'Id', 'name': "Name", 'content': "Content"},
+            headers: {'id': 'Id', 'name': "Name", 'image': "Image", 'content': "Content"},
+            cells: {'image': {'type': 'image'}},
             mobileColumns: ['id', 'name'],
             data: [
                 {
                     id: 'a1',
-                    data: ['content1', 'Peter', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas libero an...']
+                    data: ['content1', 'Peter', '/cms/src/assets/images/example-image-1.jpg',
+                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas libero an...']
                 },
                 {
                     id: 'a2',
-                    data: ['content2', 'John', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas libero an...']
+                    data: ['content2', 'John', '/cms/src/assets/images/example-image-2.jpg',
+                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas libero an...']
                 },
             ],
             instance: 'content',

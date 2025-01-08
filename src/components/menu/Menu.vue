@@ -145,7 +145,7 @@ ul:first-child > li {
   &.selected ul {
     @for $i from 1 through 20 {
       &[data-count="#{$i}"] {
-        max-height: $i * 40px;
+        max-height: $i * $tableRowHeight;
       }
     }
   }
