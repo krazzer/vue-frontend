@@ -435,6 +435,10 @@ class DataTableMock {
         mocker.onPost("/api/datatable/collapse").reply(() => {
             return [200];
         });
+
+        mocker.onPost("/api/datatable/check").reply(() => {
+            return [200];
+        });
     }
 
     getContentData() {
@@ -485,22 +489,22 @@ class DataTableMock {
             {
                 id: '1',
                 level: 0,
-                data: ['Hoofdmenu', '', '', 1],
+                data: ['Hoofdmenu', '', '', true, 1],
                 type: 'menu',
                 max: 2,
                 actionUrls: {preview: 'https://google.nl'},
                 children: true
             },
-            {id: '2', level: 1, data: [{'label': 'Home', 'icons': ['lock']}, 'home', 'home', 2]},
-            {id: '3', level: 1, data: ['About', 'default', 'about', 3]},
-            {id: '4', level: 1, data: ['Prices', 'default', 'prices', 4]},
-            {id: '5', level: 1, data: ['Projects', 'projects', 'projects', 5], collapsed: true, children: true},
-            {id: '6', level: 2, data: ['Project A', 'project', 'project-A', 6]},
-            {id: '7', level: 2, data: ['Project B', 'project', 'project-B', 7]},
-            {id: '8', level: 2, data: ['Project C', 'project', 'project-C', 8]},
-            {id: '9', level: 1, data: ['Contact', 'contact', 'contact', 3]},
-            {id: '10', level: 0, data: ['Other pages', '', '', 10], type: 'menu', max: 1, children: true},
-            {id: '11', level: 1, data: ['Other page', 'default', 'other-page', 11]},
+            {id: '2', level: 1, data: [{'label': 'Home', 'icons': ['lock']}, 'home', 'home', true, 2]},
+            {id: '3', level: 1, data: ['About', 'default', 'about', true, 3]},
+            {id: '4', level: 1, data: ['Prices', 'default', 'prices', true, 4]},
+            {id: '5', level: 1, data: ['Projects', 'projects', 'projects', true, 5], collapsed: true, children: true},
+            {id: '6', level: 2, data: ['Project A', 'project', 'project-A', true, 6]},
+            {id: '7', level: 2, data: ['Project B', 'project', 'project-B', true, 7]},
+            {id: '8', level: 2, data: ['Project C', 'project', 'project-C', true, 8]},
+            {id: '9', level: 1, data: ['Contact', 'contact', 'contact', true, 3]},
+            {id: '10', level: 0, data: ['Other pages', '', '', true, 10], type: 'menu', max: 1, children: true},
+            {id: '11', level: 1, data: ['Other page', 'default', 'other-page', false, 11]},
         ];
 
         return {
@@ -517,9 +521,9 @@ class DataTableMock {
             actions: [
                 {key: 'preview', type: 'url', icon: 'mdi-eye'}
             ],
-            headers: {'name': "Name", 'template': "Template", 'slug': "Slug", 'id': "Id"},
+            headers: {name: "Name", template: "Template", slug: "Slug", active: "Active", id: "Id"},
             mobileColumns: ['name'],
-            cells: {'name': {'type': 'page'}},
+            cells: {name: {type: 'page'}, active: {type: 'checkbox'}},
             pages: [1, 2, 3],
             data: data,
             languages: [

@@ -428,7 +428,8 @@ export default defineComponent({
                 <v-btn v-bind="props" :prepend-icon="'mdi-menu'">{{ button.label }}</v-btn>
               </template>
               <v-list>
-                <v-list-item v-for="(item, index) in button.items" :key="index" :value="index" @click="buttonClick(item)">
+                <v-list-item v-for="(item, index) in button.items" :key="index" :value="index"
+                             @click="buttonClick(item)">
                   <template v-slot:prepend>
                     <v-icon :icon="item.icon"></v-icon>
                   </template>
@@ -479,7 +480,7 @@ export default defineComponent({
                  @collapse="collapse" @edit="edit" :id="row.id" :level="row.level" :selectedIds="selected"
                  :max="row.max" :highlight="highlight" :index="index" :forceDefaultView="forceDefaultView"
                  :mobile-columns="mobileColumns" @mouseDownOnRearrange="setMouseDownOnRearrange" :dragClone="row.clone"
-                 :cloneRowVisible="cloneRowVisible"/>
+                 :cloneRowVisible="cloneRowVisible" :instance="instance"/>
           </template>
           </tbody>
         </table>
@@ -500,7 +501,7 @@ export default defineComponent({
 </template>
 
 <style lang="scss" scoped>
-:deep(.v-list-item__prepend){
+:deep(.v-list-item__prepend) {
   width: 40px;
 }
 

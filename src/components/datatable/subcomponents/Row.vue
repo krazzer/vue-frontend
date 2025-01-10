@@ -9,13 +9,14 @@ export default defineComponent({
   emits: ['collapse', 'edit', 'toggle'],
   name: "Row",
   props: ['row', 'dragAndDropPages', 'headers', 'settings', 'id', 'level', 'selected', 'selectedIds', 'max',
-    'highlight', 'actions', 'index', 'forceDefaultView', 'mobileColumns', 'dragClone', 'cloneRowVisible'],
+    'highlight', 'actions', 'index', 'forceDefaultView', 'mobileColumns', 'dragClone', 'cloneRowVisible', 'instance'],
   mixins: [DragAndDropRow],
   data() {
     return {
       preventSelect: <boolean>false,
       mouseX: <number>0,
       mouseY: <number>0,
+      data: <any>{},
     };
   },
   watch: {
@@ -24,6 +25,7 @@ export default defineComponent({
     },
   },
   mounted() {
+    this.data = this.row.data;
     window.addEventListener("mousemove", this.onMouseMove);
   },
   beforeUnmount() {
@@ -63,9 +65,13 @@ export default defineComponent({
         return null;
       }
 
-      let key = Object.keys(this.settings.headers)[index];
+      let key = this.getCellKey(index);
 
       return cellSettings[key];
+    },
+
+    getCellKey(index: number): string {
+      return Object.keys(this.settings.headers)[index];
     },
 
     arrowClick(event: MouseEvent) {
@@ -202,7 +208,24 @@ export default defineComponent({
      */
     isSelected(id: string): boolean {
       return this.selectedIds.includes(id);
-    }
+    },
+
+    /**
+     * @param id
+     * @param i
+     */
+    async changeCheckbox(id: string, i: number) {
+      let key = this.getCellKey(i);
+      let value = this.data[i];
+
+      this.data[i] = !value;
+
+      await this.$appUtil.doAction('datatable/check', {
+        instance: this.instance, field: key, id: id, value: this.data[i]
+      }, () => {
+        this.data[i] = value;
+      });
+    },
   }
 });
 </script>
@@ -228,6 +251,10 @@ export default defineComponent({
           <img class="preview" :src="getCell(cell)" alt=""/>
         </a>
         <img class="floating-preview" :style="getFloatingPreviewStyle()" :src="getCell(cell)" alt=""/>
+      </template>
+      <template v-else-if="getCellType(i) == 'checkbox'">
+        <v-checkbox v-model="data[i]" @change="changeCheckbox(row.id, i)"
+                    @dblclick="(e: any) => e.stopPropagation()" @click="(e: any) => e.stopPropagation()"/>
       </template>
       <template v-else><span v-html="getCell(cell)"/></template>
       <template v-if="i == row.data.length - 1">
@@ -362,6 +389,12 @@ td .buttons {
       cursor: grabbing;
     }
   }
+}
+
+td .v-checkbox {
+  position: absolute;
+  top: -8px;
+  left: 3px;
 }
 
 td.button-column {
