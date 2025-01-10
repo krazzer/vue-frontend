@@ -401,6 +401,7 @@ td.button-column {
     pointer-events: none;
     display: none;
     z-index: 1;
+    border-radius: var(--border-radius);
   }
 
   &:hover .floating-preview {
