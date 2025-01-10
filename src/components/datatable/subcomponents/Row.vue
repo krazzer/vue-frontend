@@ -14,12 +14,20 @@ export default defineComponent({
   data() {
     return {
       preventSelect: <boolean>false,
+      mouseX: <number>0,
+      mouseY: <number>0,
     };
   },
   watch: {
     mouseDownRearrange() {
       this.preventSelect = this.mouseDownRearrange;
     },
+  },
+  mounted() {
+    window.addEventListener("mousemove", this.onMouseMove);
+  },
+  beforeUnmount() {
+    window.removeEventListener("mousemove", this.onMouseMove);
   },
   methods: {
     displayAsPage(index: number): boolean {
@@ -77,6 +85,11 @@ export default defineComponent({
       if (row.actionUrls && row.actionUrls[iconKey]) {
         window.open(row.actionUrls[iconKey]);
       }
+    },
+
+    onMouseMove(event: MouseEvent) {
+      this.mouseX = event.clientX;
+      this.mouseY = event.clientY;
     },
 
     /**
@@ -153,6 +166,13 @@ export default defineComponent({
     },
 
     /**
+     * @return string
+     */
+    getFloatingPreviewStyle(): string {
+      return 'left:' + (this.mouseX + 20) + 'px; top: ' + (this.mouseY + 20) + 'px'
+    },
+
+    /**
      * @param index
      */
     getKey(index: number): string {
@@ -163,14 +183,14 @@ export default defineComponent({
      * @param index
      */
     getTdClass(index: number): Array<string> {
-      let key = this.getKey(index);
+      let key     = this.getKey(index);
       let classes = [];
 
       if (this.mobileColumns.includes(key)) {
         classes.push('mobile');
       }
 
-      if(this.getCellType(index) == 'image'){
+      if (this.getCellType(index) == 'image') {
         classes.push('image');
       }
 
@@ -204,7 +224,10 @@ export default defineComponent({
               :hasCildren="row.children" :collapse="row.collapsed" @arrowClick="arrowClick($event)"/>
       </template>
       <template v-else-if="getCellType(i) == 'image'">
-        <img :src="getCell(cell)" alt=""/>
+        <a target="_blank" :href="getCell(cell)" @click="(e) => e.stopPropagation()">
+          <img class="preview" :src="getCell(cell)" alt=""/>
+        </a>
+        <img class="floating-preview" :style="getFloatingPreviewStyle()" :src="getCell(cell)" alt=""/>
       </template>
       <template v-else><span v-html="getCell(cell)"/></template>
       <template v-if="i == row.data.length - 1">
@@ -341,7 +364,6 @@ td .buttons {
   }
 }
 
-
 td.button-column {
   display: none;
 
@@ -357,13 +379,32 @@ td.button-column {
   }
 }
 
-.datatable__table table td.image{
+.datatable__table table td.image {
   padding: 2px 0;
 
-  img{
+  a {
+    cursor: zoom-in;
+    vertical-align: top;
+    display: inline-block;
+  }
+
+  .preview {
     display: block;
     height: calc($tableRowHeight - 4px);
     border-radius: var(--border-radius);
+  }
+
+  .floating-preview {
+    position: fixed;
+    max-width: 200px;
+    max-height: 200px;
+    pointer-events: none;
+    display: none;
+    z-index: 1;
+  }
+
+  &:hover .floating-preview {
+    display: block;
   }
 }
 </style>
