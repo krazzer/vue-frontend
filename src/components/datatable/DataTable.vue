@@ -148,6 +148,24 @@ export default defineComponent({
         });
       }
 
+      if (button.action == 'action') {
+        if(button.actionConfirm && !confirm(button.actionConfirm)) {
+          return;
+        }
+
+        this.$appUtil.doAction(button.actionRoute, {instance: this.instance, selected: this.selected}, (response: any) => {
+          let data = response.data;
+
+          if(data.message) {
+            alert(data.message);
+          }
+
+          if(data.open){
+            window.open(data.open);
+          }
+        });
+      }
+
       if (button.action == 'delete') {
         if (selectedCount > 0) {
           let confirmed = false;

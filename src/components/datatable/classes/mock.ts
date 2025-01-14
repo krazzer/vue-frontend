@@ -439,6 +439,12 @@ class DataTableMock {
         mocker.onPost("/api/datatable/check").reply(() => {
             return [200];
         });
+
+        mocker.onPost("/api/custom-action").reply((request: any) => {
+            let params = JSON.parse(request.data).params;
+
+            return [200, {message: 'Custom action done for: ' + params.selected.join(','), open: "https://google.com"}];
+        });
     }
 
     getContentData() {
@@ -516,6 +522,12 @@ class DataTableMock {
                         {title: 'Add link', icon: 'mdi-link-variant', action: 'add', addType: 'link'},
                         {title: 'Add menu', icon: 'mdi-menu', action: 'add', addType: 'menu'}
                     ]
+                },
+                {
+                    label: 'Custom action',
+                    action: 'action',
+                    actionRoute: 'custom-action',
+                    actionConfirm: 'Are you sure?'
                 },
             ],
             actions: [
