@@ -4,12 +4,13 @@ import validator from "@/classes/validator";
 import Editor from "@tinymce/tinymce-vue";
 import {useTheme} from "vuetify";
 import FilePicker from "@/components/filepicker/FilePicker.vue";
+import LabelField from "@/components/form/subcomponents/LabelField.vue";
 
 export default defineComponent({
   name: "Form",
   props: ['fields', 'data', 'darkMode', 'checkErrors', 'tab', 'level', 'save', 'saved'],
   emits: ['fieldError', 'doSubmit', 'inputChange'],
-  components: {Editor, FilePicker},
+  components: {Editor, FilePicker, LabelField},
   data() {
     return {
       fieldRefs: <any>[],
@@ -26,6 +27,7 @@ export default defineComponent({
         autocomplete: 'v-autocomplete',
         checkbox: 'v-checkbox',
         datatable: 'DataTable',
+        label: 'LabelField',
       },
     };
   },
@@ -144,7 +146,7 @@ export default defineComponent({
       return fieldProps;
     },
     showLabel(field: any) {
-      return ['richtext', 'filepicker'].includes(field.type);
+      return ['richtext', 'filepicker', 'label'].includes(field.type);
     }
   }
 })
@@ -162,8 +164,9 @@ const DataTable = defineAsyncComponent(() => import('../datatable/DataTable.vue'
       <label v-if="showLabel(field)" class="v-label">{{ field.label }}</label>
       <DataTable v-if="field.type == 'datatable'" :instance="field.instance" :settings="field.settings"
                  :level="level + 1"/>
+      <LabelField v-if="field.type == 'label'" :field="field"/>
       <component v-else :is="fieldComponents[field.type]" v-bind="getFieldProperties(field)" v-model="data[field.key]"
-                 ref="fieldRefs"/>
+                 ref="fieldRefs" />
     </v-col>
     <v-col v-if="save">
       <v-btn variant="tonal" :prepend-icon="saved ? 'mdi-check' : 'mdi-content-save'" type="submit">

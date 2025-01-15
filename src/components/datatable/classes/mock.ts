@@ -191,6 +191,12 @@ class DataTableMock {
                 label: 'File',
                 validator: {name: 'presence', parameters: {}}
             },
+            {
+                key: 'label',
+                type: 'label',
+                label: 'Label',
+                content: "Just some <u>HTML</u> content",
+            },
         ],
     };
 
