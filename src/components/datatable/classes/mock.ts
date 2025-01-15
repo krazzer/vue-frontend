@@ -529,6 +529,11 @@ class DataTableMock {
                     actionRoute: 'custom-action',
                     actionConfirm: 'Are you sure?'
                 },
+                {
+                    label: 'Page count: #12',
+                    type: 'label',
+                    icon: 'mdi-view-grid'
+                },
             ],
             actions: [
                 {key: 'preview', type: 'url', icon: 'mdi-eye'}

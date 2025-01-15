@@ -455,6 +455,7 @@ export default defineComponent({
                 </v-list-item>
               </v-list>
             </v-menu>
+            <v-chip v-else-if="button.type == 'label'" :prepend-icon="button.icon">{{ button.label }}</v-chip>
             <v-btn v-else @click="buttonClick(button)" :disabled="isDisabled(button)" :prepend-icon="button.icon">
               {{ button.label }}
             </v-btn>
@@ -571,6 +572,11 @@ export default defineComponent({
         #{$self}__right {
           margin-left: 0;
         }
+      }
+
+      .v-chip{
+        height: 36px;
+        padding: 0 16px;
       }
     }
 
