@@ -13,6 +13,9 @@ export default defineComponent({
   components: {Editor, FilePicker, LabelField},
   data() {
     return {
+      datePickerActive: <any>{},
+      datePickerDate: <any>{},
+      formattedDates: <any>{},
       fieldRefs: <any>[],
       darkModeSelect: null,
       validator: validator,
@@ -35,6 +38,16 @@ export default defineComponent({
     data: {
       handler: 'handleDataChange',
       deep: true
+    },
+    datePickerDate: {
+      deep: true,
+      handler(newVal) {
+        for (const key in newVal) {
+          this.formattedDates[key] = this.formatDate(newVal[key]);
+
+          this.data[key] = newVal[key];
+        }
+      },
     },
     async checkErrors() {
       if (!this.checkErrors) {
@@ -69,6 +82,14 @@ export default defineComponent({
       let validation = await field.validate();
 
       return validation.length > 0;
+    },
+
+    /**
+     * @param date
+     */
+    formatDate(date: any) {
+      const options: Intl.DateTimeFormatOptions = {year: 'numeric', month: '2-digit', day: '2-digit'};
+      return date ? new Date(date).toLocaleDateString('en-US', options) : '';
     },
 
     handleDataChange(val: any) {
@@ -147,7 +168,7 @@ export default defineComponent({
     },
     showLabel(field: any) {
       return ['richtext', 'filepicker', 'label'].includes(field.type);
-    }
+    },
   }
 })
 </script>
@@ -164,9 +185,19 @@ const DataTable = defineAsyncComponent(() => import('../datatable/DataTable.vue'
       <label v-if="showLabel(field)" class="v-label">{{ field.label }}</label>
       <DataTable v-if="field.type == 'datatable'" :instance="field.instance" :settings="field.settings"
                  :level="level + 1"/>
-      <LabelField v-if="field.type == 'label'" :field="field"/>
+      <LabelField v-else-if="field.type == 'label'" :field="field"/>
+      <template v-else-if="field.type == 'date'">
+        <v-menu v-model="datePickerActive[field.key]" :close-on-content-click="true" :nudge-right="40"
+                transition="scale-transition" offset-y min-width="auto">
+          <template v-slot:activator="{ props }">
+            <v-text-field v-model="formattedDates[field.key]" :label="field.label"
+                          v-bind="{ ...props, ...getFieldProperties(field) }"/>
+          </template>
+          <v-date-picker v-model="datePickerDate[field.key]" @input="datePickerActive[field.key] = false"/>
+        </v-menu>
+      </template>
       <component v-else :is="fieldComponents[field.type]" v-bind="getFieldProperties(field)" v-model="data[field.key]"
-                 ref="fieldRefs" />
+                 ref="fieldRefs"/>
     </v-col>
     <v-col v-if="save">
       <v-btn variant="tonal" :prepend-icon="saved ? 'mdi-check' : 'mdi-content-save'" type="submit">

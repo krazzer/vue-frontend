@@ -180,6 +180,11 @@ class DataTableMock {
                 validator: {name: 'presence', parameters: {}}
             },
             {
+                key: 'date',
+                type: 'date',
+                label: 'Date',
+            },
+            {
                 key: 'content',
                 type: 'richtext',
                 label: 'Content',
