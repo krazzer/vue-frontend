@@ -5,10 +5,12 @@ import Media from "@/components/media/Media.vue";
 export default defineComponent({
   name: "FilePicker",
   components: {Media},
-  props: ["label", "hint", "validateOn", "rules", "hideDetails", "modelValue"],
+  props: ["label", "hint", "validateOn", "rules", "hideDetails", "modelValue", "value"],
   data() {
     return {
       dialog: false,
+      pickedFiles: [],
+      selectedFiles: [],
       displayMedia: false,
     }
   },
@@ -22,7 +24,15 @@ export default defineComponent({
     },
 
     pickFile() {
+      if(this.selectedFiles){
+        this.pickedFiles = this.selectedFiles;
+        this.$emit('update:modelValue', this.pickedFiles);
+        this.clickClose();
+      }
+    },
 
+    changeFileSelection(files: any){
+      this.selectedFiles = files;
     }
   },
   watch: {
@@ -41,7 +51,12 @@ export default defineComponent({
 <template>
   <v-row align="center" dense>
     <v-col cols="auto">
-      <v-btn variant="tonal" class="me-2" @click="openDialog">Pick file</v-btn>
+      <v-btn variant="tonal" class="me-2" @click="openDialog">
+        Pick file
+        <template v-if="pickedFiles.length">
+          (picked files: {{ pickedFiles }})
+        </template>
+      </v-btn>
       <v-btn variant="tonal">Upload</v-btn>
     </v-col>
   </v-row>
@@ -55,14 +70,14 @@ export default defineComponent({
           </span>
       </v-card-title>
       <v-card-text>
-        <Media v-if="displayMedia"/>
+        <Media v-if="displayMedia" @pick="pickFile" @fileSelection="changeFileSelection" pick="true" />
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn variant="tonal" @click="clickClose" prepend-icon="mdi-close">
           {{ $translator.tl('general.close') }}
         </v-btn>
-        <v-btn variant="tonal" @click="pickFile" disabled prepend-icon="mdi-cursor-pointer">
+        <v-btn variant="tonal" @click="pickFile" :disabled="!selectedFiles.length" prepend-icon="mdi-cursor-pointer">
           {{ $translator.tl('media.pickFile') }}
         </v-btn>
       </v-card-actions>

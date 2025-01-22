@@ -7,7 +7,8 @@ import Toolbar from "@/mixins/Toolbar.vue";
 export default defineComponent({
   components: {ToolbarSearch},
   mixins: [Toolbar],
-  props: ['settings', 'role'],
+  props: ['settings', 'role', 'pick'],
+  emits: ['pick', 'fileSelection'],
   data() {
     return {
       files: <any>[],
@@ -20,20 +21,23 @@ export default defineComponent({
       hideProgress: false,
     };
   },
+  watch: {
+    selectedFiles: {
+      handler: 'selectedFilesChange',
+      deep: true
+    },
+  },
   mounted() {
     if (this.settings) {
       this.files = this.settings.files;
     } else {
       this.open(null);
     }
-
-    window.addEventListener('click', (event) => {
-      if (!event.shiftKey) {
-        this.selectedFiles = [];
-      }
-    });
   },
   methods: {
+    selectedFilesChange() {
+      this.$emit('fileSelection', this.selectedFiles);
+    },
     /**
      * @param index
      */
@@ -61,10 +65,19 @@ export default defineComponent({
         return;
       }
 
-      this.$appUtil.doAction('media/delete', {folder: this.currentFolderId, ids: this.selectedFiles}, (response: any) => {
+      this.$appUtil.doAction('media/delete', {
+        folder: this.currentFolderId,
+        ids: this.selectedFiles
+      }, (response: any) => {
         this.files         = response.data.files;
         this.selectedFiles = [];
       });
+    },
+
+    deselect(event: MouseEvent) {
+      if (!event.shiftKey) {
+        this.selectedFiles = [];
+      }
     },
 
     /**
@@ -98,7 +111,10 @@ export default defineComponent({
      * Paste the selected files to the current folder
      */
     paste() {
-      this.$appUtil.doAction('media/paste', {ids: this.selectedFilesCut, folder: this.currentFolderId}, (response: any) => {
+      this.$appUtil.doAction('media/paste', {
+        ids: this.selectedFilesCut,
+        folder: this.currentFolderId
+      }, (response: any) => {
         this.files = response.data.files;
 
         this.selectedFilesCut = [];
@@ -111,7 +127,7 @@ export default defineComponent({
      * @param event
      */
     selectFile(id: number, event: MouseEvent) {
-      if (event.shiftKey) {
+      if (event.shiftKey && !this.pick) {
         if (!this.selectedFiles.includes(id)) {
           this.selectedFiles.push(id);
         }
@@ -157,6 +173,11 @@ export default defineComponent({
      */
     open(id: number | null, url?: string | null) {
       if (url) {
+        if (this.pick) {
+          this.$emit('pick', id);
+          return;
+        }
+
         window.open(url);
         return;
       }
@@ -282,16 +303,15 @@ export default defineComponent({
         </span>
       </li>
     </ul>
-    <div class="media__files">
-      <div class="media__file" v-for="file in files" @click="selectFile(file.id, $event)"
-           @dblclick="open(file.id, file.url)"
+    <div class="media__files" @click="deselect">
+      <div class="media__file" v-for="file in files" @dblclick="open(file.id, file.url)"
            :class="getFileClasses(file.id)">
-        <div class="icon">
-          <div class="thumb" :class="file.isDir ? 'folder' : ''"
+        <div class="icon" @click="selectedFiles.includes(file.id) ? selectFile(file.id, $event) : null">
+          <div class="thumb" :class="file.isDir ? 'folder' : ''" @click="selectFile(file.id, $event)"
                :style="file.thumb ? 'background-image:url(' + file.thumb + ');' : ''"></div>
           <i v-if="file.key" class="mdi mdi-lock lock-icon"></i>
         </div>
-        <div class="name"><span>{{ file.name }}</span></div>
+        <div class="name"><span @click="selectFile(file.id, $event)">{{ file.name }}</span></div>
       </div>
     </div>
   </div>
@@ -340,8 +360,8 @@ export default defineComponent({
       margin-left: auto;
     }
 
-    &.wrapped{
-      #{$self}__right{
+    &.wrapped {
+      #{$self}__right {
         margin-left: 0;
       }
     }

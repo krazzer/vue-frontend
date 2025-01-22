@@ -3,8 +3,8 @@ import {defineComponent} from 'vue'
 import validator from "@/classes/validator";
 import Editor from "@tinymce/tinymce-vue";
 import {useTheme} from "vuetify";
-import FilePicker from "@/components/filepicker/FilePicker.vue";
-import LabelField from "@/components/form/subcomponents/LabelField.vue";
+import FilePicker from "./subcomponents/FilePicker.vue";
+import LabelField from "./subcomponents/LabelField.vue";
 
 export default defineComponent({
   name: "Form",
