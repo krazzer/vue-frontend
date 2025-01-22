@@ -185,6 +185,11 @@ const DataTable = defineAsyncComponent(() => import('../datatable/DataTable.vue'
       <label v-if="showLabel(field)" class="v-label">{{ field.label }}</label>
       <DataTable v-if="field.type == 'datatable'" :instance="field.instance" :settings="field.settings"
                  :level="level + 1"/>
+      <div class="group" v-else-if="field.type == 'group'">
+        <Form :fields="field.fields" :data="data" :darkMode="darkMode" @fieldError="$emit('fieldError')" :saved="saved"
+              :checkErrors="checkErrors" :level="level" @do-submit="$emit('doSubmit')"
+              @input-change="$emit('inputChange')"/>
+      </div>
       <LabelField v-else-if="field.type == 'label'" :field="field"/>
       <template v-else-if="field.type == 'date'">
         <v-menu v-model="datePickerActive[field.key]" :close-on-content-click="true" :nudge-right="40"
@@ -206,3 +211,11 @@ const DataTable = defineAsyncComponent(() => import('../datatable/DataTable.vue'
     </v-col>
   </v-row>
 </template>
+
+<style scoped lang="scss">
+.group{
+  border: 1px solid var(--color-background-shade3);
+  border-radius: var(--border-radius);
+  padding: 15px;
+}
+</style>
