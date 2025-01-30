@@ -1,11 +1,11 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
-import axios from "axios";
 import ToolbarSearch from "@/components/toolbarsearch/ToolbarSearch.vue";
 import Toolbar from "@/mixins/Toolbar.vue";
+import Uploader from "@/components/media/subcomponents/Uploader.vue";
 
 export default defineComponent({
-  components: {ToolbarSearch},
+  components: {Uploader, ToolbarSearch},
   mixins: [Toolbar],
   props: ['settings', 'role', 'pick'],
   emits: ['pick', 'fileSelection'],
@@ -114,8 +114,7 @@ export default defineComponent({
      * Show file upload when clicking button
      */
     openFileUploadModal() {
-      let mediaComponent: any = this;
-      mediaComponent.$refs.uploader.click();
+      (<any>this).$refs.uploader.click();
     },
 
     /**
@@ -226,61 +225,15 @@ export default defineComponent({
       });
     },
 
-    /**
-     * @param event
-     */
-    handleFileChange(event: any) {
-      this.hideProgress  = false;
-      this.totalProgress = 0;
-
-      this.uploadFiles(Array.from(event.target.files));
-      (this.$refs.uploader as HTMLInputElement).value = '';
+    uploadFiles(files: any) {
+      this.files         = files;
+      this.selectedFiles = [];
     },
 
-    /**
-     * @param uploadedFiles
-     */
-    async uploadFiles(uploadedFiles: any) {
-      if (!uploadedFiles.length) {
-        return;
-      }
-
-      let totalBytes = uploadedFiles.reduce((sum: any, file: any) => sum + file.size, 0);
-      let formData   = new FormData();
-
-      formData.append("folder", String(this.currentFolderId));
-
-      let fileUploadLoaded: any = {};
-
-      uploadedFiles.forEach((file: any) => {
-        formData.append("file", file);
-        fileUploadLoaded[file.name] = 0;
-      });
-
-      let uploadProgressEvent = (event: any) => {
-        let totalProgress  = Math.round((event.loaded / totalBytes) * 100);
-        this.totalProgress = totalProgress > 100 ? 100 : totalProgress;
-      };
-
-      let config = {
-        onUploadProgress: uploadProgressEvent,
-        totalBytes: totalBytes,
-      };
-
-      axios
-          .post('/api/media/upload', formData, config)
-          .then((response: any) => {
-            this.files         = response.data.files;
-            this.path          = response.data.path;
-            this.selectedFiles = [];
-
-            setTimeout(() => {
-              this.hideProgress = true;
-            }, 300);
-          }).catch((error: any) => {
-        console.error(error);
-      });
-    },
+    updateUploadProgress(progress: number, hide: boolean) {
+      this.totalProgress = progress;
+      this.hideProgress  = hide;
+    }
   }
 });
 </script>
@@ -294,7 +247,8 @@ export default defineComponent({
       <v-btn @click="newFolder" prepend-icon="mdi-folder-plus-outline">
         {{ $translator.tl('media.newFolder') }}
       </v-btn>
-      <input ref="uploader" class="d-none" type="file" multiple @change="handleFileChange"/>
+      <Uploader @uploadedFolderFiles="uploadFiles" @progress="updateUploadProgress" ref="uploader"
+                :folderId="currentFolderId"/>
       <v-btn v-if="selectedFiles.length" @click="deleteFile" prepend-icon="mdi-delete">
         {{ $translator.tl('media.delete') }}
       </v-btn>
@@ -342,10 +296,10 @@ export default defineComponent({
 
   &__progress {
     width: 100%;
-    height: 4px;
     position: relative;
     margin-bottom: -4px;
     opacity: 1;
+    height: 4px;
     transition: opacity 0.3s ease;
 
     &.hidden {

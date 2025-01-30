@@ -36,17 +36,19 @@ class MediaMock {
             });
 
             let mediaFiles = <any>[];
+            let newFiles   = <any>[];
             let path       = {};
 
-            if (folderId) {
-                mediaFiles = this.getFilesById(folderId);
-                path       = this.getPathById(folderId);
-            }
+            mediaFiles = this.getFilesById(folderId);
+            path       = this.getPathById(folderId);
 
             let newId = 100;
 
             files.forEach((file: any) => {
-                mediaFiles.push({id: newId++, name: file.name, thumb: '/cms/src/assets/images/example-image-1.jpg'});
+                let fileData = {id: newId++, name: file.name, thumb: '/cms/src/assets/images/example-image-1.jpg'};
+
+                newFiles.push(fileData);
+                mediaFiles.push(fileData);
             });
 
             return new Promise((resolve) => {
@@ -59,7 +61,7 @@ class MediaMock {
 
                     if (uploadedSize >= totalSize) {
                         clearInterval(intervalId);
-                        resolve([200, {files: mediaFiles, path: path}]);
+                        resolve([200, {files: mediaFiles, path: path, newFiles: newFiles}]);
                     }
                 }, progressInterval);
             });
@@ -151,7 +153,7 @@ class MediaMock {
     /**
      * @param id
      */
-    getFilesById(id: number): Array<any> {
+    getFilesById(id: number | null): Array<any> {
         if (!id) {
             return this.appMocker.homeMock.getMediaFiles();
         } else if (this.subFolderIds.includes(id)) {
@@ -173,7 +175,7 @@ class MediaMock {
     /**
      * @param id
      */
-    getPathById(id: number): object {
+    getPathById(id: number | null): object {
         if (!id) {
             return {};
         } else if (this.subFolderIds.includes(id)) {

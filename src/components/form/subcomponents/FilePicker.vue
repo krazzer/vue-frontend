@@ -1,10 +1,11 @@
 <script lang="ts">
 import {defineComponent} from "vue";
 import Media from "@/components/media/Media.vue";
+import Uploader from "@/components/media/subcomponents/Uploader.vue";
 
 export default defineComponent({
   name: "FilePicker",
-  components: {Media},
+  components: {Uploader, Media},
   props: ["label", "hint", "validateOn", "rules", "hideDetails", "modelValue", "helperData", "multiple"],
   data() {
     return {
@@ -13,6 +14,8 @@ export default defineComponent({
       displayMedia: false,
       thumb: <null | string>null,
       mediaFileSelected: false,
+      uploadProgress: 0,
+      hideUploadProgress: false,
     }
   },
   mounted() {
@@ -43,6 +46,14 @@ export default defineComponent({
     },
     updateFileSelected(selected: boolean) {
       this.mediaFileSelected = selected;
+    },
+    updateUploadProgress(progress: number, hide: boolean) {
+      this.uploadProgress     = progress;
+      this.hideUploadProgress = hide;
+    },
+    uploadFiles(files: any) {
+      this.helperData.thumb      = files[0].thumb;
+      this.helperData.pickedFile = files[0].id;
     }
   },
   watch: {
@@ -61,8 +72,7 @@ export default defineComponent({
 <template>
   <v-row align="center" dense>
     <v-col cols="auto" style="align-items: flex-start; justify-content: flex-start; display: flex;">
-      <v-btn variant="tonal" class="me-2"
-             :class="{ 'pick-button': helperData.thumb && pickedFile }"
+      <v-btn variant="tonal" class="me-2" :class="{ 'pick-button': helperData.thumb && pickedFile }"
              @click="openDialog">
         <template v-if="pickedFile">
           <template v-if="helperData.thumb">
@@ -76,7 +86,11 @@ export default defineComponent({
           Pick file
         </template>
       </v-btn>
-      <v-btn variant="tonal">Upload</v-btn>
+      <v-btn variant="tonal" @click="(<any> $refs).uploader.click();">
+        Upload
+        <div class="upload-progress" v-if="uploadProgress > 0" :class="{ 'd-none': hideUploadProgress }" :style="'width:' + uploadProgress + '%'"></div>
+      </v-btn>
+      <Uploader @uploadedNewFiles="uploadFiles" @progress="updateUploadProgress" ref="uploader"/>
     </v-col>
   </v-row>
 
@@ -107,6 +121,17 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 @use '@/assets/css/dialog';
+
+.upload-progress{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  border-radius: var(--border-radius);
+  background-color: var(--color-action);
+  width: 0;
+  transition: width 0.3s ease;
+}
 
 .v-btn.v-btn--density-default.pick-button {
   padding: 5px;
