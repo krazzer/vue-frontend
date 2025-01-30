@@ -79,6 +79,22 @@ class MediaMock {
             return [200, {files: mediaFiles, path: path}];
         });
 
+        mocker.onPost("/api/media/changefilename").reply((request) => {
+            let params     = JSON.parse(request.data).params;
+            let id         = params.id;
+            let name       = params.name;
+            let folderId   = params.folder;
+            let mediaFiles = this.getFilesById(folderId);
+
+            mediaFiles.forEach((file) => {
+                if (file.id == id) {
+                    file.name = name;
+                }
+            });
+
+            return [200, {files: mediaFiles}];
+        });
+
         mocker.onPost("/api/media/open").reply((request) => {
             let params = JSON.parse(request.data).params;
             let id     = params.id;

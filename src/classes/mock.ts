@@ -16,6 +16,7 @@ class AppMock {
                 'general.close': 'Close',
                 'general.closeWarning': 'You have unsaved changed, are you sure you want to close this window?',
                 'media.editKeyPrompt': 'Give a name for the key of this file',
+                'media.editNamePrompt': 'Give a new name for this file',
                 'media.newFolderPrompt': 'Give a name for the new folder',
                 'media.newFolderPlaceholder': 'New folder',
                 'media.upload': 'Upload',

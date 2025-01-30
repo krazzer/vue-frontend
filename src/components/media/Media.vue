@@ -148,6 +148,36 @@ export default defineComponent({
       event.stopPropagation();
     },
 
+    selectName(id: number, event: MouseEvent) {
+      if (event.shiftKey) {
+        return;
+      }
+
+      if (this.selectedFiles.length == 1 && this.selectedFiles.includes(id)) {
+        let currentName = '';
+
+        this.files.forEach((file: any) => {
+          if (this.selectedFiles.includes(file.id)) {
+            currentName = file.name;
+          }
+        });
+
+        let newFileName = prompt(this.$translator.tl('media.editNamePrompt'), currentName);
+
+        if (!newFileName) {
+          return;
+        }
+
+        const params = {id: id, name: newFileName, folder: this.currentFolderId};
+
+        this.$appUtil.doAction('media/changefilename', params, (response: any) => {
+          this.files = response.data.files;
+
+          this.selectedFiles = [];
+        });
+      }
+    },
+
     /**
      * @param id
      */
@@ -285,7 +315,9 @@ export default defineComponent({
                :style="file.thumb ? 'background-image:url(' + file.thumb + ');' : ''"></div>
           <i v-if="file.key" class="mdi mdi-lock lock-icon"></i>
         </div>
-        <div class="name"><span @click="selectFile(file.id, $event)">{{ file.name }}</span></div>
+        <div class="name">
+          <span @click="selectName(file.id, $event); selectFile(file.id, $event)">{{ file.name }}</span>
+        </div>
       </div>
     </div>
   </div>
