@@ -8,7 +8,7 @@ import LabelField from "./subcomponents/LabelField.vue";
 
 export default defineComponent({
   name: "Form",
-  props: ['fields', 'data', 'darkMode', 'checkErrors', 'tab', 'level', 'save', 'saved'],
+  props: ['fields', 'data', 'darkMode', 'checkErrors', 'tab', 'level', 'save', 'saved', 'helperData'],
   emits: ['fieldError', 'doSubmit', 'inputChange'],
   components: {Editor, FilePicker, LabelField},
   data() {
@@ -140,6 +140,7 @@ export default defineComponent({
       let fieldProps: any = {
         label: field.label,
         hint: field.hint,
+        helperData: this.helperData?.[field.key] || {},
         validateOn: 'blur lazy',
         rules: field.validator ? validator.get(field.validator.name, field.validator.parameters) : [],
         hideDetails: 'auto',

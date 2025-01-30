@@ -36,7 +36,7 @@ export default defineComponent({
   },
   methods: {
     selectedFilesChange() {
-      this.$emit('fileSelection', this.selectedFiles);
+      this.$emit('fileSelection', this.selectedFiles.length > 0);
     },
     /**
      * @param index
@@ -99,6 +99,17 @@ export default defineComponent({
       );
     },
 
+    getFileThumbs(): Record<number, string> {
+      const selectedFiles = this.files.filter((file: any) =>
+          this.selectedFiles.includes(file.id)
+      );
+
+      return selectedFiles.reduce((thumbs: Record<number, string>, file: any) => {
+        thumbs[file.id] = file.thumb;
+        return thumbs;
+      }, {});
+    },
+
     /**
      * Show file upload when clicking button
      */
@@ -134,6 +145,7 @@ export default defineComponent({
       } else {
         this.selectedFiles = [id];
       }
+
       event.stopPropagation();
     },
 
@@ -167,6 +179,13 @@ export default defineComponent({
       });
     },
 
+    pickFile() {
+      if (this.selectedFiles) {
+        let fileId = this.selectedFiles[0];
+        this.$emit('pick', fileId, this.getFileThumbs()[fileId]);
+      }
+    },
+
     /**
      * @param id
      * @param url
@@ -174,7 +193,8 @@ export default defineComponent({
     open(id: number | null, url?: string | null) {
       if (url) {
         if (this.pick) {
-          this.$emit('pick', id);
+          this.selectedFiles = [id];
+          this.pickFile();
           return;
         }
 

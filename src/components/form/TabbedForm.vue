@@ -4,7 +4,7 @@ import Form from "@/components/form/Form.vue";
 
 export default defineComponent({
   name: "TabbedForm",
-  props: ['form', 'darkMode', 'data', 'checkTabErrors', 'level', 'handleSubmit'],
+  props: ['form', 'darkMode', 'data', 'checkTabErrors', 'level', 'handleSubmit', 'helperData'],
   emits: ['submit', 'inputChange'],
   components: {Form},
   data() {
@@ -80,11 +80,11 @@ export default defineComponent({
       <v-tabs-window-item v-for="tab in form.tabs" :value="tab.key">
         <Form :fields="tab.fields" :data="data" :darkMode="darkMode" @fieldError="setTabError" :saved="saved"
               :checkErrors="checkTabErrorsLocal" :tab="tab.key" :save="tab.save" :level="level" @do-submit="submit"
-              @input-change="inputChange"/>
+              @input-change="inputChange" :helperData="helperData" />
       </v-tabs-window-item>
     </v-tabs-window>
     <Form v-else :fields="form.fields" :save="form.save" :data="data" :level="level" :darkMode="darkMode" :saved="saved"
-          ref="oneForm" @do-submit="submit" @input-change="inputChange"/>
+          ref="oneForm" @do-submit="submit" @input-change="inputChange" :helperData="helperData" />
   </v-form>
 </template>
 

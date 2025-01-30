@@ -1,7 +1,7 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
 
-const modules = import.meta.glob('@/assets/icons/*.svg', {as: 'raw'});
+const modules = import.meta.glob('@/assets/icons/*.svg', {query: 'raw'});
 
 export default defineComponent({
   name: "Svg",

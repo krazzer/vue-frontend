@@ -317,8 +317,10 @@ class DataTableMock {
         });
 
         mocker.onPost("/api/datatable/edit").reply((request) => {
-            let instance = JSON.parse(request.data).params.instance;
-            return [200, {form: this.forms[instance], data: this.getEditData()}];
+            let instance   = JSON.parse(request.data).params.instance;
+            let helperData = {file: {thumb: '/cms/src/assets/images/example-image-1.jpg'}};
+
+            return [200, {form: this.forms[instance], data: this.getEditData(), helperData: helperData}];
         });
 
         mocker.onPost("/api/datatable/add").reply((request) => {
@@ -590,6 +592,7 @@ class DataTableMock {
             zip: '12345',
             age: '18-29',
             interests: ["1", "2"],
+            file: [11],
             address: 'Peterstreet 17',
         };
     }

@@ -32,6 +32,7 @@ export default defineComponent({
       filterValuesCompressed: <any>{},
       cloned: <number | null>null,
       data: <any>[],
+      helperData: <any>{},
       dialog: false,
       dialogEditId: <any>null,
       dragAndDropPages: DragAndDropPages,
@@ -149,18 +150,21 @@ export default defineComponent({
       }
 
       if (button.action == 'action') {
-        if(button.actionConfirm && !confirm(button.actionConfirm)) {
+        if (button.actionConfirm && !confirm(button.actionConfirm)) {
           return;
         }
 
-        this.$appUtil.doAction(button.actionRoute, {instance: this.instance, selected: this.selected}, (response: any) => {
+        this.$appUtil.doAction(button.actionRoute, {
+          instance: this.instance,
+          selected: this.selected
+        }, (response: any) => {
           let data = response.data;
 
-          if(data.message) {
+          if (data.message) {
             alert(data.message);
           }
 
-          if(data.open){
+          if (data.open) {
             window.open(data.open);
           }
         });
@@ -251,6 +255,7 @@ export default defineComponent({
         this.dialogEditId = id;
         this.form         = response.data.form;
         this.editData     = response.data.data;
+        this.helperData   = response.data.helperData;
       });
     },
 
@@ -515,8 +520,8 @@ export default defineComponent({
     </template>
   </div>
   <EditDialog :dialog="dialog" :dialogEditId="dialogEditId" :form="form ?? {}" @clickClose="dialog = false"
-              @clickSave="save" :data="editData" :darkMode="darkMode" :level="level" ref="editDialog"
-              :parent-saved="saved" @input-change="inputChange"/>
+              @clickSave="save" :data="editData" :helperData="helperData" :darkMode="darkMode" :level="level"
+              ref="editDialog" :parent-saved="saved" @input-change="inputChange"/>
 </template>
 
 <style lang="scss" scoped>
@@ -574,7 +579,7 @@ export default defineComponent({
         }
       }
 
-      .v-chip{
+      .v-chip {
         height: 36px;
         padding: 0 16px;
       }
