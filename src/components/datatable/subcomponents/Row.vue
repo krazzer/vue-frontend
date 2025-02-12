@@ -215,7 +215,7 @@ export default defineComponent({
      * @param i
      */
     async changeCheckbox(id: string, i: number) {
-      let key = this.getCellKey(i);
+      let key   = this.getCellKey(i);
       let value = this.data[i];
 
       this.data[i] = !value;
@@ -270,8 +270,9 @@ export default defineComponent({
     </td>
     <td class="button-column">
       <div class="buttons">
-          <span v-for="action in actions" @click="clickAction(row, action.key, $event)"><i
-              :class="'mdi ' + action.icon"></i></span>
+          <span v-for="action in actions" @click="clickAction(row, action.key, $event)"
+                @mousedown="actionMouseDown(row, action, $event)" :class="getActionClass(action)">
+            <i :class="'mdi ' + action.icon"></i></span>
         <span @click="$emit('edit', row.id, $event)"><i class="mdi mdi-square-edit-outline"></i>
           </span>
       </div>
