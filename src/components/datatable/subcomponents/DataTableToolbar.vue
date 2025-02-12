@@ -33,7 +33,7 @@ export default defineComponent({
 
 <template>
   <div class="toolbar">
-    <div class="toolbar__buttons" :class="isWrapped ? 'wrapped' : ''">
+    <div class="toolbar__buttons" ref="toolbarButtons" :class="isWrapped ? 'wrapped' : ''">
       <template v-for="button in buttons">
         <v-menu v-if="button.type == 'menu'">
           <template v-slot:activator="{ props }">
