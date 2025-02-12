@@ -29,7 +29,7 @@ class Wrapper {
 
         if (import.meta.env.DEV) {
             // initialize the mocker and make it available for console manipulation, e.g. to change the delay with
-            // mocker.mocker.delayResponse = 500
+            // mocker.mocker.delayResponse = 1000
             (window as any).mocker = new Mocker().mock();
         }
 

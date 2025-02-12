@@ -16,6 +16,7 @@ export default defineComponent({
       tab: null,
       saved: false,
       clickedSave: false,
+      clickedSaveAndClose: false,
       inputHasChanged: false,
       localDialog: false,
       confirmDialog: false,
@@ -36,7 +37,13 @@ export default defineComponent({
       }
     },
     async clickSave(close: boolean) {
-      this.clickedSave = true;
+      if(close){
+        this.clickedSave = false;
+        this.clickedSaveAndClose = true;
+      } else {
+        this.clickedSave = true;
+        this.clickedSaveAndClose = false;
+      }
 
       let isValid = await this.getForm().validate();
 
@@ -60,7 +67,6 @@ export default defineComponent({
 
     inputChange() {
       this.saved           = false;
-      this.clickedSave     = false;
       this.inputHasChanged = true;
       this.$emit('inputChange');
     },
@@ -136,13 +142,16 @@ export default defineComponent({
         <v-btn variant="tonal" @click="clickSave(false)">
           {{ saved ? $translator.tl('general.saved') : $translator.tl('general.save') }}
           <template v-slot:prepend>
-            <v-progress-circular v-if="$appUtil.isBusyLoading() && clickedSave" indeterminate size="20"
-                                 width="2"></v-progress-circular>
-            <v-icon v-else>{{ saved ? "mdi-check" : "mdi-content-save" }}</v-icon>
+            <v-progress-circular v-if="$appUtil.isBusyLoading() && clickedSave" indeterminate size="20" width="2" />
+            <v-icon v-else :color="saved ? 'green' : ''">{{ saved ? "mdi-check" : "mdi-content-save" }}</v-icon>
           </template>
         </v-btn>
         <v-btn variant="tonal" @click="clickSave(true)" prepend-icon="mdi-content-save">
           {{ $translator.tl('general.saveAndClose') }}
+          <template v-slot:prepend>
+            <v-progress-circular v-if="$appUtil.isBusyLoading() && clickedSaveAndClose" indeterminate size="20" width="2" />
+            <v-icon v-else>mdi-content-save</v-icon>
+          </template>
         </v-btn>
       </v-card-actions>
     </v-card>
