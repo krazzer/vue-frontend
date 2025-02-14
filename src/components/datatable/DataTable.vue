@@ -547,7 +547,7 @@ export default defineComponent({
     display: flex;
     justify-content: flex-end;
 
-    .pages {
+    .pagination {
       margin-top: 20px;
     }
   }
