@@ -18,6 +18,9 @@ export default defineConfig({
             "@": fileURLToPath(new URL("./src", import.meta.url)),
         },
     },
+    build: {
+        outDir: process.env.BUILD_OUTDIR || 'dist'
+    },
     base: '/cms/',
     // @ts-ignore
     test: {

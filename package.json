@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "vite --open --host kikcms2.test",
     "build": "vue-tsc --noEmit --skipLibCheck && vite build",
+    "buildToBackend": "vue-tsc --noEmit --skipLibCheck && BUILD_OUTDIR=../cms-backend/public_html/cms/ vite build",
     "preview": "vite preview --port 5050",
     "test": "npm run test:unit && npm run build && npm run test:e2e",
     "test:unit": "vitest --environment jsdom",
@@ -60,8 +61,8 @@
     "scss": "^0.2.4",
     "start-server-and-test": "^2.0.0",
     "typescript": "^5.7.2",
-    "vite": "^6.0.6",
-    "vitest": "^2.1.8",
+    "vite": "^6.0.9",
+    "vitest": "^3.0.5",
     "vue-tsc": "^2.1.10"
   }
 }

@@ -5,6 +5,7 @@ export class AppUtil {
     private state: { isLoading: boolean, preventSelect: boolean };
     private readonly loaderDelay: number = 350;
     private actionIndex: number = 0;
+    private dev: boolean = import.meta.env.DEV;
 
     constructor() {
         this.state = reactive({
@@ -58,6 +59,10 @@ export class AppUtil {
             }
 
             isLoading = false;
+        }
+
+        if(this.dev){
+            console.log('%cRequested: ' + '/api/' + url, 'color: #e2007a');
         }
 
         return axios
