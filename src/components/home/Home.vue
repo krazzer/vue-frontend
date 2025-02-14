@@ -127,7 +127,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div v-if="!isLoaded && $appUtil.isBusyLoading()" class="main-loader">
+  <div v-if="!isLoaded && $appUtil.isBusyLoading() && !fatalError" class="main-loader">
     <Loader/>
   </div>
   <div v-if="fatalError" class="fatal-error">
