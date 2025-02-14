@@ -7,7 +7,7 @@ class HomeMock {
     appMocker: Mocker;
 
     mock(mocker: MockAdapter, appMocker: Mocker) {
-        this.appMocker    = appMocker;
+        this.appMocker = appMocker;
         this.mockHomeReply(mocker);
 
         let moduleRegExp = new RegExp('/api/module/*');
@@ -146,7 +146,11 @@ class HomeMock {
 
     mockHomeReply(mocker: MockAdapter) {
         mocker.onPost("/api/home").reply(() => {
-            return [200, this.getDefaultHomeResponse(loginMock.loggedIn)];
+            const urlParams = new URLSearchParams(window.location.search);
+
+            const error = urlParams.get('error');
+
+            return [error || 200, this.getDefaultHomeResponse(loginMock.loggedIn)];
         });
     }
 

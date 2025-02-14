@@ -46,7 +46,9 @@ export default defineComponent({
       component: '',
       mobileMenuOpen: false,
       role: '',
+      fatalError: '',
       customComponent: null,
+      isLoaded: false,
     }
   },
 
@@ -92,6 +94,11 @@ export default defineComponent({
           }
 
           this.setContentByResponseData(response.data);
+          this.isLoaded = true;
+        }
+      }, {
+        onError: (error: any) => {
+          this.fatalError = error.message;
         }
       });
     },
@@ -120,7 +127,13 @@ export default defineComponent({
 </script>
 
 <template>
-  <div id="cms" :class="{ open: mobileMenuOpen, noselect: $appUtil.isPreventSelect() }">
+  <div v-if="!isLoaded && $appUtil.isBusyLoading()" class="main-loader">
+    <Loader/>
+  </div>
+  <div v-if="fatalError" class="fatal-error">
+    {{ fatalError }}
+  </div>
+  <div v-if="isLoaded" id="cms" :class="{ open: mobileMenuOpen, noselect: $appUtil.isPreventSelect() }">
     <div class="sidebar-close-button" @click="toggleMenu">
       <i data-v-be8dafae="" class="mdi mdi-close"></i>
     </div>
@@ -172,6 +185,17 @@ $sideBarWidthMobile: 200px;
       margin-left: 0;
     }
   }
+}
+
+.fatal-error, .main-loader{
+  padding: 40px 20px;
+  text-align: center;
+  color: var(--color-text-gray);
+  font-size: 20px;
+}
+
+.main-loader :deep(svg){
+  width: 30px;
 }
 
 .sidebar-close-button {

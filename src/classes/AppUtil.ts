@@ -41,7 +41,7 @@ export class AppUtil {
      * @param onSuccess
      * @param config
      */
-    async doAction(url: string, params: object, onSuccess: any = null, config: object = {}){
+    async doAction(url: string, params: object, onSuccess: any = null, config: object|any = {}){
         this.actionIndex++;
 
         let currentActionIndex = this.actionIndex;
@@ -73,7 +73,12 @@ export class AppUtil {
                 return successResponse;
             }).catch(error => {
                 handleLoader();
-                console.error(error);
+
+                if(config.onError){
+                    config.onError(error);
+                } else {
+                    console.error(error);
+                }
             }
         );
     }
