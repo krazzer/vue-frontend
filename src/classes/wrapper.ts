@@ -1,4 +1,4 @@
-import { createApp } from 'vue';
+import {createApp} from 'vue';
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import type {Component} from "vue";
@@ -15,6 +15,7 @@ import * as directives from 'vuetify/directives'
 import {Translator} from "@/classes/translator";
 import {DarkModeSetting} from "@/classes/DarkModeSetting";
 import {appUtil} from "@/classes/AppUtil";
+import Validator from "@/classes/validator";
 
 class Wrapper {
     getApp(Component: Component) {
@@ -24,6 +25,7 @@ class Wrapper {
 
         app.config.globalProperties.$assets     = 'src/assets/';
         app.config.globalProperties.$translator = new Translator;
+        app.config.globalProperties.$validator  = new Validator(app.config.globalProperties.$translator);
         app.config.globalProperties.$appUtil    = appUtil;
         app.config.globalProperties.$darkMode   = reactive(new DarkModeSetting);
 
@@ -33,7 +35,7 @@ class Wrapper {
             (window as any).mocker = new Mocker().mock();
         }
 
-        app.use(VueAxios, <any> axios);
+        app.use(VueAxios, <any>axios);
 
         customElements.define('kikcms-datatable', defineCustomElement(DataTable));
 

@@ -37,6 +37,9 @@ class AppMock {
                 'login.backToLogin': 'Back to login',
                 'login.resetLinkSendSuccess': 'If your e-mail address is registered, you will receive a password reset link shortly.',
                 'login.resetLinkSendError': 'Something went wrong sending the reset e-mail. Please try again later.',
+                'validation.email': 'Invalid e-mail address',
+                'validation.emailRequired': 'E-mail address is required',
+                'validation.inputRequired': 'This field is required',
             }];
         });
     }

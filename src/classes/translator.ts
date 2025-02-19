@@ -8,6 +8,10 @@ export class Translator {
     tl(name: string, replaces?: object) {
         let string = this.strings[name];
 
+        if( ! string){
+            return name;
+        }
+
         if( ! replaces){
             return string;
         }

@@ -1,6 +1,5 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
-import validator from "@/classes/validator";
 import Editor from "@tinymce/tinymce-vue";
 import {useTheme} from "vuetify";
 import FilePicker from "./subcomponents/FilePicker.vue";
@@ -18,7 +17,6 @@ export default defineComponent({
       formattedDates: <any>{},
       fieldRefs: <any>[],
       darkModeSelect: null,
-      validator: validator,
       theme: useTheme(),
       fieldComponents: <any>{
         text: 'v-text-field',
@@ -142,7 +140,7 @@ export default defineComponent({
         hint: field.hint,
         helperData: this.helperData?.[field.key] || {},
         validateOn: 'blur lazy',
-        rules: field.validator ? validator.get(field.validator.name, field.validator.parameters) : [],
+        rules: field.validator ? this.$validator.get(field.validator.name, field.validator.parameters) : [],
         hideDetails: 'auto',
       };
 

@@ -1,12 +1,18 @@
 import {ValidationParameters} from "./ValidationParameters";
 import {appUtil} from "@/classes/AppUtil";
+import type {Translator} from "@/classes/translator";
 
-class Validator {
+export default class Validator {
     readonly EMAIL      = 'email';
     readonly PRESENCE   = 'presence';
     readonly SERVERSIDE = 'server';
 
     public appUtil = appUtil;
+    public translator: Translator;
+
+    constructor(translator: Translator) {
+        this.translator = translator;
+    }
 
     /**
      * @param required
@@ -14,13 +20,13 @@ class Validator {
     getEmailRules(required: boolean = true): Array<any> {
         let rules = [
             (value: any) => {
-                return (/.+@.+\..+/.test(value)) ? true : 'E-mail must be valid.';
+                return (/.+@.+\..+/.test(value)) ? true : this.translator.tl('validation.email');
             },
         ]
 
         if (required) {
             let requiredRule: any = (value: any) => {
-                return value ? true : 'E-mail is required.'
+                return value ? true : this.translator.tl('validation.emailRequired')
             };
 
             rules.push(requiredRule);
@@ -41,7 +47,7 @@ class Validator {
             case this.PRESENCE:
                 return [
                     (value: any) => {
-                        return value ? true : 'Input is required.';
+                        return value ? true : this.translator.tl('validation.inputRequired');
                     },
                 ];
 
@@ -64,5 +70,3 @@ class Validator {
         });
     }
 }
-
-export default new Validator();
