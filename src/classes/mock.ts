@@ -27,6 +27,15 @@ class AppMock {
                 'media.delete': 'Delete',
                 'media.pickFile': 'Pick file',
                 'media.deleteConfirm': 'Are you sure you want to delete the selected files?',
+                'login.emailAddress': 'E-mail address',
+                'login.password': 'Password',
+                'login.remember': 'Remember me',
+                'login.passwordLost': 'Lost password?',
+                'login.wrongLogin': 'Wrong e-mail or password',
+                'login.sendResetLink': 'Send password reset link',
+                'login.backToLogin': 'Back to login',
+                'login.resetLinkSendSuccess': 'If your e-mail address is registered, you will receive a password reset link shortly.',
+                'login.resetLinkSendError': 'Something went wrong sending the reset e-mail. Please try again later.',
             }];
         });
     }

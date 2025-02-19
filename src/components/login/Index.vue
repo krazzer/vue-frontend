@@ -37,7 +37,7 @@ export default defineComponent({
         if (this.loginStatus.success) {
           this.$router.push({name: 'home'});
         } else {
-          this.errors.push('Wrong e-mail or password');
+          this.errors.push(this.$translator.tl('login.wrongLogin'));
         }
       });
     }
@@ -48,11 +48,11 @@ export default defineComponent({
 <template>
   <Base>
     <v-form autocomplete="off" @submit="login" @submit.prevent v-model="form">
-      <v-text-field prepend-inner-icon="mdi-email" v-model="email" label="E-mail adres" required id="email"
-                    name="email" data-testid="email" />
-      <v-text-field prepend-inner-icon="mdi-lock" v-model="password" type="password" label="Wachtwoord" required
-                    name="password" data-testid="password" />
-      <v-checkbox v-model="remember" label="Onthoud mij" />
+      <v-text-field prepend-inner-icon="mdi-email" v-model="email" :label="$translator.tl('login.emailAddress')"
+                    required id="email" name="email" data-testid="email" />
+      <v-text-field prepend-inner-icon="mdi-lock" v-model="password" type="password"
+                    :label="$translator.tl('login.password')" required name="password" data-testid="password" />
+      <v-checkbox v-model="remember" :label="$translator.tl('login.password')" />
       <v-btn type="submit" :disabled="!form || !password || !email" block>
         <template v-slot:prepend>
           <v-progress-circular v-if="$appUtil.isBusyLoading()" indeterminate size="20" width="2" />
@@ -61,7 +61,7 @@ export default defineComponent({
       </v-btn>
       <v-alert v-if="errors.length" type="error" :text="errors.join(', ')"></v-alert>
     </v-form>
-    <router-link :to="{ name: 'passwordLost' }">Wachtwoord vergeten?</router-link>
+    <router-link :to="{ name: 'passwordLost' }">{{ $translator.tl('login.passwordLost') }}</router-link>
   </Base>
 </template>
 

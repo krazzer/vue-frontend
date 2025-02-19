@@ -25,10 +25,10 @@ export default defineComponent({
 
       this.$appUtil.doAction('reset/send', {email: this.email}, (response: any) => {
         if (response.data.success) {
-          this.successMesssage = 'Send password reset link!';
+          this.successMesssage = this.$translator.tl('login.resetLinkSendSuccess');
           this.email = '';
         } else {
-          this.errorMesssage = 'Failed!';
+          this.errorMesssage = this.$translator.tl('login.resetLinkSendError');
         }
       });
     }
@@ -40,16 +40,17 @@ export default defineComponent({
 <template>
   <Base>
     <v-form v-model="form" @submit.prevent="sendPasswordResetLink">
-      <v-text-field prepend-inner-icon="mdi-email" label="E-mail adres" :model="email" :rules="emailRules" required/>
+      <v-text-field prepend-inner-icon="mdi-email" :label="$translator.tl('login.emailAddress')" :model="email"
+                    :rules="emailRules" required/>
       <v-btn type="submit" :disabled="!form" block>
         <template v-slot:prepend>
           <v-progress-circular v-if="$appUtil.isBusyLoading()" indeterminate size="20" width="2"/>
         </template>
-        Stuur wachtwoord reset link
+        {{ $translator.tl('login.sendResetLink') }}
       </v-btn>
       <v-alert v-if="successMesssage" type="success" :text="successMesssage"></v-alert>
       <v-alert v-if="errorMesssage" type="error" :text="errorMesssage"></v-alert>
     </v-form>
-    <router-link to="/login">Terug naar login</router-link>
+    <router-link to="/login">{{ $translator.tl('login.backToLogin') }}</router-link>
   </Base>
 </template>
