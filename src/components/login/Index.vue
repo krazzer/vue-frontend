@@ -53,7 +53,12 @@ export default defineComponent({
       <v-text-field prepend-inner-icon="mdi-lock" v-model="password" type="password" label="Wachtwoord" required
                     name="password" data-testid="password" />
       <v-checkbox v-model="remember" label="Onthoud mij" />
-      <v-btn type="submit" :disabled="!form" block>Inloggen</v-btn>
+      <v-btn type="submit" :disabled="!form || !password || !email" block>
+        <template v-slot:prepend>
+          <v-progress-circular v-if="$appUtil.isBusyLoading()" indeterminate size="20" width="2" />
+        </template>
+        Inloggen
+      </v-btn>
       <v-alert v-if="errors.length" type="error" :text="errors.join(', ')"></v-alert>
     </v-form>
     <router-link :to="{ name: 'passwordLost' }">Wachtwoord vergeten?</router-link>
@@ -65,10 +70,6 @@ export default defineComponent({
 .v-checkbox {
   margin-top: -20px;
   margin-bottom: -20px;
-}
-
-.v-alert {
-  margin-top: 10px;
 }
 
 </style>
