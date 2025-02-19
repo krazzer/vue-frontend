@@ -33,7 +33,7 @@ export default defineComponent({
 
       let params = {email: this.email, password: this.password, remember: this.remember};
 
-      await this.$appUtil.doAction('login', params, response => {
+      await this.$appUtil.doAction('login', params, (response: any) => {
         this.loginStatus = response.data;
 
         if (this.loginStatus.success) {

@@ -140,6 +140,13 @@ body, :host > .datatable{
     }
 }
 
+body.darkmode, .datatable.darkmode {
+    .v-field__input:-webkit-autofill {
+        -webkit-box-shadow: 0 0 0 100px #333326 inset;
+        -webkit-text-fill-color: white;
+    }
+}
+
 $spaceLogoMenu: 50px;
 $spaceExtraTab: 12px; // tab is 12px higher than button
 
