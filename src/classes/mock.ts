@@ -27,6 +27,7 @@ class AppMock {
                 'media.delete': 'Delete',
                 'media.pickFile': 'Pick file',
                 'media.deleteConfirm': 'Are you sure you want to delete the selected files?',
+                'login.login': 'Login',
                 'login.emailAddress': 'E-mail address',
                 'login.password': 'Password',
                 'login.remember': 'Remember me',

@@ -57,7 +57,7 @@ export default defineComponent({
         <template v-slot:prepend>
           <v-progress-circular v-if="$appUtil.isBusyLoading()" indeterminate size="20" width="2" />
         </template>
-        Inloggen
+        {{ $translator.tl('login.login') }}
       </v-btn>
       <v-alert v-if="errors.length" type="error" :text="errors.join(', ')"></v-alert>
     </v-form>
