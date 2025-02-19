@@ -18,6 +18,11 @@ import Logo from "@/components/icons/Logo.vue";
   margin-bottom: 10px;
 }
 
+:deep(.v-input__details){
+  padding-bottom: 4px;
+  padding-top: 0;
+}
+
 .login {
   background: url("@/assets/login-background.jpg") no-repeat center center fixed;
   background-size: cover;

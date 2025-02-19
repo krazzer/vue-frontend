@@ -1,7 +1,6 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
 import Base from "./Base.vue";
-import validator from "@/classes/validator";
 import InlineSvg from 'vue-inline-svg';
 import Svg from "@/components/svg/Svg.vue";
 
@@ -19,7 +18,6 @@ export default defineComponent({
       remember: false,
       form: null,
       errors: <Array<string>>[],
-      emailRules: validator.getEmailRules()
     }
   },
   methods: {
@@ -50,15 +48,11 @@ export default defineComponent({
 <template>
   <Base>
     <v-form autocomplete="off" @submit="login" @submit.prevent v-model="form">
-      <v-text-field
-          prepend-inner-icon="mdi-email" v-model="email" label="E-mail adres" :rules="emailRules" required
-          id="email" name="email" data-testid="email"
-      ></v-text-field>
-      <v-text-field
-          prepend-inner-icon="mdi-lock" v-model="password" type="password" label="Wachtwoord" required name="password"
-          data-testid="password"
-      ></v-text-field>
-      <v-checkbox v-model="remember" label="Onthoud mij"></v-checkbox>
+      <v-text-field prepend-inner-icon="mdi-email" v-model="email" label="E-mail adres" required id="email"
+                    name="email" data-testid="email" />
+      <v-text-field prepend-inner-icon="mdi-lock" v-model="password" type="password" label="Wachtwoord" required
+                    name="password" data-testid="password" />
+      <v-checkbox v-model="remember" label="Onthoud mij" />
       <v-btn type="submit" :disabled="!form" block>Inloggen</v-btn>
       <v-alert v-if="errors.length" type="error" :text="errors.join(', ')"></v-alert>
     </v-form>
