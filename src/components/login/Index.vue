@@ -56,7 +56,7 @@ export default defineComponent({
                     required id="email" name="email" data-testid="email"/>
       <v-text-field prepend-inner-icon="mdi-lock" v-model="password" type="password"
                     :label="$translator.tl('login.password')" required name="password" data-testid="password"/>
-      <v-checkbox v-model="remember" :label="$translator.tl('login.password')"/>
+      <v-checkbox v-model="remember" :label="$translator.tl('login.remember')"/>
       <v-btn type="submit" :disabled="!form || !password || !email" block>
         <template v-slot:prepend>
           <v-progress-circular v-if="$appUtil.isBusyLoading()" indeterminate size="20" width="2"/>
