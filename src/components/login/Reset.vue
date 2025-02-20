@@ -26,6 +26,7 @@ export default defineComponent({
         if (response.data.success) {
           this.successMesssage = this.$translator.tl('login.resetLinkSendSuccess');
           this.email = '';
+          (<any> this).$refs.email.resetValidation();
         } else {
           this.errorMesssage = this.$translator.tl('login.resetLinkSendError');
         }
