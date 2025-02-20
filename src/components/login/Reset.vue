@@ -29,6 +29,10 @@ export default defineComponent({
         } else {
           this.errorMesssage = this.$translator.tl('login.resetLinkSendError');
         }
+      }, {
+        onError: (error: any) => {
+          this.errorMesssage = error.message;
+        }
       });
     }
   }
@@ -39,7 +43,7 @@ export default defineComponent({
 <template>
   <Base>
     <v-form v-model="form" @submit.prevent="sendPasswordResetLink">
-      <v-text-field prepend-inner-icon="mdi-email" :label="$translator.tl('login.emailAddress')" :model="email"
+      <v-text-field prepend-inner-icon="mdi-email" :label="$translator.tl('login.emailAddress')" v-model="email"
                     :rules="emailRules" required/>
       <v-btn type="submit" :disabled="!form" block>
         <template v-slot:prepend>
