@@ -309,7 +309,7 @@ class DataTableMock {
 
     mock(mocker: MockAdapter) {
         mocker.onPost("/api/datatable").reply((request) => {
-            let params            = JSON.parse(request.data).params;
+            let params            = JSON.parse(request.data);
             let dataTableSettings = this.getDataForInstance(params.instance);
             let returnData        = {settings: dataTableSettings};
 
@@ -317,14 +317,14 @@ class DataTableMock {
         });
 
         mocker.onPost("/api/datatable/edit").reply((request) => {
-            let instance   = JSON.parse(request.data).params.instance;
+            let instance   = JSON.parse(request.data).instance;
             let helperData = {file: {thumb: '/cms/src/assets/images/example-image-1.jpg'}};
 
             return [200, {form: this.forms[instance], data: this.getEditData(), helperData: helperData}];
         });
 
         mocker.onPost("/api/datatable/add").reply((request) => {
-            let params   = JSON.parse(request.data).params;
+            let params   = JSON.parse(request.data);
             let instance = params.instance;
             let form     = this.forms[instance];
 
@@ -336,7 +336,7 @@ class DataTableMock {
         });
 
         mocker.onPost("/api/datatable/delete").reply((request) => {
-            let params = JSON.parse(request.data).params;
+            let params = JSON.parse(request.data);
             let data   = this.getDataForInstance(params.instance).data;
             let ids    = params.ids;
 
@@ -349,7 +349,7 @@ class DataTableMock {
         });
 
         mocker.onPost("/api/datatable/filter").reply((request) => {
-            let params        = JSON.parse(request.data).params;
+            let params        = JSON.parse(request.data);
             let search        = params.search;
             let sort          = params.sort;
             let sortDirection = params.sortDirection;
@@ -404,7 +404,7 @@ class DataTableMock {
         });
 
         mocker.onPost("/api/datatable/save").reply((request) => {
-            let params  = JSON.parse(request.data).params;
+            let params  = JSON.parse(request.data);
             let newData = params.data;
             let id      = params.id;
 
@@ -434,7 +434,7 @@ class DataTableMock {
 
         // will not calculate the actual rearrange, not worth coding for just a mock
         let rearrangeAction = (request: any) => {
-            let params   = JSON.parse(request.data).params;
+            let params   = JSON.parse(request.data);
             let editData = this.getDataForInstance(params.instance).data;
 
             let from = this.appUtil.getIndexById(editData, params.source);
@@ -449,7 +449,7 @@ class DataTableMock {
         mocker.onPost("/api/datatable/rearrange").reply(rearrangeAction);
 
         mocker.onPost("/api/datatable/validate").reply((request) => {
-            let params         = JSON.parse(request.data).params;
+            let params         = JSON.parse(request.data);
             let validated: any = 'Invalid';
 
             if (params.name === 'postalcode') {
@@ -468,7 +468,7 @@ class DataTableMock {
         });
 
         mocker.onPost("/api/custom-action").reply((request: any) => {
-            let params = JSON.parse(request.data).params;
+            let params = JSON.parse(request.data);
 
             return [200, {message: 'Custom action done for: ' + params.selected.join(','), open: "https://google.com"}];
         });

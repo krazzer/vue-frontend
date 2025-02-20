@@ -15,7 +15,7 @@ class LoginMock
 
     mock(mocker: MockAdapter){
         mocker.onPost("/api/login").reply((request) => {
-            let params = JSON.parse(request.data).params;
+            let params = JSON.parse(request.data);
 
             if (params.password === 'networkerror') {
                 return axios.get("mock-network-error");

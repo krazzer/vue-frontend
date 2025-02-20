@@ -66,7 +66,7 @@ export class AppUtil {
         }
 
         return axios
-            .post('/api/' + url, {params: params}, config)
+            .post('/api/' + url, params, config)
             .then((response: any) => {
                 let successResponse = onSuccess ? onSuccess(response) : null;
                 handleLoader();

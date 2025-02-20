@@ -68,7 +68,7 @@ class MediaMock {
         });
 
         mocker.onPost("/api/media/newfolder").reply((request) => {
-            let params     = JSON.parse(request.data).params;
+            let params     = JSON.parse(request.data);
             let name       = params.name;
             let folderId   = params.folder;
             let mediaFiles = this.getFilesById(folderId);
@@ -80,7 +80,7 @@ class MediaMock {
         });
 
         mocker.onPost("/api/media/changefilename").reply((request) => {
-            let params     = JSON.parse(request.data).params;
+            let params     = JSON.parse(request.data);
             let id         = params.id;
             let name       = params.name;
             let folderId   = params.folder;
@@ -96,7 +96,7 @@ class MediaMock {
         });
 
         mocker.onPost("/api/media/open").reply((request) => {
-            let params = JSON.parse(request.data).params;
+            let params = JSON.parse(request.data);
             let id     = params.id;
 
             let mediaFiles = this.getFilesById(id);
@@ -106,7 +106,7 @@ class MediaMock {
         });
 
         mocker.onPost("/api/media/paste").reply((request) => {
-            let params     = JSON.parse(request.data).params;
+            let params     = JSON.parse(request.data);
             let ids        = params.ids;
             let folderId   = params.folder;
             let mediaFiles = this.getFilesById(folderId);
@@ -120,7 +120,7 @@ class MediaMock {
         });
 
         mocker.onPost("/api/media/delete").reply((request) => {
-            let params     = JSON.parse(request.data).params;
+            let params     = JSON.parse(request.data);
             let ids        = params.ids;
             let folderId   = params.folder;
             let mediaFiles = this.getFilesById(folderId);
@@ -138,7 +138,7 @@ class MediaMock {
         });
 
         mocker.onPost("/api/media/key").reply((request) => {
-            let params   = JSON.parse(request.data).params;
+            let params   = JSON.parse(request.data);
             let folderId = params.folder;
             let id       = params.id;
             let name     = params.name;
@@ -158,7 +158,7 @@ class MediaMock {
         });
 
         mocker.onPost("/api/media/search").reply((request) => {
-            let params     = JSON.parse(request.data).params;
+            let params     = JSON.parse(request.data);
             let search     = params.search;
             let mediaFiles = [{id: 1, name: search, isDir: true}];
 
