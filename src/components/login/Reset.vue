@@ -45,7 +45,7 @@ export default defineComponent({
   <Base>
     <v-form v-model="form" @submit.prevent="sendPasswordResetLink">
       <v-text-field prepend-inner-icon="mdi-email" :label="$translator.tl('login.emailAddress')" v-model="email"
-                    :rules="emailRules" required/>
+                    :rules="emailRules" required ref="email"/>
       <v-btn type="submit" :disabled="!form" block>
         <template v-slot:prepend>
           <v-progress-circular v-if="$appUtil.isBusyLoading()" indeterminate size="20" width="2"/>
