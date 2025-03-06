@@ -15,7 +15,11 @@ import Logo from "@/components/icons/Logo.vue";
 <style lang="scss" scoped>
 
 :deep(.v-alert) {
-  margin-top: 10px;
+  margin-top: 20px;
+
+  &:first-child{
+    margin-top: 0;
+  }
 }
 
 :deep(.v-form) {
