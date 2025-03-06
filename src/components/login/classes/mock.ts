@@ -46,6 +46,9 @@ class LoginMock
                 return [200, {message: 'invalid password'}];
             }
 
+            this.loggedIn = true;
+            localStorage.loggedIn = JSON.stringify(true);
+
             return [200, {success: true}];
         });
 

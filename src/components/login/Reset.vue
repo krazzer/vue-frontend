@@ -12,24 +12,31 @@ export default defineComponent({
       passwordRepeat: '',
     }
   },
+  watch: {
+    password() {
+      this.$nextTick(() => {
+        (<any> this).$refs.passwordRepeat.validate();
+      });
+    },
+  },
   methods: {
     sendPasswordResetLink() {
       if (!this.form) {
         return;
       }
 
-      this.errorMesssage   = null;
+      this.errorMesssage = null;
 
       let params = {
         password: this.password,
-        id: this.$route.params.id,
-        key: this.$route.params.key,
-        token: this.$route.params.token,
+        userId: parseInt(<string>this.$route.params.id),
+        id: this.$route.params.key,
+        key: this.$route.params.token,
       };
 
       this.$appUtil.doAction('reset/setpassword', params, (response: any) => {
         if (response.data.success) {
-          this.$router.push({name: 'login'});
+          this.$router.push({name: 'home'});
         } else {
           this.errorMesssage = response.data.message;
         }
@@ -40,7 +47,7 @@ export default defineComponent({
       });
     },
 
-    passwordsMatch(value: string){
+    passwordsMatch(value: string) {
       return value === this.password || this.$translator.tl('login.passwordMismatch');
     }
   }
@@ -54,9 +61,10 @@ export default defineComponent({
       {{ $translator.tl('login.enterNewPassword') }}
     </v-alert>
     <v-form v-model="form" @submit.prevent="sendPasswordResetLink">
-      <v-text-field :label="$translator.tl('login.password')" v-model="password" :rules="[(v) => !!v]" required type="password"/>
-      <v-text-field :label="$translator.tl('login.repeatPassword')" v-model="passwordRepeat" :rules="[(v) => !!v, passwordsMatch]"
-                    required type="password"/>
+      <v-text-field :label="$translator.tl('login.password')" v-model="password" :rules="[(v) => !!v]" required
+                    type="password"/>
+      <v-text-field :label="$translator.tl('login.repeatPassword')" v-model="passwordRepeat" required type="password"
+                    :rules="[(v) => !!v, passwordsMatch]" ref="passwordRepeat"/>
       <v-btn type="submit" :disabled="!form" block>
         <template v-slot:prepend>
           <v-progress-circular v-if="$appUtil.isBusyLoading()" indeterminate size="20" width="2"/>
