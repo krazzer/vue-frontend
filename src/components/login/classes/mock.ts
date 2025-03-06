@@ -39,6 +39,16 @@ class LoginMock
             return [200, {success: params.password === 'test' && params.email === 'test@test.com'}];
         });
 
+        mocker.onPost("/api/reset/setpassword").reply((request) => {
+            let params = JSON.parse(request.data);
+
+            if (params.password === 'error') {
+                return [200, {message: 'invalid password'}];
+            }
+
+            return [200, {success: true}];
+        });
+
         mocker.onPost("/api/reset/send").reply(() => {
             return [200, {success: true}];
         });

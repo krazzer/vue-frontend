@@ -6,11 +6,10 @@ export default defineComponent({
   components: {Base},
   data() {
     return {
-      emailRules: this.$validator.getEmailRules(),
       form: false,
-      successMesssage: <null|string> null,
-      errorMesssage: <null|string> null,
-      email: '',
+      errorMesssage: <null | string>null,
+      password: '',
+      passwordRepeat: '',
     }
   },
   methods: {
@@ -20,21 +19,29 @@ export default defineComponent({
       }
 
       this.errorMesssage   = null;
-      this.successMesssage = null;
 
-      this.$appUtil.doAction('reset/send', {email: this.email}, (response: any) => {
+      let params = {
+        password: this.password,
+        id: this.$route.params.id,
+        key: this.$route.params.key,
+        token: this.$route.params.token,
+      };
+
+      this.$appUtil.doAction('reset/setpassword', params, (response: any) => {
         if (response.data.success) {
-          this.successMesssage = this.$translator.tl('login.resetLinkSendSuccess');
-          this.email = '';
-          (<any> this).$refs.email.resetValidation();
+          this.$router.push({name: 'login'});
         } else {
-          this.errorMesssage = this.$translator.tl('login.resetLinkSendError');
+          this.errorMesssage = response.data.message;
         }
       }, {
         onError: (error: any) => {
           this.errorMesssage = error.message;
         }
       });
+    },
+
+    passwordsMatch(value: string){
+      return value === this.password || this.$translator.tl('login.passwordMismatch');
     }
   }
 });
@@ -43,18 +50,27 @@ export default defineComponent({
 
 <template>
   <Base>
+    <v-alert type="info" class="alert-top">
+      {{ $translator.tl('login.enterNewPassword') }}
+    </v-alert>
     <v-form v-model="form" @submit.prevent="sendPasswordResetLink">
-      <v-text-field prepend-inner-icon="mdi-email" :label="$translator.tl('login.emailAddress')" v-model="email"
-                    :rules="emailRules" required ref="email"/>
+      <v-text-field :label="$translator.tl('login.password')" v-model="password" :rules="[(v) => !!v]" required type="password"/>
+      <v-text-field :label="$translator.tl('login.repeatPassword')" v-model="passwordRepeat" :rules="[(v) => !!v, passwordsMatch]"
+                    required type="password"/>
       <v-btn type="submit" :disabled="!form" block>
         <template v-slot:prepend>
           <v-progress-circular v-if="$appUtil.isBusyLoading()" indeterminate size="20" width="2"/>
         </template>
-        {{ $translator.tl('login.sendResetLink') }}
+        {{ $translator.tl('login.resetPasswordButton') }}
       </v-btn>
-      <v-alert v-if="successMesssage" type="success" :text="successMesssage"></v-alert>
       <v-alert v-if="errorMesssage" type="error" :text="errorMesssage"></v-alert>
     </v-form>
     <router-link to="/login">{{ $translator.tl('login.backToLogin') }}</router-link>
   </Base>
 </template>
+
+<style lang="scss">
+.alert-top {
+  margin-bottom: 10px;
+}
+</style>

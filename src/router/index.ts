@@ -13,6 +13,10 @@ const router = VueRouter.createRouter({
     }, {
         path: "/login/password-lost",
         name: "passwordLost",
+        component: () => import("../components/login/Lost.vue"),
+    }, {
+        path: "/login/password-reset/:id/:key/:token",
+        name: "passwordReset",
         component: () => import("../components/login/Reset.vue"),
     }, {
         path: '/:module',
