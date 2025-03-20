@@ -46,7 +46,7 @@ class HomeMock {
         });
 
         mocker.onPost("/api/default-module").reply(() => {
-            let params = {html: '', selectedMenuItem: '', dataTable: pagesDataTable};
+            let params = {html: '', selectedMenuItem: 'pages', dataTable: pagesDataTable};
 
             return [200, params];
         });
@@ -183,8 +183,6 @@ class HomeMock {
                 content: {label: "Content", icon: 'view-grid'},
                 settings: {label: "Settings"},
             },
-            html: 'pages',
-            selectedMenuItem: 'pages',
             role: 'developer',
         }
     }

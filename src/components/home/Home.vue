@@ -86,14 +86,8 @@ export default defineComponent({
         if (!response.data.loggedIn) {
           this.$router.push({name: 'login'});
         } else {
-          this.menu = response.data.menu;
-          this.role = response.data.role;
-
-          if (!this.selectedMenuItem) {
-            this.selectedMenuItem = response.data.selectedMenuItem;
-          }
-
-          this.setContentByResponseData(response.data);
+          this.menu     = response.data.menu;
+          this.role     = response.data.role;
           this.isLoaded = true;
         }
       }, {
@@ -113,6 +107,10 @@ export default defineComponent({
       this.media           = data.media;
       this.component       = data.component;
       this.form            = data.form;
+
+      if (data.selectedMenuItem) {
+        this.selectedMenuItem = data.selectedMenuItem;
+      }
     },
 
     toggleMenu() {
