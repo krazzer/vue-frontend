@@ -187,17 +187,6 @@ $sideBarWidthMobile: 200px;
   }
 }
 
-.fatal-error, .main-loader{
-  padding: 40px 20px;
-  text-align: center;
-  color: var(--color-text-gray);
-  font-size: 20px;
-}
-
-.main-loader :deep(svg){
-  width: 30px;
-}
-
 .sidebar-close-button {
   position: fixed;
   left: calc($sideBarWidth - 25px);

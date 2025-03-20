@@ -1,17 +1,20 @@
 <script lang="ts">
 import { useTheme } from 'vuetify'
+import Loader from "@/components/icons/Loader.vue";
 
 export default {
-  components: {},
+  components: {Loader},
   data() {
     return {
       colorSchemeQueryList: <MediaQueryList> window.matchMedia('(prefers-color-scheme: dark)'),
       darkMode: true,
+      ready: false,
+      fatalError: '',
       theme: useTheme(),
     };
   },
-  mounted() {
-    this.$nextTick(() => {
+  async mounted() {
+    await this.$nextTick(() => {
       setTimeout(() => {
         document.body.classList.add('transition')
       });
@@ -21,8 +24,11 @@ export default {
       this.$darkMode.value = JSON.parse(localStorage.darkMode);
     }
 
-    this.loadTranslations();
     this.setMode(false);
+
+    await this.loadTranslations();
+
+    this.ready = true;
 
     this.colorSchemeQueryList.addEventListener('change', this.setColorScheme);
   },
@@ -47,6 +53,10 @@ export default {
     async loadTranslations() {
       await this.$appUtil.doAction('translations', {}, (response: any) => {
         this.$translator.setStrings(response.data);
+      }, {
+        onError: (error: any) => {
+          this.fatalError = error.message;
+        }
       });
     },
 
@@ -83,7 +93,13 @@ export default {
 </script>
 
 <template>
-  <RouterView v-slot="{ Component }">
+  <div v-if="!ready && $appUtil.isBusyLoading() && !fatalError" class="main-loader">
+    <Loader/>
+  </div>
+  <div v-if="fatalError" class="fatal-error">
+    {{ fatalError }}
+  </div>
+  <RouterView v-if="ready && !fatalError" v-slot="{ Component }">
     <component :is="Component" :darkMode="darkMode"/>
   </RouterView>
 </template>

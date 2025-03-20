@@ -147,6 +147,21 @@ body.darkmode, .datatable.darkmode {
     }
 }
 
+.fatal-error, .main-loader{
+    padding: 40px 20px;
+    text-align: center;
+    color: var(--color-text-gray);
+    font-size: 20px;
+}
+
+.main-loader :deep(svg){
+    width: 30px;
+}
+
+.main-loader svg{
+    width: 30px;
+}
+
 $spaceLogoMenu: 50px;
 $spaceExtraTab: 12px; // tab is 12px higher than button
 
