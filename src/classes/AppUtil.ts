@@ -78,6 +78,7 @@ export class AppUtil {
                     config.onError(error);
                 } else {
                     console.error(error);
+                    alert(error);
                 }
             }
         );
