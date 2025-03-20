@@ -47,7 +47,7 @@ export default defineComponent({
     </li>
     <li v-if="Object.keys(menu).length">
       <a href="javascript:void(0)" @click="logout">
-        <Svg svg="logout" /> Uitloggen
+        <Svg svg="logout" /> {{ $translator.tl('general.logout') }}
       </a>
     </li>
   </ul>
