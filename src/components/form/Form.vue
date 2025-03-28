@@ -70,6 +70,13 @@ export default defineComponent({
       }
     }
   },
+  beforeMount() {
+    if (typeof this.fields === 'object') {
+      for (let key in this.fields){
+        this.fields[key].key = key;
+      }
+    }
+  },
   mounted() {
     if (this.hasDarkModeField()) {
       this.data.darkmode = this.$darkMode.value;
@@ -126,7 +133,7 @@ export default defineComponent({
 
       let returnValue = false;
 
-      this.fields.forEach((field: any) => {
+      Object.values(this.fields).forEach((field: any) => {
         if (field.special === 'darkModeSelect') {
           returnValue = true;
         }

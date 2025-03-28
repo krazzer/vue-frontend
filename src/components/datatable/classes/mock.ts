@@ -186,37 +186,32 @@ class DataTableMock {
     };
 
     public contentForm = {
-        fields: [
-            {
-                key: 'name',
+        fields: {
+            name: {
                 type: 'text',
                 label: 'Name',
                 validator: {name: 'presence', parameters: {}}
             },
-            {
-                key: 'date',
+            date: {
                 type: 'date',
                 label: 'Date',
             },
-            {
-                key: 'content',
+            content: {
                 type: 'richtext',
                 label: 'Content',
                 validator: {name: 'presence', parameters: {}}
             },
-            {
-                key: 'file',
+            file: {
                 type: 'filepicker',
                 label: 'File',
                 validator: {name: 'presence', parameters: {}}
             },
-            {
-                key: 'label',
+            label: {
                 type: 'label',
                 label: 'Label',
                 content: "Just some <u>HTML</u> content",
             },
-        ],
+        },
     };
 
     public linkForm = {
@@ -583,6 +578,7 @@ class DataTableMock {
     getEditData(): any {
         return {
             title: 'Page title',
+            name: 'Some name',
             content: '<p>Some content</p><p>Second paragraph</p>',
             firstname: 'Peter',
             lastname: 'Peterson',
