@@ -80,60 +80,51 @@ class DataTableMock {
     };
 
     public defaultForm = {
-        fields: [
-            {
-                key: 'group1',
+        fields: {
+            group1: {
                 type: 'group',
                 size: {md: 6},
-                fields: [
-                    {
-                        key: 'firstname',
+                fields: {
+                    firstname: {
                         type: 'text',
                         label: 'Legal first name',
                         size: {sm: 6, md: 4},
                         hint: 'example of helper text only on focus',
                         validator: {name: 'presence', parameters: {}}
                     },
-                    {
-                        key: 'middlename',
+                    middlename: {
                         type: 'text',
                         label: 'Legal middle name',
                         size: {sm: 6, md: 4},
                         hint: 'example of helper text only on focus 2'
                     },
-                    {
-                        key: 'lastname',
+                    lastname: {
                         type: 'text',
                         label: 'Legal last name',
                         size: {sm: 6, md: 4},
                         hint: 'example of helper text only on focus 3'
                     },
-                    {
-                        key: 'email',
+                    email: {
                         type: 'text',
                         label: 'E-mail address',
                         validator: {name: 'email', parameters: {required: true}}
                     },
-                    {
-                        key: 'password',
+                    password: {
                         type: 'text',
                         label: 'Password',
                     },
-                ]
+                }
             },
-            {
-                key: 'group2',
+            group2: {
                 type: 'group',
                 size: {md: 6},
-                fields: [
-                    {
-                        key: 'zip',
+                fields: {
+                    zip: {
                         type: 'text',
                         label: 'Zip code',
                         validator: {name: 'server', parameters: {name: 'postalcode'}}
                     },
-                    {
-                        key: 'age',
+                    age: {
                         type: 'select',
                         label: 'Age',
                         items: [
@@ -144,8 +135,7 @@ class DataTableMock {
                         ],
                         size: {sm: 6},
                     },
-                    {
-                        key: 'interests',
+                    interests: {
                         type: 'autocomplete',
                         multiple: true,
                         label: 'Interests',
@@ -162,27 +152,25 @@ class DataTableMock {
                         ],
                         size: {sm: 6},
                     },
-                ],
+                },
             },
-            {
-                key: 'hobbies',
+            hobbies: {
                 type: 'datatable',
                 label: 'Hobbies',
                 instance: 'hobbies',
                 settings: this.subDataTableData,
             },
-        ],
+        },
     };
 
     public subDataTableForm = {
-        fields: [
-            {
-                key: 'name',
+        fields: {
+            name: {
                 type: 'text',
                 label: 'Name of hobby',
                 validator: {name: 'presence', parameters: {}}
             },
-        ],
+        },
     };
 
     public contentForm = {
@@ -215,14 +203,13 @@ class DataTableMock {
     };
 
     public linkForm = {
-        fields: [
-            {
-                key: 'name',
+        fields: {
+            name: {
                 type: 'text',
                 label: 'Link name',
                 validator: {name: 'presence', parameters: {}}
             },
-        ],
+        },
     }
 
     public pagesForm = {
@@ -230,67 +217,58 @@ class DataTableMock {
             {
                 key: 'page',
                 name: 'Page',
-                fields: [
-                    {
-                        key: 'title',
+                fields: {
+                    title: {
                         type: 'text',
                         label: 'Title',
                         validator: {name: 'presence', parameters: {}}
                     },
-                    {
-                        key: 'content',
+                    content: {
                         type: 'textarea',
                         label: 'Content',
                         validator: {name: 'presence', parameters: {}}
                     },
-                ],
+                },
             },
             {
                 key: 'seo',
                 name: 'SEO',
-                fields: [
-                    {
-                        key: 'seo_title',
+                fields: {
+                    seo_title: {
                         type: 'text',
                         label: 'SEO title',
                     },
-                    {
-                        key: 'seo_keywords',
+                    seo_keywords: {
                         type: 'textarea',
                         label: 'SEO keywords',
                     },
-                    {
-                        key: 'seo_description',
+                    seo_description: {
                         type: 'textarea',
                         label: 'SEO description',
                     },
-                ]
+                }
             },
             {
                 key: 'advanced',
                 name: 'Advanced',
-                fields: [
-                    {
-                        key: 'template',
+                fields: {
+                    template: {
                         type: 'select',
                         label: 'Template',
                     },
-                    {
-                        key: 'slug',
+                    slug: {
                         type: 'text',
                         label: 'Slug',
                     },
-                    {
-                        key: 'key',
+                    key: {
                         type: 'text',
                         label: 'Key',
                     },
-                    {
-                        key: 'active',
+                    active: {
                         type: 'checkbox',
                         label: 'Active',
                     },
-                ]
+                }
             },
         ],
     };
