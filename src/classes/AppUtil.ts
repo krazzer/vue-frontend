@@ -5,7 +5,7 @@ export class AppUtil {
     private state: { isLoading: boolean, preventSelect: boolean };
     private readonly loaderDelay: number = 350;
     private actionIndex: number = 0;
-    private dev: boolean = import.meta.env.DEV;
+    private dev: boolean = import.meta.env ? import.meta.env.DEV : false;
 
     constructor() {
         this.state = reactive({

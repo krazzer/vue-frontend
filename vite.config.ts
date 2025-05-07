@@ -24,7 +24,7 @@ export default defineConfig({
     build: {
         outDir: process.env.BUILD_OUTDIR || 'dist'
     },
-    base: '/cms/',
+    base: '/cms',
     // @ts-ignore
     test: {
         environment: 'jsdom',
