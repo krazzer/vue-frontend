@@ -47,7 +47,7 @@ export default defineConfig({
         },
         hmr: {
             protocol: 'wss',
-            host: 'localhost'
+            host: 'kikcms.test'
         }
     },
 });
