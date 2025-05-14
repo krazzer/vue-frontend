@@ -17,14 +17,14 @@ export class AppUtil {
     /**
      * @return boolean
      */
-    isBusyLoading(): boolean{
+    isBusyLoading(): boolean {
         return this.state.isLoading;
     }
 
     /**
      * @return boolean
      */
-    isPreventSelect(): boolean{
+    isPreventSelect(): boolean {
         return this.state.preventSelect;
     }
 
@@ -41,47 +41,52 @@ export class AppUtil {
      * @param onSuccess
      * @param config
      */
-    async doAction(url: string, params: object, onSuccess: any = null, config: object|any = {}){
+    async doAction(url: string, params: object, onSuccess: any = null, config: object | any = {}) {
         this.actionIndex++;
 
         let currentActionIndex = this.actionIndex;
-        let isLoading = true;
+        let isLoading          = true;
 
         setTimeout(() => {
-            if(isLoading) {
+            if (isLoading) {
                 this.state.isLoading = true;
             }
         }, this.loaderDelay);
 
         let handleLoader = () => {
-            if(currentActionIndex == this.actionIndex){
+            if (currentActionIndex == this.actionIndex) {
                 this.state.isLoading = false;
             }
 
             isLoading = false;
         }
 
-        if(this.dev){
+        if (this.dev) {
             console.log('%cRequested: ' + '/api/' + url, 'color: #e2007a');
+        }
+
+        let onError = (error: string) => {
+            handleLoader();
+
+            if (config.onError) {
+                config.onError(error);
+            } else {
+                console.error(error);
+                alert(error);
+            }
         }
 
         return axios
             .post('/api/' + url, params, config)
             .then((response: any) => {
-                let successResponse = onSuccess ? onSuccess(response) : null;
-                handleLoader();
-                return successResponse;
-            }).catch(error => {
-                handleLoader();
-
-                if(config.onError){
-                    config.onError(error);
+                if(response.data.error){
+                    onError('Error: ' + response.data.error);
                 } else {
-                    console.error(error);
-                    alert(error);
+                    let successResponse = onSuccess ? onSuccess(response) : null;
+                    handleLoader();
+                    return successResponse;
                 }
-            }
-        );
+            }).catch(onError);
     }
 
     getIndexById(data: any, id: number | string): number {
@@ -96,7 +101,7 @@ export class AppUtil {
         return foundIndex;
     }
 
-    setPreventSelect(set: boolean){
+    setPreventSelect(set: boolean) {
         this.state.preventSelect = set;
     }
 }

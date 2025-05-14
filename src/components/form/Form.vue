@@ -165,7 +165,7 @@ export default defineComponent({
       }
 
       if (['select', 'autocomplete'].includes(field.type)) {
-        if (typeof toRaw(field.items) === "object") {
+        if (!(toRaw(field.items) instanceof Array)) {
           fieldProps.items = Object.entries(field.items).map(([key, value]) => ({key, value}));
         } else {
           fieldProps.items = field.items;
