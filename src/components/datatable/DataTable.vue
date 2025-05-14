@@ -241,7 +241,7 @@ export default defineComponent({
     async edit(id: number, event: MouseEvent) {
       event.stopPropagation();
 
-      await this.$appUtil.doAction('datatable/edit', {instance: this.instance}, (response: any) => {
+      await this.$appUtil.doAction('datatable/edit', {instance: this.instance, id: id}, (response: any) => {
         this.dialog       = true;
         this.dialogEditId = id;
         this.form         = response.data.form;

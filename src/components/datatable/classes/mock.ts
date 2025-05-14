@@ -127,12 +127,12 @@ class DataTableMock {
                     age: {
                         type: 'select',
                         label: 'Age',
-                        items: [
-                            {key: '0-17', value: '0-17'},
-                            {key: '18-29', value: '18-29'},
-                            {key: '30-54', value: '30-54'},
-                            {key: '54+', value: '54+'}
-                        ],
+                        items: {
+                            '0-17': '0-17',
+                            '18-29': '18-29',
+                            '30-54': '30-54',
+                            '54+': '54+',
+                        },
                         size: {sm: 6},
                     },
                     interests: {

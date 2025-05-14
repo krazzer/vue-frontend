@@ -1,5 +1,5 @@
 <script lang="ts">
-import {defineComponent} from 'vue'
+import {defineComponent, toRaw} from 'vue'
 import Editor from "@tinymce/tinymce-vue";
 import {useTheme} from "vuetify";
 import FilePicker from "./subcomponents/FilePicker.vue";
@@ -72,7 +72,7 @@ export default defineComponent({
   },
   beforeMount() {
     if (typeof this.fields === 'object') {
-      for (let key in this.fields){
+      for (let key in this.fields) {
         this.fields[key].key = key;
       }
     }
@@ -165,9 +165,14 @@ export default defineComponent({
       }
 
       if (['select', 'autocomplete'].includes(field.type)) {
+        if (typeof toRaw(field.items) === "object") {
+          fieldProps.items = Object.entries(field.items).map(([key, value]) => ({key, value}));
+        } else {
+          fieldProps.items = field.items;
+        }
+
         fieldProps.itemValue = "key";
         fieldProps.itemTitle = "value";
-        fieldProps.items     = field.items;
       }
 
       return fieldProps;
@@ -219,7 +224,7 @@ const DataTable = defineAsyncComponent(() => import('../datatable/DataTable.vue'
 </template>
 
 <style scoped lang="scss">
-.group{
+.group {
   border: 1px solid var(--color-background-shade3);
   border-radius: var(--border-radius);
   padding: 15px;
