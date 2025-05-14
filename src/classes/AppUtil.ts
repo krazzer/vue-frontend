@@ -65,14 +65,21 @@ export class AppUtil {
             console.log('%cRequested: ' + '/api/' + url, 'color: #e2007a');
         }
 
-        let onError = (error: string) => {
+        let onError = (error: string|any) => {
             handleLoader();
 
             if (config.onError) {
                 config.onError(error);
             } else {
-                console.error(error);
-                alert(error);
+                const errorMessage = error.response.data.error;
+
+                if(errorMessage){
+                    console.error(errorMessage);
+                    alert('Error: ' + errorMessage);
+                } else {
+                    console.error(error);
+                    alert(error);
+                }
             }
         }
 
