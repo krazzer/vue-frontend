@@ -26,6 +26,7 @@ export default {
   },
   mounted() {
     window.addEventListener("resize", this.onResize);
+    this.checkIfWrapped();
   },
   beforeUnmount() {
     window.removeEventListener("resize", this.onResize);
