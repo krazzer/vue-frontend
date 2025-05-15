@@ -71,7 +71,7 @@ export class AppUtil {
             if (config.onError) {
                 config.onError(error);
             } else {
-                const errorMessage = error.response.data.error;
+                const errorMessage = error?.response?.data?.error;
 
                 if(errorMessage){
                     console.error(errorMessage);
@@ -86,8 +86,10 @@ export class AppUtil {
         return axios
             .post('/api/' + url, params, config)
             .then((response: any) => {
-                if(response.data.error){
-                    onError('Error: ' + response.data.error);
+                const errorMessage = response?.data?.error;
+
+                if(errorMessage){
+                    onError('Error: ' + errorMessage);
                 } else {
                     let successResponse = onSuccess ? onSuccess(response) : null;
                     handleLoader();
