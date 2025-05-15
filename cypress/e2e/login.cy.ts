@@ -7,7 +7,7 @@ let notLoggedInInterception = () => {
     cy.intercept({method: 'POST', url: '/api/translations'}, mocker.appMock.getTranslations());
 }
 
-describe("My First Test", () => {
+describe("Login test", () => {
     it("Visits the app root url", () => {
         notLoggedInInterception();
 

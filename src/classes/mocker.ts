@@ -17,23 +17,26 @@ export class Mocker {
     public formMock;
 
     constructor(delay: number = 50) {
-        this.mocker = new MockAdapter(<any> axios, {delayResponse: delay});
+        this.mocker = new MockAdapter(<any>axios, {delayResponse: delay});
 
         this.dataTableMock = dataTableMock;
         this.loginMock     = loginMock;
         this.homeMock      = homeMock;
         this.appMock       = appMock;
         this.mediaMock     = mediaMock;
-        this.formMock     = formMock;
+        this.formMock      = formMock;
+
+        this.homeMock.appMocker  = this;
+        this.mediaMock.appMocker = this;
     }
 
     mock() {
         this.dataTableMock.mock(this.mocker);
         this.loginMock.mock(this.mocker);
-        this.homeMock.mock(this.mocker, this);
+        this.homeMock.mock(this.mocker);
         this.appMock.mock(this.mocker);
         this.formMock.mock(this.mocker);
-        this.mediaMock.mock(this.mocker, this);
+        this.mediaMock.mock(this.mocker);
 
         return this;
     }

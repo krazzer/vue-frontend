@@ -1,8 +1,11 @@
 import type MockAdapter from "axios-mock-adapter";
 import MockSorter from "./mockSorter";
 import {appUtil} from "@/classes/AppUtil";
+import {Mocker} from "@/classes/mocker";
 
 class DataTableMock {
+    appMocker: Mocker;
+
     public appUtil = appUtil;
 
     public filterItems = [
@@ -290,10 +293,9 @@ class DataTableMock {
         });
 
         mocker.onPost("/api/datatable/edit").reply((request) => {
-            let instance   = JSON.parse(request.data).instance;
-            let helperData = {file: {thumb: '/cms/src/assets/images/example-image-1.jpg'}};
+            let instance = JSON.parse(request.data).instance;
 
-            return [200, {form: this.forms[instance], data: this.getEditData(), helperData: helperData}];
+            return [200, this.getEditResponse(instance)];
         });
 
         mocker.onPost("/api/datatable/add").reply((request) => {
@@ -484,6 +486,16 @@ class DataTableMock {
 
     getDefaultData() {
         return this.defaultData;
+    }
+
+    getEditResponse(instance: string): any {
+        let helperData = {file: {thumb: '/cms/src/assets/images/example-image-1.jpg'}};
+
+        return {
+            form: this.forms[instance],
+            data: this.getEditData(),
+            helperData: helperData
+        };
     }
 
     getSubDataTableData() {

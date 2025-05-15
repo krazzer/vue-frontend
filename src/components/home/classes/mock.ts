@@ -6,47 +6,52 @@ import {Mocker} from "@/classes/mocker";
 class HomeMock {
     appMocker: Mocker;
 
-    mock(mocker: MockAdapter, appMocker: Mocker) {
-        this.appMocker = appMocker;
-        this.mockHomeReply(mocker);
+    getResponseByModule(module: string) {
+        let params = {html: module, selectedMenuItem: ''};
 
-        let moduleRegExp = new RegExp('/api/module/*');
+        if (module == 'error') {
+            return [400];
+        }
 
         let clientsDataTable = dataTableMock.getDefaultData();
         let pagesDataTable   = dataTableMock.getPagesData();
         let contentDataTable = dataTableMock.getContentData();
 
+        let paramsFor: any = {
+            'clients': {dataTable: clientsDataTable},
+            'pages': {dataTable: pagesDataTable},
+            'content': {dataTable: contentDataTable},
+            '': {dataTable: pagesDataTable},
+            'media': {media: {files: this.getMediaFiles()}},
+            'settings': {form: this.getSettingsForm()},
+            'invoices': {component: 'Invoices'},
+            'revenue': {component: 'Revenue'},
+            'users': {component: 'subfolder/Sub'},
+        };
+
+        Object.keys(paramsFor).forEach(key => {
+            if (module == key) {
+                params = paramsFor[key];
+            }
+        });
+
+        return params;
+    }
+
+    mock(mocker: MockAdapter) {
+        this.mockHomeReply(mocker);
+
+        let moduleRegExp = new RegExp('/api/module/*');
+
         mocker.onPost(moduleRegExp).reply((requestConfig) => {
             let module = this.getModuleName(requestConfig.url);
-            let params = {html: module, selectedMenuItem: ''};
-
-            if (module == 'error') {
-                return [400];
-            }
-
-            let paramsFor: any = {
-                'clients': {dataTable: clientsDataTable},
-                'pages': {dataTable: pagesDataTable},
-                'content': {dataTable: contentDataTable},
-                '': {dataTable: pagesDataTable},
-                'media': {media: {files: this.getMediaFiles()}},
-                'settings': {form: this.getSettingsForm()},
-                'invoices': {component: 'Invoices'},
-                'revenue': {component: 'Revenue'},
-                'users': {component: 'subfolder/Sub'},
-            };
-
-            Object.keys(paramsFor).forEach(key => {
-                if (module == key) {
-                    params = paramsFor[key];
-                }
-            });
+            let params = this.getResponseByModule(module);
 
             return [200, params];
         });
 
         mocker.onPost("/api/default-module").reply(() => {
-            let params = {html: '', selectedMenuItem: 'pages', dataTable: pagesDataTable};
+            let params = {html: '', selectedMenuItem: 'pages', dataTable: dataTableMock.getPagesData()};
 
             return [200, params];
         });
@@ -86,8 +91,8 @@ class HomeMock {
     /**
      * @param url
      */
-    getModuleName(url: any) {
-        return String(url).split('/').pop();
+    getModuleName(url: any): string {
+        return String(url).split('/').pop() + '';
     }
 
     /**

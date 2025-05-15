@@ -5,8 +5,7 @@ class MediaMock {
     appMocker: Mocker;
     subFolderIds: Array<number>;
 
-    mock(mocker: MockAdapter, appMocker: Mocker) {
-        this.appMocker    = appMocker;
+    mock(mocker: MockAdapter) {
         this.subFolderIds = [12, 13, 14, 15, 16, 17, 18, 19];
 
         /**
