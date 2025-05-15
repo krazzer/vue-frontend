@@ -1,6 +1,6 @@
 import {Mocker} from "@/classes/mocker";
 
-const mocker = new Mocker();
+const mocker = new Mocker(0);
 
 console.log(mocker.dataTableMock)
 
