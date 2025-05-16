@@ -104,9 +104,8 @@ class HomeMock {
                 {
                     key: 'general',
                     name: 'General',
-                    fields: [
-                        {
-                            key: 'darkmode',
+                    fields: {
+                        darkmode: {
                             type: 'select',
                             items: [
                                 {key: 'default', value: 'System'},
@@ -116,31 +115,29 @@ class HomeMock {
                             label: 'Darkmode',
                             special: 'darkModeSelect',
                         },
-                    ],
+                    },
                 },
                 {
                     key: 'advanced',
                     name: 'Advanced',
-                    fields: [
-                        {
-                            key: 'field',
+                    fields: {
+                        field: {
                             type: 'text',
                             label: 'Open field',
                         },
-                        {
+                        field2: {
                             key: 'field2',
                             type: 'text',
                             label: 'Another open field (required)',
                             validator: {name: 'presence', parameters: {}}
                         },
-                        {
-                            key: 'hobbies',
+                        hobbies: {
                             type: 'datatable',
                             label: 'Hobbies',
                             instance: 'hobbies',
                             settings: this.appMocker.dataTableMock.subDataTableData,
                         },
-                    ],
+                    },
                     save: true,
                 },
             ],
