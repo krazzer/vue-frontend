@@ -4,18 +4,31 @@ import vue from "@vitejs/plugin-vue";
 import vueJsx from "@vitejs/plugin-vue-jsx";
 import basicSsl from '@vitejs/plugin-basic-ssl'
 import vueDevTools from 'vite-plugin-vue-devtools'
+import istanbul from 'vite-plugin-istanbul';
 
 // https://vitejs.dev/config/
 // noinspection JSUnusedGlobalSymbols
 
 export default defineConfig({
-    plugins: [vue({
-        template: {
-            compilerOptions: {
-                isCustomElement: (tag) => tag.includes('kikcms-') || (process.env.VITEST ? tag.includes('v-') : false)
+    plugins: [
+        vue({
+            template: {
+                compilerOptions: {
+                    isCustomElement: (tag) => tag.includes('kikcms-') || (process.env.VITEST ? tag.includes('v-') : false)
+                }
             }
-        }
-    }), vueJsx(), basicSsl(), vueDevTools()],
+        }),
+        vueJsx(),
+        basicSsl(),
+        vueDevTools(),
+        istanbul({
+            include: 'src/**/*',
+            exclude: ['node_modules', 'test/', 'cypress/'],
+            extension: ['.js', '.ts', '.vue'],
+            requireEnv: false,
+            cypress: true,
+        })
+    ],
     resolve: {
         alias: {
             "@": fileURLToPath(new URL("./src", import.meta.url)),

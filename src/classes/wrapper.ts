@@ -17,6 +17,8 @@ import {DarkModeSetting} from "@/classes/DarkModeSetting";
 import {appUtil} from "@/classes/AppUtil";
 import Validator from "@/classes/validator";
 
+declare const window: any;
+
 class Wrapper {
     getApp(Component: Component) {
         const vuetify = createVuetify({ssr: true, components, directives});
@@ -29,7 +31,7 @@ class Wrapper {
         app.config.globalProperties.$appUtil    = appUtil;
         app.config.globalProperties.$darkMode   = reactive(new DarkModeSetting);
 
-        if (import.meta.env.DEV) {
+        if (import.meta.env.DEV && !window.Cypress) {
             // initialize the mocker and make it available for console manipulation, e.g. to change the delay with
             // mocker.mocker.delayResponse = 1000
             (window as any).mocker = new Mocker().mock();
