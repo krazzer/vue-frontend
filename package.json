@@ -22,6 +22,18 @@
     "build:datatable": "vue-tsc --noEmit && vite --config vite.datatable.config.ts build --emptyOutDir -- --target wc --name kikcms-datatable",
     "preview:datatable": "vite --config vite.datatable.config.ts preview --port 5051"
   },
+  "nyc": {
+    "exclude": [
+      "**/mock.ts",
+      "**/mockSorter.ts",
+      "**/mocker.ts",
+      "**/icons/*"
+    ],
+    "extension": [".ts", ".vue"],
+    "reporter": ["text", "html"],
+    "sourceMap": true,
+    "instrument": false
+  },
   "dependencies": {
     "@mdi/font": "^7.2.96",
     "@tinymce/tinymce-vue": "^6.1.0",
