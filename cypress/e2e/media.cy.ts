@@ -102,7 +102,7 @@ describe("Media test", () => {
         // Type in the search box (v-text-field with class "search")
         cy.get('.search input').type('Test Search');
 
-        // Wait for the debounce (300ms in the component)
+        // Wait for the debouncing (300 ms in the component)
         cy.wait(500);
 
         // Verify search results are displayed
@@ -145,7 +145,7 @@ describe("Media test", () => {
             }
         });
 
-        // Mock the confirm dialog to return true
+        // Mock the confirmation dialog to return true
         cy.window().then(win => {
             cy.stub(win, 'confirm').returns(true);
         });
@@ -222,11 +222,11 @@ describe("Media test", () => {
         cy.get('.media__file.selected').should('exist');
 
         // This test verifies that the renaming functionality exists and can be triggered
-        // We don't need to verify the actual rename since that's handled by the server
+        // We don't need to verify the actual rename since the server handles that
     });
 
     it("Edit file key (developer role)", () => {
-        // Mock the key API response with a specific file with key added
+        // Mock the key API response with a specific file with a key added
         cy.intercept({method: 'POST', url: '/api/media/key'}, (req) => {
             // Return a response with a specific set of files (one with key added)
             const mediaFiles = [
@@ -250,7 +250,7 @@ describe("Media test", () => {
             cy.stub(win, 'prompt').returns('test_key');
         });
 
-        // Mock the home API to set developer role
+        // Mock the home API to set a developer role
         cy.intercept({method: 'POST', url: '/api/home'}, {
             loggedIn: true,
             menu: mocker.homeMock.getDefaultHomeResponse(true).menu,
@@ -522,13 +522,13 @@ describe("Media test", () => {
         cy.get('.media__file.selected').should('not.exist');
 
         // Test shift key behavior
-        // Select a file again
+        // Selects a file again
         cy.contains('.media__file', 'File 1').find('.thumb').click();
 
         // Verify the file is selected
         cy.contains('.media__file', 'File 1').should('have.class', 'selected');
 
-        // Select another file with shift key (should select both)
+        // Select another file with the shift key (should select both)
         cy.contains('.media__file', 'File 2').find('.thumb').click({ shiftKey: true });
 
         // Verify both files are selected
