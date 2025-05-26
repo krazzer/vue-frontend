@@ -442,7 +442,7 @@ export default defineComponent({
           <thead>
           <tr>
             <th v-for="(name, key) in headers" @click="sort(key.toString())"
-                :class="mobileColumns.includes(key) ? 'mobile' : ''">
+                :class="mobileColumns && mobileColumns.includes(key) ? 'mobile' : ''">
               {{ name }}
               <i v-if="key.toString() == sortKey && sortDirection == ASCENDING" class="mdi mdi-sort-ascending"></i>
               <i v-if="key.toString() == sortKey && sortDirection == DESCENDING" class="mdi mdi-sort-descending"></i>
@@ -456,7 +456,7 @@ export default defineComponent({
                  :actions="actions" :selected="isSelected(row.id)" @toggle="toggle" :settings="settings"
                  @collapse="collapse" @edit="edit" :id="row.id" :level="row.level" :selectedIds="selected"
                  :max="row.max" :highlight="highlight" :index="index" :forceDefaultView="forceDefaultView"
-                 :mobile-columns="mobileColumns" @mouseDownOnRearrange="setMouseDownOnRearrange" :dragClone="row.clone"
+                 :mobile-columns="mobileColumns || []" @mouseDownOnRearrange="setMouseDownOnRearrange" :dragClone="row.clone"
                  :cloneRowVisible="cloneRowVisible" :instance="instance"/>
           </template>
           </tbody>

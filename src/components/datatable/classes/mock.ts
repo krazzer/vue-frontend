@@ -1,10 +1,14 @@
 import type MockAdapter from "axios-mock-adapter";
 import MockSorter from "./mockSorter";
 import {appUtil} from "@/classes/AppUtil";
-import {Mocker} from "@/classes/mocker";
+
+// Define an interface instead of importing Mocker to avoid circular dependency
+interface MockerInterface {
+    dataTableMock: any;
+}
 
 class DataTableMock {
-    appMocker: Mocker;
+    appMocker: MockerInterface;
 
     public appUtil = appUtil;
 

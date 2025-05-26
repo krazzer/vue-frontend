@@ -1,10 +1,14 @@
 import loginMock from "@/components/login/classes/mock";
 import dataTableMock from "@/components/datatable/classes/mock";
 import type MockAdapter from "axios-mock-adapter";
-import {Mocker} from "@/classes/mocker";
+
+// Define an interface instead of importing Mocker to avoid circular dependency
+interface MockerInterface {
+    dataTableMock: any;
+}
 
 class HomeMock {
-    appMocker: Mocker;
+    appMocker: MockerInterface;
 
     getResponseByModule(module: string) {
         let params = {html: module, selectedMenuItem: ''};

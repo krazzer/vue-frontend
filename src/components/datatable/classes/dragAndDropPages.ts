@@ -1,4 +1,8 @@
-import DataTable from "@/components/datatable/DataTable.vue";
+// Avoid circular dependency by not importing DataTable directly
+// Define an interface for the DataTable component
+interface DataTableInterface {
+    pageRearrange: (itemIdMouseDown: number | null, itemIdMouseOver: number | null, draggedOverPosition: number | null) => void;
+}
 
 class DragAndDropPages {
     readonly TOP: number    = 0;
@@ -18,9 +22,9 @@ class DragAndDropPages {
     itemStartX: number;
     itemStartY: number;
     itemLeft: number;
-    DataTable: typeof DataTable;
+    DataTable: DataTableInterface;
 
-    init(DataTable: any) {
+    init(DataTable: DataTableInterface) {
         this.handleMouseUp = () => {
             this.setMouseUp();
         };
@@ -62,7 +66,7 @@ class DragAndDropPages {
 
     unload() {
         window.removeEventListener('mouseup', this.handleMouseUp);
-        window.addEventListener('mousemove', this.handleMouseMove);
+        window.removeEventListener('mousemove', this.handleMouseMove);
     }
 
     /**
