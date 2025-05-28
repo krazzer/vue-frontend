@@ -200,6 +200,10 @@ export default defineComponent({
         classes.push('image');
       }
 
+      if (this.getCellType(index) == 'page') {
+        classes.push('page');
+      }
+
       return classes;
     },
 
