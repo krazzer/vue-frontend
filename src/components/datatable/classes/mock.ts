@@ -526,7 +526,7 @@ class DataTableMock {
             {id: '8', level: 2, data: ['Project C', 'project', 'project-C', true, 8]},
             {id: '9', level: 1, data: ['Contact', 'contact', 'contact', true, 3]},
             {id: '10', level: 0, data: ['Other pages', '', '', true, 10], type: 'menu', max: 1, children: true},
-            {id: '11', level: 1, data: ['Other page', 'default', 'other-page', false, 11]},
+            {id: '11', level: 1, data: ['Other page with a long name', 'default', 'other-page', false, 11]},
         ];
 
         return {

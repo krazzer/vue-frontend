@@ -374,7 +374,8 @@ td .buttons {
   display: none;
   position: absolute;
   right: 15px;
-  top: 5px;
+  top: 0;
+  height: 100%;
   white-space: nowrap;
   gap: 8px;
   align-items: center;
@@ -398,8 +399,15 @@ td .buttons {
 
 td .v-checkbox {
   position: absolute;
-  top: -8px;
+  top: 0;
   left: 3px;
+  display: flex;
+  justify-content: center;
+  height: 100%;
+
+  :deep(.v-selection-control){
+    min-height: auto;
+  }
 }
 
 td.button-column {
