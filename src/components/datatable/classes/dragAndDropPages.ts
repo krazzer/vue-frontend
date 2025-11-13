@@ -1,9 +1,3 @@
-// Avoid circular dependency by not importing DataTable directly
-// Define an interface for the DataTable component
-interface DataTableInterface {
-    pageRearrange: (itemIdMouseDown: number | null, itemIdMouseOver: number | null, draggedOverPosition: number | null) => void;
-}
-
 class DragAndDropPages {
     readonly TOP: number    = 0;
     readonly MIDDLE: number = 1;
@@ -22,9 +16,9 @@ class DragAndDropPages {
     itemStartX: number;
     itemStartY: number;
     itemLeft: number;
-    DataTable: DataTableInterface;
+    DataTable: any;
 
-    init(DataTable: DataTableInterface) {
+    init(DataTable: any) {
         this.handleMouseUp = () => {
             this.setMouseUp();
         };

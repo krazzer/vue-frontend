@@ -294,7 +294,7 @@ export default defineComponent({
      */
     async pageRearrange(itemIdMouseDown: string, itemIdMouseOver: string, location: number) {
       await this.$appUtil.doAction('datatable/page/rearrange', {
-        instance: this.instance, source: itemIdMouseDown, target: itemIdMouseOver, location: location
+        instance: this.instance, source: parseInt(itemIdMouseDown), target: parseInt(itemIdMouseOver), location: location
       }, (response: any) => {
         this.data = response.data;
       });
