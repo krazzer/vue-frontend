@@ -80,6 +80,10 @@ export class AppUtil {
                     console.error(error);
                     alert(error);
                 }
+
+                if (config.afterError) {
+                    config.afterError(error);
+                }
             }
         }
 

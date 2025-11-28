@@ -54,6 +54,7 @@ export default defineComponent({
       noselect: false,
       forceDefaultView: false,
       saved: false,
+      busyCollapsing: false,
     };
   },
   watch: {
@@ -298,7 +299,10 @@ export default defineComponent({
       }
 
       await this.$appUtil.doAction('datatable/page/rearrange', {
-        instance: this.instance, source: parseInt(itemIdMouseDown), target: parseInt(itemIdMouseOver), location: location
+        instance: this.instance,
+        source: parseInt(itemIdMouseDown),
+        target: parseInt(itemIdMouseOver),
+        location: location
       }, (response: any) => {
         this.data = response.data;
       });
@@ -310,8 +314,23 @@ export default defineComponent({
      * @param index
      */
     async collapse(id: string, collapsed: boolean, index: number) {
+      if (this.busyCollapsing) {
+        return;
+      }
+
       this.data[index].collapsed = collapsed;
-      await this.$appUtil.doAction('datatable/collapse', {instance: this.instance, id: id, collapsed: collapsed});
+
+      this.busyCollapsing = true;
+
+      await this.$appUtil.doAction('datatable/collapse', {
+        instance: this.instance, id: id, collapsed: collapsed
+      }, () => {
+        this.busyCollapsing = false;
+      }, {
+        afterError: () => {
+          this.busyCollapsing = false;
+        }
+      });
     },
 
     /**
@@ -439,8 +458,9 @@ export default defineComponent({
     </div>
     <template v-else>
       <DataTableToolbar :buttons="buttons" :filters="filters" :pages="pages" :languages="languages" :language="language"
-               :search="search" @buttonClick="buttonClick" @changeLanguage="changeLanguage" @searchAction="searchAction"
-               @setPage="setPage" :selected="selected" :filterValues="filterValues" :page="page"/>
+                        :search="search" @buttonClick="buttonClick" @changeLanguage="changeLanguage"
+                        @searchAction="searchAction"
+                        @setPage="setPage" :selected="selected" :filterValues="filterValues" :page="page"/>
       <div class="datatable__table">
         <table ref="table">
           <thead>
@@ -460,8 +480,9 @@ export default defineComponent({
                  :actions="actions" :selected="isSelected(row.id)" @toggle="toggle" :settings="settings"
                  @collapse="collapse" @edit="edit" :id="row.id" :level="row.level" :selectedIds="selected"
                  :max="row.max" :highlight="highlight" :index="index" :forceDefaultView="forceDefaultView"
-                 :mobile-columns="mobileColumns || []" @mouseDownOnRearrange="setMouseDownOnRearrange" :dragClone="row.clone"
-                 :cloneRowVisible="cloneRowVisible" :instance="instance"/>
+                 :mobile-columns="mobileColumns || []" @mouseDownOnRearrange="setMouseDownOnRearrange"
+                 :dragClone="row.clone" :busyCollapsing="busyCollapsing" :cloneRowVisible="cloneRowVisible"
+                 :instance="instance"/>
           </template>
           </tbody>
         </table>

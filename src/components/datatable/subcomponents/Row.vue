@@ -9,7 +9,8 @@ export default defineComponent({
   emits: ['collapse', 'edit', 'toggle'],
   name: "Row",
   props: ['row', 'dragAndDropPages', 'headers', 'settings', 'id', 'level', 'selected', 'selectedIds', 'max',
-    'highlight', 'actions', 'index', 'forceDefaultView', 'mobileColumns', 'dragClone', 'cloneRowVisible', 'instance'],
+    'highlight', 'actions', 'index', 'forceDefaultView', 'mobileColumns', 'dragClone', 'cloneRowVisible', 'instance',
+    'busyCollapsing'],
   mixins: [DragAndDropRow],
   data() {
     return {
@@ -76,6 +77,11 @@ export default defineComponent({
 
     arrowClick(event: MouseEvent) {
       event.stopPropagation();
+
+      if(this.busyCollapsing){
+        return;
+      }
+
       this.row.collapsed = !this.row.collapsed;
       this.$emit('collapse', this.row.id, this.row.collapsed, this.index);
     },
@@ -405,7 +411,7 @@ td .v-checkbox {
   justify-content: center;
   height: 100%;
 
-  :deep(.v-selection-control){
+  :deep(.v-selection-control) {
     min-height: auto;
   }
 }

@@ -77,7 +77,7 @@ export default defineComponent({
   </Base>
 </template>
 
-<style lang="scss">
+<style scoped lang="scss">
 .alert-top {
   margin-bottom: 20px;
 }

@@ -69,7 +69,7 @@ export default defineComponent({
   </Base>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 
 .v-checkbox {
   margin-top: -20px;
