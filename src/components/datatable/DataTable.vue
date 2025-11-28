@@ -12,6 +12,7 @@ export default defineComponent({
   name: "DataTable",
   components: {DataTableToolbar, ToolbarSearch, Svg, EditDialog, Row},
   mixins: [DragAndDropTable],
+  emits: ['noselect'],
   props: {
     darkMode: Boolean,
     settings: {
@@ -218,6 +219,9 @@ export default defineComponent({
 
       if (this.noselect || this.dragAndDropPages.itemIdMouseDown || this.mouseDownOnRearrange) {
         classes.push('noselect');
+        this.$appUtil.setPreventSelect(true);
+      } else {
+        this.$appUtil.setPreventSelect(false);
       }
 
       if (this.startedDragging) {
