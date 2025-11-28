@@ -15,6 +15,8 @@ class DragAndDropPages {
     itemY: number | null;
     itemStartX: number;
     itemStartY: number;
+    windowScrollStartX: number;
+    windowScrollStartY: number;
     itemLeft: number;
     DataTable: any;
 
@@ -78,6 +80,9 @@ class DragAndDropPages {
 
         this.itemStartX = event.clientX;
         this.itemStartY = event.clientY;
+
+        this.windowScrollStartX = window.scrollX;
+        this.windowScrollStartY = window.scrollY;
     }
 
     setMouseUp() {
@@ -95,15 +100,19 @@ class DragAndDropPages {
      * @param event
      */
     setMouseMove(event: MouseEvent) {
-        if (this.itemIdMouseDown != null) {
-            if (this.movedEnoughToStart) {
-                this.itemX = event.clientX - this.itemStartX + this.itemLeft;
-                this.itemY = event.clientY - this.itemStartY;
-            } else {
-                if (Math.abs(event.clientX - this.itemStartX) > this.pixelsRequiredForDrag ||
-                    Math.abs(event.clientY - this.itemStartY) > this.pixelsRequiredForDrag) {
-                    this.movedEnoughToStart = true;
-                }
+        if (this.itemIdMouseDown == null) {
+            return;
+        }
+
+        let itemX = event.clientX - this.itemStartX + window.scrollX - this.windowScrollStartX;
+        let itemY = event.clientY - this.itemStartY + window.scrollY - this.windowScrollStartY;
+
+        if (this.movedEnoughToStart) {
+            this.itemX = itemX + this.itemLeft;
+            this.itemY = itemY;
+        } else {
+            if (Math.abs(itemX) > this.pixelsRequiredForDrag || Math.abs(itemY) > this.pixelsRequiredForDrag) {
+                this.movedEnoughToStart = true;
             }
         }
     }
