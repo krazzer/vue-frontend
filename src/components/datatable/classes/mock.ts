@@ -327,7 +327,7 @@ class DataTableMock {
                 data.splice(index, 1);
             });
 
-            return [200, data];
+            return [200, {data: data}];
         });
 
         mocker.onPost("/api/datatable/filter").reply((request) => {
@@ -411,7 +411,7 @@ class DataTableMock {
 
             this.getDataForInstance(params.instance).data = editData;
 
-            return [200, editData];
+            return [200, {data: editData, id: id}];
         });
 
         // will not calculate the actual rearrange, not worth coding for just a mock
@@ -527,7 +527,7 @@ class DataTableMock {
             {id: '6', level: 2, data: ['Project A', 'project', 'project-A', true, 6]},
             {id: '7', level: 2, data: ['Project B', 'project', 'project-B', true, 7]},
             {id: '8', level: 2, data: ['Project C', 'project', 'project-C', true, 8]},
-            {id: '9', level: 1, data: ['Contact', 'contact', 'contact', true, 3]},
+            {id: '9', level: 1, data: ['Contact', 'contact', 'contact', true, 9]},
             {id: '10', level: 0, data: ['Other pages', '', '', true, 10], type: 'menu', max: 1, children: true},
             {id: '11', level: 1, data: ['Other page with a long name', 'default', 'other-page', false, 11]},
         ];

@@ -23,6 +23,9 @@
     --color-indigo: #2c3e50;
     --color-blue: #3875d7;
 
+    --color-green-light: #dff0d8;
+    --color-green-dark: #304129;
+
     --text-light-1: var(--color-indigo);
     --text-dark-1: var(--color-white);
 
@@ -49,6 +52,7 @@
     --color-line: var(--line-light-1);
     --color-text-in-main-bg: var(--color-white);
     --color-action: var(--color-blue);
+    --color-edited: var(--color-green-light);
 }
 
 /* change variables for dark mode */
@@ -63,6 +67,7 @@ body.darkmode, :host > .datatable.darkmode {
     --color-text-gray: var(--text-dark-2);
     --color-line: var(--line-dark-1);
     --color-text-in-main-bg: var(--color-white);
+    --color-edited: var(--color-green-dark);
 }
 
 /* override vendor variables */

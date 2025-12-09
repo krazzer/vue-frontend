@@ -10,7 +10,7 @@ export default defineComponent({
   name: "Row",
   props: ['row', 'dragAndDropPages', 'headers', 'settings', 'id', 'level', 'selected', 'selectedIds', 'max',
     'highlight', 'actions', 'index', 'forceDefaultView', 'mobileColumns', 'dragClone', 'cloneRowVisible', 'instance',
-    'busyCollapsing'],
+    'busyCollapsing', 'justEdited', 'justEditedFading'],
   mixins: [DragAndDropRow],
   data() {
     return {
@@ -78,7 +78,7 @@ export default defineComponent({
     arrowClick(event: MouseEvent) {
       event.stopPropagation();
 
-      if(this.busyCollapsing){
+      if (this.busyCollapsing) {
         return;
       }
 
@@ -172,6 +172,14 @@ export default defineComponent({
 
       if (this.mouseDownRearrange) {
         classes.push('mouseDownRearrange');
+      }
+
+      if (this.justEdited) {
+        classes.push('justEdited');
+      }
+
+      if (this.justEditedFading) {
+        classes.push('justEditedFading');
       }
 
       return classes;
@@ -338,6 +346,14 @@ tr.rearrange {
 :deep(.highlighted) {
   background-color: var(--color-action);
   color: var(--color-text-in-main-bg);
+}
+
+tr.justEditedFading td {
+  transition: background-color 1s;
+}
+
+tr.justEdited td {
+  background-color: var(--color-edited);
 }
 
 tr.selected td {

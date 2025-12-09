@@ -52,6 +52,8 @@ export default defineComponent({
       sortDirection: '',
       selected: <any>[],
       lastIndex: <number | null>null,
+      lastEditId: <number | null>null,
+      lastEditIdFading: <number | null>null,
       noselect: false,
       forceDefaultView: false,
       saved: false,
@@ -202,7 +204,7 @@ export default defineComponent({
         instance: this.instance,
         ids: this.selected
       }, (response: any) => {
-        this.data     = response.data;
+        this.data     = response.data.data;
         this.selected = [];
       });
     },
@@ -282,7 +284,22 @@ export default defineComponent({
         data: data,
         id: dialogEditId
       }, (response: any) => {
-        this.data = response.data;
+        this.data = response.data.data;
+
+        this.lastEditId = response.data.id;
+
+        setTimeout(() => {
+          if (this.lastEditId == response.data.id) {
+            this.lastEditIdFading = response.data.id;
+            this.lastEditId = null;
+
+            setTimeout(() => {
+              if (this.lastEditIdFading == response.data.id) {
+                this.lastEditIdFading = null;
+              }
+            }, 1000);
+          }
+        }, 3000);
 
         if (close) {
           this.dialog = false;
@@ -486,7 +503,8 @@ export default defineComponent({
                  :max="row.max" :highlight="highlight" :index="index" :forceDefaultView="forceDefaultView"
                  :mobile-columns="mobileColumns || []" @mouseDownOnRearrange="setMouseDownOnRearrange"
                  :dragClone="row.clone" :busyCollapsing="busyCollapsing" :cloneRowVisible="cloneRowVisible"
-                 :instance="instance"/>
+                 :instance="instance" :justEdited="lastEditId == row.id"
+                 :justEditedFading="lastEditIdFading == row.id"/>
           </template>
           </tbody>
         </table>
