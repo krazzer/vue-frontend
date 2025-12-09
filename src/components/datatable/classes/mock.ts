@@ -235,6 +235,9 @@ class DataTableMock {
                         label: 'Content',
                         validator: {name: 'presence', parameters: {}}
                     },
+                    type: {
+                        type: 'hidden',
+                    },
                 },
             },
             {

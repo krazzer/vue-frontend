@@ -29,6 +29,7 @@ export default defineComponent({
         checkbox: 'v-checkbox',
         datatable: 'DataTable',
         label: 'LabelField',
+        hidden: 'input',
       },
     };
   },
@@ -151,6 +152,10 @@ export default defineComponent({
         hideDetails: 'auto',
       };
 
+      if (field.type == 'hidden') {
+        fieldProps.type = 'hidden';
+      }
+
       if (field.type == 'richtext') {
         fieldProps.init   = this.initTinyMCE();
         fieldProps.apiKey = this.tinyMCEApiKey();
@@ -191,30 +196,35 @@ const DataTable = defineAsyncComponent(() => import('../datatable/DataTable.vue'
 
 <template>
   <v-row>
-    <v-col v-for="field in fields ?? {}" cols="12" :md="field.size ? field.size.md : 0"
-           :sm="field.size ? field.size.sm : 0">
-      <label v-if="showLabel(field)" class="v-label">{{ field.label }}</label>
-      <DataTable v-if="field.type == 'datatable'" :instance="field.instance" :settings="field.settings"
-                 :level="level + 1"/>
-      <div class="group" v-else-if="field.type == 'group'">
-        <Form :fields="field.fields" :data="data" :darkMode="darkMode" @fieldError="$emit('fieldError')" :saved="saved"
-              :checkErrors="checkErrors" :level="level" @do-submit="$emit('doSubmit')"
-              @input-change="$emit('inputChange')"/>
-      </div>
-      <LabelField v-else-if="field.type == 'label'" :field="field"/>
-      <template v-else-if="field.type == 'date'">
-        <v-menu v-model="datePickerActive[field.key]" :close-on-content-click="true" :nudge-right="40"
-                transition="scale-transition" offset-y min-width="auto">
-          <template v-slot:activator="{ props }">
-            <v-text-field v-model="formattedDates[field.key]" :label="field.label"
-                          v-bind="{ ...props, ...getFieldProperties(field) }"/>
-          </template>
-          <v-date-picker v-model="datePickerDate[field.key]" @input="datePickerActive[field.key] = false"/>
-        </v-menu>
+    <template v-for="field in fields ?? {}">
+      <v-col v-if="field.type != 'hidden'" cols="12" :md="field.size ? field.size.md : 0"
+             :sm="field.size ? field.size.sm : 0">
+        <label v-if="showLabel(field)" class="v-label">{{ field.label }}</label>
+        <DataTable v-if="field.type == 'datatable'" :instance="field.instance" :settings="field.settings"
+                   :level="level + 1"/>
+        <div class="group" v-else-if="field.type == 'group'">
+          <Form :fields="field.fields" :data="data" :darkMode="darkMode" @fieldError="$emit('fieldError')"
+                :saved="saved" :checkErrors="checkErrors" :level="level" @do-submit="$emit('doSubmit')"
+                @input-change="$emit('inputChange')"/>
+        </div>
+        <LabelField v-else-if="field.type == 'label'" :field="field"/>
+        <template v-else-if="field.type == 'date'">
+          <v-menu v-model="datePickerActive[field.key]" :close-on-content-click="true" :nudge-right="40"
+                  transition="scale-transition" offset-y min-width="auto">
+            <template v-slot:activator="{ props }">
+              <v-text-field v-model="formattedDates[field.key]" :label="field.label"
+                            v-bind="{ ...props, ...getFieldProperties(field) }"/>
+            </template>
+            <v-date-picker v-model="datePickerDate[field.key]" @input="datePickerActive[field.key] = false"/>
+          </v-menu>
+        </template>
+        <component v-else :is="fieldComponents[field.type]" v-bind="getFieldProperties(field)" v-model="data[field.key]"
+                   ref="fieldRefs"/>
+      </v-col>
+      <template v-else>
+        <input :value="data[field.key]" :name="field.key" type="hidden"/>
       </template>
-      <component v-else :is="fieldComponents[field.type]" v-bind="getFieldProperties(field)" v-model="data[field.key]"
-                 ref="fieldRefs"/>
-    </v-col>
+    </template>
     <v-col v-if="save">
       <v-btn variant="tonal" :prepend-icon="saved ? 'mdi-check' : 'mdi-content-save'" type="submit">
         {{ saved ? $translator.tl('general.saved') : $translator.tl('general.save') }}
