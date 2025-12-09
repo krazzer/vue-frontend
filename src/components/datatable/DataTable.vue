@@ -284,14 +284,13 @@ export default defineComponent({
         data: data,
         id: dialogEditId
       }, (response: any) => {
-        this.data = response.data.data;
-
+        this.data       = response.data.data;
         this.lastEditId = response.data.id;
 
         setTimeout(() => {
           if (this.lastEditId == response.data.id) {
             this.lastEditIdFading = response.data.id;
-            this.lastEditId = null;
+            this.lastEditId       = null;
 
             setTimeout(() => {
               if (this.lastEditIdFading == response.data.id) {
