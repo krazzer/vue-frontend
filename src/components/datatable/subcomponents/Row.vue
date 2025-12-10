@@ -21,6 +21,10 @@ export default defineComponent({
     };
   },
   watch: {
+    row: {
+      handler: 'handleRowChange',
+      deep: true
+    },
     mouseDownRearrange() {
       this.preventSelect = this.mouseDownRearrange;
     },
@@ -41,6 +45,10 @@ export default defineComponent({
       }
 
       return isPage;
+    },
+
+    handleRowChange() {
+      this.data = this.row.data;
     },
 
     /**

@@ -411,6 +411,8 @@ class DataTableMock {
 
             this.getDataForInstance(params.instance).data = editData;
 
+            editData[index].data[3] = false;
+
             return [200, {data: editData, id: id}];
         });
 
