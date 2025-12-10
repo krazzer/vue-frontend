@@ -4,12 +4,18 @@ import Editor from "@tinymce/tinymce-vue";
 import {useTheme} from "vuetify";
 import FilePicker from "./subcomponents/FilePicker.vue";
 import LabelField from "./subcomponents/LabelField.vue";
+import {VTextField, VSelect, VAutocomplete, VCheckbox, VTextarea} from 'vuetify/components'
+import type { Component } from 'vue';
+
+const components: Record<string, Component> = {
+  Editor, FilePicker, LabelField, VTextField, VSelect, VAutocomplete, VCheckbox, VTextarea
+};
 
 export default defineComponent({
   name: "Form",
   props: ['fields', 'data', 'darkMode', 'checkErrors', 'tab', 'level', 'save', 'saved', 'helperData'],
   emits: ['fieldError', 'doSubmit', 'inputChange'],
-  components: {Editor, FilePicker, LabelField},
+  components: components,
   data() {
     return {
       datePickerActive: <any>{},

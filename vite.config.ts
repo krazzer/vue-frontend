@@ -5,6 +5,8 @@ import vueJsx from "@vitejs/plugin-vue-jsx";
 import basicSsl from '@vitejs/plugin-basic-ssl'
 import vueDevTools from 'vite-plugin-vue-devtools'
 import istanbul from 'vite-plugin-istanbul';
+import {visualizer} from "rollup-plugin-visualizer";
+import vuetify from 'vite-plugin-vuetify';
 
 // https://vitejs.dev/config/
 // noinspection JSUnusedGlobalSymbols
@@ -27,7 +29,14 @@ export default defineConfig({
             extension: ['.js', '.ts', '.vue'],
             requireEnv: false,
             cypress: true,
-        })
+        }),
+        visualizer({
+            filename: 'dist/stats.html',
+            gzipSize: true,
+            brotliSize: true,
+            open: true,
+        }),
+        vuetify({autoImport: true}),
     ],
     resolve: {
         alias: {

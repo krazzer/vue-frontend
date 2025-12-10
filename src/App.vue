@@ -1,12 +1,12 @@
 <script lang="ts">
-import { useTheme } from 'vuetify'
+import {useTheme} from 'vuetify'
 import Loader from "@/components/icons/Loader.vue";
 
 export default {
   components: {Loader},
   data() {
     return {
-      colorSchemeQueryList: <MediaQueryList> window.matchMedia('(prefers-color-scheme: dark)'),
+      colorSchemeQueryList: <MediaQueryList>window.matchMedia('(prefers-color-scheme: dark)'),
       darkMode: true,
       ready: false,
       fatalError: '',
@@ -43,7 +43,7 @@ export default {
   },
   methods: {
     handleDarkModeChange() {
-      if(this.$darkMode.value === this.$darkMode.DEFAULT){
+      if (this.$darkMode.value === this.$darkMode.DEFAULT) {
         this.setColorScheme(this.colorSchemeQueryList)
       } else {
         this.darkMode = this.$darkMode.getDarkMode();
@@ -61,7 +61,7 @@ export default {
     },
 
     setColorScheme(e: Event | MediaQueryList) {
-      if(this.$darkMode.value != this.$darkMode.DEFAULT){
+      if (this.$darkMode.value != this.$darkMode.DEFAULT) {
         return;
       }
 
@@ -73,13 +73,12 @@ export default {
     /**
      * @param transition
      */
-    setMode(transition: boolean){
+    setMode(transition: boolean) {
       let body = document.body;
-      let globalTheme: any = this.theme.global;
 
-      globalTheme.name = this.darkMode ? 'dark' : 'light';
+      this.theme.change(this.darkMode ? 'dark' : 'light');
 
-      if(transition) {
+      if (transition) {
         body.classList.add('transitioning');
         body.addEventListener('transitionend', () => {
           body.classList.remove('transitioning');

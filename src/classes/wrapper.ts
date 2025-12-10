@@ -10,18 +10,18 @@ import '@mdi/font/css/materialdesignicons.css'
 // Vuetify
 import 'vuetify/styles'
 import {createVuetify} from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
 import {Translator} from "@/classes/translator";
 import {DarkModeSetting} from "@/classes/DarkModeSetting";
 import {appUtil} from "@/classes/AppUtil";
 import Validator from "@/classes/validator";
+import {aliases, mdi} from 'vuetify/iconsets/mdi'
 
 declare const window: any;
 
 class Wrapper {
     getApp(Component: Component) {
-        const vuetify = createVuetify({ssr: true, components, directives});
+        const vuetifyIcons = {defaultSet: 'mdi', aliases, sets: {mdi}};
+        const vuetify      = createVuetify({ssr: true, icons: vuetifyIcons});
 
         const app = createApp(Component).use(vuetify);
 
