@@ -265,6 +265,10 @@ class DataTableMock {
                     template: {
                         type: 'select',
                         label: 'Template',
+                        items: {
+                            'default': 'Default',
+                            'home': 'Home',
+                        },
                     },
                     slug: {
                         type: 'text',
