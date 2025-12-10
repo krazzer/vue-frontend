@@ -247,7 +247,7 @@ export default defineComponent({
       this.data[i] = !value;
 
       await this.$appUtil.doAction('datatable/check', {
-        instance: this.instance, field: key, id: id, value: this.data[i]
+        instance: this.instance, field: key, id: parseInt(id), value: this.data[i]
       }, () => {
         this.data[i] = value;
       });
