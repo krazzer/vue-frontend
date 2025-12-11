@@ -84,6 +84,7 @@ class DataTableMock {
             {id: 3, data: [3, 'Sup']},
         ],
         instance: 'test',
+        search: false,
     };
 
     public defaultForm = {
@@ -575,6 +576,7 @@ class DataTableMock {
             language: 'en',
             instance: 'pages',
             class: 'pages',
+            search: true,
         };
     }
 

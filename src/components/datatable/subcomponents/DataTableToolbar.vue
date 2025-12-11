@@ -7,7 +7,7 @@ export default defineComponent({
   name: "DataTableToolbar",
   components: {ToolbarSearch},
   mixins: [Toolbar],
-  props: ['buttons', 'filters', 'pages', 'languages', 'language', 'search', 'selected', 'filterValues', 'page'],
+  props: ['buttons', 'filters', 'pages', 'languages', 'language', 'search', 'selected', 'filterValues', 'page', 'showSearch'],
   emits: ["buttonClick", "changeLanguage", "searchAction", "setPage"],
   methods: {
     buttonClick(button: any) {
@@ -68,7 +68,7 @@ export default defineComponent({
         </div>
         <v-select v-if="languages" :items="languages" item-title="label" @update:modelValue="changeLanguage"
                   item-value="key" density="compact" class="language" v-model="language"/>
-        <ToolbarSearch @search="searchAction"/>
+        <ToolbarSearch v-if="showSearch" @search="searchAction"/>
       </div>
     </div>
   </div>
@@ -81,7 +81,7 @@ export default defineComponent({
   margin-bottom: $spaceLogoMenu;
 
   &__buttons {
-  $self: &;
+    $self: &;
     display: flex;
     flex-wrap: wrap;
     gap: 5px;

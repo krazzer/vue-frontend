@@ -48,6 +48,7 @@ export default defineComponent({
       highlight: '',
       pages: <any>[],
       search: '',
+      showSearch: false,
       sortKey: '',
       sortDirection: '',
       selected: <any>[],
@@ -138,6 +139,7 @@ export default defineComponent({
       this.language      = settings.language;
       this.actions       = settings.actions;
       this.mobileColumns = settings.mobileColumns;
+      this.showSearch    = settings.search;
     },
 
     clearSearch() {
@@ -486,9 +488,9 @@ export default defineComponent({
     </div>
     <template v-else>
       <DataTableToolbar :buttons="buttons" :filters="filters" :pages="pages" :languages="languages" :language="language"
-                        :search="search" @buttonClick="buttonClick" @changeLanguage="changeLanguage"
-                        @searchAction="searchAction"
-                        @setPage="setPage" :selected="selected" :filterValues="filterValues" :page="page"/>
+                        :search="search" @buttonClick="buttonClick" @changeLanguage="changeLanguage" @setPage="setPage"
+                        @searchAction="searchAction" :selected="selected" :filterValues="filterValues" :page="page"
+                        :showSearch="showSearch"/>
       <div class="datatable__table">
         <table ref="table">
           <thead>
