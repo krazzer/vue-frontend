@@ -7,6 +7,7 @@ export default defineComponent({
   data() {
     return {
       search: '',
+      lastEmittedSearch: <string | null>null,
     }
   },
   methods: {
@@ -24,14 +25,21 @@ export default defineComponent({
       }
     },
 
-    searchKeyUp() {
-      let searchOnKeyUp = this.search;
+    searchKeyUp(event: KeyboardEvent) {
+      let searchOnKeyUp = <string | null>this.search;
+
+      if (event.key == "Enter") {
+        this.$emit('search', this.search);
+        this.lastEmittedSearch = this.search;
+        return;
+      }
 
       setTimeout(async () => {
-        if (this.search == searchOnKeyUp) {
+        if (this.search == searchOnKeyUp && this.search != this.lastEmittedSearch) {
           this.$emit('search', this.search);
+          this.lastEmittedSearch = this.search;
         }
-      }, 300);
+      }, 500);
     },
   }
 })
