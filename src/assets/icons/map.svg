@@ -1,24 +1,24 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 900 700">
     <defs>
-        <linearGradient id="Naamloos_verloop_36" x1="450" y1="110" x2="450" y2="700" gradientUnits="userSpaceOnUse">
+        <linearGradient id="gradient36" x1="450" y1="110" x2="450" y2="700" gradientUnits="userSpaceOnUse">
             <stop offset="0" stop-color="#7cd6fa"/>
             <stop offset="1" stop-color="#8bd7f5"/>
         </linearGradient>
-        <linearGradient id="Naamloos_verloop_47" x1="450" y1="700" x2="450" y2="678" gradientUnits="userSpaceOnUse">
+        <linearGradient id="gradient47" x1="450" y1="700" x2="450" y2="678" gradientUnits="userSpaceOnUse">
             <stop offset="0" stop-color="#8bd7f5"/>
             <stop offset="0.49" stop-color="#82d1f1"/>
             <stop offset="0.99" stop-color="#73c7eb"/>
         </linearGradient>
-        <linearGradient id="Naamloos_verloop_47-2" x1="450" y1="678" x2="450" y2="656"
-                        xlink:href="#Naamloos_verloop_47"/>
-        <linearGradient id="Naamloos_verloop_47-3" x1="450" y1="656" x2="450" y2="634"
-                        xlink:href="#Naamloos_verloop_47"/>
+        <linearGradient id="gradient47-2" x1="450" y1="678" x2="450" y2="656"
+                        xlink:href="#gradient47"/>
+        <linearGradient id="gradient47-3" x1="450" y1="656" x2="450" y2="634"
+                        xlink:href="#gradient47"/>
     </defs>
     <path d="M352.14,69.05l498.23,1S872,71.1,885.46,84.54A49.48,49.48,0,0,1,900,119.63v65.74A49.63,49.63,0,0,1,850.37,235H49.63A49.63,49.63,0,0,1,0,185.37V49.63A49.64,49.64,0,0,1,49.64,0c37.06,0,63.7,0,84.06.08,25.78.06,94,.11,125.21.13A32.23,32.23,0,0,1,284.58,13l27.24,36A50.72,50.72,0,0,0,352.14,69.05Z"
           transform="translate(0 0)" fill="#a3e4ff"/>
-    <rect y="110" width="900" height="590" rx="35.49" fill="url(#Naamloos_verloop_36)"/>
+    <rect y="110" width="900" height="590" rx="35.49" fill="url(#gradient36)"/>
     <path d="M0,678H900a0,0,0,0,1,0,0v0a22,22,0,0,1-22,22H22A22,22,0,0,1,0,678v0A0,0,0,0,1,0,678Z"
-          fill="url(#Naamloos_verloop_47)"/>
-    <rect y="656" width="900" height="22" fill="url(#Naamloos_verloop_47-2)"/>
-    <rect y="634" width="900" height="22" fill="url(#Naamloos_verloop_47-3)"/>
+          fill="url(#gradient47)"/>
+    <rect y="656" width="900" height="22" fill="url(#gradient47-2)"/>
+    <rect y="634" width="900" height="22" fill="url(#gradient47-3)"/>
 </svg>

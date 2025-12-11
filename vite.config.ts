@@ -5,6 +5,7 @@ import vueJsx from "@vitejs/plugin-vue-jsx";
 import basicSsl from '@vitejs/plugin-basic-ssl'
 import vueDevTools from 'vite-plugin-vue-devtools'
 import istanbul from 'vite-plugin-istanbul';
+import {visualizer} from "rollup-plugin-visualizer";
 import vuetify from 'vite-plugin-vuetify';
 
 // https://vitejs.dev/config/
@@ -29,6 +30,12 @@ export default defineConfig({
             requireEnv: false,
             cypress: true,
         }),
+        visualizer({
+            filename: 'dist/stats.html',
+            gzipSize: true,
+            brotliSize: true,
+            open: true,
+        }),
         vuetify({autoImport: true}),
     ],
     resolve: {
@@ -37,7 +44,20 @@ export default defineConfig({
         },
     },
     build: {
-        outDir: process.env.BUILD_OUTDIR || 'dist'
+        outDir: process.env.BUILD_OUTDIR || 'dist',
+        rollupOptions: {
+            output: {
+                manualChunks(id) {
+                    if (id.includes('vuetify')) {
+                        return 'vuetify';
+                    }
+                    if (id.includes('node_modules')) {
+                        return 'vendor';
+                    }
+                    return 'app';
+                },
+            },
+        },
     },
     base: '/cms',
     // @ts-ignore
