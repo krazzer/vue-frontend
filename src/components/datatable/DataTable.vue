@@ -109,16 +109,22 @@ export default defineComponent({
   },
   methods: {
     async filter() {
-      await this.$appUtil.doAction('datatable/filter', {
-        instance: this.instance, search: this.search, sort: this.sortKey, sortDirection: this.sortDirection,
-        page: this.page, language: this.language, filters: this.filterValuesCompressed
-      }, (response: any) => {
+      let params = {instance: this.instance, filters: this.getFilters()};
+
+      await this.$appUtil.doAction('datatable/filter', params, (response: any) => {
         this.data     = response.data.data;
         this.pages    = response.data.pages;
         this.selected = [];
 
         this.forceDefaultView = !!(this.search || this.sortKey);
       })
+    },
+
+    getFilters(): object {
+      return {
+        search: this.search, sort: this.sortKey, sortDirection: this.sortDirection,
+        page: this.page, language: this.language, filters: this.filterValuesCompressed
+      };
     },
 
     convertSettings(settings: any) {
@@ -202,7 +208,8 @@ export default defineComponent({
     async delete() {
       await this.$appUtil.doAction('datatable/delete', {
         instance: this.instance,
-        ids: this.selected
+        ids: this.selected,
+        filters: this.getFilters()
       }, (response: any) => {
         this.data     = response.data.data;
         this.selected = [];
@@ -282,7 +289,8 @@ export default defineComponent({
       await this.$appUtil.doAction('datatable/save', {
         instance: this.instance,
         data: data,
-        id: dialogEditId
+        id: dialogEditId,
+        filters: this.getFilters()
       }, (response: any) => {
         this.data       = response.data.data;
         this.lastEditId = response.data.id;
