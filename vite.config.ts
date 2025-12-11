@@ -11,6 +11,8 @@ import vuetify from 'vite-plugin-vuetify';
 // https://vitejs.dev/config/
 // noinspection JSUnusedGlobalSymbols
 
+const visualize = false;
+
 export default defineConfig({
     plugins: [
         vue({
@@ -30,12 +32,12 @@ export default defineConfig({
             requireEnv: false,
             cypress: true,
         }),
-        visualizer({
+        visualize ? visualizer({
             filename: 'dist/stats.html',
             gzipSize: true,
             brotliSize: true,
             open: true,
-        }),
+        }) : null,
         vuetify({autoImport: true}),
     ],
     resolve: {
