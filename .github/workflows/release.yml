@@ -27,7 +27,7 @@ jobs:
                 run: npm run build
 
             -   name: Zip dist folder
-                run: zip -r cms.zip dist
+                run: zip -r cms.zip dist/*
 
             -   name: Determine release type (latest or version)
                 id: vars
