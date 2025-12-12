@@ -1,0 +1,52 @@
+name: Build & Release Frontend
+
+on:
+    push:
+        branches:
+            - main
+        tags:
+            - 'v*'
+
+jobs:
+    build-and-release:
+        runs-on: ubuntu-latest
+
+        steps:
+            -   name: Checkout repo
+                uses: actions/checkout@v4
+
+            -   name: Setup Node
+                uses: actions/setup-node@v4
+                with:
+                    node-version: 20
+
+            -   name: Install dependencies
+                run: npm install
+
+            -   name: Build Vue app
+                run: npm run build
+
+            -   name: Zip dist folder
+                run: zip -r cms.zip dist
+
+            -   name: Determine release type (latest or version)
+                id: vars
+                run: |
+                    if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+                      echo "tagged_release=true" >> $GITHUB_OUTPUT
+                      echo "tag_name=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+                    else
+                      echo "tagged_release=false" >> $GITHUB_OUTPUT
+                      echo "tag_name=latest" >> $GITHUB_OUTPUT
+                    fi
+
+            -   name: Publish Release
+                uses: softprops/action-gh-release@v2
+                with:
+                    tag_name: ${{ steps.vars.outputs.tag_name }}
+                    name: ${{ steps.vars.outputs.tag_name }}
+                    files: cms.zip
+                    prerelease: false
+                    generate_release_notes: false
+                env:
+                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
