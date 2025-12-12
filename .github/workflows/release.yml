@@ -21,7 +21,7 @@ jobs:
                     node-version: 20
 
             -   name: Install dependencies
-                run: npm install --production
+                run: npm install
 
             -   name: Build Vue app
                 run: npm run build
