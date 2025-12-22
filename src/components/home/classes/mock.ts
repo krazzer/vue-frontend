@@ -151,7 +151,7 @@ class HomeMock {
     }
 
     mockHomeReply(mocker: MockAdapter) {
-        mocker.onPost("/api/home").reply(() => {
+        mocker.onPost("/api/home").reply((): any => {
             const urlParams = new URLSearchParams(window.location.search);
 
             const error = urlParams.get('error');

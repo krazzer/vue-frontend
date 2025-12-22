@@ -402,7 +402,7 @@ class DataTableMock {
             if (id) {
                 index = this.appUtil.getIndexById(editData, id);
             } else {
-                index = parseInt(Object.keys(editData)[Object.keys(editData).length - 1]) + 1;
+                index = parseInt(<string> Object.keys(editData)[Object.keys(editData).length - 1]) + 1;
             }
 
             switch (params.instance) {
@@ -434,8 +434,8 @@ class DataTableMock {
             return [200, editData];
         };
 
-        mocker.onPost("/api/datatable/page/rearrange").reply(rearrangeAction);
-        mocker.onPost("/api/datatable/rearrange").reply(rearrangeAction);
+        mocker.onPost("/api/datatable/page/rearrange").reply(<any> rearrangeAction);
+        mocker.onPost("/api/datatable/rearrange").reply(<any> rearrangeAction);
 
         mocker.onPost("/api/datatable/validate").reply((request) => {
             let params         = JSON.parse(request.data);

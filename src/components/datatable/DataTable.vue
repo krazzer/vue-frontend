@@ -157,7 +157,7 @@ export default defineComponent({
           this.dialog       = true;
           this.dialogEditId = null;
           this.form         = response.data.form;
-          this.editData     = response.data.data || [];
+          this.editData     = response.data.data || {};
         });
       }
 
