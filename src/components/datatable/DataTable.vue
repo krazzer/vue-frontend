@@ -158,6 +158,11 @@ export default defineComponent({
           this.dialogEditId = null;
           this.form         = response.data.form;
           this.editData     = response.data.data || {};
+
+          // make sure an empty parsed array still defaults to an empty object
+          if (this.editData.length === 0) {
+            this.editData = {};
+          }
         });
       }
 
