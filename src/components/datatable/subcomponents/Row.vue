@@ -80,7 +80,7 @@ export default defineComponent({
     },
 
     getCellKey(index: number): string {
-      return Object.keys(this.settings.headers)[index];
+      return <any> Object.keys(this.headers)[index];
     },
 
     arrowClick(event: MouseEvent) {
@@ -204,7 +204,7 @@ export default defineComponent({
      * @param index
      */
     getKey(index: number): string {
-      return Object.keys(this.settings.headers)[index];
+      return <any> Object.keys(this.headers)[index];
     },
 
     /**
