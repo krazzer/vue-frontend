@@ -65,7 +65,7 @@ export class AppUtil {
             console.log('%cRequested: ' + '/api/' + url, 'color: #e2007a');
         }
 
-        let onError = (error: string|any) => {
+        let onError = (error: string | any) => {
             handleLoader();
 
             if (config.onError) {
@@ -73,7 +73,7 @@ export class AppUtil {
             } else {
                 const errorMessage = error?.response?.data?.error;
 
-                if(errorMessage){
+                if (errorMessage) {
                     console.error(errorMessage);
                     alert('Error: ' + errorMessage);
                 } else {
@@ -87,12 +87,18 @@ export class AppUtil {
             }
         }
 
+        let baseUri = '';
+
+        if (import.meta.env.VITE_API_HOST) {
+            baseUri = import.meta.env.VITE_API_HOST;
+        }
+
         return axios
-            .post('/api/' + url, params, config)
+            .post(baseUri + '/api/' + url, params, {...config, withCredentials: true})
             .then((response: any) => {
                 const errorMessage = response?.data?.error;
 
-                if(errorMessage){
+                if (errorMessage) {
                     onError('Error: ' + errorMessage);
                 } else {
                     let successResponse = onSuccess ? onSuccess(response) : null;

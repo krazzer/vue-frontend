@@ -34,7 +34,9 @@ class Wrapper {
         if (import.meta.env.DEV && !window.Cypress) {
             // initialize the mocker and make it available for console manipulation, e.g. to change the delay with
             // mocker.mocker.delayResponse = 1000
-            (window as any).mocker = new Mocker().mock();
+            if( ! import.meta.env.VITE_API_HOST) {
+                (window as any).mocker = new Mocker().mock();
+            }
         }
 
         app.use(VueAxios, <any>axios);
