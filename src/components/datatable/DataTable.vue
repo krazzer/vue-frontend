@@ -12,7 +12,7 @@ export default defineComponent({
   name: "DataTable",
   components: {DataTableToolbar, ToolbarSearch, Svg, EditDialog, Row},
   mixins: [DragAndDropTable],
-  emits: ['noselect'],
+  emits: ['noselect', 'dialogChange'],
   props: {
     darkMode: Boolean,
     settings: {
@@ -59,6 +59,7 @@ export default defineComponent({
       forceDefaultView: false,
       saved: false,
       busyCollapsing: false,
+      source: '',
     };
   },
   watch: {
@@ -72,6 +73,8 @@ export default defineComponent({
       if (!this.dialog) {
         this.saved = false;
       }
+
+      this.$emit('dialogChange', this.dialog);
     },
     filterValues: {
       handler(values) {
@@ -140,6 +143,7 @@ export default defineComponent({
       this.actions       = settings.actions;
       this.mobileColumns = settings.mobileColumns;
       this.showSearch    = settings.search;
+      this.source        = settings.source;
     },
 
     clearSearch() {
@@ -293,12 +297,14 @@ export default defineComponent({
      * @param close
      */
     async save(dialogEditId: any, data: any, close: boolean = false) {
-      await this.$appUtil.doAction('datatable/save', {
-        instance: this.instance,
-        data: data,
-        id: dialogEditId,
-        filters: this.getFilters()
-      }, (response: any) => {
+      let params: any = {instance: this.instance, formData: data, id: dialogEditId, filters: this.getFilters()};
+
+      // if the sourceType is local, we need to send the data
+      if (this.source == 'local') {
+        params.data = this.data;
+      }
+
+      await this.$appUtil.doAction('datatable/save', params, (response: any) => {
         this.data       = response.data.data;
         this.lastEditId = response.data.id;
 

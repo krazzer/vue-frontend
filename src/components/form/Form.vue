@@ -5,7 +5,7 @@ import {useTheme} from "vuetify";
 import FilePicker from "./subcomponents/FilePicker.vue";
 import LabelField from "./subcomponents/LabelField.vue";
 import {VTextField, VSelect, VAutocomplete, VCheckbox, VTextarea} from 'vuetify/components'
-import type { Component } from 'vue';
+import type {Component} from 'vue';
 
 const components: Record<string, Component> = {
   Editor, FilePicker, LabelField, VTextField, VSelect, VAutocomplete, VCheckbox, VTextarea
@@ -14,7 +14,7 @@ const components: Record<string, Component> = {
 export default defineComponent({
   name: "Form",
   props: ['fields', 'data', 'darkMode', 'checkErrors', 'tab', 'level', 'save', 'saved', 'helperData'],
-  emits: ['fieldError', 'doSubmit', 'inputChange'],
+  emits: ['fieldError', 'doSubmit', 'inputChange', 'dialogChange'],
   components: components,
   data() {
     return {
@@ -36,6 +36,7 @@ export default defineComponent({
         datatable: 'DataTable',
         label: 'LabelField',
         hidden: 'input',
+        hasDialogOpen: false,
       },
     };
   },
@@ -191,6 +192,9 @@ export default defineComponent({
     showLabel(field: any) {
       return ['richtext', 'filepicker', 'label'].includes(field.type);
     },
+    forwardDialogChange(...args: any) {
+      this.$emit('dialogChange', ...args)
+    }
   }
 })
 </script>
@@ -207,11 +211,11 @@ const DataTable = defineAsyncComponent(() => import('../datatable/DataTable.vue'
              :sm="field.size ? field.size.sm : 0">
         <label v-if="showLabel(field)" class="v-label">{{ field.label }}</label>
         <DataTable v-if="field.type == 'datatable'" :instance="field.instance" :settings="field.settings"
-                   :level="level + 1"/>
+                   :level="level + 1" @dialog-change="forwardDialogChange"/>
         <div class="group" v-else-if="field.type == 'group'">
           <Form :fields="field.fields" :data="data" :darkMode="darkMode" @fieldError="$emit('fieldError')"
                 :saved="saved" :checkErrors="checkErrors" :level="level" @do-submit="$emit('doSubmit')"
-                @input-change="$emit('inputChange')"/>
+                @input-change="$emit('inputChange')" @dialog-change="forwardDialogChange"/>
         </div>
         <LabelField v-else-if="field.type == 'label'" :field="field"/>
         <template v-else-if="field.type == 'date'">

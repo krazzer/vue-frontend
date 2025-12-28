@@ -21,6 +21,7 @@ export default defineComponent({
       localDialog: false,
       confirmDialog: false,
       displayForm: false,
+      hasOpenChildDialog: false,
     };
   },
   mounted() {
@@ -31,17 +32,17 @@ export default defineComponent({
   },
   methods: {
     handleKeyDown(e: KeyboardEvent) {
-      if (this.dialog && (e.metaKey || e.ctrlKey) && e.key == 's') {
+      if (this.dialog && (e.metaKey || e.ctrlKey) && e.key == 's' && !this.hasOpenChildDialog) {
         e.preventDefault();
         this.clickSave(true);
       }
     },
     async clickSave(close: boolean) {
-      if(close){
-        this.clickedSave = false;
+      if (close) {
+        this.clickedSave         = false;
         this.clickedSaveAndClose = true;
       } else {
-        this.clickedSave = true;
+        this.clickedSave         = true;
         this.clickedSaveAndClose = false;
       }
 
@@ -83,6 +84,10 @@ export default defineComponent({
       this.localDialog = true;
       this.clickClose();
     },
+
+    childDialogChange(open: boolean) {
+      this.hasOpenChildDialog = open;
+    }
   },
   watch: {
     dialog() {
@@ -133,7 +138,7 @@ export default defineComponent({
       </v-card-title>
       <TabbedForm v-if="displayForm" ref="tabbedForm" :form="form" :data="data" :helperData="helperData"
                   @submit="clickSave" :darkMode="darkMode" :checkTabErrors="checkTabErrors" :level="level"
-                  @input-change="inputChange"/>
+                  @input-change="inputChange" @dialogChange="childDialogChange"/>
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn variant="tonal" @click="clickClose" prepend-icon="mdi-close">
@@ -142,14 +147,15 @@ export default defineComponent({
         <v-btn variant="tonal" @click="clickSave(false)">
           {{ saved ? $translator.tl('general.saved') : $translator.tl('general.save') }}
           <template v-slot:prepend>
-            <v-progress-circular v-if="$appUtil.isBusyLoading() && clickedSave" indeterminate size="20" width="2" />
+            <v-progress-circular v-if="$appUtil.isBusyLoading() && clickedSave" indeterminate size="20" width="2"/>
             <v-icon v-else :color="saved ? 'green' : ''">{{ saved ? "mdi-check" : "mdi-content-save" }}</v-icon>
           </template>
         </v-btn>
         <v-btn variant="tonal" @click="clickSave(true)" prepend-icon="mdi-content-save">
           {{ $translator.tl('general.saveAndClose') }}
           <template v-slot:prepend>
-            <v-progress-circular v-if="$appUtil.isBusyLoading() && clickedSaveAndClose" indeterminate size="20" width="2" />
+            <v-progress-circular v-if="$appUtil.isBusyLoading() && clickedSaveAndClose" indeterminate size="20"
+                                 width="2"/>
             <v-icon v-else>mdi-content-save</v-icon>
           </template>
         </v-btn>

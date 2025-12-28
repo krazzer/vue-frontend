@@ -5,7 +5,7 @@ import Form from "@/components/form/Form.vue";
 export default defineComponent({
   name: "TabbedForm",
   props: ['form', 'darkMode', 'data', 'checkTabErrors', 'level', 'handleSubmit', 'helperData'],
-  emits: ['submit', 'inputChange'],
+  emits: ['submit', 'inputChange', 'dialogChange'],
   components: {Form},
   data() {
     return {
@@ -66,6 +66,10 @@ export default defineComponent({
     inputChange() {
       this.saved = false;
       this.$emit('inputChange');
+    },
+
+    forwardDialogChange(...args: any) {
+      this.$emit('dialogChange', ...args)
     }
   }
 })
@@ -80,7 +84,7 @@ export default defineComponent({
       <v-tabs-window-item v-for="tab in form.tabs" :value="tab.key">
         <Form :fields="tab.fields" :data="data" :darkMode="darkMode" @fieldError="setTabError" :saved="saved"
               :checkErrors="checkTabErrorsLocal" :tab="tab.key" :save="tab.save" :level="level" @do-submit="submit"
-              @input-change="inputChange" :helperData="helperData" />
+              @input-change="inputChange" :helperData="helperData" @dialog-change="forwardDialogChange" />
       </v-tabs-window-item>
     </v-tabs-window>
     <Form v-else :fields="form.fields" :save="form.save" :data="data" :level="level" :darkMode="darkMode" :saved="saved"
