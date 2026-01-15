@@ -194,6 +194,9 @@ export default defineComponent({
     },
     forwardDialogChange(...args: any) {
       this.$emit('dialogChange', ...args)
+    },
+    setLocalData(key: string, data: object) {
+      this.data[key] = data;
     }
   }
 })
@@ -210,8 +213,9 @@ const DataTable = defineAsyncComponent(() => import('../datatable/DataTable.vue'
       <v-col v-if="field.type != 'hidden'" cols="12" :md="field.size ? field.size.md : 0"
              :sm="field.size ? field.size.sm : 0">
         <label v-if="showLabel(field)" class="v-label">{{ field.label }}</label>
-        <DataTable v-if="field.type == 'datatable'" :instance="field.instance" :settings="field.settings"
-                   :level="level + 1" @dialog-change="forwardDialogChange"/>
+        <DataTable v-if="field.type == 'datatable'" :instance="field.instance" @dialogChange="forwardDialogChange"
+                   @updateLocalData="setLocalData" :settings="field.settings" :level="level + 1" :fieldKey="field.key"
+                   :fieldStoreData="data[field.key]"/>
         <div class="group" v-else-if="field.type == 'group'">
           <Form :fields="field.fields" :data="data" :darkMode="darkMode" @fieldError="$emit('fieldError')"
                 :saved="saved" :checkErrors="checkErrors" :level="level" @do-submit="$emit('doSubmit')"

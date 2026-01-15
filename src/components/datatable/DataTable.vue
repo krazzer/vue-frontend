@@ -12,7 +12,7 @@ export default defineComponent({
   name: "DataTable",
   components: {DataTableToolbar, ToolbarSearch, Svg, EditDialog, Row},
   mixins: [DragAndDropTable],
-  emits: ['noselect', 'dialogChange'],
+  emits: ['noselect', 'dialogChange', 'updateLocalData'],
   props: {
     darkMode: Boolean,
     settings: {
@@ -23,6 +23,8 @@ export default defineComponent({
     },
     instance: String,
     level: Number,
+    fieldKey: String,
+    fieldStoreData: Object,
   },
   data() {
     return {
@@ -91,9 +93,19 @@ export default defineComponent({
         this.filter();
       },
       deep: true
+    },
+    storeData:{
+      handler(values) {
+        if(this.isLocallyStored()) {
+          this.$emit('updateLocalData', this.fieldKey, values);
+        }
+      },
+      deep: true
     }
   },
   mounted() {
+    this.storeData = this.fieldStoreData;
+
     if (Object.keys(this.settings).length !== 0) {
       this.convertSettings(this.settings);
     } else if (this.instance) {
@@ -126,11 +138,15 @@ export default defineComponent({
     },
 
     addConditionalParams(params: any): any {
-      if (this.source == 'local') {
+      if (this.isLocallyStored()) {
         params.storeData = this.storeData;
       }
 
       return params;
+    },
+
+    isLocallyStored(): boolean{
+      return this.source == 'local';
     },
 
     getFilters(): object {
@@ -268,8 +284,14 @@ export default defineComponent({
     async init() {
       this.error = '';
 
-      await this.$appUtil.doAction('datatable', {instance: this.instance}, (response: any) => {
+      let params: any = {instance: this.instance, storeData: this.storeData};
+
+      await this.$appUtil.doAction('datatable', params, (response: any) => {
         this.convertSettings(response.data.settings);
+
+        if(response.data.data) {
+          this.data = response.data.data;
+        }
       });
     },
 
