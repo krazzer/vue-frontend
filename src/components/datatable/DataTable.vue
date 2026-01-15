@@ -33,6 +33,7 @@ export default defineComponent({
       filterValuesCompressed: <any>{},
       cloned: <number | null>null,
       data: <any>[],
+      storeData: <any>{}, // contains data to store as JSON
       helperData: <any>{},
       dialog: false,
       dialogEditId: <any>null,
@@ -122,6 +123,14 @@ export default defineComponent({
 
         this.forceDefaultView = !!(this.search || this.sortKey);
       })
+    },
+
+    addConditionalParams(params: any): any {
+      if (this.source == 'local') {
+        params.storeData = this.storeData;
+      }
+
+      return params;
     },
 
     getFilters(): object {
@@ -217,13 +226,18 @@ export default defineComponent({
     },
 
     async delete() {
-      await this.$appUtil.doAction('datatable/delete', {
+      let params: any = {
         instance: this.instance,
         ids: this.selected,
         filters: this.getFilters()
-      }, (response: any) => {
-        this.data     = response.data.data;
-        this.selected = [];
+      };
+
+      params = this.addConditionalParams(params);
+
+      await this.$appUtil.doAction('datatable/delete', params, (response: any) => {
+        this.storeData = response.data.storeData;
+        this.data      = response.data.data;
+        this.selected  = [];
       });
     },
 
@@ -266,7 +280,9 @@ export default defineComponent({
     async edit(id: number, event: MouseEvent) {
       event.stopPropagation();
 
-      await this.$appUtil.doAction('datatable/edit', {instance: this.instance, id: id}, (response: any) => {
+      let params: any = this.addConditionalParams({instance: this.instance, id: id});
+
+      await this.$appUtil.doAction('datatable/edit', params, (response: any) => {
         this.dialog       = true;
         this.dialogEditId = id;
         this.form         = response.data.form;
@@ -299,22 +315,21 @@ export default defineComponent({
     async save(dialogEditId: any, data: any, close: boolean = false) {
       let params: any = {instance: this.instance, formData: data, id: dialogEditId, filters: this.getFilters()};
 
-      // if the sourceType is local, we need to send the data
-      if (this.source == 'local') {
-        params.data = this.data;
-      }
+      params = this.addConditionalParams(params);
 
       await this.$appUtil.doAction('datatable/save', params, (response: any) => {
-        this.data       = response.data.data;
-        this.lastEditId = response.data.id;
+        this.data         = response.data.data;
+        this.storeData    = response.data.storeData;
+        this.lastEditId   = response.data.editedId;
+        this.dialogEditId = response.data.editedId;
 
         setTimeout(() => {
-          if (this.lastEditId == response.data.id) {
-            this.lastEditIdFading = response.data.id;
+          if (this.lastEditId == response.data.editedId) {
+            this.lastEditIdFading = response.data.editedId;
             this.lastEditId       = null;
 
             setTimeout(() => {
-              if (this.lastEditIdFading == response.data.id) {
+              if (this.lastEditIdFading == response.data.editedId) {
                 this.lastEditIdFading = null;
               }
             }, 1000);
