@@ -22,7 +22,7 @@ class DragAndDropPages {
 
     init(DataTable: any) {
         this.handleMouseUp = () => {
-            this.setMouseUp();
+            this.setMouseUp(DataTable);
         };
 
         this.handleMouseMove = (event: MouseEvent) => {
@@ -31,8 +31,6 @@ class DragAndDropPages {
 
         window.addEventListener('mouseup', this.handleMouseUp);
         window.addEventListener('mousemove', this.handleMouseMove);
-
-        this.DataTable = DataTable;
     }
 
     isDragged(id: number): boolean {
@@ -85,9 +83,9 @@ class DragAndDropPages {
         this.windowScrollStartY = window.scrollY;
     }
 
-    setMouseUp() {
+    setMouseUp(DataTable: any) {
         if (this.itemIdMouseOver !== this.itemIdMouseDown && this.isDragging()) {
-            this.DataTable.pageRearrange(this.itemIdMouseDown, this.itemIdMouseOver, this.draggedOverPosition);
+            DataTable.pageRearrange(this.itemIdMouseDown, this.itemIdMouseOver, this.draggedOverPosition);
         }
 
         this.itemIdMouseDown    = null;
