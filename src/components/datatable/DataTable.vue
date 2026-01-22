@@ -67,9 +67,6 @@ export default defineComponent({
     };
   },
   watch: {
-    initialData() {
-      this.data = this.initialData;
-    },
     settings() {
       this.convertSettings(this.settings);
     },
