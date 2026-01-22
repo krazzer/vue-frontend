@@ -76,15 +76,4 @@ export default defineConfig({
             scss: {additionalData: `@use "@/assets/media-query-sizes" as *; @use "@/assets/base" as *;`},
         },
     },
-    server: {
-        // @ts-ignore
-        https: true,
-        cors: {
-            credentials: true
-        },
-        hmr: {
-            protocol: 'wss',
-            host: 'kikcms.test'
-        }
-    },
 });

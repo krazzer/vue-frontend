@@ -69,18 +69,22 @@ export default defineComponent({
     loadDefaultModule() {
       this.$appUtil.doAction('default-module', {}, (response: any) => {
         this.setContentByResponseData(response.data);
-      }, {onError: (error: any) => {
+      }, {
+        onError: (error: any) => {
           this.html = error;
-        }});
+        }
+      });
     },
     loadModule(module: string) {
       this.$appUtil.doAction('module/' + module, {}, (response: any) => {
         this.selectedMenuItem = module;
         this.setContentByResponseData(response.data);
-      }, {onError: (error: any) => {
-        this.selectedMenuItem = module;
-        this.html = error;
-      }});
+      }, {
+        onError: (error: any) => {
+          this.selectedMenuItem = module;
+          this.html             = error;
+        }
+      });
     },
     logout() {
       this.$appUtil.doAction('logout', {}, () => this.checkLogin());
@@ -161,7 +165,8 @@ export default defineComponent({
       </div>
       <span v-if="html" v-html="html"></span>
       <Media v-else-if="media && Object.keys(media).length" :settings="media" :role="role"/>
-      <DataTable v-else-if="dataTable" :settings="dataTable" :instance="dataTable.instance" :darkMode="darkMode" :level="0"/>
+      <DataTable v-else-if="dataTable && dataTable?.settings?.instance" :settings="dataTable.settings"
+                 :initialData="dataTable.data" :instance="dataTable.settings.instance" :darkMode="darkMode" :level="0"/>
       <TabbedForm v-else-if="form" :form="form" :data="form.data" :handleSubmit="true"/>
       <component v-else-if="customComponent" :is="customComponent"/>
     </div>

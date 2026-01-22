@@ -25,6 +25,7 @@ export default defineComponent({
     level: Number,
     fieldKey: String,
     fieldStoreData: Object,
+    initialData: Object,
   },
   data() {
     return {
@@ -66,6 +67,9 @@ export default defineComponent({
     };
   },
   watch: {
+    initialData() {
+      this.data = this.initialData;
+    },
     settings() {
       this.convertSettings(this.settings);
     },
@@ -94,9 +98,9 @@ export default defineComponent({
       },
       deep: true
     },
-    storeData:{
+    storeData: {
       handler(values) {
-        if(this.isLocallyStored()) {
+        if (this.isLocallyStored()) {
           this.$emit('updateLocalData', this.fieldKey, values);
         }
       },
@@ -104,7 +108,11 @@ export default defineComponent({
     }
   },
   mounted() {
-    this.storeData = this.fieldStoreData;
+    this.data = this.initialData;
+
+    if (typeof this.fieldStoreData !== 'undefined') {
+      this.storeData = this.fieldStoreData;
+    }
 
     if (Object.keys(this.settings).length !== 0) {
       this.convertSettings(this.settings);
@@ -145,7 +153,7 @@ export default defineComponent({
       return params;
     },
 
-    isLocallyStored(): boolean{
+    isLocallyStored(): boolean {
       return this.source == 'local';
     },
 
@@ -158,7 +166,6 @@ export default defineComponent({
 
     convertSettings(settings: any) {
       this.headers       = settings.headers;
-      this.data          = settings.data;
       this.form          = settings.form;
       this.buttons       = settings.buttons;
       this.filters       = settings.filters;
@@ -187,6 +194,7 @@ export default defineComponent({
           this.dialogEditId = null;
           this.form         = response.data.form;
           this.editData     = response.data.data || {};
+          this.helperData   = response.data.helperData || {};
 
           // make sure an empty parsed array still defaults to an empty object
           if (this.editData.length === 0) {
@@ -289,7 +297,7 @@ export default defineComponent({
       await this.$appUtil.doAction('datatable', params, (response: any) => {
         this.convertSettings(response.data.settings);
 
-        if(response.data.data) {
+        if (response.data.data) {
           this.data = response.data.data;
         }
       });
