@@ -100,7 +100,8 @@ export default defineComponent({
 
     rearrange() {
       let params = {
-        instance: this.instance, source: this.draggingId, target: this.hoveringId, position: this.hoveringPosition
+        instance: this.instance, source: this.draggingId, target: this.hoveringId, position: this.hoveringPosition,
+        filters: {},
       };
 
       this.$appUtil.doAction('datatable/rearrange', params, (response: any) => {
@@ -109,6 +110,10 @@ export default defineComponent({
     },
 
     removeClone() {
+      if( ! this.data){
+        return;
+      }
+
       const cloneIndex = this.data.findIndex((row: any) => row.clone === true);
 
       if (cloneIndex !== -1) {

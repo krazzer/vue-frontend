@@ -67,6 +67,9 @@ export default defineComponent({
     };
   },
   watch: {
+    initialData() {
+      this.data = this.initialData;
+    },
     settings() {
       this.convertSettings(this.settings);
     },
@@ -307,7 +310,7 @@ export default defineComponent({
     async edit(id: number, event: MouseEvent) {
       event.stopPropagation();
 
-      let params: any = this.addConditionalParams({instance: this.instance, id: id});
+      let params: any = this.addConditionalParams({instance: this.instance, id: id, filters: {}});
 
       await this.$appUtil.doAction('datatable/edit', params, (response: any) => {
         this.dialog       = true;
@@ -385,7 +388,8 @@ export default defineComponent({
         instance: this.instance,
         source: parseInt(itemIdMouseDown),
         target: parseInt(itemIdMouseOver),
-        location: location
+        location: location,
+        filters: {},
       }, (response: any) => {
         this.data = response.data;
       });
