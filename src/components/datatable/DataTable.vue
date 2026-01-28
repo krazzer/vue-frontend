@@ -303,6 +303,17 @@ export default defineComponent({
       });
     },
 
+    async checkCheckbox(key: string, value: any, id: number, callback: any) {
+      let params = {instance: this.instance, field: key, id: id, value: value, filters: {}};
+
+      params = this.addConditionalParams(params);
+
+      await this.$appUtil.doAction('datatable/check', params, (response: any) => {
+        this.storeData = response.data.storeData;
+        callback();
+      });
+    },
+
     /**
      * @param id
      * @param event
@@ -569,7 +580,7 @@ export default defineComponent({
                  :max="row.max" :highlight="highlight" :index="index" :forceDefaultView="forceDefaultView"
                  :mobile-columns="mobileColumns || []" @mouseDownOnRearrange="setMouseDownOnRearrange"
                  :dragClone="row.clone" :busyCollapsing="busyCollapsing" :cloneRowVisible="cloneRowVisible"
-                 :instance="instance" :justEdited="lastEditId == row.id"
+                 :instance="instance" :justEdited="lastEditId == row.id" @check="checkCheckbox"
                  :justEditedFading="lastEditIdFading == row.id"/>
           </template>
           </tbody>

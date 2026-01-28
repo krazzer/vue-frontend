@@ -6,7 +6,7 @@ import DragAndDropRow from "@/mixins/DragAndDropRow.vue";
 
 export default defineComponent({
   components: {Page, Svg},
-  emits: ['collapse', 'edit', 'toggle'],
+  emits: ['collapse', 'edit', 'toggle', 'check'],
   name: "Row",
   props: ['row', 'dragAndDropPages', 'headers', 'settings', 'id', 'level', 'selected', 'selectedIds', 'max',
     'highlight', 'actions', 'index', 'forceDefaultView', 'mobileColumns', 'dragClone', 'cloneRowVisible', 'instance',
@@ -244,9 +244,7 @@ export default defineComponent({
       let key   = this.getCellKey(i);
       let value = this.data[i];
 
-      await this.$appUtil.doAction('datatable/check', {
-        instance: this.instance, field: key, id: parseInt(id), value: this.data[i], filters: {}
-      }, () => {
+      this.$emit('check', key, value, parseInt(id), () => {
         this.data[i] = value;
       });
     },
