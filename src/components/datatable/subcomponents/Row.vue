@@ -312,7 +312,7 @@ tr.dragclone {
   position: absolute;
   width: 100%;
   top: 0;
-  opacity: 1;
+  opacity: .9;
   border-top: 1px solid var(--color-background-shade3);
   border-bottom: 1px solid var(--color-background-shade3);
 

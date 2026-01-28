@@ -327,7 +327,7 @@ class DataTableMock {
             let data   = this.getDataForInstance(params.instance).data;
             let ids    = params.ids;
 
-            ids.forEach((id: string) => {
+            ids.forEach((id: number) => {
                 let index = this.appUtil.getIndexById(data, id);
                 data.splice(index, 1);
             });
@@ -421,7 +421,7 @@ class DataTableMock {
             return [200, {data: editData, id: id}];
         });
 
-        // will not calculate the actual rearrange, not worth coding for just a mock
+        // will not calculate the actual rearranging, not worth coding for just a mock
         let rearrangeAction = (request: any) => {
             let params   = JSON.parse(request.data);
             let editData = this.getDataForInstance(params.instance).data;

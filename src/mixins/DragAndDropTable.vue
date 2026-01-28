@@ -1,8 +1,8 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
 
-const BOTTOM = 1;
 const TOP    = 0;
+const BOTTOM = 2;
 
 export default defineComponent({
   name: "DragAndDropTable",
@@ -11,8 +11,9 @@ export default defineComponent({
   data() {
     return {
       mouseDownOnRearrange: false,
-      draggingId: <any>null,
+      draggingId: <number | null>null,
       data: <any>[],
+      storeData: <any>[],
       mouseY: <number>0,
       initialY: <number | null>null,
       initialYDifference: <number>0,
@@ -39,6 +40,7 @@ export default defineComponent({
 
       this.startedDragging = false;
       this.cloneRowVisible = false;
+      this.hoveringId      = null;
     },
 
     actionMouseMove(e: MouseEvent) {
@@ -74,6 +76,10 @@ export default defineComponent({
     },
 
     addClone(e: MouseEvent) {
+      if (!this.draggingId) {
+        return;
+      }
+
       let index = this.$appUtil.getIndexById(this.data, this.draggingId);
       let row   = Object.assign({}, this.data[index]);
 
@@ -100,17 +106,20 @@ export default defineComponent({
 
     rearrange() {
       let params = {
-        instance: this.instance, source: this.draggingId, target: this.hoveringId, position: this.hoveringPosition,
+        instance: this.instance, source: this.draggingId, target: this.hoveringId, location: this.hoveringPosition,
         filters: {},
       };
 
+      params = (this as any).addConditionalParams(params);
+
       this.$appUtil.doAction('datatable/rearrange', params, (response: any) => {
-        this.data = response.data;
+        this.storeData = response.data.storeData;
+        this.data      = response.data.data;
       })
     },
 
     removeClone() {
-      if( ! this.data){
+      if (!this.data) {
         return;
       }
 

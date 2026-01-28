@@ -108,7 +108,7 @@ export class AppUtil {
             }).catch(onError);
     }
 
-    getIndexById(data: any, id: number | string): number {
+    getIndexById(data: any, id: number): number {
         let foundIndex = 0;
 
         data.forEach((row: any, index: number) => {

@@ -13,7 +13,7 @@ export default defineComponent({
     actionMouseDown(row: any, action: any, e: MouseEvent) {
       if(action.type == 'rearrange'){
         this.mouseDownRearrange = true;
-        this.$emit('mouseDownOnRearrange', true, row.id, e.clientY);
+        this.$emit('mouseDownOnRearrange', true, parseInt(row.id), e.clientY);
       }
     },
 
