@@ -172,10 +172,21 @@ export default defineComponent({
       this.pages         = settings.pages;
       this.languages     = settings.languages;
       this.language      = settings.language;
-      this.actions       = settings.actions;
       this.mobileColumns = settings.mobileColumns;
       this.showSearch    = settings.search;
       this.source        = settings.source;
+
+      this.actions = this.normalizeActions(settings.actions);
+    },
+
+    normalizeActions(actions: any[] = []) {
+      const defaultIcons: Record<string, string> = {
+        rearrange: 'mdi-drag-horizontal-variant',
+      };
+
+      return actions.map(action => ({
+        ...action, icon: action.icon ?? defaultIcons[action.type]
+      }));
     },
 
     clearSearch() {
