@@ -4,7 +4,7 @@ import Form from "@/components/form/Form.vue";
 
 export default defineComponent({
   name: "TabbedForm",
-  props: ['form', 'darkMode', 'data', 'checkTabErrors', 'level', 'handleSubmit', 'helperData'],
+  props: ['form', 'darkMode', 'data', 'checkTabErrors', 'level', 'handleSubmit', 'helperData', 'instance', 'editId'],
   emits: ['submit', 'inputChange', 'dialogChange'],
   components: {Form},
   data() {
@@ -30,7 +30,7 @@ export default defineComponent({
       return '';
     },
 
-    async handleLocalSave(){
+    async handleLocalSave() {
       let isValid = await (this.$refs.form as any).validate();
 
       if (!isValid.valid) {
@@ -84,11 +84,12 @@ export default defineComponent({
       <v-tabs-window-item v-for="tab in form.tabs" :value="tab.key">
         <Form :fields="tab.fields" :data="data" :darkMode="darkMode" @fieldError="setTabError" :saved="saved"
               :checkErrors="checkTabErrorsLocal" :tab="tab.key" :save="tab.save" :level="level" @do-submit="submit"
-              @input-change="inputChange" :helperData="helperData" @dialog-change="forwardDialogChange" />
+              @input-change="inputChange" :helperData="helperData" @dialog-change="forwardDialogChange"
+              :instance="instance" :editId="editId"/>
       </v-tabs-window-item>
     </v-tabs-window>
     <Form v-else :fields="form.fields" :save="form.save" :data="data" :level="level" :darkMode="darkMode" :saved="saved"
-          ref="oneForm" @do-submit="submit" @input-change="inputChange" :helperData="helperData" />
+          ref="oneForm" @do-submit="submit" @input-change="inputChange" :helperData="helperData"/>
   </v-form>
 </template>
 

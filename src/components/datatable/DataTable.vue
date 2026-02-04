@@ -26,6 +26,8 @@ export default defineComponent({
     fieldKey: String,
     fieldStoreData: Object,
     initialData: Object,
+    parentInstance: String,
+    parentEditId: Number,
   },
   data() {
     return {
@@ -100,9 +102,7 @@ export default defineComponent({
     },
     storeData: {
       handler(values) {
-        if (this.isLocallyStored()) {
-          this.$emit('updateLocalData', this.fieldKey, values);
-        }
+        this.$emit('updateLocalData', this.fieldKey, values);
       },
       deep: true
     }
@@ -134,7 +134,7 @@ export default defineComponent({
   },
   methods: {
     async filter() {
-      let params = {instance: this.instance, filters: this.getFilters()};
+      let params = this.addConditionalParams({instance: this.instance, filters: this.getFilters()});
 
       await this.$appUtil.doAction('datatable/filter', params, (response: any) => {
         this.data     = response.data.data;
@@ -146,21 +146,15 @@ export default defineComponent({
     },
 
     addConditionalParams(params: any): any {
-      if (this.isLocallyStored()) {
-        params.storeData = this.storeData;
-      }
-
+      params.storeData = this.storeData;
       return params;
-    },
-
-    isLocallyStored(): boolean {
-      return this.source == 'local';
     },
 
     getFilters(): object {
       return {
-        search: this.search, sort: this.sortKey, sortDirection: this.sortDirection,
-        page: this.page, language: this.language, filters: this.filterValuesCompressed
+        search: this.search, sort: this.sortKey, sortDirection: this.sortDirection, page: this.page,
+        language: this.language, filters: this.filterValuesCompressed, parentEditId: this.parentEditId,
+        parentInstance: this.parentInstance
       };
     },
 
@@ -332,7 +326,7 @@ export default defineComponent({
     async edit(id: number, event: MouseEvent) {
       event.stopPropagation();
 
-      let params: any = this.addConditionalParams({instance: this.instance, id: id, filters: {}});
+      let params: any = this.addConditionalParams({instance: this.instance, id: id, filters: this.getFilters()});
 
       await this.$appUtil.doAction('datatable/edit', params, (response: any) => {
         this.dialog       = true;
@@ -370,10 +364,11 @@ export default defineComponent({
       params = this.addConditionalParams(params);
 
       await this.$appUtil.doAction('datatable/save', params, (response: any) => {
-        this.data         = response.data.data;
-        this.storeData    = response.data.storeData;
-        this.lastEditId   = response.data.editedId;
-        this.dialogEditId = response.data.editedId;
+        this.data       = response.data.data;
+        this.storeData  = response.data.storeData;
+        this.lastEditId = response.data.editedId;
+
+        this.dialogEditId = parseInt(response.data.editedId);
 
         setTimeout(() => {
           if (this.lastEditId == response.data.editedId) {
@@ -560,8 +555,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div ref="datatable" :class="getClasses()" v-if="instance" @keydown="keyDown" @keyup="keyUp"
-       tabindex="0">
+  <div ref="datatable" :class="getClasses()" v-if="instance" @keydown="keyDown" @keyup="keyUp" tabindex="0">
     <div class="datatable__error" v-if="error">
       {{ error }}
     </div>
@@ -609,7 +603,7 @@ export default defineComponent({
   </div>
   <EditDialog :dialog="dialog" :dialogEditId="dialogEditId" :form="form ?? {}" @clickClose="dialog = false"
               @clickSave="save" :data="editData" :helperData="helperData" :darkMode="darkMode" :level="level"
-              ref="editDialog" :parent-saved="saved" @input-change="inputChange"/>
+              ref="editDialog" :parent-saved="saved" @input-change="inputChange" :instance="instance"/>
 </template>
 
 <style lang="scss" scoped>

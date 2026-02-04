@@ -13,7 +13,8 @@ const components: Record<string, Component> = {
 
 export default defineComponent({
   name: "Form",
-  props: ['fields', 'data', 'darkMode', 'checkErrors', 'tab', 'level', 'save', 'saved', 'helperData'],
+  props: ['fields', 'data', 'darkMode', 'checkErrors', 'tab', 'level', 'save', 'saved', 'helperData', 'editId',
+    'instance'],
   emits: ['fieldError', 'doSubmit', 'inputChange', 'dialogChange'],
   components: components,
   data() {
@@ -216,7 +217,8 @@ const DataTable = defineAsyncComponent(() => import('../datatable/DataTable.vue'
         <DataTable v-if="field.type == 'datatable'" :instance="field.instance" @dialogChange="forwardDialogChange"
                    @updateLocalData="setLocalData" :settings="helperData?.[field.key]?.['settings'] ?? undefined"
                    :level="level + 1" :fieldKey="field.key" :fieldStoreData="data[field.key]"
-                   :initialData="helperData?.[field.key]?.['data'] ?? undefined"/>
+                   :initialData="helperData?.[field.key]?.['data'] ?? undefined" :parentInstance="instance"
+                   :parentEditId="editId"/>
         <div class="group" v-else-if="field.type == 'group'">
           <Form :fields="field.fields" :data="data" :darkMode="darkMode" @fieldError="$emit('fieldError')"
                 :saved="saved" :checkErrors="checkErrors" :level="level" @do-submit="$emit('doSubmit')"

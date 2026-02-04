@@ -253,8 +253,8 @@ export default defineComponent({
 </script>
 
 <template>
-  <tr @click="toggleRow" :class="getClasses()" @mousedown="mousedown($event)" @dblclick="$emit('edit', row.id, $event)"
-      :data-id="row.id">
+  <tr @click="toggleRow" :class="getClasses()" @mousedown="mousedown($event)"
+      @dblclick="$emit('edit', parseInt(row.id), $event)" :data-id="row.id">
     <td v-for="(cell, i) in row.data" :data-column="getKey(i)" @mouseleave="dragAndDropPages.mouseLeave"
         @mouseenter="dragAndDropPages.mouseEnter(row.id, $event)" :class="getTdClass(i)"
         @mousemove="dragAndDropPages.mouseMoveContainer(row.id, $event, max, level)">
@@ -285,7 +285,7 @@ export default defineComponent({
                 @mousedown="actionMouseDown(row, action, $event)" :class="getActionClass(action)">
             <i :class="'mdi ' + action.icon"></i>
           </span>
-          <span @click="$emit('edit', row.id, $event)"><i class="mdi mdi-square-edit-outline"></i>
+          <span @click="$emit('edit', parseInt(row.id), $event)"><i class="mdi mdi-square-edit-outline"></i>
           </span>
         </div>
       </template>

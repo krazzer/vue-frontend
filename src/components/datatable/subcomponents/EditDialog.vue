@@ -6,7 +6,7 @@ import TabbedForm from "@/components/form/TabbedForm.vue"
 
 export default defineComponent({
   name: "EditDialog",
-  props: ['dialog', 'form', 'dialogEditId', 'data', 'helperData', 'values', 'darkMode', 'level', 'parentSaved'],
+  props: ['dialog', 'form', 'dialogEditId', 'data', 'helperData', 'values', 'darkMode', 'level', 'parentSaved', 'instance'],
   emits: ['clickSave', 'clickClose', 'inputChange'],
   components: {Editor, TabbedForm},
   data() {
@@ -138,7 +138,8 @@ export default defineComponent({
       </v-card-title>
       <TabbedForm v-if="displayForm" ref="tabbedForm" :form="form" :data="data" :helperData="helperData"
                   @submit="clickSave" :darkMode="darkMode" :checkTabErrors="checkTabErrors" :level="level"
-                  @input-change="inputChange" @dialogChange="childDialogChange"/>
+                  @input-change="inputChange" @dialogChange="childDialogChange" :instance="instance"
+                  :editId="dialogEditId"/>
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn variant="tonal" @click="clickClose" prepend-icon="mdi-close">
