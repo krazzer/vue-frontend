@@ -236,7 +236,7 @@ export default defineComponent({
           if (selectedCount > 1) {
             confirmed = confirm(this.$translator.tl('datatable.deleteMultiple', {amount: selectedCount}));
           } else {
-            confirmed = confirm(this.$translator.tl('datatable.deleteSinlge'));
+            confirmed = confirm(this.$translator.tl('datatable.deleteSingle'));
           }
 
           if (confirmed) {
@@ -254,19 +254,28 @@ export default defineComponent({
       this.filter();
     },
 
-    async delete() {
+    async delete(confirmed: boolean = false) {
       let params: any = {
         instance: this.instance,
         ids: this.selected,
-        filters: this.getFilters()
+        filters: this.getFilters(),
+        confirmed: confirmed,
       };
 
       params = this.addConditionalParams(params);
 
       await this.$appUtil.doAction('datatable/delete', params, (response: any) => {
-        this.storeData = response.data.storeData;
-        this.data      = response.data.data;
-        this.selected  = [];
+        let confirmMessage = response.data.confirm || null;
+
+        if (confirmMessage) {
+          if(confirm(confirmMessage)){
+            this.delete(true);
+          }
+        } else {
+          this.storeData = response.data.storeData;
+          this.data      = response.data.data;
+          this.selected  = [];
+        }
       });
     },
 
