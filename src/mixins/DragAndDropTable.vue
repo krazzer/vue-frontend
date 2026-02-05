@@ -44,7 +44,7 @@ export default defineComponent({
     },
 
     actionMouseMove(e: MouseEvent) {
-      // mouse is not down, so skip
+      // the mousebutton is not down, so skip
       if (!this.mouseDownOnRearrange) {
         return;
       }
@@ -105,12 +105,14 @@ export default defineComponent({
     },
 
     rearrange() {
+      let dataTable = (this as any);
+
       let params = {
         instance: this.instance, source: this.draggingId, target: this.hoveringId, location: this.hoveringPosition,
-        filters: {},
+        filters: dataTable.getFilters(),
       };
 
-      params = (this as any).addConditionalParams(params);
+      params = dataTable.addConditionalParams(params);
 
       this.$appUtil.doAction('datatable/rearrange', params, (response: any) => {
         this.storeData = response.data.storeData;
