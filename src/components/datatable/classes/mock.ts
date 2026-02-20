@@ -297,11 +297,10 @@ class DataTableMock {
 
     mock(mocker: MockAdapter) {
         mocker.onPost("/api/datatable").reply((request) => {
-            let params            = JSON.parse(request.data);
-            let dataTableSettings = this.getDataForInstance(params.instance);
-            let returnData        = {settings: dataTableSettings};
+            let params    = JSON.parse(request.data);
+            let dataTable = this.getDataForInstance(params.instance);
 
-            return [200, returnData];
+            return [200, dataTable];
         });
 
         mocker.onPost("/api/datatable/edit").reply((request) => {
@@ -392,7 +391,7 @@ class DataTableMock {
 
         mocker.onPost("/api/datatable/save").reply((request) => {
             let params  = JSON.parse(request.data);
-            let newData = params.data;
+            let newData = params.formData;
             let id      = params.id;
 
             let index;
@@ -402,7 +401,7 @@ class DataTableMock {
             if (id) {
                 index = this.appUtil.getIndexById(editData, id);
             } else {
-                index = parseInt(<string> Object.keys(editData)[Object.keys(editData).length - 1]) + 1;
+                index = parseInt(<string>Object.keys(editData)[Object.keys(editData).length - 1]) + 1;
             }
 
             switch (params.instance) {
@@ -434,8 +433,8 @@ class DataTableMock {
             return [200, editData];
         };
 
-        mocker.onPost("/api/datatable/page/rearrange").reply(<any> rearrangeAction);
-        mocker.onPost("/api/datatable/rearrange").reply(<any> rearrangeAction);
+        mocker.onPost("/api/datatable/page/rearrange").reply(<any>rearrangeAction);
+        mocker.onPost("/api/datatable/rearrange").reply(<any>rearrangeAction);
 
         mocker.onPost("/api/datatable/validate").reply((request) => {
             let params         = JSON.parse(request.data);
@@ -465,10 +464,13 @@ class DataTableMock {
 
     getContentData() {
         return {
-            buttons: [{label: 'Add content', action: 'add'}, {label: 'Delete', action: 'delete'}],
-            headers: {'id': 'Id', 'name': "Name", 'image': "Image", 'content': "Content"},
-            cells: {'image': {'type': 'image'}},
-            mobileColumns: ['id', 'name'],
+            settings: {
+                buttons: [{label: 'Add content', action: 'add'}, {label: 'Delete', action: 'delete'}],
+                headers: {'id': 'Id', 'name': "Name", 'image': "Image", 'content': "Content"},
+                cells: {'image': {'type': 'image'}},
+                mobileColumns: ['id', 'name'],
+                instance: 'content',
+            },
             data: [
                 {
                     id: 'a1',
@@ -481,25 +483,36 @@ class DataTableMock {
                         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas libero an...']
                 },
             ],
-            instance: 'content',
         };
     }
 
     getDataForInstance(instance: string): any {
+        let dataTable = null;
+
         switch (instance) {
             case 'hobbies':
-                return this.getSubDataTableData();
+                dataTable = this.getSubDataTableData();
+                break;
             case 'clients':
-                return this.getDefaultData();
+                dataTable = this.getDefaultData();
+                break;
             case 'content':
-                return this.getContentData();
+                dataTable = this.getContentData();
+                break;
             case 'pages':
-                return this.getPagesData();
+                dataTable = this.getPagesData();
+                break;
         }
+
+        if (!dataTable) {
+            return null;
+        }
+
+        return {settings: dataTable, data: dataTable.data};
     }
 
     getDefaultData() {
-        return this.defaultData;
+        return {settings: this.defaultData, data: this.defaultData.data};
     }
 
     getEditResponse(instance: string): any {
@@ -540,43 +553,46 @@ class DataTableMock {
         ];
 
         return {
-            buttons: [
-                {label: 'Add page', action: 'add', icon: 'mdi-plus'},
-                {label: 'Delete', action: 'delete', icon: 'mdi-delete'},
-                {
-                    label: 'Add new…', icon: 'mdi-menu', type: 'menu', items: [
-                        {title: 'Add link', icon: 'mdi-link-variant', action: 'add', addType: 'link'},
-                        {title: 'Add menu', icon: 'mdi-menu', action: 'add', addType: 'menu'}
-                    ]
-                },
-                {
-                    label: 'Custom action',
-                    action: 'action',
-                    actionRoute: 'custom-action',
-                    actionConfirm: 'Are you sure?'
-                },
-                {
-                    label: 'Page count: #12',
-                    type: 'label',
-                    icon: 'mdi-view-grid'
-                },
-            ],
-            actions: [
-                {key: 'preview', type: 'url', icon: 'mdi-eye'}
-            ],
-            headers: {name: "Name", template: "Template", slug: "Slug", active: "Active", id: "Id"},
-            mobileColumns: ['name'],
-            cells: {name: {type: 'page'}, active: {type: 'checkbox'}},
-            pages: [1, 2, 3],
-            data: data,
-            languages: [
-                {key: 'en', label: 'English'},
-                {key: 'nl', label: 'Dutch'},
-            ],
-            language: 'en',
-            instance: 'pages',
-            class: 'pages',
-            search: true,
+            settings: {
+                buttons: [
+                    {label: 'Add page', action: 'add', icon: 'mdi-plus'},
+                    {label: 'Delete', action: 'delete', icon: 'mdi-delete'},
+                    {
+                        label: 'Add new…', icon: 'mdi-menu', type: 'menu', items: [
+                            {title: 'Add link', icon: 'mdi-link-variant', action: 'add', addType: 'link'},
+                            {title: 'Add menu', icon: 'mdi-menu', action: 'add', addType: 'menu'}
+                        ]
+                    },
+                    {
+                        label: 'Custom action',
+                        action: 'action',
+                        actionRoute: 'custom-action',
+                        actionConfirm: 'Are you sure?'
+                    },
+                    {
+                        label: 'Page count: #12',
+                        type: 'label',
+                        icon: 'mdi-view-grid'
+                    },
+                ],
+                actions: [
+                    {key: 'preview', type: 'url', icon: 'mdi-eye'}
+                ],
+                headers: {name: "Name", template: "Template", slug: "Slug", active: "Active", id: "Id"},
+                mobileColumns: ['name'],
+                cells: {name: {type: 'page'}, active: {type: 'checkbox'}},
+                pages: [1, 2, 3],
+                data: data,
+                languages: [
+                    {key: 'en', label: 'English'},
+                    {key: 'nl', label: 'Dutch'},
+                ],
+                language: 'en',
+                instance: 'pages',
+                class: 'pages',
+                search: true,
+            },
+            data: data
         };
     }
 
