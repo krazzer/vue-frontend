@@ -102,6 +102,10 @@ export default defineComponent({
   }
 }
 
+.v-slide-group{
+  overflow: visible;
+}
+
 .v-tab.error {
   color: rgb(var(--v-theme-error));
 }
