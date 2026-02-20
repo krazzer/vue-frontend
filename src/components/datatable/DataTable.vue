@@ -585,7 +585,7 @@ export default defineComponent({
                  :mobile-columns="mobileColumns || []" @mouseDownOnRearrange="setMouseDownOnRearrange"
                  :dragClone="row.clone" :busyCollapsing="busyCollapsing" :cloneRowVisible="cloneRowVisible"
                  :instance="instance" :justEdited="lastEditId == row.id" @check="checkCheckbox"
-                 :justEditedFading="lastEditIdFading == row.id"/>
+                 :justEditedFading="lastEditIdFading == row.id" :sort="sortKey"/>
           </template>
           </tbody>
         </table>

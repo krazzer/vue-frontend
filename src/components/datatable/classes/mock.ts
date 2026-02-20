@@ -340,8 +340,9 @@ class DataTableMock {
             let sort          = params.sort;
             let sortDirection = params.sortDirection;
             let filters       = params.filters;
-            let config        = this.getDataForInstance(params.instance);
-            let data          = structuredClone(config.data);
+            let dataTable     = this.getDataForInstance(params.instance);
+            let config        = dataTable.settings;
+            let data          = structuredClone(dataTable.data);
             let keys          = Object.keys(config.headers);
             let index         = keys.indexOf(sort);
 

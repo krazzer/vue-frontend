@@ -10,7 +10,7 @@ export default defineComponent({
   name: "Row",
   props: ['row', 'dragAndDropPages', 'headers', 'settings', 'id', 'level', 'selected', 'selectedIds', 'max',
     'highlight', 'actions', 'index', 'forceDefaultView', 'mobileColumns', 'dragClone', 'cloneRowVisible', 'instance',
-    'busyCollapsing', 'justEdited', 'justEditedFading'],
+    'busyCollapsing', 'justEdited', 'justEditedFading', 'sort'],
   mixins: [DragAndDropRow],
   data() {
     return {
@@ -80,7 +80,7 @@ export default defineComponent({
     },
 
     getCellKey(index: number): string {
-      return <any> Object.keys(this.headers)[index];
+      return <any>Object.keys(this.headers)[index];
     },
 
     arrowClick(event: MouseEvent) {
@@ -141,6 +141,18 @@ export default defineComponent({
       }
 
       return classes;
+    },
+
+    getActions() {
+      let actions: any = [];
+
+      this.actions.forEach((action: any) => {
+        if( ! (action.type == 'rearrange' && this.sort)){
+          actions.push(action);
+        }
+      });
+
+      return actions;
     },
 
     getCell(cell: string) {
@@ -204,7 +216,7 @@ export default defineComponent({
      * @param index
      */
     getKey(index: number): string {
-      return <any> Object.keys(this.headers)[index];
+      return <any>Object.keys(this.headers)[index];
     },
 
     /**
@@ -281,7 +293,7 @@ export default defineComponent({
       <template v-else><span v-html="getCell(cell)"/></template>
       <template v-if="i == row.data.length - 1">
         <div class="buttons">
-          <span v-for="action in actions" @click="clickAction(row, action.key, $event)"
+          <span v-for="action in getActions()" @click="clickAction(row, action.key, $event)"
                 @mousedown="actionMouseDown(row, action, $event)" :class="getActionClass(action)">
             <i :class="'mdi ' + action.icon"></i>
           </span>
@@ -292,7 +304,7 @@ export default defineComponent({
     </td>
     <td class="button-column">
       <div class="buttons">
-          <span v-for="action in actions" @click="clickAction(row, action.key, $event)"
+          <span v-for="action in getActions()" @click="clickAction(row, action.key, $event)"
                 @mousedown="actionMouseDown(row, action, $event)" :class="getActionClass(action)">
             <i :class="'mdi ' + action.icon"></i></span>
         <span @click="$emit('edit', row.id, $event)"><i class="mdi mdi-square-edit-outline"></i>
