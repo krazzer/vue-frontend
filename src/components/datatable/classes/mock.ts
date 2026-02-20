@@ -72,19 +72,21 @@ class DataTableMock {
     };
 
     public subDataTableData = {
-        buttons: [{label: 'Add hobby', action: 'add'}, {label: 'Delete', action: 'delete'}],
-        headers: {'id': "Id", 'name': 'Name'},
-        mobileColumns: ['id', 'name'],
-        actions: [
-            {key: 'rearrange', type: 'rearrange', icon: 'mdi-drag-horizontal-variant'}
-        ],
+        settings: {
+            buttons: [{label: 'Add hobby', action: 'add'}, {label: 'Delete', action: 'delete'}],
+            headers: {'id': "Id", 'name': 'Name'},
+            mobileColumns: ['id', 'name'],
+            actions: [
+                {key: 'rearrange', type: 'rearrange', icon: 'mdi-drag-horizontal-variant'}
+            ],
+            instance: 'test',
+            search: false
+        },
         data: [
             {id: 1, data: [1, 'Fitness']},
             {id: 2, data: [2, 'Gaming']},
             {id: 3, data: [3, 'Sup']},
         ],
-        instance: 'test',
-        search: false,
     };
 
     public defaultForm = {
@@ -166,7 +168,7 @@ class DataTableMock {
                 type: 'datatable',
                 label: 'Hobbies',
                 instance: 'hobbies',
-                settings: this.subDataTableData,
+                settings: this.subDataTableData.settings,
             },
         },
     };
@@ -488,28 +490,16 @@ class DataTableMock {
     }
 
     getDataForInstance(instance: string): any {
-        let dataTable = null;
-
         switch (instance) {
             case 'hobbies':
-                dataTable = this.getSubDataTableData();
-                break;
+                return this.getSubDataTableData();
             case 'clients':
-                dataTable = this.getDefaultData();
-                break;
+                return this.getDefaultData();
             case 'content':
-                dataTable = this.getContentData();
-                break;
+                return this.getContentData();
             case 'pages':
-                dataTable = this.getPagesData();
-                break;
+                return this.getPagesData();
         }
-
-        if (!dataTable) {
-            return null;
-        }
-
-        return {settings: dataTable, data: dataTable.data};
     }
 
     getDefaultData() {
