@@ -107,12 +107,9 @@ export default defineComponent({
     rearrange() {
       let dataTable = (this as any);
 
-      let params = {
-        instance: this.instance, source: this.draggingId, target: this.hoveringId, location: this.hoveringPosition,
-        filters: dataTable.getFilters(),
-      };
-
-      params = dataTable.addConditionalParams(params);
+      let params = dataTable.getParams({
+        source: this.draggingId, target: this.hoveringId, location: this.hoveringPosition
+      });
 
       this.$appUtil.doAction('datatable/rearrange', params, (response: any) => {
         this.storeData = response.data.storeData;
