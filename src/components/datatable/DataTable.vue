@@ -134,9 +134,7 @@ export default defineComponent({
   },
   methods: {
     async filter() {
-      let params = this.addConditionalParams({instance: this.instance, filters: this.getFilters()});
-
-      await this.$appUtil.doAction('datatable/filter', params, (response: any) => {
+      await this.$appUtil.doAction('datatable/filter', this.getParams(), (response: any) => {
         this.data     = response.data.data;
         this.pages    = response.data.pages;
         this.selected = [];
@@ -145,8 +143,11 @@ export default defineComponent({
       })
     },
 
-    addConditionalParams(params: any): any {
+    getParams(params: any = {}): any {
       params.storeData = this.storeData;
+      params.instance  = this.instance;
+      params.filters   = this.getFilters();
+
       return params;
     },
 
@@ -255,20 +256,13 @@ export default defineComponent({
     },
 
     async delete(confirmed: boolean = false) {
-      let params: any = {
-        instance: this.instance,
-        ids: this.selected,
-        filters: this.getFilters(),
-        confirmed: confirmed,
-      };
-
-      params = this.addConditionalParams(params);
+      let params = this.getParams({ids: this.selected, confirmed: confirmed});
 
       await this.$appUtil.doAction('datatable/delete', params, (response: any) => {
         let confirmMessage = response.data.confirm || null;
 
         if (confirmMessage) {
-          if(confirm(confirmMessage)){
+          if (confirm(confirmMessage)) {
             this.delete(true);
           }
         } else {
@@ -318,9 +312,7 @@ export default defineComponent({
     },
 
     async checkCheckbox(key: string, value: any, id: number, callback: any) {
-      let params = {instance: this.instance, field: key, id: id, value: value, filters: {}};
-
-      params = this.addConditionalParams(params);
+      let params = this.getParams({ifield: key, id: id, value: value});
 
       await this.$appUtil.doAction('datatable/check', params, (response: any) => {
         this.storeData = response.data.storeData;
@@ -335,7 +327,7 @@ export default defineComponent({
     async edit(id: number, event: MouseEvent) {
       event.stopPropagation();
 
-      let params: any = this.addConditionalParams({instance: this.instance, id: id, filters: this.getFilters()});
+      let params: any = this.getParams({id: id});
 
       await this.$appUtil.doAction('datatable/edit', params, (response: any) => {
         this.dialog       = true;
@@ -368,9 +360,7 @@ export default defineComponent({
      * @param close
      */
     async save(dialogEditId: any, data: any, close: boolean = false) {
-      let params: any = {instance: this.instance, formData: data, id: dialogEditId, filters: this.getFilters()};
-
-      params = this.addConditionalParams(params);
+      let params = this.getParams({formData: data, id: dialogEditId});
 
       await this.$appUtil.doAction('datatable/save', params, (response: any) => {
         this.data       = response.data.data;
