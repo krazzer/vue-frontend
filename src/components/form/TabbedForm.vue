@@ -76,11 +76,11 @@ export default defineComponent({
 </script>
 
 <template>
-  <v-tabs v-if="form.tabs" v-model="tab">
+  <v-tabs v-if="form && form.tabs" v-model="tab">
     <v-tab v-for="tab in form.tabs" :value="tab.key" :class="getClass(tab.key)">{{ tab.name }}</v-tab>
   </v-tabs>
   <v-form ref="form" v-on:submit.prevent v-on:submit="submit(false)">
-    <v-tabs-window v-if="form.tabs" v-model="tab">
+    <v-tabs-window v-if="form && form.tabs" v-model="tab">
       <v-tabs-window-item v-for="tab in form.tabs" :value="tab.key">
         <Form :fields="tab.fields" :data="data" :darkMode="darkMode" @fieldError="setTabError" :saved="saved"
               :checkErrors="checkTabErrorsLocal" :tab="tab.key" :save="tab.save" :level="level" @do-submit="submit"
@@ -88,8 +88,9 @@ export default defineComponent({
               :instance="instance" :editId="editId"/>
       </v-tabs-window-item>
     </v-tabs-window>
-    <Form v-else :fields="form.fields" :save="form.save" :data="data" :level="level" :darkMode="darkMode" :saved="saved"
-          ref="oneForm" @do-submit="submit" @input-change="inputChange" :helperData="helperData"/>
+    <Form v-else-if="form && form.fields" :fields="form.fields" :save="form.save" :data="data" :level="level"
+          :darkMode="darkMode" :saved="saved" ref="oneForm" @do-submit="submit" @input-change="inputChange"
+          :helperData="helperData"/>
   </v-form>
 </template>
 

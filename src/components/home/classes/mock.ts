@@ -27,7 +27,7 @@ class HomeMock {
             'content': {dataTable: contentDataTable},
             '': {dataTable: pagesDataTable},
             'media': {media: {files: this.getMediaFiles()}},
-            'settings': {form: this.getSettingsForm()},
+            'settings': {form: {settings: this.getSettingsForm(), data: {}}},
             'invoices': {component: 'Invoices'},
             'revenue': {component: 'Revenue'},
             'users': {component: 'subfolder/Sub'},
