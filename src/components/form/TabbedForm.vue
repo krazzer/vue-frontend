@@ -13,6 +13,7 @@ export default defineComponent({
       tabErrors: <any>{},
       forms: <any>[],
       saved: false,
+      isSaving: false,
       checkTabErrorsLocal: false,
     };
   },
@@ -31,6 +32,7 @@ export default defineComponent({
     },
 
     async handleLocalSave() {
+      this.isSaving = true;
       let isValid = await (this.$refs.form as any).validate();
 
       if (!isValid.valid) {
@@ -40,6 +42,7 @@ export default defineComponent({
 
       this.checkTabErrorsLocal = false
       await this.save();
+      this.isSaving = false;
     },
 
     setTabError(tab: string, set: boolean) {
@@ -85,12 +88,12 @@ export default defineComponent({
         <Form :fields="tab.fields" :data="data" :darkMode="darkMode" @fieldError="setTabError" :saved="saved"
               :checkErrors="checkTabErrorsLocal" :tab="tab.key" :save="tab.save" :level="level" @do-submit="submit"
               @input-change="inputChange" :helperData="helperData" @dialog-change="forwardDialogChange"
-              :instance="instance" :editId="editId"/>
+              :instance="instance" :editId="editId" :isSaving="isSaving"/>
       </v-tabs-window-item>
     </v-tabs-window>
     <Form v-else-if="form && form.fields" :fields="form.fields" :save="form.save" :data="data" :level="level"
           :darkMode="darkMode" :saved="saved" ref="oneForm" @do-submit="submit" @input-change="inputChange"
-          :helperData="helperData"/>
+          :helperData="helperData" :isSaving="isSaving"/>
   </v-form>
 </template>
 

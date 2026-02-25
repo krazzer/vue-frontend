@@ -14,7 +14,7 @@ const components: Record<string, Component> = {
 export default defineComponent({
   name: "Form",
   props: ['fields', 'data', 'darkMode', 'checkErrors', 'tab', 'level', 'save', 'saved', 'helperData', 'editId',
-    'instance'],
+    'instance', 'isSaving'],
   emits: ['fieldError', 'doSubmit', 'inputChange', 'dialogChange'],
   components: components,
   data() {
@@ -243,7 +243,11 @@ const DataTable = defineAsyncComponent(() => import('../datatable/DataTable.vue'
       </template>
     </template>
     <v-col v-if="save">
-      <v-btn variant="tonal" :prepend-icon="saved ? 'mdi-check' : 'mdi-content-save'" type="submit">
+      <v-btn variant="tonal" type="submit">
+        <template v-slot:prepend>
+          <v-progress-circular v-if="$appUtil.isBusyLoading() && isSaving" indeterminate size="20" width="2"/>
+          <v-icon :color="saved ? 'green' : ''" v-else>{{ saved ? 'mdi-check' : 'mdi-content-save' }}</v-icon>
+        </template>
         {{ saved ? $translator.tl('general.saved') : $translator.tl('general.save') }}
       </v-btn>
     </v-col>
