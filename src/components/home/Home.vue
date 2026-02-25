@@ -1,5 +1,5 @@
 <script lang="ts">
-import {defineAsyncComponent, defineComponent, markRaw, toRaw} from 'vue'
+import {defineAsyncComponent, defineComponent, markRaw} from 'vue'
 import Logo from "@/components/icons/Logo.vue";
 import Loader from "@/components/icons/Loader.vue";
 import Form from "@/components/form/Form.vue";
@@ -167,7 +167,7 @@ export default defineComponent({
       <Media v-else-if="media && Object.keys(media).length" :settings="media" :role="role"/>
       <DataTable v-else-if="dataTable && dataTable?.settings?.instance" :settings="dataTable.settings"
                  :initialData="dataTable.data" :instance="dataTable.settings.instance" :darkMode="darkMode" :level="0"/>
-      <TabbedForm v-else-if="form" :form="form.settings" :data="form.data" :handleSubmit="true"/>
+      <TabbedForm v-else-if="form" :form="form.settings" :data="form.data" :helperData="form.helperData" :handleSubmit="true"/>
       <component v-else-if="customComponent" :is="customComponent"/>
     </div>
   </div>

@@ -48,7 +48,7 @@ export default defineComponent({
 
     async save() {
       await this.$appUtil.doAction('form/save', {
-        instance: this.form.instance,
+        name: this.form.name,
         data: this.data,
       }, () => {
         this.saved = true;
@@ -56,7 +56,7 @@ export default defineComponent({
     },
 
     async submit(close: boolean = false) {
-      if (this.handleSubmit && this.form.instance) {
+      if (this.handleSubmit && this.form.name) {
         await this.handleLocalSave();
       } else {
         this.$emit('submit', close);
