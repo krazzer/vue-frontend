@@ -7,9 +7,10 @@ import Menu from "@/components/menu/Menu.vue";
 import DataTable from "@/components/datatable/DataTable.vue";
 import Media from "@/components/media/Media.vue";
 import TabbedForm from "@/components/form/TabbedForm.vue";
+import Statistics from "@/components/statistics/Statistics.vue";
 
 export default defineComponent({
-  components: {TabbedForm, Logo, Loader, Menu, DataTable, Media, Form},
+  components: {Statistics, TabbedForm, Logo, Loader, Menu, DataTable, Media, Form},
   props: ['darkMode'],
   watch: {
     $route() {
@@ -41,6 +42,7 @@ export default defineComponent({
       form: <any>{},
       dataTable: <any>{},
       media: {},
+      statistics: {},
       selectedMenuItem: '',
       html: '',
       component: '',
@@ -116,6 +118,7 @@ export default defineComponent({
       this.media           = data.media;
       this.component       = data.component;
       this.form            = data.form;
+      this.statistics      = data.statistics;
 
       if (data.selectedMenuItem) {
         this.selectedMenuItem = data.selectedMenuItem;
@@ -164,10 +167,12 @@ export default defineComponent({
         <span></span>
       </div>
       <span v-if="html" v-html="html"></span>
+      <Statistics v-else-if="statistics" :settings="statistics"/>
       <Media v-else-if="media && Object.keys(media).length" :settings="media" :role="role"/>
       <DataTable v-else-if="dataTable && dataTable?.settings?.instance" :settings="dataTable.settings"
                  :initialData="dataTable.data" :instance="dataTable.settings.instance" :darkMode="darkMode" :level="0"/>
-      <TabbedForm v-else-if="form" :form="form.settings" :data="form.data" :helperData="form.helperData" :handleSubmit="true"/>
+      <TabbedForm v-else-if="form" :form="form.settings" :data="form.data" :helperData="form.helperData"
+                  :handleSubmit="true"/>
       <component v-else-if="customComponent" :is="customComponent"/>
     </div>
   </div>

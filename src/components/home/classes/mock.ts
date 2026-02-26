@@ -31,6 +31,7 @@ class HomeMock {
             'invoices': {component: 'Invoices'},
             'revenue': {component: 'Revenue'},
             'users': {component: 'subfolder/Sub'},
+            'visitors': {statistics: {}},
         };
 
         Object.keys(paramsFor).forEach(key => {
