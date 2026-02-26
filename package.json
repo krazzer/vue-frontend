@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --open --host kikcms.test",
+    "dev": "vite",
     "devNoMock": "VITE_API_HOST=https://localhost:9200 vite --open --host localhost",
     "build": "vue-tsc --noEmit --skipLibCheck && vite build",
     "buildToBackend": "rm -rf ../cms-backend/public_html/cms/* && vue-tsc --noEmit --skipLibCheck && BUILD_OUTDIR=../cms-backend/public_html/cms/ vite build",
