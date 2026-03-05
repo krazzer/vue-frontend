@@ -76,4 +76,13 @@ export default defineConfig({
             scss: {additionalData: `@use "@/assets/media-query-sizes" as *; @use "@/assets/base" as *;`},
         },
     },
+    server: {
+        proxy: {
+        '/api': {
+            target: 'https://localhost:9200',
+            changeOrigin: true,
+            secure: false,
+        }
+        }
+    },
 });
