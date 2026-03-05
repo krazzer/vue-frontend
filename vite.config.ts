@@ -78,16 +78,11 @@ export default defineConfig({
     },
     server: {
         proxy: {
-            '/media/files': {
-                target: 'https://localhost:9200',
-                changeOrigin: true,
-                secure: false,
-            },
-            '/media/thumbs': {
-                target: 'https://localhost:9200',
-                changeOrigin: true,
-                secure: false,
-            },
+        '/api': {
+            target: 'https://localhost:9200',
+            changeOrigin: true,
+            secure: false,
         }
-    }
+        }
+    },
 });
