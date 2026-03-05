@@ -23,7 +23,7 @@ export default defineComponent({
   methods: {
 
     click() {
-      (<any> this).$refs.uploader.click();
+      (<any>this).$refs.uploader.click();
     },
 
     /**
@@ -48,12 +48,12 @@ export default defineComponent({
       let totalBytes = uploadedFiles.reduce((sum: any, file: any) => sum + file.size, 0);
       let formData   = new FormData();
 
-      formData.append("folder", String(this.folderId));
+      formData.append("folder", this.folderId);
 
       let fileUploadLoaded: any = {};
 
       uploadedFiles.forEach((file: any) => {
-        formData.append("file", file);
+        formData.append("files[]", file);
         fileUploadLoaded[file.name] = 0;
       });
 
@@ -68,7 +68,7 @@ export default defineComponent({
       };
 
       axios
-          .post('/api/media/upload', formData, config)
+          .post(this.$appUtil.getBaseUri() + '/api/media/upload', formData, config)
           .then((response: any) => {
             this.$emit('uploadedFolderFiles', response.data.files);
             this.$emit('uploadedNewFiles', response.data.newFiles);

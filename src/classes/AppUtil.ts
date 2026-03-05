@@ -87,14 +87,8 @@ export class AppUtil {
             }
         }
 
-        let baseUri = '';
-
-        if (import.meta.env.VITE_API_HOST) {
-            baseUri = import.meta.env.VITE_API_HOST;
-        }
-
         return axios
-            .post(baseUri + '/api/' + url, params, {...config, withCredentials: true})
+            .post(this.getBaseUri() + '/api/' + url, params, {...config, withCredentials: true})
             .then((response: any) => {
                 const errorMessage = response?.data?.error;
 
@@ -106,6 +100,16 @@ export class AppUtil {
                     return successResponse;
                 }
             }).catch(onError);
+    }
+
+    getBaseUri(): string {
+        let baseUri = '';
+
+        if (import.meta.env.VITE_API_HOST) {
+            baseUri = import.meta.env.VITE_API_HOST;
+        }
+
+        return baseUri;
     }
 
     getIndexById(data: any, id: number): number {
