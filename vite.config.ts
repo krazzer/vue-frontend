@@ -76,6 +76,7 @@ export default defineConfig({
             scss: {additionalData: `@use "@/assets/media-query-sizes" as *; @use "@/assets/base" as *;`},
         },
     },
+    // todo: dit kan weg als je bij de axios calls this.$appUtil.doAction gebruikt
     server: {
         proxy: {
         '/api': {

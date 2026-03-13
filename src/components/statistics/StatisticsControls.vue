@@ -74,6 +74,7 @@ export default defineComponent({
   </div>
 </template>
 
+<!-- Todo: gebruik de variabelen voor de kleuren -->
 <style scoped lang="scss">
 .statistics-controls {
   display: flex;
