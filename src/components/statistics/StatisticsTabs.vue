@@ -129,6 +129,7 @@ export default defineComponent({
   </div>
 </template>
 
+<!-- Todo: gebruik de variabelen voor de kleuren, ipv handmatig .darkmode -->
 <style scoped lang="scss">
 .tab-headers {
   display: flex;

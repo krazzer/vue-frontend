@@ -42,7 +42,7 @@ export default defineComponent({
       form: <any>{},
       dataTable: <any>{},
       media: {},
-      statistics: {},
+      statistics: <object|null>null,
       moduleCsrfToken: '',
       selectedMenuItem: '',
       html: '',
@@ -169,12 +169,12 @@ export default defineComponent({
         <span></span>
       </div>
       <span v-if="html" v-html="html"></span>
-      <Statistics v-else-if="statistics" :settings="statistics" :csrfToken="moduleCsrfToken" :darkMode="darkMode" />
       <Media v-else-if="media && Object.keys(media).length" :settings="media" :role="role"/>
       <DataTable v-else-if="dataTable && dataTable?.settings?.instance" :settings="dataTable.settings"
                  :initialData="dataTable.data" :instance="dataTable.settings.instance" :darkMode="darkMode" :level="0"/>
       <TabbedForm v-else-if="form" :form="form.settings" :data="form.data" :helperData="form.helperData"
                   :handleSubmit="true"/>
+      <Statistics v-else-if="statistics" :settings="statistics" :csrfToken="moduleCsrfToken" :darkMode="darkMode" />
       <component v-else-if="customComponent" :is="customComponent"/>
     </div>
   </div>

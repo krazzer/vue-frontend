@@ -130,6 +130,9 @@ export default defineComponent({
   display: flex;
   align-items: center;
   justify-content: center;
+  /**
+   * Todo: Gebruik geen losse kleuren maar de variabelen, ook voor darkmode
+   */
   background: #f5f5f5;
   color: #999;
 }
