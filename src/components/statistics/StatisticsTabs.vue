@@ -129,13 +129,12 @@ export default defineComponent({
   </div>
 </template>
 
-<!-- Todo: gebruik de variabelen voor de kleuren, ipv handmatig .darkmode -->
 <style scoped lang="scss">
 .tab-headers {
   display: flex;
   flex-wrap: wrap;
   gap: 0.25rem;
-  border-bottom: 2px solid #ddd;
+  border-bottom: 2px solid var(--color-line);
   margin-bottom: 1rem;
 
   .tab-btn {
@@ -147,12 +146,12 @@ export default defineComponent({
     font-weight: 500;
 
     &:hover {
-      background: #f0f0f0;
+      background: var(--color-background-shade2);
     }
 
     &.active {
-      border-bottom-color: #DF137A;
-      color: #DF137A;
+      border-bottom-color: var(--main-color);
+      color: var(--main-color);
     }
   }
 }
@@ -164,11 +163,11 @@ export default defineComponent({
   th, td {
     padding: 0.5rem;
     text-align: left;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--color-line);
 
     .percentage-bar {
       margin: auto 5px auto 0;
-      background-color: #DF137A;
+      background-color: var(--main-color);
       display: inline-block;
       height: 11px;
     }
@@ -176,26 +175,7 @@ export default defineComponent({
 
   th {
     font-weight: 600;
-    background: #f9f9f9;
-  }
-}
-
-.dark-mode {
-  .tab-headers {
-    border-bottom-color: #444;
-
-    .tab-btn:hover {
-      background: #333;
-    }
-  }
-
-  .table {
-    th {
-      background: #2a2a2a;
-    }
-    td, th {
-      border-bottom-color: #444;
-    }
+    background: var(--color-background-shade2);
   }
 }
 </style>

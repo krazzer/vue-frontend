@@ -31,6 +31,7 @@ export default defineComponent({
     data: { type: Object, default: null },
     loading: Boolean,
     interval: { type: String, default: 'daily' },
+    darkMode: Boolean,
   },
   setup(props) {
     const chartKey = ref(0);
@@ -58,7 +59,7 @@ export default defineComponent({
       return new Intl.DateTimeFormat('nl', options).format(date);
     };
 
-    const chartData = computed(() => {
+    var chartData = computed(() => {
       if (!props.data) return null;
       const rows = props.data.rows || [];
       const labels = rows.map((row: any) => formatDateLabel(row.c[0].v));
@@ -98,6 +99,14 @@ export default defineComponent({
       scales: {
         y: {
           beginAtZero: true,
+          grid: {
+            color: props.darkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
+          },
+        },
+        x: {
+          grid: {
+            color: props.darkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
+          },
         },
       },
     }));
@@ -108,7 +117,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="statistics-chart" :class="{ loading }">
+  <div class="statistics-chart" :class="{ loading, 'dark-mode': darkMode }">
     <Line
         v-if="chartData"
         :data="chartData"
@@ -125,15 +134,18 @@ export default defineComponent({
   margin-bottom: 2rem;
   position: relative;
 }
+
 .no-data {
   height: 400px;
   display: flex;
   align-items: center;
   justify-content: center;
-  /**
-   * Todo: Gebruik geen losse kleuren maar de variabelen, ook voor darkmode
-   */
-  background: #f5f5f5;
-  color: #999;
+  background: var(--color-background-shade1);
+  color: var(--color-text-gray);
+
+  .dark-mode & {
+    background: var(--color-background-shade2);
+    color: var(--color-text-gray);
+  }
 }
 </style>

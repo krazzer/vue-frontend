@@ -1,15 +1,15 @@
 <script lang="ts">
-import {defineComponent, ref, watch} from 'vue';
+import { defineComponent, ref, watch, getCurrentInstance } from 'vue';
 import StatisticsControls from './StatisticsControls.vue';
 import StatisticsChart from './StatisticsChart.vue';
 import StatisticsTabs from './StatisticsTabs.vue';
-import axios from 'axios';
 
 export default defineComponent({
   name: 'Statistics',
   components: {StatisticsControls, StatisticsChart, StatisticsTabs},
   props: ['settings', 'csrfToken', 'darkMode'],
   setup(props) {
+    const appUtil = (getCurrentInstance() as any)?.proxy?.$appUtil;
     const interval = ref('monthly');
 
     const formatDate = (date: Date): string => {
@@ -34,54 +34,50 @@ export default defineComponent({
     const visitorData    = ref<Record<string, any[]>>({});
     const overviewData   = ref({});
 
-    const fetchData = async () => {
+    const fetchData = () => {
       loading.value = true;
-      failed.value  = false;
+      failed.value = false;
 
-      try {
-        // todo: gebruik voor alle ajax calls this.$appUtil.doAction (zie andere componenten)
-        const response = await axios.post('/api/statistics/visitors', {
-          interval: interval.value,
-          start: startDate.value,
-          end: endDate.value,
-        });
-
+      appUtil?.doAction('statistics/visitors', {
+        interval: interval.value,
+        start: startDate.value,
+        end: endDate.value,
+      }, (response: any) => {
         const data = response.data;
-
-        chartData.value      = data.visitorsData;
-        visitorData.value    = data.visitorData;
+        chartData.value = data.visitorsData;
+        visitorData.value = data.visitorData;
         requiresUpdate.value = data.requiresUpdate;
-        overviewData.value   = data.overviewData;
-      } catch (error) {
-        console.error('Failed to fetch statistics', error);
-        failed.value = true;
-      } finally {
+        overviewData.value = data.overviewData;
         loading.value = false;
-      }
+      }, {
+        onError: (error: any) => {
+          console.error('Failed to fetch statistics', error);
+          failed.value = true;
+          loading.value = false;
+        }
+      });
     };
 
     watch([interval, startDate, endDate], fetchData, {immediate: true});
 
-    /**
-     * Todo: Gebruik hier ook this.$appUtil.doAction, en je kunt ook de ingebouwde loader om te bepalen of er wordt
-     * die triggert ook alleen als het laden langer dan X milliseconden duurt
-     */
-    const handleRefresh = async () => {
+    const handleRefresh = () => {
       if (loading.value) return;
 
       if (requiresUpdate.value) {
         loading.value = true;
-        try {
-          await axios.post('/api/statistics/update', {token: props.csrfToken});
-          await fetchData();
-          requiresUpdate.value = false;
-        } catch (error) {
-          failed.value = true;
-        } finally {
-          loading.value = false;
-        }
+        appUtil?.doAction('statistics/update', {
+          token: props.csrfToken
+        }, () => {
+          fetchData();
+        }, {
+          onError: (error: any) => {
+            console.error('Update failed', error);
+            failed.value = true;
+            loading.value = false;
+          },
+        });
       } else {
-        await fetchData();
+        fetchData();
       }
     };
 
@@ -90,6 +86,7 @@ export default defineComponent({
       startDate,
       endDate,
       loading,
+      failed,
       requiresUpdate,
       chartData,
       visitorData,
@@ -107,11 +104,12 @@ export default defineComponent({
         v-model:startDate="startDate"
         v-model:endDate="endDate"
         :loading="loading"
+        :failed="failed"
         :requiresUpdate="requiresUpdate"
         :darkMode="darkMode"
         @refresh="handleRefresh"
     />
-    <StatisticsChart :data="chartData" :loading="loading" :interval="interval"/>
+    <StatisticsChart :data="chartData" :loading="loading" :interval="interval" :darkMode="darkMode"/>
     <StatisticsTabs :visitorData="visitorData" :overviewData="overviewData"/>
   </div>
 </template>

@@ -8,6 +8,7 @@ export default defineComponent({
     startDate: { type: String, required: true },
     endDate: { type: String, required: true },
     loading: Boolean,
+    failed: Boolean,
     requiresUpdate: Boolean,
     darkMode: Boolean,
   },
@@ -20,6 +21,7 @@ export default defineComponent({
 
     const refreshButtonText = computed(() => {
       if (props.loading) return 'Bezig met laden...';
+      if (props.failed) return '❌ Ophalen mislukt';
       if (props.requiresUpdate) return 'Update beschikbaar';
       return 'Ververs';
     });
@@ -63,8 +65,7 @@ export default defineComponent({
     </div>
 
     <button
-        class="btn refresh"
-        :class="{ 'btn-default': !requiresUpdate, 'btn-warning': requiresUpdate }"
+        class="btn refresh btn-default"
         @click="$emit('refresh')"
         :disabled="loading"
     >
@@ -74,7 +75,6 @@ export default defineComponent({
   </div>
 </template>
 
-<!-- Todo: gebruik de variabelen voor de kleuren -->
 <style scoped lang="scss">
 .statistics-controls {
   display: flex;
@@ -92,13 +92,23 @@ export default defineComponent({
     border-radius: 0.25rem;
     cursor: pointer;
     font-size: 0.875rem;
+    border: 1px solid transparent;
     transition: background-color 0.2s, color 0.2s, border-color 0.2s;
 
     &.btn-primary {
-      background-color: #DF137A;
-      color: #fff;
+      background-color: var(--main-color);
+      color: var(--color-white);
       &:hover {
-        background-color: darken(#DF137A, 10%);
+        background-color: var(--main-color-darker);
+      }
+    }
+
+    &.btn-default {
+      background-color: var(--color-background-shade1);
+      color: var(--color-text);
+      border-color: var(--color-line);
+      &:hover {
+        background-color: var(--color-background-shade2);
       }
     }
   }
@@ -110,11 +120,11 @@ export default defineComponent({
 
     input {
       width: 200px;
-      border: 1px solid #e1e1e1;
+      border: 1px solid var(--color-line);
       border-radius: 3px;
       padding: 7px 12px;
-      background-color: #fff;
-      color: #333;
+      background-color: var(--color-background);
+      color: var(--color-text);
       transition: border-color 0.2s, background-color 0.2s, color 0.2s;
     }
   }
@@ -137,15 +147,12 @@ export default defineComponent({
   }
 
   &.dark-mode {
-    .btn-primary {
+    .btn-default {
+      background-color: var(--color-background-shade1);
+      border-color: var(--color-line);
       &:hover {
-        background-color: lighten(#DF137A, 10%);
+        background-color: var(--color-background-shade2);
       }
-    }
-    .date-range input {
-      border-color: #444;
-      background-color: #1A1A1A;
-      color: #f0f0f0;
     }
   }
 }
