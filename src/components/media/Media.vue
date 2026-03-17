@@ -162,6 +162,15 @@ export default defineComponent({
           }
         });
 
+        const file = this.files.find((f: any) => f.id === id);
+
+        if (file && !file.isDir) {
+          const lastDotIndex = currentName.lastIndexOf('.');
+          if (lastDotIndex !== -1) {
+            currentName = currentName.substring(0, lastDotIndex);
+          }
+        }
+
         let newFileName = prompt(this.$translator.tl('media.editNamePrompt'), currentName);
 
         if (!newFileName) {
@@ -201,11 +210,13 @@ export default defineComponent({
     newFolder() {
       let name = prompt(this.$translator.tl('media.newFolderPrompt'), this.$translator.tl('media.newFolderPlaceholder'));
 
-      this.$appUtil.doAction('media/newfolder', {name: name, folder: this.currentFolderId}, (response: any) => {
-        this.files         = response.data.files;
-        this.path          = response.data.path;
-        this.selectedFiles = [];
-      });
+      if (name && name.trim() !== '') {
+        this.$appUtil.doAction('media/newfolder', {name: name, folder: this.currentFolderId}, (response: any) => {
+          this.files         = response.data.files;
+          this.path          = response.data.path;
+          this.selectedFiles = [];
+        });
+      }
     },
 
     pickFile() {
