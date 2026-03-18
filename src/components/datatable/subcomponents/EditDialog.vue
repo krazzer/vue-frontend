@@ -129,7 +129,7 @@ export default defineComponent({
 
   <v-dialog class="dt-dialog" v-model="localDialog" @update:modelValue="onDialogClose" :eager="true"
             :retain-focus="false" :data-level="level" :class="{ noselect: $appUtil.isPreventSelect() }">
-    <v-card height="100vh">
+    <v-card>
       <v-card-title>
         <span class="text-h5">{{ dialogEditId ? 'Edit ' + dialogEditId : 'Add' }}</span>
         <span class="close">

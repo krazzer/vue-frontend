@@ -15,7 +15,7 @@ export default defineComponent({
   name: "Form",
   props: ['fields', 'data', 'darkMode', 'checkErrors', 'tab', 'level', 'save', 'saved', 'helperData', 'editId',
     'instance', 'isSaving'],
-  emits: ['fieldError', 'doSubmit', 'inputChange', 'dialogChange'],
+  emits: ['fieldError', 'doSubmit', 'inputChange', 'dialogChange', 'updateForm'],
   components: components,
   data() {
     return {
@@ -25,6 +25,7 @@ export default defineComponent({
       fieldRefs: <any>[],
       darkModeSelect: null,
       theme: useTheme(),
+      previousData: <any>{},
       fieldComponents: <any>{
         text: 'v-text-field',
         textarea: 'v-textarea',
@@ -107,6 +108,16 @@ export default defineComponent({
     },
 
     handleDataChange(val: any) {
+      for (const key in val) {
+        const field = this.fields[key];
+
+        if(val[key] !== this.previousData[key] && field && field.is_form_modifier){
+          this.$emit('updateForm', key, val);
+        }
+      }
+
+      this.previousData = { ...val };
+
       if (this.hasDarkModeField() && this.$darkMode.value !== val.darkmode) {
         this.$darkMode.value  = val.darkmode;
         localStorage.darkMode = JSON.stringify(this.$darkMode.value);
@@ -222,7 +233,8 @@ const DataTable = defineAsyncComponent(() => import('../datatable/DataTable.vue'
         <div class="group" v-else-if="field.type == 'group'">
           <Form :fields="field.fields" :data="data" :darkMode="darkMode" @fieldError="$emit('fieldError')"
                 :saved="saved" :checkErrors="checkErrors" :level="level" @do-submit="$emit('doSubmit')"
-                @input-change="$emit('inputChange')" @dialog-change="forwardDialogChange"/>
+                @input-change="$emit('inputChange')" @dialog-change="forwardDialogChange"
+                @update-form="$emit('updateForm')"/>
         </div>
         <LabelField v-else-if="field.type == 'label'" :field="field"/>
         <template v-else-if="field.type == 'date'">
@@ -236,7 +248,7 @@ const DataTable = defineAsyncComponent(() => import('../datatable/DataTable.vue'
           </v-menu>
         </template>
         <component v-else :is="fieldComponents[field.type]" v-bind="getFieldProperties(field)" v-model="data[field.key]"
-                   ref="fieldRefs"/>
+                   ref="fieldRefs" />
       </v-col>
       <template v-else>
         <input :value="data[field.key]" :name="field.key" type="hidden"/>

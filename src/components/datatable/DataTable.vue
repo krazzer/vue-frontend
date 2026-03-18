@@ -195,7 +195,9 @@ export default defineComponent({
       let selectedCount = this.selected.length;
 
       if (button.action == 'add') {
-        this.$appUtil.doAction('datatable/add', {instance: this.instance, type: button.addType}, (response: any) => {
+        let params = {instance: this.instance, type: button.addType || null};
+
+        this.$appUtil.doAction('datatable/add', params, (response: any) => {
           this.dialog       = true;
           this.dialogEditId = null;
           this.form         = response.data.form;
@@ -578,7 +580,7 @@ export default defineComponent({
           </thead>
           <tbody>
           <template v-for="(row, index) in data">
-            <Row v-if="parentIsOpen(index)" :row="row" :dragAndDropPages="dragAndDropPages" :headers="headers"
+            <Row v-if="parentIsOpen(<any> index)" :row="row" :dragAndDropPages="dragAndDropPages" :headers="headers"
                  :actions="actions" :selected="isSelected(row.id)" @toggle="toggle" :settings="settings"
                  @collapse="collapse" @edit="edit" :id="row.id" :level="row.level" :selectedIds="selected"
                  :max="row.max" :highlight="highlight" :index="index" :forceDefaultView="forceDefaultView"

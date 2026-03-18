@@ -33,7 +33,7 @@ export default defineComponent({
 
     async handleLocalSave() {
       this.isSaving = true;
-      let isValid = await (this.$refs.form as any).validate();
+      let isValid   = await (this.$refs.form as any).validate();
 
       if (!isValid.valid) {
         this.checkTabErrorsLocal = true;
@@ -73,6 +73,18 @@ export default defineComponent({
 
     forwardDialogChange(...args: any) {
       this.$emit('dialogChange', ...args)
+    },
+
+    updateForm(trigger: string, data: object|any) {
+      if (this.editId) {
+        data.id = this.editId;
+      }
+
+      let params = {instance: this.instance, trigger: trigger, data: data};
+
+      this.$appUtil.doAction('datatable/updateform', params, (response: any) => {
+        console.log(response.data.form);
+      });
     }
   }
 })
@@ -88,7 +100,7 @@ export default defineComponent({
         <Form :fields="tab.fields" :data="data" :darkMode="darkMode" @fieldError="setTabError" :saved="saved"
               :checkErrors="checkTabErrorsLocal" :tab="tab.key" :save="tab.save" :level="level" @do-submit="submit"
               @input-change="inputChange" :helperData="helperData" @dialog-change="forwardDialogChange"
-              :instance="instance" :editId="editId" :isSaving="isSaving"/>
+              :instance="instance" :editId="editId" :isSaving="isSaving" @update-form="updateForm"/>
       </v-tabs-window-item>
     </v-tabs-window>
     <Form v-else-if="form && form.fields" :fields="form.fields" :save="form.save" :data="data" :level="level"
@@ -106,7 +118,7 @@ export default defineComponent({
   }
 }
 
-.v-slide-group{
+.v-slide-group {
   overflow: visible;
 }
 
