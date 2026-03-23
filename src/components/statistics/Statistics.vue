@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, ref, watch, getCurrentInstance } from 'vue';
+import { defineComponent } from 'vue';
 import StatisticsControls from './StatisticsControls.vue';
 import StatisticsChart from './StatisticsChart.vue';
 import StatisticsTabs from './StatisticsTabs.vue';
@@ -8,91 +8,93 @@ export default defineComponent({
   name: 'Statistics',
   components: {StatisticsControls, StatisticsChart, StatisticsTabs},
   props: ['settings', 'csrfToken', 'darkMode'],
-  setup(props) {
-    const appUtil = (getCurrentInstance() as any)?.proxy?.$appUtil;
-    const interval = ref('monthly');
-
-    const formatDate = (date: Date): string => {
+  data() {
+    return {
+      interval: 'monthly',
+      startDate: '',
+      endDate: '',
+      loading: false,
+      requiresUpdate: false,
+      failed: false,
+      chartData: {} as Record<string, any[]>,
+      visitorData: {} as Record<string, any[]>,
+      overviewData: {} as Record<string, any>,
+    };
+  },
+  created() {
+    const end = new Date();
+    const start = new Date();
+    start.setDate(start.getDate() - 30);
+    this.startDate = this.formatDate(start);
+    this.endDate = this.formatDate(end);
+  },
+  computed: {
+    watchSource() {
+      return {
+        interval: this.interval,
+        startDate: this.startDate,
+        endDate: this.endDate,
+      };
+    },
+  },
+  watch: {
+    watchSource: {
+      handler() {
+        this.fetchData();
+      }
+    },
+  },
+  methods: {
+    formatDate(date: Date) {
       const y = date.getFullYear();
       const m = String(date.getMonth() + 1).padStart(2, '0');
       const d = String(date.getDate()).padStart(2, '0');
       return `${y}-${m}-${d}`;
-    };
+    },
 
-    const end   = new Date();
-    const start = new Date();
-
-    start.setDate(start.getDate() - 30);
-
-    const startDate = ref(formatDate(start));
-    const endDate   = ref(formatDate(end));
-
-    const loading        = ref(false);
-    const requiresUpdate = ref(false);
-    const failed         = ref(false);
-    const chartData      = ref<Record<string, any[]>>({});
-    const visitorData    = ref<Record<string, any[]>>({});
-    const overviewData   = ref({});
-
-    const fetchData = () => {
-      loading.value = true;
-      failed.value = false;
-
-      appUtil?.doAction('statistics/visitors', {
-        interval: interval.value,
-        start: startDate.value,
-        end: endDate.value,
-      }, (response: any) => {
-        const data = response.data;
-        chartData.value = data.visitorsData;
-        visitorData.value = data.visitorData;
-        requiresUpdate.value = data.requiresUpdate;
-        overviewData.value = data.overviewData;
-        loading.value = false;
-      }, {
-        onError: (error: any) => {
-          console.error('Failed to fetch statistics', error);
-          failed.value = true;
-          loading.value = false;
-        }
-      });
-    };
-
-    watch([interval, startDate, endDate], fetchData, {immediate: true});
-
-    const handleRefresh = () => {
-      if (loading.value) return;
-
-      if (requiresUpdate.value) {
-        loading.value = true;
-        appUtil?.doAction('statistics/update', {
-          token: props.csrfToken
-        }, () => {
-          fetchData();
-        }, {
+    fetchData() {
+      this.loading = true;
+      this.failed = false;
+      this.$appUtil?.doAction('statistics/visitors', {interval: this.interval, start: this.startDate, end: this.endDate},
+        (response: any) => {
+          const data = response.data;
+          this.chartData = data.visitorsData;
+          this.visitorData = data.visitorData;
+          this.requiresUpdate = data.requiresUpdate;
+          this.overviewData = data.overviewData;
+          this.loading = false;
+        },
+        {
           onError: (error: any) => {
-            console.error('Update failed', error);
-            failed.value = true;
-            loading.value = false;
+            console.error('Failed to fetch statistics', error);
+            this.failed = true;
+            this.loading = false;
           },
-        });
-      } else {
-        fetchData();
-      }
-    };
+        }
+      );
+    },
 
-    return {
-      interval,
-      startDate,
-      endDate,
-      loading,
-      failed,
-      requiresUpdate,
-      chartData,
-      visitorData,
-      overviewData,
-      handleRefresh,
-    };
+    handleRefresh() {
+      if (this.loading) return;
+
+      if (this.requiresUpdate) {
+        this.loading = true;
+        this.$appUtil?.doAction('statistics/update', {token: this.csrfToken},
+          () => {
+            this.fetchData();
+          },
+          {
+            onError: (error: any) => {
+              console.error('Update failed', error);
+              this.failed = true;
+              this.loading = false;
+            },
+          }
+        );
+      } else {
+        this.fetchData();
+      }
+    },
   },
 });
 </script>

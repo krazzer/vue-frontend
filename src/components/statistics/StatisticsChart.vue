@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, computed, ref, watch } from 'vue';
+import { defineComponent } from 'vue';
 import { Line } from 'vue-chartjs';
 import {
   Chart as ChartJS,
@@ -10,7 +10,7 @@ import {
   CategoryScale,
   LinearScale,
   PointElement,
-  Filler
+  Filler,
 } from 'chart.js';
 
 ChartJS.register(
@@ -27,42 +27,17 @@ ChartJS.register(
 export default defineComponent({
   name: 'StatisticsChart',
   components: { Line },
-  props: {
-    data: { type: Object, default: null },
-    loading: Boolean,
-    interval: { type: String, default: 'daily' },
-    darkMode: Boolean,
-  },
-  setup(props) {
-    const chartKey = ref(0);
-    watch(() => props.data, () => {
-      chartKey.value += 1;
-    });
-
-    const formatDateLabel = (dateStr: string): string => {
-      const isMonthly = dateStr.length === 7;
-      let date: Date;
-      if (isMonthly) {
-        date = new Date(dateStr + '-01T00:00:00');
-      } else {
-        date = new Date(dateStr + 'T00:00:00');
-      }
-
-      const options: Intl.DateTimeFormatOptions = {
-        month: 'short',
-        year: 'numeric',
-      };
-      if (props.interval === 'daily' && !isMonthly) {
-        options.day = 'numeric';
-      }
-
-      return new Intl.DateTimeFormat('nl', options).format(date);
+  props: ['data', 'loading', 'interval', 'darkMode'],
+  data() {
+    return {
+      chartKey: 0,
     };
-
-    var chartData = computed(() => {
-      if (!props.data) return null;
-      const rows = props.data.rows || [];
-      const labels = rows.map((row: any) => formatDateLabel(row.c[0].v));
+  },
+  computed: {
+    chartData() {
+      if (!this.data) return null;
+      const rows = this.data.rows || [];
+      const labels = rows.map((row: any) => this.formatDateLabel(row.c[0].v));
       const visits = rows.map((row: any) => row.c[1].v);
       const uniqueVisits = rows.map((row: any) => row.c[2].v);
 
@@ -87,31 +62,60 @@ export default defineComponent({
           },
         ],
       };
-    });
+    },
 
-    const chartOptions = computed(() => ({
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { position: 'bottom' as const },
-        tooltip: { mode: 'index' as const, intersect: false },
-      },
-      scales: {
-        y: {
-          beginAtZero: true,
-          grid: {
-            color: props.darkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
+    chartOptions() {
+      return {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'bottom' as const },
+          tooltip: { mode: 'index' as const, intersect: false },
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            grid: {
+              color: this.darkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
+            },
+          },
+          x: {
+            grid: {
+              color: this.darkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
+            },
           },
         },
-        x: {
-          grid: {
-            color: props.darkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
-          },
-        },
+      };
+    },
+  },
+  watch: {
+    data: {
+      handler() {
+        this.chartKey += 1;
       },
-    }));
+      deep: true,
+    },
+  },
+  methods: {
+    formatDateLabel(dateStr: string): string {
+      const isMonthly = dateStr.length === 7;
+      let date: Date;
+      if (isMonthly) {
+        date = new Date(dateStr + '-01T00:00:00');
+      } else {
+        date = new Date(dateStr + 'T00:00:00');
+      }
 
-    return { chartKey, chartData, chartOptions };
+      const options: Intl.DateTimeFormatOptions = {
+        month: 'short',
+        year: 'numeric',
+      };
+      if (this.interval === 'daily' && !isMonthly) {
+        options.day = 'numeric';
+      }
+
+      return new Intl.DateTimeFormat('nl', options).format(date);
+    },
   },
 });
 </script>

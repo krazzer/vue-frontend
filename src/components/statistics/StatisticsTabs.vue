@@ -1,80 +1,76 @@
 <script lang="ts">
-import {defineComponent, ref, computed, type PropType} from 'vue';
+import { defineComponent } from 'vue';
+
+const tabs = [
+  { key: 'overview', label: 'Overzicht' },
+  { key: 'source', label: 'Bron' },
+  { key: 'page', label: 'Pagina' },
+  { key: 'location', label: 'Locatie' },
+  { key: 'browser', label: 'Browser' },
+  { key: 'resolution', label: 'Resolutie' },
+  { key: 'os', label: 'Besturingssysteem' },
+];
+
+const firstColumnMap: Record<string, string> = {
+  source: 'Bron',
+  page: 'Pagina',
+  location: 'Locatie',
+  browser: 'Browser',
+  os: 'Besturingssysteem',
+};
+
+const fieldMap: Record<string, string> = {
+  Bron: 'value',
+  Pagina: 'value',
+  Locatie: 'value',
+  Browser: 'value',
+  Besturingssysteem: 'value',
+  Device: 'device',
+  Value: 'value',
+};
+
+const overviewLabels: Record<string, string> = {
+  'statistics.overview.totalVisits': 'Aantal bezoeken',
+  'statistics.overview.totalUniqueVisits': 'Aantal unieke bezoeken',
+  'statistics.overview.dailyAverage': 'Gemiddeld bezoek per dag',
+  'statistics.overview.monthlyAverage': 'Gemiddeld bezoek per maand',
+};
 
 export default defineComponent({
   name: 'StatisticsTabs',
-  props: {
-    visitorData: { type: Object as PropType<Record<string, any[]>>, default: () => ({}) },
-    overviewData: { type: Object, default: () => ({}) },
-  },
-  setup(props) {
-    const tabs = [
-      { key: 'overview', label: 'Overzicht' },
-      { key: 'source', label: 'Bron' },
-      { key: 'page', label: 'Pagina' },
-      { key: 'location', label: 'Locatie' },
-      { key: 'browser', label: 'Browser' },
-      { key: 'resolution', label: 'Resolutie' },
-      { key: 'os', label: 'Besturingssysteem' },
-    ];
-
-    const activeTab = ref('overview');
-
-    const firstColumnMap: Record<string, string> = {
-      source: 'Bron',
-      page: 'Pagina',
-      location: 'Locatie',
-      browser: 'Browser',
-      os: 'Besturingssysteem',
-    };
-
-    const fieldMap: Record<string, string> = {
-      'Bron': 'value',
-      'Pagina': 'value',
-      'Locatie': 'value',
-      'Browser': 'value',
-      'Besturingssysteem': 'value',
-      'Device': 'device',
-      'Value': 'value'
-    };
-
-    const filteredVisitorData = computed(() => {
-      if (activeTab.value === 'resolution') {
-        const desktop = props.visitorData['resolutionDesktop'] || [];
-        const tablet = props.visitorData['resolutionTablet'] || [];
-        const mobile = props.visitorData['resolutionMobile'] || [];
-        return [
-          ...desktop.map(item => ({ ...item, device: 'Desktop' })),
-          ...tablet.map(item => ({ ...item, device: 'Tablet' })),
-          ...mobile.map(item => ({ ...item, device: 'Mobile' })),
-        ];
-      }
-      return props.visitorData[activeTab.value] || [];
-    });
-
-    const tableColumns = (tabKey: string): string[] => {
-      if (tabKey === 'resolution') {
-        return ['Device', 'Value', 'Hits', 'Percentage'];
-      }
-      const firstCol = firstColumnMap[tabKey] || 'Value';
-      return [firstCol, 'Hits', 'Percentage'];
-    };
-
-    const overviewLabels: Record<string, string> = {
-      'statistics.overview.totalVisits': 'Aantal bezoeken',
-      'statistics.overview.totalUniqueVisits': 'Aantal unieke bezoeken',
-      'statistics.overview.dailyAverage': 'Gemiddeld bezoek per dag',
-      'statistics.overview.monthlyAverage': 'Gemiddeld bezoek per maand',
-    };
-
+  props: ['visitorData', 'overviewData',],
+  data() {
     return {
+      activeTab: 'overview',
       tabs,
-      activeTab,
-      filteredVisitorData,
-      tableColumns,
+      firstColumnMap,
       fieldMap,
       overviewLabels,
     };
+  },
+  computed: {
+    filteredVisitorData(): any[] {
+      if (this.activeTab === 'resolution') {
+        const desktop = this.visitorData['resolutionDesktop'] || [];
+        const tablet = this.visitorData['resolutionTablet'] || [];
+        const mobile = this.visitorData['resolutionMobile'] || [];
+        return [
+          ...desktop.map((item: any) => ({ ...item, device: 'Desktop' })),
+          ...tablet.map((item: any) => ({ ...item, device: 'Tablet' })),
+          ...mobile.map((item: any) => ({ ...item, device: 'Mobile' })),
+        ];
+      }
+      return this.visitorData[this.activeTab] || [];
+    },
+  },
+  methods: {
+    tableColumns(tabKey: string): string[] {
+      if (tabKey === 'resolution') {
+        return ['Device', 'Value', 'Hits', 'Percentage'];
+      }
+      const firstCol = this.firstColumnMap[tabKey] || 'Value';
+      return [firstCol, 'Hits', 'Percentage'];
+    },
   },
 });
 </script>

@@ -1,35 +1,35 @@
 <script lang="ts">
-import { defineComponent, computed } from 'vue';
+import { defineComponent } from 'vue';
+
+const intervalOptions = [
+  { value: 'daily', label: 'Dag' },
+  { value: 'monthly', label: 'Maand' },
+];
 
 export default defineComponent({
   name: 'StatisticsControls',
-  props: {
-    interval: { type: String, required: true },
-    startDate: { type: String, required: true },
-    endDate: { type: String, required: true },
-    loading: Boolean,
-    failed: Boolean,
-    requiresUpdate: Boolean,
-    darkMode: Boolean,
-  },
-  emits: ['update:interval', 'update:startDate', 'update:endDate', 'refresh'],
-  setup(props) {
-    const intervalOptions = [
-      { value: 'daily', label: 'Dag' },
-      { value: 'monthly', label: 'Maand' },
-    ];
-
-    const refreshButtonText = computed(() => {
-      if (props.loading) return 'Bezig met laden...';
-      if (props.failed) return '❌ Ophalen mislukt';
-      if (props.requiresUpdate) return 'Update beschikbaar';
-      return 'Ververs';
-    });
-
+  props: ['interval', 'startDate', 'endDate', 'loading', 'failed', 'requiresUpdate', 'darkMode'],
+  data() {
     return {
       intervalOptions,
-      refreshButtonText,
     };
+  },
+  emits: ['update:interval', 'update:startDate', 'update:endDate', 'refresh'],
+  computed: {
+    refreshButtonText(): string {
+      if (this.loading) return 'Bezig met laden...';
+      if (this.failed) return '❌ Ophalen mislukt';
+      if (this.requiresUpdate) return 'Update beschikbaar';
+      return 'Ververs';
+    },
+
+    today(): string {
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = String(today.getMonth() + 1).padStart(2, '0');
+      const day = String(today.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    },
   },
 });
 </script>
@@ -52,23 +52,20 @@ export default defineComponent({
           type="date"
           class="form-control"
           :value="startDate"
-          @input="$emit('update:startDate', ($event.target as HTMLInputElement).value)"
+          @change="$emit('update:startDate', ($event.target as HTMLInputElement).value)"
           :max="endDate"
       />
       <input
           type="date"
           class="form-control"
           :value="endDate"
-          @input="$emit('update:endDate', ($event.target as HTMLInputElement).value)"
+          @change="$emit('update:endDate', ($event.target as HTMLInputElement).value)"
           :min="startDate"
+          :max="today"
       />
     </div>
 
-    <button
-        class="btn refresh btn-default"
-        @click="$emit('refresh')"
-        :disabled="loading"
-    >
+    <button class="btn refresh btn-default" @click="$emit('refresh')" :disabled="loading">
       <span v-if="loading" class="spinner"></span>
       <span class="lbl">{{ refreshButtonText }}</span>
     </button>
@@ -158,6 +155,8 @@ export default defineComponent({
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 </style>
