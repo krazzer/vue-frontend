@@ -41,7 +41,7 @@ export default defineComponent({
 
     async handleLocalSave() {
       this.isSaving = true;
-      let isValid   = await (this.$refs.localForm as any).validate();
+      let isValid   = await (this.$refs.form as any).validate();
 
       if (!isValid.valid) {
         this.checkTabErrorsLocal = true;
