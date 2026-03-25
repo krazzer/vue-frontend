@@ -19,6 +19,7 @@ export default defineComponent({
   components: components,
   data() {
     return {
+      localFields: <any>{},
       datePickerActive: <any>{},
       datePickerDate: <any>{},
       formattedDates: <any>{},
@@ -64,28 +65,20 @@ export default defineComponent({
       }
 
       const fields = this.$refs.fieldRefs as any || [];
+    },
+    fields: {
+      immediate: true,
+      deep: true,
+      handler(fields) {
+        this.localFields = structuredClone(toRaw(fields));
 
-      let hasError = false;
-
-      for (const field of fields) {
-        if (typeof field.validate === 'function') {
-          if (await this.fieldHasError(field)) {
-            hasError = true;
+        if (typeof this.localFields === 'object') {
+          for (let key in this.localFields) {
+            this.localFields[key].key = key;
           }
         }
       }
-
-      if (hasError) {
-        this.$emit('fieldError', this.tab, true);
-      }
-    }
-  },
-  beforeMount() {
-    if (typeof this.fields === 'object') {
-      for (let key in this.fields) {
-        this.fields[key].key = key;
-      }
-    }
+    },
   },
   mounted() {
     if (this.hasDarkModeField()) {
@@ -109,7 +102,7 @@ export default defineComponent({
 
     handleDataChange(val: any) {
       for (const key in val) {
-        const field = this.fields[key];
+        const field = this.localFields[key];
 
         if(val[key] !== this.previousData[key] && field && field.is_form_modifier){
           this.$emit('updateForm', key, val);
@@ -147,13 +140,13 @@ export default defineComponent({
     },
 
     hasDarkModeField(): boolean {
-      if (!this.fields) {
+      if (!this.localFields) {
         return false;
       }
 
       let returnValue = false;
 
-      Object.values(this.fields).forEach((field: any) => {
+      Object.values(this.localFields).forEach((field: any) => {
         if (field.special === 'darkModeSelect') {
           returnValue = true;
         }
@@ -221,7 +214,7 @@ const DataTable = defineAsyncComponent(() => import('../datatable/DataTable.vue'
 
 <template>
   <v-row>
-    <template v-for="field in fields ?? {}">
+    <template v-for="field in localFields ?? {}">
       <v-col v-if="field.type != 'hidden'" cols="12" :md="field.size ? field.size.md : 0"
              :sm="field.size ? field.size.sm : 0">
         <label v-if="showLabel(field)" class="v-label">{{ field.label }}</label>
@@ -231,7 +224,7 @@ const DataTable = defineAsyncComponent(() => import('../datatable/DataTable.vue'
                    :initialData="helperData?.[field.key]?.['data'] ?? undefined" :parentInstance="instance"
                    :parentEditId="editId"/>
         <div class="group" v-else-if="field.type == 'group'">
-          <Form :fields="field.fields" :data="data" :darkMode="darkMode" @fieldError="$emit('fieldError')"
+          <Form :fields="field.localFields" :data="data" :darkMode="darkMode" @fieldError="$emit('fieldError')"
                 :saved="saved" :checkErrors="checkErrors" :level="level" @do-submit="$emit('doSubmit')"
                 @input-change="$emit('inputChange')" @dialog-change="forwardDialogChange"
                 @update-form="$emit('updateForm')"/>

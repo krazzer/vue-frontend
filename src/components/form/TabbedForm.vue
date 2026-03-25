@@ -15,12 +15,20 @@ export default defineComponent({
       saved: false,
       isSaving: false,
       checkTabErrorsLocal: false,
+      localForm: this.form,
     };
   },
   watch: {
     checkTabErrors() {
       this.checkTabErrorsLocal = this.checkTabErrors;
-    }
+    },
+    form: {
+      immediate: true,
+      deep: true,
+      handler(form) {
+        this.localForm = form;
+      }
+    },
   },
   methods: {
     getClass(tab: string): string {
@@ -33,7 +41,7 @@ export default defineComponent({
 
     async handleLocalSave() {
       this.isSaving = true;
-      let isValid   = await (this.$refs.form as any).validate();
+      let isValid   = await (this.$refs.localForm as any).validate();
 
       if (!isValid.valid) {
         this.checkTabErrorsLocal = true;
@@ -51,7 +59,7 @@ export default defineComponent({
 
     async save() {
       await this.$appUtil.doAction('form/save', {
-        name: this.form.name,
+        name: this.localForm.name,
         data: this.data,
       }, () => {
         this.saved = true;
@@ -59,7 +67,7 @@ export default defineComponent({
     },
 
     async submit(close: boolean = false) {
-      if (this.handleSubmit && this.form.name) {
+      if (this.handleSubmit && this.localForm.name) {
         await this.handleLocalSave();
       } else {
         this.$emit('submit', close);
@@ -75,15 +83,15 @@ export default defineComponent({
       this.$emit('dialogChange', ...args)
     },
 
-    updateForm(trigger: string, data: object|any) {
+    async updateForm(trigger: string, data: object|any) {
       if (this.editId) {
         data.id = this.editId;
       }
 
       let params = {instance: this.instance, trigger: trigger, data: data};
 
-      this.$appUtil.doAction('datatable/updateform', params, (response: any) => {
-        console.log(response.data.form);
+      await this.$appUtil.doAction('datatable/updateform', params, (response: any) => {
+        this.localForm = response.data.form;
       });
     }
   }
@@ -91,21 +99,21 @@ export default defineComponent({
 </script>
 
 <template>
-  <v-tabs v-if="form && form.tabs" v-model="tab">
-    <v-tab v-for="tab in form.tabs" :value="tab.key" :class="getClass(tab.key)">{{ tab.name }}</v-tab>
+  <v-tabs v-if="localForm && localForm.tabs" v-model="tab">
+    <v-tab v-for="tab in localForm.tabs" :value="tab.key" :class="getClass(tab.key)">{{ tab.name }}</v-tab>
   </v-tabs>
   <v-form ref="form" v-on:submit.prevent v-on:submit="submit(false)">
-    <v-tabs-window v-if="form && form.tabs" v-model="tab">
-      <v-tabs-window-item v-for="tab in form.tabs" :value="tab.key">
+    <v-tabs-window v-if="localForm && localForm.tabs" v-model="tab">
+      <v-tabs-window-item v-for="tab in localForm.tabs" :value="tab.key">
         <Form :fields="tab.fields" :data="data" :darkMode="darkMode" @fieldError="setTabError" :saved="saved"
               :checkErrors="checkTabErrorsLocal" :tab="tab.key" :save="tab.save" :level="level" @do-submit="submit"
               @input-change="inputChange" :helperData="helperData" @dialog-change="forwardDialogChange"
               :instance="instance" :editId="editId" :isSaving="isSaving" @update-form="updateForm"/>
       </v-tabs-window-item>
     </v-tabs-window>
-    <Form v-else-if="form && form.fields" :fields="form.fields" :save="form.save" :data="data" :level="level"
-          :darkMode="darkMode" :saved="saved" ref="oneForm" @do-submit="submit" @input-change="inputChange"
-          :helperData="helperData" :isSaving="isSaving"/>
+    <Form v-else-if="localForm && localForm.fields" :fields="localForm.fields" :save="localForm.save" :data="data"
+          :level="level" :darkMode="darkMode" :saved="saved" ref="oneForm" @do-submit="submit"
+          @input-change="inputChange" :helperData="helperData" :isSaving="isSaving"/>
   </v-form>
 </template>
 
