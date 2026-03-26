@@ -52,7 +52,7 @@ export default {
 
     async loadTranslations() {
       await this.$appUtil.doAction('translations', {}, (response: any) => {
-        this.$translator.setStrings(response.data);
+        this.$translator.setStrings(response.data.translations);
       }, {
         onError: (error: any) => {
           this.fatalError = error.message;
