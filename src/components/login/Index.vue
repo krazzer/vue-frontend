@@ -29,7 +29,7 @@ export default defineComponent({
         return;
       }
 
-      let params = {email: this.email, password: this.password, remember_me: this.remember};
+      let params = {email: this.email, password: this.password, _remember_me: this.remember};
 
       await this.$appUtil.doAction('login', params, (response: any) => {
         this.loginStatus = response.data;
