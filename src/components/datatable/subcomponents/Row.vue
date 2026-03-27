@@ -267,10 +267,10 @@ export default defineComponent({
 <template>
   <tr @click="toggleRow" :class="getClasses()" @mousedown="mousedown($event)"
       @dblclick="$emit('edit', parseInt(row.id), $event)" :data-id="row.id">
-    <td v-for="(cell, i) in row.data" :data-column="getKey(i)" @mouseleave="dragAndDropPages.mouseLeave"
-        @mouseenter="dragAndDropPages.mouseEnter(row.id, $event)" :class="getTdClass(i)"
+    <td v-for="(cell, i) in row.data" :data-column="getKey(<number> i)" @mouseleave="dragAndDropPages.mouseLeave"
+        @mouseenter="dragAndDropPages.mouseEnter(row.id, $event)" :class="getTdClass(<number> i)"
         @mousemove="dragAndDropPages.mouseMoveContainer(row.id, $event, max, level)">
-      <template v-if="displayAsPage(i)">
+      <template v-if="displayAsPage(<number> i)">
         <Page v-if="dragAndDropPages.itemIdMouseDown == row.id" :cell="cell" :cloned="true" :level="row.level"
               @startDrag="dragAndDropPages.setMouseDown(row.id, $event)" :x="dragAndDropPages.itemX"
               :y="dragAndDropPages.itemY" :type="row.type" :hasCildren="row.children" :collapse="row.collapsed"
@@ -280,14 +280,14 @@ export default defineComponent({
               @startDrag="dragAndDropPages.setMouseDown(row.id, $event)" :type="row.type"
               :hasCildren="row.children" :collapse="row.collapsed" @arrowClick="arrowClick($event)"/>
       </template>
-      <template v-else-if="getCellType(i) == 'image'">
+      <template v-else-if="getCellType(<number> i) == 'image'">
         <a target="_blank" :href="getCell(cell)" @click="(e) => e.stopPropagation()">
           <img class="preview" :src="getCell(cell)" alt=""/>
         </a>
         <img class="floating-preview" :style="getFloatingPreviewStyle()" :src="getCell(cell)" alt=""/>
       </template>
-      <template v-else-if="getCellType(i) == 'checkbox'">
-        <v-checkbox v-model="data[i]" @change="changeCheckbox(row.id, i)"
+      <template v-else-if="getCellType(<number> i) == 'checkbox'">
+        <v-checkbox v-model="data[i]" @change="changeCheckbox(row.id, <number> i)"
                     @dblclick="(e: any) => e.stopPropagation()" @click="(e: any) => e.stopPropagation()"/>
       </template>
       <template v-else><span v-html="getCell(cell)"/></template>

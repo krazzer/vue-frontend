@@ -9,9 +9,9 @@ import appMock from "@/classes/mock";
 
 export class Mocker {
     mocker;
-    public dataTableMock;
+    public dataTableMock: any;
     public loginMock;
-    public homeMock;
+    public homeMock: any;
     public mediaMock;
     public appMock;
     public formMock;

@@ -47,6 +47,7 @@ export default defineConfig({
     },
     build: {
         outDir: process.env.BUILD_OUTDIR || 'dist',
+        sourcemap: true,
         rollupOptions: {
             output: {
                 manualChunks(id) {

@@ -12,14 +12,20 @@ export default defineComponent({
     };
   },
   methods: {
-    async getIcon() {
+    async getIcon(): Promise<string> {
       let defaultIcon = '';
 
       for (const key in modules) {
-        const name = key.split('/').reverse()[0].split('.')[0];
+        const baseName = key.split('/').reverse()[0];
+
+        if( ! baseName || ! modules[key]){
+          continue;
+        }
+
+        const name = baseName.split('.')[0];
 
         if (name == this.svg) {
-          return await modules[key]();
+          return <string> await modules[key]();
         }
 
         if (name == 'default') {

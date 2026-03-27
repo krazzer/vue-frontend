@@ -1,7 +1,6 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
 import Base from "./Base.vue";
-import InlineSvg from 'vue-inline-svg';
 import Svg from "@/components/svg/Svg.vue";
 
 interface LoginStatus {
@@ -9,7 +8,7 @@ interface LoginStatus {
 }
 
 export default defineComponent({
-  components: {Base, InlineSvg, Svg},
+  components: {Base, Svg},
   data() {
     return {
       loginStatus: <LoginStatus>{},

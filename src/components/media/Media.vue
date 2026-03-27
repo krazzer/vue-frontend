@@ -111,7 +111,7 @@ export default defineComponent({
     },
 
     /**
-     * Show file upload when clicking button
+     * Show file upload when clicking the button
      */
     openFileUploadModal() {
       (<any>this).$refs.uploader.click();
@@ -313,7 +313,7 @@ export default defineComponent({
     <ul class="media__path" v-if="Object.keys(path).length">
       <li><span class="clickable" @click="open(null)">🏠</span></li>
       <li v-for="(name, id, i) in path">
-        <span :class="canClickPath(i) ? 'clickable' : ''" @click="canClickPath(i) ? open(id) : null">
+        <span :class="canClickPath(<number> i) ? 'clickable' : ''" @click="canClickPath(<number> i) ? open(<number> id) : null">
           {{ name }}
         </span>
       </li>
