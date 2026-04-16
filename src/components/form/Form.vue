@@ -58,13 +58,13 @@ export default defineComponent({
         }
       },
     },
-    async checkErrors() {
-      if (!this.checkErrors) {
-        this.$emit('fieldError', this.tab, false);
-        return;
+    checkErrors: {
+      async handler() {
+        if (!this.checkErrors) {
+          this.$emit('fieldError', this.tab, false);
+          return;
+        }
       }
-
-      const fields = this.$refs.fieldRefs as any || [];
     },
     fields: {
       immediate: true,
@@ -104,12 +104,12 @@ export default defineComponent({
       for (const key in val) {
         const field = this.localFields[key];
 
-        if(val[key] !== this.previousData[key] && field && field.is_form_modifier){
+        if (val[key] !== this.previousData[key] && field && field.is_form_modifier) {
           this.$emit('updateForm', key, val);
         }
       }
 
-      this.previousData = { ...val };
+      this.previousData = {...val};
 
       if (this.hasDarkModeField() && this.$darkMode.value !== val.darkmode) {
         this.$darkMode.value  = val.darkmode;
@@ -241,7 +241,7 @@ const DataTable = defineAsyncComponent(() => import('../datatable/DataTable.vue'
           </v-menu>
         </template>
         <component v-else :is="fieldComponents[field.type]" v-bind="getFieldProperties(field)" v-model="data[field.key]"
-                   ref="fieldRefs" />
+                   ref="fieldRefs"/>
       </v-col>
       <template v-else>
         <input :value="data[field.key]" :name="field.key" type="hidden"/>
