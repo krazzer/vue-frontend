@@ -10,7 +10,7 @@ class MediaMock {
 
         /**
          * Mocks the media upload.
-         * To test a real upload use this code:
+         * To test a real upload, use this code:
          * const xhr = new XMLHttpRequest();
          * xhr.upload.addEventListener("progress", uploadProgressEvent);
          * xhr.open("POST", "https://kiksaus.nl/test/uploadtest.php");

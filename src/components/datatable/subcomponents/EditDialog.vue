@@ -56,10 +56,6 @@ export default defineComponent({
         this.checkTabErrors = true;
       }
     },
-    reset() {
-      this.getForm().reset();
-      this.checkTabErrors = false;
-    },
 
     getForm() {
       let thisComponent: any = this;
@@ -103,14 +99,17 @@ export default defineComponent({
         this.displayForm = true;
       }
     },
-    parentSaved() {
-      this.saved = this.parentSaved;
+    parentSaved: {
+      handler(newVal) {
+        this.saved = newVal;
 
-      if (this.saved) {
-        this.inputHasChanged = false;
-      } else {
-        this.clickedSave = false;
-      }
+        if (this.saved) {
+          this.inputHasChanged = false;
+        } else {
+          this.clickedSave = false;
+        }
+      },
+      immediate: true
     }
   }
 });

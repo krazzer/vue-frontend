@@ -54,10 +54,6 @@ class AppMock {
             return [200, this.translations];
         });
     }
-
-    getTranslations(){
-        return this.translations;
-    }
 }
 
 export default new AppMock();

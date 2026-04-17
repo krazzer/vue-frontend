@@ -32,7 +32,7 @@ class Wrapper {
         app.config.globalProperties.$darkMode   = reactive(new DarkModeSetting);
 
         if (import.meta.env.DEV && !window.Cypress) {
-            // initialize the mocker and make it available for console manipulation, e.g. to change the delay with
+            // initialize the mocker and make it available for console manipulation, e.g., to change the delay with
             // mocker.mocker.delayResponse = 1000
             if( ! import.meta.env.VITE_API_HOST) {
                 (window as any).mocker = new Mocker().mock();
