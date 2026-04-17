@@ -297,7 +297,7 @@ export default defineComponent({
                 @mousedown="actionMouseDown(row, action, $event)" :class="getActionClass(action)">
             <i :class="'mdi ' + action.icon"></i>
           </span>
-          <span @click="$emit('edit', parseInt(row.id), $event)"><i class="mdi mdi-square-edit-outline"></i>
+          <span @click="$emit('edit', Number(row.id), $event)"><i class="mdi mdi-square-edit-outline"></i>
           </span>
         </div>
       </template>
@@ -307,7 +307,7 @@ export default defineComponent({
           <span v-for="action in getActions()" @click="clickAction(row, action.key, $event)"
                 @mousedown="actionMouseDown(row, action, $event)" :class="getActionClass(action)">
             <i :class="'mdi ' + action.icon"></i></span>
-        <span @click="$emit('edit', row.id, $event)"><i class="mdi mdi-square-edit-outline"></i>
+        <span @click="$emit('edit', Number(row.id), $event)"><i class="mdi mdi-square-edit-outline"></i>
           </span>
       </div>
     </td>
