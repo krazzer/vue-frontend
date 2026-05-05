@@ -113,7 +113,7 @@ export default defineComponent({
     </v-tabs-window>
     <Form v-else-if="localForm && localForm.fields" :fields="localForm.fields" :save="localForm.save" :data="data"
           :level="level" :darkMode="darkMode" :saved="saved" ref="oneForm" @do-submit="submit"
-          @input-change="inputChange" :helperData="helperData" :isSaving="isSaving"/>
+          @input-change="inputChange" :helperData="helperData" :isSaving="isSaving" @update-form="updateForm"/>
   </v-form>
 </template>
 
