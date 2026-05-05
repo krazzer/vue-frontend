@@ -6,7 +6,8 @@ import TabbedForm from "@/components/form/TabbedForm.vue"
 
 export default defineComponent({
   name: "EditDialog",
-  props: ['dialog', 'form', 'dialogEditId', 'data', 'helperData', 'values', 'darkMode', 'level', 'parentSaved', 'instance'],
+  props: ['dialog', 'form', 'dialogEditId', 'data', 'helperData', 'values', 'darkMode', 'level', 'parentSaved',
+    'instance', 'isSaving'],
   emits: ['clickSave', 'clickClose', 'inputChange'],
   components: {Editor, TabbedForm},
   data() {
@@ -147,7 +148,7 @@ export default defineComponent({
         <v-btn variant="tonal" @click="clickSave(false)">
           {{ saved ? $translator.tl('general.saved') : $translator.tl('general.save') }}
           <template v-slot:prepend>
-            <v-progress-circular v-if="$appUtil.isBusyLoading() && clickedSave && !hasOpenChildDialog" indeterminate
+            <v-progress-circular v-if="$appUtil.isBusyLoading() && clickedSave && isSaving" indeterminate
                                  size="20" width="2"/>
             <v-icon v-else :color="saved ? 'green' : ''">{{ saved ? "mdi-check" : "mdi-content-save" }}</v-icon>
           </template>
@@ -155,7 +156,7 @@ export default defineComponent({
         <v-btn variant="tonal" @click="clickSave(true)" prepend-icon="mdi-content-save">
           {{ $translator.tl('general.saveAndClose') }}
           <template v-slot:prepend>
-            <v-progress-circular v-if="$appUtil.isBusyLoading() && clickedSaveAndClose && !hasOpenChildDialog"
+            <v-progress-circular v-if="$appUtil.isBusyLoading() && clickedSaveAndClose && isSaving"
                                  indeterminate size="20" width="2"/>
             <v-icon v-else>mdi-content-save</v-icon>
           </template>

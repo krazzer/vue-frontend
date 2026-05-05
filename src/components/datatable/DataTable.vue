@@ -66,6 +66,7 @@ export default defineComponent({
       saved: false,
       busyCollapsing: false,
       source: '',
+      isSaving: false,
     };
   },
   watch: {
@@ -364,6 +365,8 @@ export default defineComponent({
     async save(dialogEditId: any, data: any, close: boolean = false) {
       let params = this.getParams({formData: data, id: dialogEditId});
 
+      this.isSaving = true;
+
       await this.$appUtil.doAction('datatable/save', params, (response: any) => {
         this.data       = response.data.data;
         this.storeData  = response.data.storeData;
@@ -389,6 +392,8 @@ export default defineComponent({
         } else {
           this.saved = true;
         }
+
+        this.isSaving = false;
       });
     },
 
@@ -604,7 +609,8 @@ export default defineComponent({
   </div>
   <EditDialog :dialog="dialog" :dialogEditId="dialogEditId" :form="form ?? {}" @clickClose="dialog = false"
               @clickSave="save" :data="editData" :helperData="helperData" :darkMode="darkMode" :level="level"
-              ref="editDialog" :parent-saved="saved" @input-change="inputChange" :instance="instance"/>
+              ref="editDialog" :parent-saved="saved" @input-change="inputChange" :instance="instance"
+              :isSaving="isSaving"/>
 </template>
 
 <style lang="scss" scoped>
