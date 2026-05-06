@@ -169,8 +169,8 @@ export default defineComponent({
       }
 
       if (field.type == 'richtext') {
-        fieldProps.init   = this.initTinyMCE();
         fieldProps.apiKey = this.tinyMCEApiKey(field.key);
+        fieldProps.init   = this.initTinyMCE();
       }
 
       if (field.type == 'password') {
@@ -222,7 +222,7 @@ const DataTable = defineAsyncComponent(() => import('../datatable/DataTable.vue'
                    @updateLocalData="setLocalData" :settings="helperData?.[field.key]?.['settings'] ?? undefined"
                    :level="level + 1" :fieldKey="field.key" :fieldStoreData="data[field.key]"
                    :initialData="helperData?.[field.key]?.['data'] ?? undefined" :parentInstance="instance"
-                   :parentEditId="editId"/>
+                   :parentEditId="editId" :darkMode="darkMode" />
         <div class="group" v-else-if="field.type == 'group'">
           <Form :fields="field.localFields" :data="data" :darkMode="darkMode" @fieldError="$emit('fieldError')"
                 :saved="saved" :checkErrors="checkErrors" :level="level" @do-submit="$emit('doSubmit')"
