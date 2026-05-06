@@ -135,8 +135,8 @@ export default defineComponent({
       };
     },
 
-    tinyMCEApiKey() {
-      return import.meta.env.VITE_TINYMCE_API_KEY;
+    tinyMCEApiKey(key: string) {
+      return this.helperData[key]['tinyMceApiKey'];
     },
 
     hasDarkModeField(): boolean {
@@ -170,7 +170,7 @@ export default defineComponent({
 
       if (field.type == 'richtext') {
         fieldProps.init   = this.initTinyMCE();
-        fieldProps.apiKey = this.tinyMCEApiKey();
+        fieldProps.apiKey = this.tinyMCEApiKey(field.key);
       }
 
       if (field.type == 'password') {
