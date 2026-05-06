@@ -16,6 +16,7 @@ export default defineComponent({
       isSaving: false,
       checkTabErrorsLocal: false,
       localForm: this.form,
+      localHelperData: this.helperData,
     };
   },
   watch: {
@@ -83,7 +84,7 @@ export default defineComponent({
       this.$emit('dialogChange', ...args)
     },
 
-    async updateForm(trigger: string, data: object|any) {
+    async updateForm(trigger: string, data: object | any) {
       if (this.editId) {
         data.id = this.editId;
       }
@@ -91,7 +92,8 @@ export default defineComponent({
       let params = {instance: this.instance, trigger: trigger, data: data};
 
       await this.$appUtil.doAction('datatable/updateform', params, (response: any) => {
-        this.localForm = response.data.form;
+        this.localForm       = response.data.form;
+        this.localHelperData = response.data.helperData;
       });
     }
   }
@@ -107,13 +109,13 @@ export default defineComponent({
       <v-tabs-window-item v-for="tab in localForm.tabs" :value="tab.key">
         <Form :fields="tab.fields" :data="data" :darkMode="darkMode" @fieldError="setTabError" :saved="saved"
               :checkErrors="checkTabErrorsLocal" :tab="tab.key" :save="tab.save" :level="level" @do-submit="submit"
-              @input-change="inputChange" :helperData="helperData" @dialog-change="forwardDialogChange"
+              @input-change="inputChange" :helperData="localHelperData" @dialog-change="forwardDialogChange"
               :instance="instance" :editId="editId" :isSaving="isSaving" @update-form="updateForm"/>
       </v-tabs-window-item>
     </v-tabs-window>
     <Form v-else-if="localForm && localForm.fields" :fields="localForm.fields" :save="localForm.save" :data="data"
           :level="level" :darkMode="darkMode" :saved="saved" ref="oneForm" @do-submit="submit"
-          @input-change="inputChange" :helperData="helperData" :isSaving="isSaving" @update-form="updateForm"/>
+          @input-change="inputChange" :helperData="localHelperData" :isSaving="isSaving" @update-form="updateForm"/>
   </v-form>
 </template>
 
