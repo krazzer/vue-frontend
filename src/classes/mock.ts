@@ -51,7 +51,7 @@ class AppMock {
 
     mock(mocker: MockAdapter) {
         mocker.onPost("/api/translations").reply(() => {
-            return [200, this.translations];
+            return [200, {translations: this.translations}];
         });
     }
 }

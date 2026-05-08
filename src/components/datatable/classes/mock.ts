@@ -312,15 +312,20 @@ class DataTableMock {
         });
 
         mocker.onPost("/api/datatable/add").reply((request) => {
-            let params   = JSON.parse(request.data);
-            let instance = params.instance;
-            let form     = this.forms[instance];
+            let params     = JSON.parse(request.data);
+            let instance   = params.instance;
+            let form       = this.forms[instance];
+            let helperData = <any>{};
 
             if (params.type == 'link') {
                 form = this.linkForm;
             }
 
-            return [200, {form: form}];
+            if (instance == 'content') {
+                helperData.content = {tinyMceApiKey: import.meta.env.VITE_TINYMCE_API_KEY};
+            }
+
+            return [200, {form: form, helperData: helperData}];
         });
 
         mocker.onPost("/api/datatable/delete").reply((request) => {
@@ -507,7 +512,11 @@ class DataTableMock {
     }
 
     getEditResponse(instance: string): any {
-        let helperData = {file: {thumb: '/cms/src/assets/images/example-image-1.jpg'}};
+        let helperData = <any> {file: {thumb: '/cms/src/assets/images/example-image-1.jpg'}};
+
+        if (instance == 'content') {
+            helperData.content = {tinyMceApiKey: import.meta.env.VITE_TINYMCE_API_KEY};
+        }
 
         return {
             form: this.forms[instance],
