@@ -423,7 +423,9 @@ class DataTableMock {
 
             this.getDataForInstance(params.instance).data = editData;
 
-            editData[index].data[3] = false;
+            if (editData[index] !== undefined) {
+                editData[index].data[3] = false;
+            }
 
             return [200, {data: editData, id: id}];
         });
@@ -512,7 +514,7 @@ class DataTableMock {
     }
 
     getEditResponse(instance: string): any {
-        let helperData = <any> {file: {thumb: '/cms/src/assets/images/example-image-1.jpg'}};
+        let helperData = <any>{file: {thumb: '/cms/src/assets/images/example-image-1.jpg'}};
 
         if (instance == 'content') {
             helperData.content = {tinyMceApiKey: import.meta.env.VITE_TINYMCE_API_KEY};

@@ -224,7 +224,7 @@ const DataTable = defineAsyncComponent(() => import('../datatable/DataTable.vue'
                    :initialData="helperData?.[field.key]?.['data'] ?? undefined" :parentInstance="instance"
                    :parentEditId="editId" :darkMode="darkMode" />
         <div class="group" v-else-if="field.type == 'group'">
-          <Form :fields="field.localFields" :data="data" :darkMode="darkMode" @fieldError="$emit('fieldError')"
+          <Form :fields="field.fields" :data="data" :darkMode="darkMode" @fieldError="$emit('fieldError')"
                 :saved="saved" :checkErrors="checkErrors" :level="level" @do-submit="$emit('doSubmit')"
                 @input-change="$emit('inputChange')" @dialog-change="forwardDialogChange"
                 @update-form="$emit('updateForm')"/>
