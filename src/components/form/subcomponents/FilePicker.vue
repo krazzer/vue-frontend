@@ -144,5 +144,6 @@ export default defineComponent({
 .thumb {
   max-width: 160px;
   max-height: 80px;
+  position: relative;
 }
 </style>
