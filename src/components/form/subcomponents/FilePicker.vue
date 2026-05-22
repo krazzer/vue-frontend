@@ -16,13 +16,15 @@ export default defineComponent({
       mediaFileSelected: false,
       uploadProgress: 0,
       hideUploadProgress: false,
+      localHelperData: <any>{},
     }
   },
   mounted() {
-    this.pickedFile = this.modelValue;
+    this.localHelperData = {...this.helperData};
+    this.pickedFile      = this.modelValue;
 
     if (this.thumb) {
-      this.helperData.thumb = this.thumb;
+      this.localHelperData.thumb = this.thumb;
     }
   },
   methods: {
@@ -35,8 +37,8 @@ export default defineComponent({
     },
 
     pickFile(file: number, thumb: string) {
-      this.helperData.thumb = thumb;
-      this.pickedFile       = file;
+      this.localHelperData.thumb = thumb;
+      this.pickedFile            = file;
 
       this.$emit('update:modelValue', this.pickedFile);
       this.clickClose();
@@ -52,8 +54,8 @@ export default defineComponent({
       this.hideUploadProgress = hide;
     },
     uploadFiles(files: any) {
-      this.helperData.thumb      = files[0].thumb;
-      this.helperData.pickedFile = files[0].id;
+      this.localHelperData.thumb      = files[0].thumb;
+      this.localHelperData.pickedFile = files[0].id;
     }
   },
   watch: {
@@ -72,11 +74,11 @@ export default defineComponent({
 <template>
   <v-row align="center" dense>
     <v-col cols="auto" style="align-items: flex-start; justify-content: flex-start; display: flex;">
-      <v-btn variant="tonal" class="me-2" :class="{ 'pick-button': helperData.thumb && pickedFile }"
+      <v-btn variant="tonal" class="me-2" :class="{ 'pick-button': localHelperData.thumb && pickedFile }"
              @click="openDialog">
         <template v-if="pickedFile">
-          <template v-if="helperData.thumb">
-            <img class="thumb" :src="helperData.thumb" alt=""/>
+          <template v-if="localHelperData.thumb">
+            <img class="thumb" :src="localHelperData.thumb" alt=""/>
           </template>
           <template v-else>
             Pick file (Current: {{ pickedFile }})
@@ -88,7 +90,8 @@ export default defineComponent({
       </v-btn>
       <v-btn variant="tonal" @click="(<any> $refs).uploader.click();">
         Upload
-        <div class="upload-progress" v-if="uploadProgress > 0" :class="{ 'd-none': hideUploadProgress }" :style="'width:' + uploadProgress + '%'"></div>
+        <div class="upload-progress" v-if="uploadProgress > 0" :class="{ 'd-none': hideUploadProgress }"
+             :style="'width:' + uploadProgress + '%'"></div>
       </v-btn>
       <Uploader @uploadedNewFiles="uploadFiles" @progress="updateUploadProgress" ref="uploader"/>
     </v-col>
@@ -122,7 +125,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 @use '@/assets/css/dialog';
 
-.upload-progress{
+.upload-progress {
   position: absolute;
   bottom: 0;
   left: 0;
