@@ -68,11 +68,11 @@ export class AppUtil {
         let onError = (error: string | any) => {
             handleLoader();
 
-            if (config.onError) {
-                config.onError(error);
-            } else {
-                const errorMessage = error?.response?.data?.error;
+            const errorMessage = error?.response?.data?.error;
 
+            if (config.onError) {
+                config.onError(errorMessage ? errorMessage : error);
+            } else {
                 if (errorMessage) {
                     console.error(errorMessage);
                     alert('Error: ' + errorMessage);

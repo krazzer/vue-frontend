@@ -40,7 +40,7 @@ export default defineComponent({
         }
       }, {
         onError: (error: any) => {
-          this.errors.push(error.message);
+          this.errors.push(error);
         }
       });
     }

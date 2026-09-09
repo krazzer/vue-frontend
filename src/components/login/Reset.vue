@@ -42,7 +42,7 @@ export default defineComponent({
         }
       }, {
         onError: (error: any) => {
-          this.errorMesssage = error.message;
+          this.errorMesssage = error;
         }
       });
     },
