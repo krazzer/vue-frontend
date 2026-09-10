@@ -32,6 +32,7 @@ export default defineComponent({
         textarea: 'v-textarea',
         richtext: 'Editor',
         filepicker: 'FilePicker',
+        image: 'FilePicker',
         password: 'v-text-field',
         select: 'v-select',
         autocomplete: 'v-autocomplete',
