@@ -44,7 +44,7 @@ export default defineComponent({
               <template v-slot:prepend>
                 <v-icon :icon="item.icon"></v-icon>
               </template>
-              <v-list-item-title>{{ item.title }}</v-list-item-title>
+              <v-list-item-title>{{ item.label }}</v-list-item-title>
             </v-list-item>
           </v-list>
         </v-menu>
