@@ -102,7 +102,7 @@ export default defineComponent({
 
 <template>
   <v-tabs v-if="localForm && localForm.tabs" v-model="tab">
-    <v-tab v-for="tab in localForm.tabs" :value="tab.key" :class="getClass(tab.key)">{{ tab.name }}</v-tab>
+    <v-tab v-for="tab in localForm.tabs" :value="tab.key" :class="getClass(tab.key)">{{ tab.label }}</v-tab>
   </v-tabs>
   <v-form ref="form" v-on:submit.prevent v-on:submit="submit(false)">
     <v-tabs-window v-if="localForm && localForm.tabs" v-model="tab">
