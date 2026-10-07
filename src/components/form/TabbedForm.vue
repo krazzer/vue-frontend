@@ -102,13 +102,13 @@ export default defineComponent({
 
 <template>
   <v-tabs v-if="localForm && localForm.tabs" v-model="tab">
-    <v-tab v-for="tab in localForm.tabs" :value="tab.key" :class="getClass(tab.key)">{{ tab.label }}</v-tab>
+    <v-tab v-for="(tab, key) in localForm.tabs" :value="key" :class="getClass(<string> key)">{{ tab.label }}</v-tab>
   </v-tabs>
   <v-form ref="form" v-on:submit.prevent v-on:submit="submit(false)">
     <v-tabs-window v-if="localForm && localForm.tabs" v-model="tab">
-      <v-tabs-window-item v-for="tab in localForm.tabs" :value="tab.key">
+      <v-tabs-window-item v-for="(tab, key) in localForm.tabs" :value="key">
         <Form :fields="tab.fields" :data="data" :darkMode="darkMode" @fieldError="setTabError" :saved="saved"
-              :checkErrors="checkTabErrorsLocal" :tab="tab.key" :save="tab.save" :level="level" @do-submit="submit"
+              :checkErrors="checkTabErrorsLocal" :tab="key" :save="tab.save" :level="level" @do-submit="submit"
               @input-change="inputChange" :helperData="localHelperData" @dialog-change="forwardDialogChange"
               :instance="instance" :editId="editId" :isSaving="isSaving" @update-form="updateForm"/>
       </v-tabs-window-item>

@@ -1,14 +1,14 @@
 <script lang="ts">
-import { defineComponent } from 'vue';
+import {defineComponent} from 'vue';
 
 const tabs = [
-  { key: 'overview', label: 'Overzicht' },
-  { key: 'source', label: 'Bron' },
-  { key: 'page', label: 'Pagina' },
-  { key: 'location', label: 'Locatie' },
-  { key: 'browser', label: 'Browser' },
-  { key: 'resolution', label: 'Resolutie' },
-  { key: 'os', label: 'Besturingssysteem' },
+  {key: 'overview', label: 'Overzicht'},
+  {key: 'source', label: 'Bron'},
+  {key: 'page', label: 'Pagina'},
+  {key: 'location', label: 'Locatie'},
+  {key: 'browser', label: 'Browser'},
+  {key: 'resolution', label: 'Resolutie'},
+  {key: 'os', label: 'Besturingssysteem'},
 ];
 
 const firstColumnMap: Record<string, string> = {
@@ -52,12 +52,12 @@ export default defineComponent({
     filteredVisitorData(): any[] {
       if (this.activeTab === 'resolution') {
         const desktop = this.visitorData['resolutionDesktop'] || [];
-        const tablet = this.visitorData['resolutionTablet'] || [];
-        const mobile = this.visitorData['resolutionMobile'] || [];
+        const tablet  = this.visitorData['resolutionTablet'] || [];
+        const mobile  = this.visitorData['resolutionMobile'] || [];
         return [
-          ...desktop.map((item: any) => ({ ...item, device: 'Desktop' })),
-          ...tablet.map((item: any) => ({ ...item, device: 'Tablet' })),
-          ...mobile.map((item: any) => ({ ...item, device: 'Mobile' })),
+          ...desktop.map((item: any) => ({...item, device: 'Desktop'})),
+          ...tablet.map((item: any) => ({...item, device: 'Tablet'})),
+          ...mobile.map((item: any) => ({...item, device: 'Mobile'})),
         ];
       }
       return this.visitorData[this.activeTab] || [];
@@ -78,12 +78,8 @@ export default defineComponent({
 <template>
   <div class="statistics-tabs">
     <div class="tab-headers">
-      <button
-          v-for="tab in tabs"
-          :key="tab.key"
-          :class="['tab-btn', { active: activeTab === tab.key }]"
-          @click="activeTab = tab.key"
-      >
+      <button v-for="tab in tabs" :key="tab.key" :class="['tab-btn', { active: activeTab === tab.key }]"
+              @click="activeTab = tab.key">
         {{ tab.label }}
       </button>
     </div>
