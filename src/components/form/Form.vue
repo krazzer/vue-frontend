@@ -65,6 +65,22 @@ export default defineComponent({
           this.$emit('fieldError', this.tab, false);
           return;
         }
+
+        let hasError = false;
+
+        const fields = this.$refs.fieldRefs as any || [];
+
+        for (const field of fields) {
+          if (typeof field.validate === 'function') {
+            if (await this.fieldHasError(field)) {
+              hasError = true;
+            }
+          }
+        }
+
+        if (hasError) {
+          this.$emit('fieldError', this.tab, true);
+        }
       }
     },
     fields: {
@@ -223,7 +239,7 @@ const DataTable = defineAsyncComponent(() => import('../datatable/DataTable.vue'
                    @updateLocalData="setLocalData" :settings="helperData?.[field.key]?.['settings'] ?? undefined"
                    :level="level + 1" :fieldKey="field.key" :fieldStoreData="data[field.key]"
                    :initialData="helperData?.[field.key]?.['data'] ?? undefined" :parentInstance="instance"
-                   :parentEditId="editId" :darkMode="darkMode" />
+                   :parentEditId="editId" :darkMode="darkMode"/>
         <div class="group" v-else-if="field.type == 'group'">
           <Form :fields="field.fields" :data="data" :darkMode="darkMode" @fieldError="$emit('fieldError')"
                 :saved="saved" :checkErrors="checkErrors" :level="level" @do-submit="$emit('doSubmit')"
