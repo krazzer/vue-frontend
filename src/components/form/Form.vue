@@ -243,7 +243,7 @@ const DataTable = defineAsyncComponent(() => import('../datatable/DataTable.vue'
         <div class="group" v-else-if="field.type == 'group'">
           <Form :fields="field.fields" :data="data" :darkMode="darkMode" @fieldError="$emit('fieldError')"
                 :saved="saved" :checkErrors="checkErrors" :level="level" @do-submit="$emit('doSubmit')"
-                @input-change="$emit('inputChange')" @dialog-change="forwardDialogChange"
+                @input-change="$emit('inputChange')" @dialogChange="forwardDialogChange"
                 @update-form="$emit('updateForm')"/>
         </div>
         <LabelField v-else-if="field.type == 'label'" :field="field"/>

@@ -109,13 +109,14 @@ export default defineComponent({
       <v-tabs-window-item v-for="(tab, key) in localForm.tabs" :value="key">
         <Form :fields="tab.fields" :data="data" :darkMode="darkMode" @fieldError="setTabError" :saved="saved"
               :checkErrors="checkTabErrorsLocal" :tab="key" :save="tab.save" :level="level" @do-submit="submit"
-              @input-change="inputChange" :helperData="localHelperData" @dialog-change="forwardDialogChange"
+              @input-change="inputChange" :helperData="localHelperData" @dialogChange="forwardDialogChange"
               :instance="instance" :editId="editId" :isSaving="isSaving" @update-form="updateForm"/>
       </v-tabs-window-item>
     </v-tabs-window>
     <Form v-else-if="localForm && localForm.fields" :fields="localForm.fields" :save="localForm.save" :data="data"
-          :level="level" :darkMode="darkMode" :saved="saved" ref="oneForm" @do-submit="submit"
-          @input-change="inputChange" :helperData="localHelperData" :isSaving="isSaving" @update-form="updateForm"/>
+          :level="level" :darkMode="darkMode" :saved="saved" ref="oneForm" @do-submit="submit" :isSaving="isSaving"
+          @dialogChange="forwardDialogChange" @input-change="inputChange" :helperData="localHelperData"
+          @update-form="updateForm"/>
   </v-form>
 </template>
 
